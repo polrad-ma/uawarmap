@@ -83,16 +83,15 @@
     // KML LAYER (loaded from your GitHub repo)
     // ============================
 
-    var frontline = omnivore.kml('Russian-controlled%20territory.kml')
-      .on('ready', function() {
-
-        // Automatically zoom to the KML
-        map.fitBounds(frontline.getBounds());
-
-      })
-      .on('error', function(error) {
-
-        console.error("Could not load KML:", error);
+  var frontline = omnivore.kml('Russian-controlled%20territory.kml')
+  .on('ready', function() {
+    console.log("KML ready. Layer count:", frontline.getLayers().length);
+    console.log("Bounds:", frontline.getBounds());
+    map.fitBounds(frontline.getBounds());
+  })
+  .on('error', function(error) {
+    console.error("Could not load KML:", error);
+  });
 
       });
 
