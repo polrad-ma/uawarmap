@@ -74,46 +74,4 @@
       {
         attribution:
           '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors, ' +
-          '&copy; <a href="https://carto.com/attribution">CARTO</a>'
-      }
-    ).addTo(map);
-
-
-    // ============================
-    // KML LAYER (loaded from your GitHub repo)
-    // ============================
-
-  var frontline = omnivore.kml('Russian-controlled%20territory.kml')
-  .on('ready', function() {
-    console.log("KML ready. Layer count:", frontline.getLayers().length);
-    console.log("Bounds:", frontline.getBounds());
-    map.fitBounds(frontline.getBounds());
-  })
-  .on('error', function(error) {
-    console.error("Could not load KML:", error);
-  });
-
-      });
-
-
-    // ============================
-    // LAYER SWITCHER
-    // ============================
-
-    var overlays = {
-      "Frontline": frontline
-    };
-
-    L.control.layers(
-      null,
-      overlays,
-      {
-        collapsed: false
-      }
-    ).addTo(map);
-
-
-  </script>
-
-</body>
-</html>
+          '&copy; <a href="https://carto.com/attribution">CARTO
