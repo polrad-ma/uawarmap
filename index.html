@@ -9,9 +9,6 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-  <!-- KML support -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-omnivore/0.3.4/leaflet-omnivore.min.js"></script>
-
   <!-- Map styling -->
   <style>
     body {
@@ -80,13 +77,57 @@
 
 
     // ============================
-    // KML LAYER (loaded from your GitHub repo)
+    // GEOJSON LAYER (loaded from your GitHub repo)
     // ============================
 
-    var frontline = omnivore.kml('Russian-controlled%20territory.kml')
-      .on('ready', function() {
-        console.log("KML ready. Layer count:", frontline.getLayers().length);
-        console.log("Bounds:", frontline.getBounds());
-        map.fitBounds(frontline.getBounds());
+    var frontline; // declared here so it's accessible in the layer switcher below
+
+    fetch('russian-controlled-territory.geojson')
+      .then(function(response) {
+        if (!response.ok) {
+          throw new Error('HTTP error, status = ' + response.status);
+        }
+        return response.json();
       })
-      .on('error', function(error) {
+      .then(function(data) {
+
+        frontline = L.geoJSON(data, {
+          style: function(feature) {
+            return {
+              color: "#a51427",     // border color
+              weight: 2,             // border thickness
+              fillColor: "#a51427",  // fill color
+              fillOpacity: 0.4        // fill transparency (0-1)
+            };
+          }
+        }).addTo(map);
+
+        map.fitBounds(frontline.getBounds());
+
+        // Add to layer switcher now that it's loaded
+        layerControl.addOverlay(frontline, "Frontline");
+
+        console.log("GeoJSON loaded. Feature count:", data.features.length);
+      })
+      .catch(function(error) {
+        console.error("Could not load GeoJSON:", error);
+      });
+
+
+    // ============================
+    // LAYER SWITCHER
+    // ============================
+
+    var layerControl = L.control.layers(
+      null,
+      null,
+      {
+        collapsed: false
+      }
+    ).addTo(map);
+
+
+  </script>
+
+</body>
+</html>
