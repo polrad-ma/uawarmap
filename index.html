@@ -9,17 +9,8 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <!-- Map styling -->
   <style>
-    body {
-      margin: 0;
-      padding: 0;
-    }
-    #map {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      right: 0;
-      left: 0;
-    }
+    body { margin: 0; padding: 0; }
+    #map { position: absolute; top: 0; bottom: 0; right: 0; left: 0; }
     #map-title {
       position: relative;
       margin-top: 10px;
@@ -36,9 +27,7 @@
   </style>
 </head>
 <body>
-  <!-- Map title -->
   <div id="map-title">Polrad Mapping Ukraine Map</div>
-  <!-- Map -->
   <div id="map"></div>
   <script>
     // ============================
@@ -63,43 +52,62 @@
     ).addTo(map);
 
     // ============================
-    // LAYER SWITCHER (created empty, filled in as layers load)
+    // LAYER SWITCHER (filled in as layers/markers load)
     // ============================
     var layerControl = L.control.layers(
       null,
       null,
-      {
-        collapsed: false
-      }
+      { collapsed: false }
     ).addTo(map);
 
     // ============================
     // GEOJSON LAYERS
-    // Add one entry per file here. Each needs:
-    //   file  -> exact filename in the repo (spaces need %20, parentheses %28 %29)
-    //   name  -> label shown in the layer switcher
-    //   color -> line/fill color for that layer
+    // - color / outlineColor: default style for the whole layer
+    // - styleOverrides: optional. Key = the feature's "name" property in the
+    //   geojson, value = { color, outlineColor } to use for just that shape.
+    //   Leave as {} if you don't need per-polygon colors for that layer.
     // ============================
     var layerFiles = [
       {
         file: "neatogeo_Russian-controlled%20territory.geojson",
         name: "Russian-controlled territory",
-        color: "#a51427"
+        color: "#a51427",
+        styleOverrides: {}
       },
       {
         file: "neatogeo_Frontline%20towns%20%28from%20PWM%29.geojson",
         name: "Frontline towns (from PWM)",
-        color: "#e67e22"
+        color: "#ffffff",
+        outlineColor: "#555555",
+        styleOverrides: {}
       },
       {
         file: "neatogeo_Cities%20captured%20this%20year.geojson",
         name: "Cities captured this year",
-        color: "#8e44ad"
+        color: "#8e44ad",
+        styleOverrides: {}
       },
       {
         file: "neatogeo_Ukrainian-controlled%20territory.geojson",
         name: "Ukrainian-controlled territory",
-        color: "#1427a5"
+        color: "#1427a5",
+        styleOverrides: {}
+      },
+      {
+        file: "neatogeo_Advances%20%28both%20sides%29.geojson",
+        name: "Advances (both sides)",
+        color: "#f1c40f",
+        styleOverrides: {}
+      },
+      {
+        file: "Once%20AFU-controlled%20territories%20in%20Russia.geojson",
+        name: "Once AFU-controlled territories in Russia",
+        color: "#87ceeb",
+        styleOverrides: {}
+        // Example of overriding one specific polygon's color:
+        // styleOverrides: {
+        //   "Kursk pocket": { color: "#2ecc71" }
+        // }
       }
     ];
 
@@ -114,10 +122,17 @@
         .then(function(data) {
           var layer = L.geoJSON(data, {
             style: function(feature) {
+              var featureName = feature.properties && feature.properties.name;
+              var override = featureName && layerInfo.styleOverrides[featureName];
+
+              var fillColor = (override && override.color) || layerInfo.color;
+              var lineColor = (override && override.outlineColor) ||
+                               layerInfo.outlineColor || fillColor;
+
               return {
-                color: layerInfo.color,
+                color: lineColor,
                 weight: 2,
-                fillColor: layerInfo.color,
+                fillColor: fillColor,
                 fillOpacity: 0.4
               };
             }
@@ -131,6 +146,27 @@
           console.error("Could not load layer '" + layerInfo.name + "':", error);
         });
     });
+
+    // ============================
+    // CAPTURED-TOWN MARKERS
+    // ============================
+    var capturedTowns = [
+      { name: "Chasiv Yar",       date: "July 28", lat: 48.58025, lng: 37.83719 },
+      { name: "Kostiantynivka",   date: "July 28", lat: 48.52486, lng: 37.6986  },
+      { name: "Bilytske",         date: "July 26", lat: 48.40581, lng: 37.18269 },
+      { name: "Rodynske",         date: "July 13", lat: 48.35097, lng: 37.20877 }
+    ];
+
+    var townMarkers = L.layerGroup();
+
+    capturedTowns.forEach(function(town) {
+      L.marker([town.lat, town.lng])
+        .bindPopup("<b>" + town.name + "</b><br>Captured " + town.date)
+        .addTo(townMarkers);
+    });
+
+    townMarkers.addTo(map);
+    layerControl.addOverlay(townMarkers, "Captured towns");
 
   </script>
 </body>
