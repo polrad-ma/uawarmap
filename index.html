@@ -4,18 +4,15 @@
   <title>Polrad Mapping Ukraine Map</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta charset="utf-8">
-
   <!-- Load Leaflet -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
   <!-- Map styling -->
   <style>
     body {
       margin: 0;
       padding: 0;
     }
-
     #map {
       position: absolute;
       top: 0;
@@ -23,7 +20,6 @@
       right: 0;
       left: 0;
     }
-
     #map-title {
       position: relative;
       margin-top: 10px;
@@ -39,33 +35,24 @@
     }
   </style>
 </head>
-
 <body>
-
   <!-- Map title -->
   <div id="map-title">Polrad Mapping Ukraine Map</div>
-
   <!-- Map -->
   <div id="map"></div>
-
-
   <script>
-
     // ============================
     // CREATE MAP
     // ============================
-
     var map = L.map('map', {
       center: [48.00, 37.75],
-      zoom: 8,
+      zoom: 5,
       scrollWheelZoom: true
     });
-
 
     // ============================
     // BASEMAP
     // ============================
-
     L.tileLayer(
       'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
       {
@@ -75,49 +62,9 @@
       }
     ).addTo(map);
 
-
     // ============================
-    // GEOJSON LAYER (loaded from your GitHub repo)
+    // LAYER SWITCHER (created empty, filled in as layers load)
     // ============================
-
-    var frontline; // declared here so it's accessible in the layer switcher below
-
-   fetch('russian-controlled%20territory.geojson')
-      .then(function(response) {
-        if (!response.ok) {
-          throw new Error('HTTP error, status = ' + response.status);
-        }
-        return response.json();
-      })
-      .then(function(data) {
-
-        frontline = L.geoJSON(data, {
-          style: function(feature) {
-            return {
-              color: "#a51427",     // border color
-              weight: 2,             // border thickness
-              fillColor: "#a51427",  // fill color
-              fillOpacity: 0.4        // fill transparency (0-1)
-            };
-          }
-        }).addTo(map);
-
-        map.fitBounds(frontline.getBounds());
-
-        // Add to layer switcher now that it's loaded
-        layerControl.addOverlay(frontline, "Frontline");
-
-        console.log("GeoJSON loaded. Feature count:", data.features.length);
-      })
-      .catch(function(error) {
-        console.error("Could not load GeoJSON:", error);
-      });
-
-
-    // ============================
-    // LAYER SWITCHER
-    // ============================
-
     var layerControl = L.control.layers(
       null,
       null,
@@ -126,8 +73,65 @@
       }
     ).addTo(map);
 
+    // ============================
+    // GEOJSON LAYERS
+    // Add one entry per file here. Each needs:
+    //   file  -> exact filename in the repo (spaces need %20, parentheses %28 %29)
+    //   name  -> label shown in the layer switcher
+    //   color -> line/fill color for that layer
+    // ============================
+    var layerFiles = [
+      {
+        file: "neatogeo_Russian-controlled%20territory.geojson",
+        name: "Russian-controlled territory",
+        color: "#a51427"
+      },
+      {
+        file: "neatogeo_Frontline%20towns%20%28from%20PWM%29.geojson",
+        name: "Frontline towns (from PWM)",
+        color: "#e67e22"
+      },
+      {
+        file: "neatogeo_Cities%20captured%20this%20year.geojson",
+        name: "Cities captured this year",
+        color: "#8e44ad"
+      },
+      {
+        file: "neatogeo_Ukrainian-controlled%20territory.geojson",
+        name: "Ukrainian-controlled territory",
+        color: "#1427a5"
+      }
+    ];
+
+    layerFiles.forEach(function(layerInfo) {
+      fetch(layerInfo.file)
+        .then(function(response) {
+          if (!response.ok) {
+            throw new Error('HTTP error, status = ' + response.status + ' for ' + layerInfo.file);
+          }
+          return response.json();
+        })
+        .then(function(data) {
+          var layer = L.geoJSON(data, {
+            style: function(feature) {
+              return {
+                color: layerInfo.color,
+                weight: 2,
+                fillColor: layerInfo.color,
+                fillOpacity: 0.4
+              };
+            }
+          }).addTo(map);
+
+          layerControl.addOverlay(layer, layerInfo.name);
+
+          console.log(layerInfo.name + " loaded. Feature count:", data.features.length);
+        })
+        .catch(function(error) {
+          console.error("Could not load layer '" + layerInfo.name + "':", error);
+        });
+    });
 
   </script>
-
 </body>
 </html>
