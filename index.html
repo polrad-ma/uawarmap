@@ -52,6 +52,14 @@
     ).addTo(map);
 
     // ============================
+    // DEDICATED PANE FOR MARKERS
+    // Ensures city markers always sit above polygon layers and stay
+    // clickable, even though polygons finish loading later (async fetch).
+    // ============================
+    map.createPane('markersPane');
+    map.getPane('markersPane').style.zIndex = 650; // above overlayPane (400)
+
+    // ============================
     // LAYER SWITCHER (filled in as layers/markers load)
     // ============================
     var layerControl = L.control.layers(
@@ -90,6 +98,12 @@
         file: "neatogeo_Advances%20%28both%20sides%29.geojson",
         name: "Advances (both sides)",
         color: "#f1c40f",
+        styleOverrides: {}
+      },
+      {
+        file: "neatogeo_Territories%20regained%20in%20the%20last%20month.geojson",
+        name: "Territories regained in the last month",
+        color: "#2ecc71",
         styleOverrides: {}
       }
     ];
@@ -131,31 +145,32 @@
     });
 
     // ============================
-    // CAPTURED-TOWN MARKERS (red)
+    // CAPTURED CITIES (red markers, always clickable via dedicated pane)
     // ============================
-    var capturedTowns = [
+    var capturedCities = [
       { name: "Chasiv Yar",       date: "July 28", lat: 48.58025, lng: 37.83719 },
       { name: "Kostiantynivka",   date: "July 28", lat: 48.52486, lng: 37.6986  },
       { name: "Bilytske",         date: "July 26", lat: 48.40581, lng: 37.18269 },
       { name: "Rodynske",         date: "July 13", lat: 48.35097, lng: 37.20877 }
     ];
 
-    var townMarkers = L.layerGroup();
+    var cityMarkers = L.layerGroup();
 
-    capturedTowns.forEach(function(town) {
-      L.circleMarker([town.lat, town.lng], {
+    capturedCities.forEach(function(city) {
+      L.circleMarker([city.lat, city.lng], {
+        pane: 'markersPane',
         radius: 7,
         color: "#8b0000",      // dark red border
         weight: 2,
         fillColor: "#ff0000",  // red fill
         fillOpacity: 1
       })
-        .bindPopup("<b>" + town.name + "</b><br>Captured " + town.date)
-        .addTo(townMarkers);
+        .bindPopup("<b>" + city.name + "</b><br>Captured " + city.date)
+        .addTo(cityMarkers);
     });
 
-    townMarkers.addTo(map);
-    layerControl.addOverlay(townMarkers, "Captured towns");
+    cityMarkers.addTo(map);
+    layerControl.addOverlay(cityMarkers, "Captured cities");
 
   </script>
 </body>
