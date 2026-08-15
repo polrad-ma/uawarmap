@@ -206,6 +206,10 @@
 
     // ============================
     // GEOJSON LAYERS
+    // - color / outlineColor: default style for the whole layer
+    // - fillOpacity: 0 = outline only, no fill. Defaults to 0.4 if omitted.
+    // - styleOverrides: optional. Key = the feature's "name" property in the
+    //   geojson, value = { color, outlineColor } to use for just that shape.
     // ============================
     var layerFiles = [
       {
@@ -219,6 +223,7 @@
         name: "Frontline towns (from PWM)",
         color: "#ffffff",
         outlineColor: "#ffffff",
+        fillOpacity: 0,
         styleOverrides: {}
       },
       {
@@ -258,12 +263,13 @@
               var fillColor = (override && override.color) || layerInfo.color;
               var lineColor = (override && override.outlineColor) ||
                                layerInfo.outlineColor || fillColor;
+              var fillOpacity = (layerInfo.fillOpacity !== undefined) ? layerInfo.fillOpacity : 0.4;
 
               return {
                 color: lineColor,
                 weight: 2,
                 fillColor: fillColor,
-                fillOpacity: 0.4
+                fillOpacity: fillOpacity
               };
             }
           }).addTo(map);
@@ -478,8 +484,6 @@
     function addArrow(start, end, color) {
       userDrawings.addLayer(L.polyline([start, end], { color: color, weight: 3 }));
 
-      // Build a small arrowhead using screen-pixel geometry so it looks
-      // correct regardless of map projection distortion.
       var p1 = map.latLngToLayerPoint(start);
       var p2 = map.latLngToLayerPoint(end);
       var angle = Math.atan2(p2.y - p1.y, p2.x - p1.x);
