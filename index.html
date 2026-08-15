@@ -237,22 +237,38 @@
       color: #666;
     }
     #welcome-close:hover { color: #000; }
+
+    /* WATERMARK — tiled, semi-transparent, not a map layer so it can't be
+       toggled off. Sits above the map tiles/polygons but below the UI
+       panels (which all have z-index 900+), and ignores clicks entirely. */
+    #watermark-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 750;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='160'><text x='10' y='90' font-family='Helvetica, Arial, sans-serif' font-size='22' font-weight='bold' fill='%23ffffff' fill-opacity='0.25' stroke='%23000000' stroke-opacity='0.15' stroke-width='0.5' transform='rotate(-25 160 80)'>POLRAD MAPPING</text></svg>");
+      background-repeat: repeat;
+    }
   </style>
 </head>
 <body>
   <div id="map-title">Russo-Ukrainian War Map (Polrad Mapping)</div>
   <div id="map"></div>
+  <div id="watermark-overlay"></div>
 
   <!-- WELCOME / INFO BOX -->
   <div id="welcome-overlay">
     <div id="welcome-box">
       <button id="welcome-close" onclick="document.getElementById('welcome-overlay').style.display='none'">&times;</button>
       <h3>Welcome</h3>
-      <p id="welcome-text">Welcome and thanks for using my map! 
-        This map was created to show the situation in Ukraine. Of course, this map, like every other war map, is not 100% reliable and true. 
-        Use the layers and the map tools featured here, the map updates are displayed in the bottom right corner with the bell icon. 
-        This map was inspired by https://x.com/M0nstas and https://x.com/Playfra0 and other mappers, designed mainly by Claude AI. If used, tag me, https://x.com/polrad_mapping_ in your posts. 
-        I use multiple sources to update and clarify the map, mainly geolocations, other mappers and partially own sources.</p>
+      <p id="welcome-text">Welcome and thanks for using my map!<br><br>
+This map was created to show the situation in Ukraine. Of course, this map, like every other war map, is not 100% reliable or true.<br><br>
+Use the layers and the map tools featured here. Map updates are displayed via the bell icon in the top-right corner.<br><br>
+This map was inspired by <a href="https://x.com/M0nstas" target="_blank" rel="noopener">@M0nstas</a> and <a href="https://x.com/Playfra0" target="_blank" rel="noopener">@Playfra0</a> and other mappers, and was designed mainly with Claude AI. If used, please tag me, <a href="https://x.com/polrad_mapping_" target="_blank" rel="noopener">@polrad_mapping_</a>, in your posts.<br><br>
+I use multiple sources to update and clarify the map — mainly geolocation data, other mappers, and partially my own sources.</p>
     </div>
   </div>
 
