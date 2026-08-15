@@ -91,11 +91,76 @@
       color: #333;
       min-height: 32px;
     }
+
+    /* UPDATES ICON + PANEL */
+    #updates-icon {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 900;
+      background: white;
+      border: 2px solid rgba(0,0,0,0.2);
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      cursor: pointer;
+    }
+    #updates-icon:hover {
+      background: #f0f0f0;
+    }
+    #updates-panel {
+      display: none;
+      position: absolute;
+      top: 62px;
+      right: 10px;
+      z-index: 900;
+      background: white;
+      border: 2px solid rgba(0,0,0,0.2);
+      border-radius: 4px;
+      padding: 12px;
+      font-family: Helvetica;
+      width: 280px;
+      max-height: 60vh;
+      overflow-y: auto;
+    }
+    #updates-panel.show {
+      display: block;
+    }
+    #updates-panel h4 {
+      margin: 0 0 8px 0;
+      font-size: 15px;
+    }
+    .update-item {
+      border-bottom: 1px solid #eee;
+      padding: 6px 0;
+      font-size: 13px;
+    }
+    .update-item:last-child {
+      border-bottom: none;
+    }
+    .update-date {
+      font-weight: bold;
+      font-size: 12px;
+      color: #555;
+      display: block;
+      margin-bottom: 2px;
+    }
   </style>
 </head>
 <body>
   <div id="map-title">Russo-Ukrainian War Map (Polrad Mapping)</div>
   <div id="map"></div>
+
+  <!-- UPDATES ICON + PANEL -->
+  <div id="updates-icon" onclick="toggleUpdatesPanel()" title="Map Updates">📰</div>
+  <div id="updates-panel">
+    <h4>Map Updates</h4>
+    <div id="updates-content">Loading...</div>
+  </div>
 
   <!-- TOOLBAR -->
   <div id="toolbar">
@@ -206,10 +271,6 @@
 
     // ============================
     // GEOJSON LAYERS
-    // - color / outlineColor: default style for the whole layer
-    // - fillOpacity: 0 = outline only, no fill. Defaults to 0.4 if omitted.
-    // - styleOverrides: optional. Key = the feature's "name" property in the
-    //   geojson, value = { color, outlineColor } to use for just that shape.
     // ============================
     var layerFiles = [
       {
@@ -312,6 +373,43 @@
     layerControl.addOverlay(cityMarkers, "Captured cities");
 
     // ============================
+    // MAP UPDATES PANEL
+    // Content comes from updates.json in the repo — only you can edit
+    // that file via GitHub, so only you can change what visitors see here.
+    // ============================
+    function toggleUpdatesPanel() {
+      document.getElementById('updates-panel').classList.toggle('show');
+    }
+
+    fetch('updates.json')
+      .then(function(response) {
+        if (!response.ok) {
+          throw new Error('HTTP error, status = ' + response.status);
+        }
+        return response.json();
+      })
+      .then(function(updates) {
+        var container = document.getElementById('updates-content');
+        container.innerHTML = '';
+
+        if (!updates.length) {
+          container.innerHTML = '<em>No updates yet.</em>';
+          return;
+        }
+
+        updates.forEach(function(item) {
+          var div = document.createElement('div');
+          div.className = 'update-item';
+          div.innerHTML = '<span class="update-date">' + item.date + '</span>' + item.text;
+          container.appendChild(div);
+        });
+      })
+      .catch(function(error) {
+        document.getElementById('updates-content').innerHTML = '<em>Could not load updates.</em>';
+        console.error('Could not load updates.json:', error);
+      });
+
+    // ============================
     // VISITOR TOOLS: draw (polygon/freehand/arrow/rectangle), ruler, coordinates
     // Note: these drawings exist only in the visitor's own browser —
     // they are not saved, and other visitors won't see them.
@@ -338,7 +436,7 @@
     }
 
     function setActiveTool(tool) {
-      activeTool = (activeTool === tool) ? null : tool; // click again to turn off
+      activeTool = (activeTool === tool) ? null : tool;
       resetDrawingState();
       updateToolButtons();
       updateInstructions();
@@ -383,7 +481,6 @@
       toolResult.innerText = activeTool ? msgs[activeTool] : "Select a tool to get started.";
     }
 
-    // --- Freehand: mousedown / mousemove / mouseup ---
     map.on('mousedown', function(e) {
       if (activeTool !== 'freehand') return;
       isMouseDown = true;
@@ -424,7 +521,6 @@
       drawingPoints = [];
     });
 
-    // --- Click-based tools: polygon, ruler, rectangle (2 clicks), arrow (2 clicks), coords ---
     map.on('click', function(e) {
       if (!activeTool) return;
 
