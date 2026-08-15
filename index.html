@@ -187,18 +187,83 @@
     .update-item { border-bottom: 1px solid #eee; padding: 6px 0; font-size: 13px; }
     .update-item:last-child { border-bottom: none; }
     .update-date { font-weight: bold; font-size: 12px; color: #555; display: block; margin-bottom: 2px; }
+
+    /* WELCOME / INFO BOX (shown automatically when the map loads) */
+    #welcome-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.45);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #welcome-box {
+      background: white;
+      border-radius: 6px;
+      padding: 20px 24px;
+      font-family: Helvetica;
+      max-width: 420px;
+      width: 90%;
+      max-height: 70vh;
+      overflow-y: auto;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+      position: relative;
+    }
+    #welcome-box h3 {
+      margin: 0 0 10px 0;
+      font-size: 18px;
+      padding-right: 20px;
+    }
+    #welcome-box p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #333;
+      white-space: pre-wrap;
+    }
+    #welcome-close {
+      position: absolute;
+      top: 12px;
+      right: 14px;
+      background: none;
+      border: none;
+      font-size: 20px;
+      line-height: 1;
+      cursor: pointer;
+      color: #666;
+    }
+    #welcome-close:hover { color: #000; }
   </style>
 </head>
 <body>
   <div id="map-title">Russo-Ukrainian War Map (Polrad Mapping)</div>
   <div id="map"></div>
 
+  <!-- WELCOME / INFO BOX -->
+  <div id="welcome-overlay">
+    <div id="welcome-box">
+      <button id="welcome-close" onclick="document.getElementById('welcome-overlay').style.display='none'">&times;</button>
+      <h3>Welcome</h3>
+      <p id="welcome-text">Welcome and thanks for using my map! 
+        This map was created to show the situation in Ukraine. Of course, this map, like every other war map, is not 100% reliable and true. 
+        Use the layers and the map tools featured here, the map updates are displayed in the bottom right corner with the bell icon. 
+        This map was inspired by https://x.com/M0nstas and https://x.com/Playfra0 and other mappers, designed mainly by Claude AI. If used, tag me, https://x.com/polrad_mapping_ in your posts. 
+        I use multiple sources to update and clarify the map, mainly geolocations, other mappers and partially own sources.</p>
+    </div>
+  </div>
+
+  <!-- SEARCH BAR -->
   <div id="search-bar">
     <input type="text" id="search-input" placeholder="Search a town, city, or lat,lng" />
     <button id="search-btn" onclick="runSearch()">Search</button>
   </div>
   <div id="search-status"></div>
 
+  <!-- MAP TOOLS -->
   <div id="toolbar">
     <h4>Map Tools</h4>
 
