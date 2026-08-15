@@ -4,10 +4,8 @@
   <title>Russo-Ukrainian War Map (Polrad Mapping)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta charset="utf-8">
-  <!-- Load Leaflet -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <!-- Map styling -->
   <style>
     body { margin: 0; padding: 0; }
     #map { position: absolute; top: 0; bottom: 0; right: 0; left: 0; }
@@ -36,10 +34,7 @@
       font-family: Helvetica;
       width: 220px;
     }
-    #toolbar h4 {
-      margin: 0 0 6px 0;
-      font-size: 14px;
-    }
+    #toolbar h4 { margin: 0 0 6px 0; font-size: 14px; }
     .tool-btn {
       display: block;
       width: 100%;
@@ -53,23 +48,15 @@
       cursor: pointer;
       text-align: left;
     }
-    .tool-btn:hover {
-      background: #e8e8e8;
-    }
-    .tool-btn.active {
-      background: #333;
-      color: white;
-      border-color: #333;
-    }
-    #draw-submenu, #color-row {
+    .tool-btn:hover { background: #e8e8e8; }
+    .tool-btn.active { background: #333; color: white; border-color: #333; }
+    #draw-submenu, #color-row, #ruler-controls {
       display: none;
       margin-bottom: 4px;
       padding-left: 10px;
       border-left: 2px solid #ddd;
     }
-    #draw-submenu.show, #color-row.show {
-      display: block;
-    }
+    #draw-submenu.show, #color-row.show, #ruler-controls.show { display: block; }
     .color-btn {
       display: inline-block;
       width: 47%;
@@ -82,17 +69,9 @@
       text-align: center;
       color: white;
     }
-    .color-btn.selected {
-      border-color: #000;
-    }
-    #tool-result {
-      margin-top: 6px;
-      font-size: 12px;
-      color: #333;
-      min-height: 32px;
-    }
+    .color-btn.selected { border-color: #000; }
+    #tool-result { margin-top: 6px; font-size: 12px; color: #333; min-height: 32px; }
 
-    /* UPDATES ICON + PANEL */
     #updates-icon {
       position: absolute;
       top: 10px;
@@ -109,9 +88,7 @@
       font-size: 22px;
       cursor: pointer;
     }
-    #updates-icon:hover {
-      background: #f0f0f0;
-    }
+    #updates-icon:hover { background: #f0f0f0; }
     #updates-panel {
       display: none;
       position: absolute;
@@ -127,42 +104,23 @@
       max-height: 60vh;
       overflow-y: auto;
     }
-    #updates-panel.show {
-      display: block;
-    }
-    #updates-panel h4 {
-      margin: 0 0 8px 0;
-      font-size: 15px;
-    }
-    .update-item {
-      border-bottom: 1px solid #eee;
-      padding: 6px 0;
-      font-size: 13px;
-    }
-    .update-item:last-child {
-      border-bottom: none;
-    }
-    .update-date {
-      font-weight: bold;
-      font-size: 12px;
-      color: #555;
-      display: block;
-      margin-bottom: 2px;
-    }
+    #updates-panel.show { display: block; }
+    #updates-panel h4 { margin: 0 0 8px 0; font-size: 15px; }
+    .update-item { border-bottom: 1px solid #eee; padding: 6px 0; font-size: 13px; }
+    .update-item:last-child { border-bottom: none; }
+    .update-date { font-weight: bold; font-size: 12px; color: #555; display: block; margin-bottom: 2px; }
   </style>
 </head>
 <body>
   <div id="map-title">Russo-Ukrainian War Map (Polrad Mapping)</div>
   <div id="map"></div>
 
-  <!-- UPDATES ICON + PANEL -->
-  <div id="updates-icon" onclick="toggleUpdatesPanel()" title="Map Updates">📰</div>
+  <div id="updates-icon" onclick="toggleUpdatesPanel()" title="Map Updates">🔔</div>
   <div id="updates-panel">
     <h4>Map Updates</h4>
     <div id="updates-content">Loading...</div>
   </div>
 
-  <!-- TOOLBAR -->
   <div id="toolbar">
     <h4>Map Tools</h4>
 
@@ -173,16 +131,19 @@
       <button class="tool-btn" id="btn-freehand" onclick="setActiveTool('freehand')">Draw Freely</button>
       <button class="tool-btn" id="btn-arrow" onclick="setActiveTool('arrow')">Arrow</button>
       <button class="tool-btn" id="btn-rectangle" onclick="setActiveTool('rectangle')">Rectangle</button>
-    </div>
-
-    <div id="color-row">
-      <span class="color-btn selected" id="color-red" style="background:#ff0000;" onclick="setColor('#ff0000')">Red</span>
-      <span class="color-btn" id="color-blue" style="background:#0000ff;" onclick="setColor('#0000ff')">Blue</span>
+      <div id="color-row">
+        <span class="color-btn selected" id="color-red" style="background:#ff0000;" onclick="setColor('#ff0000')">Red</span>
+        <span class="color-btn" id="color-blue" style="background:#0000ff;" onclick="setColor('#0000ff')">Blue</span>
+      </div>
+      <button class="tool-btn" onclick="finishShape()">Finish Shape</button>
     </div>
 
     <button class="tool-btn" id="btn-ruler" onclick="setActiveTool('ruler')">Ruler (Measure Distance)</button>
+    <div id="ruler-controls">
+      <button class="tool-btn" onclick="finishShape()">Finish Measuring</button>
+    </div>
+
     <button class="tool-btn" id="btn-coords" onclick="setActiveTool('coords')">Show Coordinates</button>
-    <button class="tool-btn" onclick="finishShape()">Finish Shape</button>
     <button class="tool-btn" onclick="clearDrawings()">Clear My Drawings</button>
     <div id="tool-result">Select a tool to get started.</div>
   </div>
@@ -193,10 +154,7 @@
     // ============================
     var satellite = L.tileLayer(
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-      {
-        attribution:
-          'Tiles &copy; Esri &mdash; Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community'
-      }
+      { attribution: 'Tiles &copy; Esri &mdash; Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community' }
     );
 
     var hybridBase = L.tileLayer(
@@ -222,9 +180,7 @@
 
     var osmStandard = L.tileLayer(
       'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-      {
-        attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
-      }
+      { attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors' }
     );
 
     var topo = L.tileLayer(
@@ -237,20 +193,17 @@
     );
 
     // ============================
-    // CREATE MAP (Hybrid as default basemap)
+    // CREATE MAP
     // ============================
     var map = L.map('map', {
       center: [48.00, 37.75],
       zoom: 7,
       scrollWheelZoom: true,
-      layers: [hybrid] // default basemap shown on load
+      layers: [hybrid]
     });
 
-    // ============================
-    // DEDICATED PANE FOR MARKERS
-    // ============================
     map.createPane('markersPane');
-    map.getPane('markersPane').style.zIndex = 650; // above overlayPane (400)
+    map.getPane('markersPane').style.zIndex = 650;
 
     // ============================
     // LAYER SWITCHER
@@ -263,11 +216,7 @@
       "Topographic": topo
     };
 
-    var layerControl = L.control.layers(
-      baseLayers,
-      null,
-      { collapsed: false }
-    ).addTo(map);
+    var layerControl = L.control.layers(baseLayers, null, { collapsed: false }).addTo(map);
 
     // ============================
     // GEOJSON LAYERS
@@ -310,9 +259,7 @@
     layerFiles.forEach(function(layerInfo) {
       fetch(layerInfo.file)
         .then(function(response) {
-          if (!response.ok) {
-            throw new Error('HTTP error, status = ' + response.status + ' for ' + layerInfo.file);
-          }
+          if (!response.ok) throw new Error('HTTP error, status = ' + response.status + ' for ' + layerInfo.file);
           return response.json();
         })
         .then(function(data) {
@@ -320,23 +267,13 @@
             style: function(feature) {
               var featureName = feature.properties && feature.properties.name;
               var override = featureName && layerInfo.styleOverrides[featureName];
-
               var fillColor = (override && override.color) || layerInfo.color;
-              var lineColor = (override && override.outlineColor) ||
-                               layerInfo.outlineColor || fillColor;
+              var lineColor = (override && override.outlineColor) || layerInfo.outlineColor || fillColor;
               var fillOpacity = (layerInfo.fillOpacity !== undefined) ? layerInfo.fillOpacity : 0.4;
-
-              return {
-                color: lineColor,
-                weight: 2,
-                fillColor: fillColor,
-                fillOpacity: fillOpacity
-              };
+              return { color: lineColor, weight: 2, fillColor: fillColor, fillOpacity: fillOpacity };
             }
           }).addTo(map);
-
           layerControl.addOverlay(layer, layerInfo.name);
-
           console.log(layerInfo.name + " loaded. Feature count:", data.features.length);
         })
         .catch(function(error) {
@@ -345,8 +282,17 @@
     });
 
     // ============================
-    // CAPTURED CITIES (red markers, always clickable via dedicated pane)
+    // CAPTURED CITIES
+    // Using a custom icon image. Upload your image to the repo root and
+    // make sure the filename below matches it exactly.
     // ============================
+    var cityIcon = L.icon({
+      iconUrl: 'city-icon.png',
+      iconSize: [28, 28],     // adjust to your image's size/proportions
+      iconAnchor: [14, 14],   // center point of the icon
+      popupAnchor: [0, -14]
+    });
+
     var capturedCities = [
       { name: "Chasiv Yar",       date: "July 28", lat: 48.58025, lng: 37.83719 },
       { name: "Kostiantynivka",   date: "July 28", lat: 48.52486, lng: 37.6986  },
@@ -357,14 +303,7 @@
     var cityMarkers = L.layerGroup();
 
     capturedCities.forEach(function(city) {
-      L.circleMarker([city.lat, city.lng], {
-        pane: 'markersPane',
-        radius: 7,
-        color: "#8b0000",
-        weight: 2,
-        fillColor: "#ff0000",
-        fillOpacity: 1
-      })
+      L.marker([city.lat, city.lng], { pane: 'markersPane', icon: cityIcon })
         .bindPopup("<b>" + city.name + "</b><br>Captured " + city.date)
         .addTo(cityMarkers);
     });
@@ -374,8 +313,6 @@
 
     // ============================
     // MAP UPDATES PANEL
-    // Content comes from updates.json in the repo — only you can edit
-    // that file via GitHub, so only you can change what visitors see here.
     // ============================
     function toggleUpdatesPanel() {
       document.getElementById('updates-panel').classList.toggle('show');
@@ -383,20 +320,16 @@
 
     fetch('updates.json')
       .then(function(response) {
-        if (!response.ok) {
-          throw new Error('HTTP error, status = ' + response.status);
-        }
+        if (!response.ok) throw new Error('HTTP error, status = ' + response.status);
         return response.json();
       })
       .then(function(updates) {
         var container = document.getElementById('updates-content');
         container.innerHTML = '';
-
         if (!updates.length) {
           container.innerHTML = '<em>No updates yet.</em>';
           return;
         }
-
         updates.forEach(function(item) {
           var div = document.createElement('div');
           div.className = 'update-item';
@@ -410,11 +343,9 @@
       });
 
     // ============================
-    // VISITOR TOOLS: draw (polygon/freehand/arrow/rectangle), ruler, coordinates
-    // Note: these drawings exist only in the visitor's own browser —
-    // they are not saved, and other visitors won't see them.
+    // VISITOR TOOLS
     // ============================
-    var activeTool = null;       // 'polygon' | 'freehand' | 'arrow' | 'rectangle' | 'ruler' | 'coords'
+    var activeTool = null;
     var currentColor = '#ff0000';
     var drawingPoints = [];
     var previewLayer = null;
@@ -441,8 +372,8 @@
       updateToolButtons();
       updateInstructions();
 
-      var showColor = drawTools.indexOf(activeTool) !== -1;
-      document.getElementById('color-row').classList.toggle('show', showColor);
+      document.getElementById('color-row').classList.toggle('show', drawTools.indexOf(activeTool) !== -1);
+      document.getElementById('ruler-controls').classList.toggle('show', activeTool === 'ruler');
 
       if (drawTools.indexOf(tool) !== -1) {
         document.getElementById('draw-submenu').classList.add('show');
@@ -451,18 +382,13 @@
 
     function resetDrawingState() {
       drawingPoints = [];
-      if (previewLayer) {
-        map.removeLayer(previewLayer);
-        previewLayer = null;
-      }
+      if (previewLayer) { map.removeLayer(previewLayer); previewLayer = null; }
       isMouseDown = false;
       map.dragging.enable();
     }
 
     function updateToolButtons() {
-      document.querySelectorAll('.tool-btn').forEach(function(btn) {
-        btn.classList.remove('active');
-      });
+      document.querySelectorAll('.tool-btn').forEach(function(btn) { btn.classList.remove('active'); });
       if (activeTool) {
         var btn = document.getElementById('btn-' + activeTool);
         if (btn) btn.classList.add('active');
@@ -475,7 +401,7 @@
         freehand: "Click and drag on the map to draw freely.",
         arrow: "Click a start point, then click an end point to place an arrow.",
         rectangle: "Click one corner, then click the opposite corner.",
-        ruler: "Click points to measure distance. Click 'Finish Shape' to stop.",
+        ruler: "Click points to measure distance, then click 'Finish Measuring'.",
         coords: "Click anywhere on the map to see its coordinates."
       };
       toolResult.innerText = activeTool ? msgs[activeTool] : "Select a tool to get started.";
@@ -499,9 +425,7 @@
       if (activeTool === 'rectangle' && drawingPoints.length === 1) {
         var bounds = L.latLngBounds(drawingPoints[0], e.latlng);
         if (previewLayer) map.removeLayer(previewLayer);
-        previewLayer = L.rectangle(bounds, {
-          color: currentColor, weight: 2, fillColor: currentColor, fillOpacity: 0.3
-        }).addTo(map);
+        previewLayer = L.rectangle(bounds, { color: currentColor, weight: 2, fillColor: currentColor, fillOpacity: 0.3 }).addTo(map);
         return;
       }
       if (activeTool === 'arrow' && drawingPoints.length === 1) {
@@ -544,9 +468,7 @@
 
         if (activeTool === 'ruler' && drawingPoints.length > 1) {
           var total = 0;
-          for (var i = 1; i < drawingPoints.length; i++) {
-            total += map.distance(drawingPoints[i - 1], drawingPoints[i]);
-          }
+          for (var i = 1; i < drawingPoints.length; i++) total += map.distance(drawingPoints[i - 1], drawingPoints[i]);
           toolResult.innerText = "Distance so far: " + (total / 1000).toFixed(2) + " km (" + Math.round(total) + " m)";
         }
         return;
@@ -557,9 +479,7 @@
           drawingPoints.push(e.latlng);
         } else {
           var bounds = L.latLngBounds(drawingPoints[0], e.latlng);
-          userDrawings.addLayer(L.rectangle(bounds, {
-            color: currentColor, weight: 2, fillColor: currentColor, fillOpacity: 0.4
-          }));
+          userDrawings.addLayer(L.rectangle(bounds, { color: currentColor, weight: 2, fillColor: currentColor, fillOpacity: 0.4 }));
           if (previewLayer) { map.removeLayer(previewLayer); previewLayer = null; }
           drawingPoints = [];
         }
@@ -586,43 +506,30 @@
       var headLength = 12;
       var headAngle = Math.PI / 7;
 
-      var leftPt = L.point(
-        p2.x - headLength * Math.cos(angle - headAngle),
-        p2.y - headLength * Math.sin(angle - headAngle)
-      );
-      var rightPt = L.point(
-        p2.x - headLength * Math.cos(angle + headAngle),
-        p2.y - headLength * Math.sin(angle + headAngle)
-      );
+      var leftPt = L.point(p2.x - headLength * Math.cos(angle - headAngle), p2.y - headLength * Math.sin(angle - headAngle));
+      var rightPt = L.point(p2.x - headLength * Math.cos(angle + headAngle), p2.y - headLength * Math.sin(angle + headAngle));
 
       var leftLatLng = map.layerPointToLatLng(leftPt);
       var rightLatLng = map.layerPointToLatLng(rightPt);
 
       userDrawings.addLayer(
-        L.polygon([end, leftLatLng, rightLatLng], {
-          color: color, fillColor: color, fillOpacity: 1, weight: 1
-        })
+        L.polygon([end, leftLatLng, rightLatLng], { color: color, fillColor: color, fillOpacity: 1, weight: 1 })
       );
     }
 
     function finishShape() {
       if (activeTool === 'polygon' && drawingPoints.length >= 2) {
         if (drawingPoints.length >= 3) {
-          userDrawings.addLayer(L.polygon(drawingPoints, {
-            color: currentColor, weight: 2, fillColor: currentColor, fillOpacity: 0.4
-          }));
+          userDrawings.addLayer(L.polygon(drawingPoints, { color: currentColor, weight: 2, fillColor: currentColor, fillOpacity: 0.4 }));
         } else {
           userDrawings.addLayer(L.polyline(drawingPoints, { color: currentColor, weight: 3 }));
         }
       } else if (activeTool === 'ruler' && drawingPoints.length >= 2) {
         var total = 0;
-        for (var i = 1; i < drawingPoints.length; i++) {
-          total += map.distance(drawingPoints[i - 1], drawingPoints[i]);
-        }
+        for (var i = 1; i < drawingPoints.length; i++) total += map.distance(drawingPoints[i - 1], drawingPoints[i]);
         var km = (total / 1000).toFixed(2);
         userDrawings.addLayer(
-          L.polyline(drawingPoints, { color: '#000000', weight: 2, dashArray: '6,6' })
-            .bindPopup("Distance: " + km + " km")
+          L.polyline(drawingPoints, { color: '#000000', weight: 2, dashArray: '6,6' }).bindPopup("Distance: " + km + " km")
         );
       }
       setActiveTool(null);
