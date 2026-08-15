@@ -24,11 +24,67 @@
       font-size: 24px;
       z-index: 800;
     }
+    #toolbar {
+      position: absolute;
+      bottom: 20px;
+      left: 10px;
+      z-index: 900;
+      background: white;
+      border: 2px solid rgba(0,0,0,0.2);
+      border-radius: 4px;
+      padding: 8px;
+      font-family: Helvetica;
+      width: 220px;
+    }
+    #toolbar h4 {
+      margin: 0 0 6px 0;
+      font-size: 14px;
+    }
+    .tool-btn {
+      display: block;
+      width: 100%;
+      margin-bottom: 4px;
+      padding: 6px 8px;
+      font-size: 13px;
+      font-family: Helvetica;
+      border: 1px solid #999;
+      border-radius: 3px;
+      background: #f5f5f5;
+      cursor: pointer;
+      text-align: left;
+    }
+    .tool-btn:hover {
+      background: #e8e8e8;
+    }
+    .tool-btn.active {
+      background: #333;
+      color: white;
+      border-color: #333;
+    }
+    #tool-result {
+      margin-top: 6px;
+      font-size: 12px;
+      color: #333;
+      min-height: 32px;
+    }
   </style>
 </head>
 <body>
   <div id="map-title">Russo-Ukrainian War Map (Polrad Mapping)</div>
   <div id="map"></div>
+
+  <!-- TOOLBAR -->
+  <div id="toolbar">
+    <h4>Map Tools</h4>
+    <button class="tool-btn" id="btn-red" onclick="setActiveTool('red')">Draw Red Shape</button>
+    <button class="tool-btn" id="btn-blue" onclick="setActiveTool('blue')">Draw Blue Shape</button>
+    <button class="tool-btn" id="btn-ruler" onclick="setActiveTool('ruler')">Ruler (Measure Distance)</button>
+    <button class="tool-btn" id="btn-coords" onclick="setActiveTool('coords')">Show Coordinates</button>
+    <button class="tool-btn" onclick="finishShape()">Finish Shape</button>
+    <button class="tool-btn" onclick="clearDrawings()">Clear My Drawings</button>
+    <div id="tool-result">Select a tool to get started.</div>
+  </div>
+
   <script>
     // ============================
     // BASEMAPS
@@ -90,15 +146,12 @@
 
     // ============================
     // DEDICATED PANE FOR MARKERS
-    // Ensures city markers always sit above polygon layers and stay
-    // clickable, even though polygons finish loading later (async fetch).
     // ============================
     map.createPane('markersPane');
     map.getPane('markersPane').style.zIndex = 650; // above overlayPane (400)
 
     // ============================
     // LAYER SWITCHER
-    // Base layers (radio-select, one at a time) + overlays (checkboxes)
     // ============================
     var baseLayers = {
       "Hybrid (Satellite + Labels)": hybrid,
@@ -116,9 +169,6 @@
 
     // ============================
     // GEOJSON LAYERS
-    // - color / outlineColor: default style for the whole layer
-    // - styleOverrides: optional. Key = the feature's "name" property in the
-    //   geojson, value = { color, outlineColor } to use for just that shape.
     // ============================
     var layerFiles = [
       {
@@ -217,6 +267,125 @@
 
     cityMarkers.addTo(map);
     layerControl.addOverlay(cityMarkers, "Captured cities");
+
+    // ============================
+    // VISITOR TOOLS: draw red/blue, ruler, coordinates
+    // Note: these drawings exist only in the visitor's own browser —
+    // they are not saved, and other visitors won't see them.
+    // ============================
+    var activeTool = null;
+    var drawingPoints = [];
+    var previewLine = null;
+    var userDrawings = L.layerGroup().addTo(map);
+    layerControl.addOverlay(userDrawings, "My Drawings & Measurements");
+
+    var toolResult = document.getElementById('tool-result');
+
+    function setActiveTool(tool) {
+      activeTool = (activeTool === tool) ? null : tool; // click again to turn off
+      drawingPoints = [];
+      if (previewLine) {
+        map.removeLayer(previewLine);
+        previewLine = null;
+      }
+      updateToolButtons();
+      updateInstructions();
+    }
+
+    function updateToolButtons() {
+      document.querySelectorAll('.tool-btn').forEach(function(btn) {
+        btn.classList.remove('active');
+      });
+      if (activeTool) {
+        var btn = document.getElementById('btn-' + activeTool);
+        if (btn) btn.classList.add('active');
+      }
+    }
+
+    function updateInstructions() {
+      var msgs = {
+        red: "Click points on the map to draw a red shape. Click 'Finish Shape' when done.",
+        blue: "Click points on the map to draw a blue shape. Click 'Finish Shape' when done.",
+        ruler: "Click points on the map to measure distance. Click 'Finish Shape' to stop.",
+        coords: "Click anywhere on the map to see its coordinates."
+      };
+      toolResult.innerText = activeTool ? msgs[activeTool] : "Select a tool to get started.";
+    }
+
+    map.on('click', function(e) {
+      if (!activeTool) return;
+
+      if (activeTool === 'coords') {
+        L.popup()
+          .setLatLng(e.latlng)
+          .setContent("Lat: " + e.latlng.lat.toFixed(5) + "<br>Lng: " + e.latlng.lng.toFixed(5))
+          .openOn(map);
+        toolResult.innerText = "Lat: " + e.latlng.lat.toFixed(5) + ", Lng: " + e.latlng.lng.toFixed(5);
+        return;
+      }
+
+      drawingPoints.push(e.latlng);
+
+      if (previewLine) map.removeLayer(previewLine);
+
+      var color = activeTool === 'red' ? '#ff0000' : activeTool === 'blue' ? '#0000ff' : '#000000';
+
+      previewLine = L.polyline(drawingPoints, {
+        color: color,
+        weight: 3,
+        dashArray: activeTool === 'ruler' ? '6,6' : null
+      }).addTo(map);
+
+      if (activeTool === 'ruler' && drawingPoints.length > 1) {
+        var total = 0;
+        for (var i = 1; i < drawingPoints.length; i++) {
+          total += map.distance(drawingPoints[i - 1], drawingPoints[i]);
+        }
+        var km = (total / 1000).toFixed(2);
+        toolResult.innerText = "Distance so far: " + km + " km (" + Math.round(total) + " m)";
+      }
+    });
+
+    function finishShape() {
+      if (!activeTool || drawingPoints.length < 2) {
+        setActiveTool(null);
+        return;
+      }
+
+      if (activeTool === 'red' || activeTool === 'blue') {
+        var color = activeTool === 'red' ? '#ff0000' : '#0000ff';
+        if (drawingPoints.length >= 3) {
+          L.polygon(drawingPoints, {
+            color: color,
+            weight: 2,
+            fillColor: color,
+            fillOpacity: 0.4
+          }).addTo(userDrawings);
+        } else {
+          L.polyline(drawingPoints, { color: color, weight: 3 }).addTo(userDrawings);
+        }
+      } else if (activeTool === 'ruler') {
+        var total = 0;
+        for (var i = 1; i < drawingPoints.length; i++) {
+          total += map.distance(drawingPoints[i - 1], drawingPoints[i]);
+        }
+        var km = (total / 1000).toFixed(2);
+        L.polyline(drawingPoints, {
+          color: '#000000',
+          weight: 2,
+          dashArray: '6,6'
+        })
+          .bindPopup("Distance: " + km + " km")
+          .addTo(userDrawings);
+      }
+
+      setActiveTool(null);
+    }
+
+    function clearDrawings() {
+      userDrawings.clearLayers();
+      toolResult.innerText = "Cleared.";
+    }
 
   </script>
 </body>
