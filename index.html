@@ -6,6 +6,8 @@
   <meta charset="utf-8">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <!-- Turf.js: used only to calculate a polygon's real-world area in km² when clicked -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Turf.js/6.5.0/turf.min.js"></script>
   <style>
     body { margin: 0; padding: 0; }
     #map { position: absolute; top: 0; bottom: 0; right: 0; left: 0; }
@@ -22,6 +24,56 @@
       font-size: 24px;
       z-index: 800;
     }
+
+    #search-bar {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 900;
+      background: white;
+      border: 2px solid rgba(0,0,0,0.2);
+      border-radius: 4px;
+      padding: 8px;
+      font-family: Helvetica;
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    #search-input {
+      font-family: Helvetica;
+      font-size: 13px;
+      padding: 6px 8px;
+      border: 1px solid #999;
+      border-radius: 3px;
+      width: 220px;
+    }
+    #search-btn {
+      font-family: Helvetica;
+      font-size: 13px;
+      padding: 6px 10px;
+      border: 1px solid #999;
+      border-radius: 3px;
+      background: #f5f5f5;
+      cursor: pointer;
+    }
+    #search-btn:hover { background: #e8e8e8; }
+    #search-status {
+      position: absolute;
+      top: 46px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 900;
+      background: white;
+      border: 1px solid rgba(0,0,0,0.2);
+      border-radius: 4px;
+      padding: 4px 8px;
+      font-family: Helvetica;
+      font-size: 12px;
+      color: #333;
+      display: none;
+    }
+
     #toolbar {
       position: absolute;
       bottom: 20px;
@@ -72,38 +124,63 @@
     .color-btn.selected { border-color: #000; }
     #tool-result { margin-top: 6px; font-size: 12px; color: #333; min-height: 32px; }
 
-    /* UPDATES ICON — moved to bottom-right so it doesn't sit under the layer switcher */
-    #updates-icon {
-      position: absolute;
-      bottom: 20px;
-      right: 10px;
-      z-index: 900;
+    .layer-panel {
       background: white;
-      border: 2px solid rgba(0,0,0,0.2);
+      border-radius: 4px;
+      padding: 8px 10px;
+      font-family: Helvetica;
+      font-size: 13px;
+      width: 220px;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+    }
+    .layer-panel h4 {
+      margin: 0 0 6px 0;
+      font-size: 14px;
+    }
+    .layer-group-title {
+      font-weight: bold;
+      margin-top: 8px;
+      margin-bottom: 2px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .layer-group-title:first-of-type { margin-top: 0; }
+    .layer-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-left: 18px;
+      margin-bottom: 2px;
+    }
+    .layer-item label, .layer-group-title label {
+      cursor: pointer;
+    }
+
+    .updates-control-icon {
+      background: white;
       border-radius: 50%;
-      width: 44px;
-      height: 44px;
+      width: 40px;
+      height: 40px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 22px;
+      font-size: 20px;
       cursor: pointer;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.4);
     }
-    #updates-icon:hover { background: #f0f0f0; }
+    .updates-control-icon:hover { background: #f0f0f0; }
     #updates-panel {
       display: none;
-      position: absolute;
-      bottom: 74px;
-      right: 10px;
-      z-index: 900;
       background: white;
-      border: 2px solid rgba(0,0,0,0.2);
       border-radius: 4px;
       padding: 12px;
       font-family: Helvetica;
-      width: 280px;
-      max-height: 60vh;
+      width: 260px;
+      max-height: 50vh;
       overflow-y: auto;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+      margin-top: 4px;
     }
     #updates-panel.show { display: block; }
     #updates-panel h4 { margin: 0 0 8px 0; font-size: 15px; }
@@ -116,11 +193,11 @@
   <div id="map-title">Russo-Ukrainian War Map (Polrad Mapping)</div>
   <div id="map"></div>
 
-  <div id="updates-icon" onclick="toggleUpdatesPanel()" title="Map Updates">🔔</div>
-  <div id="updates-panel">
-    <h4>Map Updates</h4>
-    <div id="updates-content">Loading...</div>
+  <div id="search-bar">
+    <input type="text" id="search-input" placeholder="Search a town, city, or lat,lng" />
+    <button id="search-btn" onclick="runSearch()">Search</button>
   </div>
+  <div id="search-status"></div>
 
   <div id="toolbar">
     <h4>Map Tools</h4>
@@ -207,7 +284,7 @@
     map.getPane('markersPane').style.zIndex = 650;
 
     // ============================
-    // LAYER SWITCHER
+    // BASE LAYER SWITCHER (satellite/streets/topo — topright, Leaflet control)
     // ============================
     var baseLayers = {
       "Hybrid (Satellite + Labels)": hybrid,
@@ -217,46 +294,129 @@
       "Topographic": topo
     };
 
-    var layerControl = L.control.layers(baseLayers, null, { collapsed: false }).addTo(map);
+    L.control.layers(baseLayers, null, { collapsed: false, position: 'topright' }).addTo(map);
 
     // ============================
     // GEOJSON LAYERS
+    // category: 'standard' or 'helper' — controls which group it appears in
     // ============================
     var layerFiles = [
       {
+        key: "ru_territory",
         file: "neatogeo_Russian-controlled%20territory.geojson",
         name: "Russian-controlled territory",
         color: "#F0001B",
+        category: "standard",
         styleOverrides: {}
       },
       {
+        key: "ua_territory",
+        file: "neatogeo_Ukrainian-controlled%20territory.geojson",
+        name: "Ukrainian-controlled territory",
+        color: "#1427a5",
+        category: "standard",
+        styleOverrides: {}
+      },
+      {
+        key: "regained",
+        file: "neatogeo_Territories%20regained%20in%20the%20last%20month.geojson",
+        name: "Territories regained in the last month",
+        color: "#2ecc71",
+        category: "standard",
+        styleOverrides: {}
+      },
+      {
+        key: "advances",
+        file: "neatogeo_Advances%20%28both%20sides%29.geojson",
+        name: "Advances (both sides)",
+        color: "#f1c40f",
+        category: "standard",
+        styleOverrides: {}
+      },
+      {
+        key: "frontline_towns",
         file: "neatogeo_Frontline%20towns%20%28from%20PWM%29.geojson",
         name: "Frontline towns (from PWM)",
         color: "#ffffff",
         outlineColor: "#ffffff",
         fillOpacity: 0,
-        styleOverrides: {}
-      },
-      {
-        file: "neatogeo_Ukrainian-controlled%20territory.geojson",
-        name: "Ukrainian-controlled territory",
-        color: "#1427a5",
-        styleOverrides: {}
-      },
-      {
-        file: "neatogeo_Advances%20%28both%20sides%29.geojson",
-        name: "Advances (both sides)",
-        color: "#f1c40f",
-        styleOverrides: {}
-      },
-      {
-        file: "neatogeo_Territories%20regained%20in%20the%20last%20month.geojson",
-        name: "Territories regained in the last month",
-        color: "#2ecc71",
+        category: "helper",
         styleOverrides: {}
       }
     ];
 
+    // ============================
+    // CATEGORIZED LAYERS PANEL (custom Leaflet control, topright)
+    // Stacks automatically below the base layer switcher — no manual
+    // positioning/offsets needed, and no overlap issues.
+    // ============================
+    var layerRegistry = {}; // key -> { leafletLayer, checkboxEl, category }
+
+    var LayerPanelControl = L.Control.extend({
+      options: { position: 'topright' },
+      onAdd: function() {
+        var div = L.DomEvent.disableClickPropagation(L.DomUtil.create('div', 'layer-panel'));
+        div.innerHTML =
+          '<h4>Map Layers</h4>' +
+          '<div class="layer-group-title"><input type="checkbox" id="group-standard" checked onchange="toggleGroup(\'standard\', this.checked)"><label for="group-standard">Standard Map</label></div>' +
+          '<div id="group-items-standard"></div>' +
+          '<div class="layer-group-title"><input type="checkbox" id="group-helper" checked onchange="toggleGroup(\'helper\', this.checked)"><label for="group-helper">Helping Elements</label></div>' +
+          '<div id="group-items-helper"></div>';
+        return div;
+      }
+    });
+    map.addControl(new LayerPanelControl());
+
+    function addLayerToPanel(key, name, category, leafletLayer) {
+      layerRegistry[key] = { leafletLayer: leafletLayer, category: category };
+      var container = document.getElementById('group-items-' + category);
+      var id = 'layer-item-' + key;
+      var item = document.createElement('div');
+      item.className = 'layer-item';
+      item.innerHTML =
+        '<input type="checkbox" id="' + id + '" checked onchange="toggleLayer(\'' + key + '\', this.checked)">' +
+        '<label for="' + id + '">' + name + '</label>';
+      container.appendChild(item);
+      layerRegistry[key].checkboxEl = item.querySelector('input');
+    }
+
+    function toggleLayer(key, visible) {
+      var entry = layerRegistry[key];
+      if (!entry) return;
+      if (visible) {
+        entry.leafletLayer.addTo(map);
+      } else {
+        map.removeLayer(entry.leafletLayer);
+      }
+      updateGroupCheckbox(entry.category);
+    }
+
+    function toggleGroup(category, visible) {
+      Object.keys(layerRegistry).forEach(function(key) {
+        var entry = layerRegistry[key];
+        if (entry.category !== category) return;
+        entry.checkboxEl.checked = visible;
+        if (visible) {
+          entry.leafletLayer.addTo(map);
+        } else {
+          map.removeLayer(entry.leafletLayer);
+        }
+      });
+    }
+
+    function updateGroupCheckbox(category) {
+      var keys = Object.keys(layerRegistry).filter(function(k) { return layerRegistry[k].category === category; });
+      var checkedCount = keys.filter(function(k) { return layerRegistry[k].checkboxEl.checked; }).length;
+      var groupBox = document.getElementById('group-' + category);
+      if (!groupBox) return;
+      groupBox.checked = checkedCount === keys.length;
+      groupBox.indeterminate = checkedCount > 0 && checkedCount < keys.length;
+    }
+
+    // ============================
+    // LOAD GEOJSON LAYERS
+    // Clicking a polygon shows its name and calculated area (km²) via Turf.js
+    // ============================
     layerFiles.forEach(function(layerInfo) {
       fetch(layerInfo.file)
         .then(function(response) {
@@ -272,9 +432,30 @@
               var lineColor = (override && override.outlineColor) || layerInfo.outlineColor || fillColor;
               var fillOpacity = (layerInfo.fillOpacity !== undefined) ? layerInfo.fillOpacity : 0.4;
               return { color: lineColor, weight: 2, fillColor: fillColor, fillOpacity: fillOpacity };
+            },
+            onEachFeature: function(feature, layerObj) {
+              layerObj.on('click', function(e) {
+                L.DomEvent.stopPropagation(e); // don't let this reach the drawing tools' map click handler
+
+                var name = (feature.properties && feature.properties.name) || layerInfo.name;
+                var popupContent = '<b>' + name + '</b>';
+
+                try {
+                  if (feature.geometry && (feature.geometry.type === 'Polygon' || feature.geometry.type === 'MultiPolygon')) {
+                    var areaM2 = turf.area(feature);
+                    var areaKm2 = (areaM2 / 1e6).toFixed(2);
+                    popupContent += '<br>Area: ' + areaKm2 + ' km&sup2;';
+                  }
+                } catch (err) {
+                  console.error('Could not calculate area for feature:', err);
+                }
+
+                layerObj.bindPopup(popupContent).openPopup(e.latlng);
+              });
             }
           }).addTo(map);
-          layerControl.addOverlay(layer, layerInfo.name);
+
+          addLayerToPanel(layerInfo.key, layerInfo.name, layerInfo.category, layer);
           console.log(layerInfo.name + " loaded. Feature count:", data.features.length);
         })
         .catch(function(error) {
@@ -283,7 +464,7 @@
     });
 
     // ============================
-    // CAPTURED CITIES
+    // CAPTURED CITIES (helper category)
     // ============================
     var cityIcon = L.icon({
       iconUrl: 'city-icon.png',
@@ -308,41 +489,10 @@
     });
 
     cityMarkers.addTo(map);
-    layerControl.addOverlay(cityMarkers, "Captured cities");
+    addLayerToPanel("captured_cities", "Captured cities", "helper", cityMarkers);
 
     // ============================
-    // MAP UPDATES PANEL
-    // ============================
-    function toggleUpdatesPanel() {
-      document.getElementById('updates-panel').classList.toggle('show');
-    }
-
-    fetch('updates.json')
-      .then(function(response) {
-        if (!response.ok) throw new Error('HTTP error, status = ' + response.status);
-        return response.json();
-      })
-      .then(function(updates) {
-        var container = document.getElementById('updates-content');
-        container.innerHTML = '';
-        if (!updates.length) {
-          container.innerHTML = '<em>No updates yet.</em>';
-          return;
-        }
-        updates.forEach(function(item) {
-          var div = document.createElement('div');
-          div.className = 'update-item';
-          div.innerHTML = '<span class="update-date">' + item.date + '</span>' + item.text;
-          container.appendChild(div);
-        });
-      })
-      .catch(function(error) {
-        document.getElementById('updates-content').innerHTML = '<em>Could not load updates.</em>';
-        console.error('Could not load updates.json:', error);
-      });
-
-    // ============================
-    // VISITOR TOOLS
+    // VISITOR TOOLS (helper category — registered after userDrawings is created below)
     // ============================
     var activeTool = null;
     var currentColor = '#ff0000';
@@ -350,7 +500,7 @@
     var previewLayer = null;
     var isMouseDown = false;
     var userDrawings = L.layerGroup().addTo(map);
-    layerControl.addOverlay(userDrawings, "My Drawings & Measurements");
+    addLayerToPanel("user_drawings", "My Drawings & Measurements", "helper", userDrawings);
 
     var toolResult = document.getElementById('tool-result');
     var drawTools = ['polygon', 'freehand', 'arrow', 'rectangle'];
@@ -537,6 +687,122 @@
     function clearDrawings() {
       userDrawings.clearLayers();
       toolResult.innerText = "Cleared.";
+    }
+
+    // ============================
+    // MAP UPDATES PANEL (custom Leaflet control, topright)
+    // Content comes from updates.json in the repo — only you can edit
+    // that file via GitHub, so only you can change what visitors see.
+    // Registered as a Leaflet control so it stacks below the layers
+    // panel automatically, with no overlap.
+    // ============================
+    var UpdatesControl = L.Control.extend({
+      options: { position: 'topright' },
+      onAdd: function() {
+        var wrapper = L.DomEvent.disableClickPropagation(L.DomUtil.create('div'));
+
+        var icon = L.DomUtil.create('div', 'updates-control-icon', wrapper);
+        icon.innerHTML = '🔔';
+        icon.title = 'Map Updates';
+        icon.onclick = function() {
+          document.getElementById('updates-panel').classList.toggle('show');
+        };
+
+        var panel = L.DomUtil.create('div', '', wrapper);
+        panel.id = 'updates-panel';
+        panel.innerHTML = '<h4>Map Updates</h4><div id="updates-content">Loading...</div>';
+
+        return wrapper;
+      }
+    });
+    map.addControl(new UpdatesControl());
+
+    fetch('updates.json')
+      .then(function(response) {
+        if (!response.ok) throw new Error('HTTP error, status = ' + response.status);
+        return response.json();
+      })
+      .then(function(updates) {
+        var container = document.getElementById('updates-content');
+        container.innerHTML = '';
+        if (!updates.length) {
+          container.innerHTML = '<em>No updates yet.</em>';
+          return;
+        }
+        updates.forEach(function(item) {
+          var div = document.createElement('div');
+          div.className = 'update-item';
+          div.innerHTML = '<span class="update-date">' + item.date + '</span>' + item.text;
+          container.appendChild(div);
+        });
+      })
+      .catch(function(error) {
+        document.getElementById('updates-content').innerHTML = '<em>Could not load updates.</em>';
+        console.error('Could not load updates.json:', error);
+      });
+
+    // ============================
+    // SEARCH BAR
+    // Tries, in order: "lat,lng" coordinates -> known captured cities ->
+    // general place-name lookup via OpenStreetMap's free Nominatim service.
+    // ============================
+    var searchMarker = null;
+    var searchStatus = document.getElementById('search-status');
+
+    function showSearchStatus(msg) {
+      searchStatus.innerText = msg;
+      searchStatus.style.display = 'block';
+      setTimeout(function() { searchStatus.style.display = 'none'; }, 4000);
+    }
+
+    document.getElementById('search-input').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') runSearch();
+    });
+
+    function goToPoint(lat, lng, label, zoom) {
+      if (searchMarker) map.removeLayer(searchMarker);
+      searchMarker = L.marker([lat, lng]).addTo(map).bindPopup(label).openPopup();
+      map.setView([lat, lng], zoom || 11);
+    }
+
+    function runSearch() {
+      var query = document.getElementById('search-input').value.trim();
+      if (!query) return;
+
+      var coordMatch = query.match(/^(-?\d+(\.\d+)?)\s*,\s*(-?\d+(\.\d+)?)$/);
+      if (coordMatch) {
+        var lat = parseFloat(coordMatch[1]);
+        var lng = parseFloat(coordMatch[3]);
+        goToPoint(lat, lng, "Lat: " + lat.toFixed(5) + ", Lng: " + lng.toFixed(5), 12);
+        return;
+      }
+
+      var queryLower = query.toLowerCase();
+      var cityMatch = capturedCities.find(function(c) { return c.name.toLowerCase().indexOf(queryLower) !== -1; });
+      if (cityMatch) {
+        goToPoint(cityMatch.lat, cityMatch.lng, "<b>" + cityMatch.name + "</b><br>Captured " + cityMatch.date, 12);
+        return;
+      }
+
+      showSearchStatus("Searching...");
+      fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + encodeURIComponent(query))
+        .then(function(response) {
+          if (!response.ok) throw new Error('HTTP error, status = ' + response.status);
+          return response.json();
+        })
+        .then(function(results) {
+          if (!results.length) {
+            showSearchStatus("No results for '" + query + "'.");
+            return;
+          }
+          var result = results[0];
+          goToPoint(parseFloat(result.lat), parseFloat(result.lon), result.display_name, 11);
+          searchStatus.style.display = 'none';
+        })
+        .catch(function(error) {
+          showSearchStatus("Search failed. Try again.");
+          console.error('Search error:', error);
+        });
     }
 
   </script>
