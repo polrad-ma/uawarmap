@@ -72,9 +72,10 @@
     .color-btn.selected { border-color: #000; }
     #tool-result { margin-top: 6px; font-size: 12px; color: #333; min-height: 32px; }
 
+    /* UPDATES ICON — moved to bottom-right so it doesn't sit under the layer switcher */
     #updates-icon {
       position: absolute;
-      top: 10px;
+      bottom: 20px;
       right: 10px;
       z-index: 900;
       background: white;
@@ -92,7 +93,7 @@
     #updates-panel {
       display: none;
       position: absolute;
-      top: 62px;
+      bottom: 74px;
       right: 10px;
       z-index: 900;
       background: white;
@@ -283,13 +284,11 @@
 
     // ============================
     // CAPTURED CITIES
-    // Using a custom icon image. Upload your image to the repo root and
-    // make sure the filename below matches it exactly.
     // ============================
     var cityIcon = L.icon({
       iconUrl: 'city-icon.png',
-      iconSize: [28, 28],     // adjust to your image's size/proportions
-      iconAnchor: [14, 14],   // center point of the icon
+      iconSize: [28, 28],
+      iconAnchor: [14, 14],
       popupAnchor: [0, -14]
     });
 
