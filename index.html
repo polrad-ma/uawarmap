@@ -143,6 +143,79 @@
     }
     #welcome-close:hover { color: #000; }
 
+
+    /* MAP SEARCH */
+    #map-search {
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 900;
+      width: min(420px, 70vw);
+      font-family: Helvetica;
+    }
+    #map-search-box {
+      display: flex;
+      background: white;
+      border: 2px solid rgba(0,0,0,0.2);
+      border-radius: 5px;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.25);
+      overflow: hidden;
+    }
+    #map-search-input {
+      flex: 1;
+      min-width: 0;
+      border: none;
+      outline: none;
+      padding: 9px 12px;
+      font-size: 14px;
+      font-family: Helvetica;
+    }
+    #map-search-button {
+      border: none;
+      border-left: 1px solid #ddd;
+      background: #f5f5f5;
+      padding: 0 13px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #map-search-button:hover { background: #e8e8e8; }
+    #map-search-results {
+      display: none;
+      margin-top: 4px;
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-shadow: 0 2px 7px rgba(0,0,0,0.2);
+      max-height: 260px;
+      overflow-y: auto;
+    }
+    .map-search-result {
+      padding: 9px 11px;
+      border-bottom: 1px solid #eee;
+      font-size: 13px;
+      line-height: 1.25;
+      cursor: pointer;
+    }
+    .map-search-result:last-child { border-bottom: none; }
+    .map-search-result:hover { background: #f2f2f2; }
+    .map-search-status {
+      padding: 9px 11px;
+      color: #555;
+      font-size: 13px;
+    }
+
+    @media (max-width: 600px) {
+      #map-search {
+        top: 8px;
+        width: 62vw;
+      }
+      #map-title {
+        font-size: 17px;
+        max-width: 170px;
+      }
+    }
+
     /* WATERMARK — more transparent now */
     #watermark-overlay {
       position: absolute;
@@ -156,6 +229,18 @@
 </head>
 <body>
   <div id="map-title">Russo-Ukrainian War Map (Polrad Mapping)</div>
+
+  <!-- MAP SEARCH -->
+  <div id="map-search">
+    <div id="map-search-box">
+      <input id="map-search-input" type="text"
+             placeholder="Search town, city or coordinates..."
+             autocomplete="off" />
+      <button id="map-search-button" type="button" title="Search">🔎</button>
+    </div>
+    <div id="map-search-results"></div>
+  </div>
+
   <div id="map"></div>
   <div id="watermark-overlay"></div>
 
@@ -408,6 +493,164 @@ I use multiple sources to update and clarify the map — mainly geolocation data
         document.getElementById('updates-content').innerHTML = '<em>Could not load updates.</em>';
         console.error('Could not load updates.json:', error);
       });
+
+
+    // ============================
+    // MAP SEARCH
+    // ============================
+    var searchInput = document.getElementById('map-search-input');
+    var searchButton = document.getElementById('map-search-button');
+    var searchResults = document.getElementById('map-search-results');
+    var searchMarker = null;
+    var searchAbortController = null;
+
+    function showSearchStatus(message) {
+      searchResults.innerHTML = '<div class="map-search-status">' + message + '</div>';
+      searchResults.style.display = 'block';
+    }
+
+    function escapeSearchHtml(value) {
+      return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function parseCoordinates(query) {
+      // Accept: 48.1234, 37.5678
+      // Also accepts: 48.1234 37.5678
+      var match = query.trim().match(/^\s*(-?\d+(?:\.\d+)?)\s*[,;\s]\s*(-?\d+(?:\.\d+)?)\s*$/);
+      if (!match) return null;
+
+      var lat = Number(match[1]);
+      var lng = Number(match[2]);
+
+      if (lat < -90 || lat > 90 || lng < -180 || lng > 180) return null;
+      return { lat: lat, lng: lng };
+    }
+
+    function showSearchLocation(lat, lng, title, description) {
+      if (searchMarker) {
+        map.removeLayer(searchMarker);
+      }
+
+      searchMarker = L.marker([lat, lng], { pane: 'markersPane' })
+        .bindPopup(
+          '<b>' + escapeSearchHtml(title) + '</b>' +
+          (description ? '<br>' + escapeSearchHtml(description) : '')
+        )
+        .addTo(map);
+
+      map.setView([lat, lng], Math.max(map.getZoom(), 12));
+      searchMarker.openPopup();
+      searchResults.style.display = 'none';
+    }
+
+    function selectSearchResult(result) {
+      var lat = Number(result.lat);
+      var lng = Number(result.lon);
+      var title = result.name || result.display_name.split(',')[0];
+      var description = result.display_name;
+
+      showSearchLocation(lat, lng, title, description);
+    }
+
+    function searchMap() {
+      var query = searchInput.value.trim();
+      if (!query) return;
+
+      var coordinates = parseCoordinates(query);
+      if (coordinates) {
+        showSearchLocation(
+          coordinates.lat,
+          coordinates.lng,
+          'Coordinates',
+          coordinates.lat.toFixed(5) + ', ' + coordinates.lng.toFixed(5)
+        );
+        return;
+      }
+
+      if (searchAbortController) {
+        searchAbortController.abort();
+      }
+      searchAbortController = new AbortController();
+
+      showSearchStatus('Searching...');
+
+      var url = 'https://nominatim.openstreetmap.org/search?format=jsonv2' +
+                '&addressdetails=1&limit=5&q=' + encodeURIComponent(query);
+
+      fetch(url, {
+        headers: { 'Accept': 'application/json' },
+        signal: searchAbortController.signal
+      })
+      .then(function(response) {
+        if (!response.ok) throw new Error('Search request failed');
+        return response.json();
+      })
+      .then(function(results) {
+        searchResults.innerHTML = '';
+
+        if (!results.length) {
+          showSearchStatus('No places found.');
+          return;
+        }
+
+        results.forEach(function(result) {
+          var item = document.createElement('div');
+          item.className = 'map-search-result';
+
+          var title = result.name || result.display_name.split(',')[0];
+          item.innerHTML =
+            '<b>' + escapeSearchHtml(title) + '</b><br>' +
+            '<span>' + escapeSearchHtml(result.display_name) + '</span>';
+
+          item.addEventListener('click', function() {
+            selectSearchResult(result);
+          });
+
+          searchResults.appendChild(item);
+        });
+
+        searchResults.style.display = 'block';
+      })
+      .catch(function(error) {
+        if (error.name === 'AbortError') return;
+        console.error('Map search error:', error);
+        showSearchStatus('Search failed. Please try again.');
+      });
+    }
+
+    searchButton.addEventListener('click', searchMap);
+
+    searchInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        searchMap();
+      }
+      if (e.key === 'Escape') {
+        searchResults.style.display = 'none';
+        searchInput.blur();
+      }
+    });
+
+    searchInput.addEventListener('input', function() {
+      if (!searchInput.value.trim()) {
+        searchResults.style.display = 'none';
+      }
+    });
+
+    // Prevent map drawing/dragging interactions while using the search UI.
+    L.DomEvent.disableClickPropagation(document.getElementById('map-search'));
+    L.DomEvent.disableScrollPropagation(document.getElementById('map-search'));
+
+    document.addEventListener('click', function(e) {
+      if (!document.getElementById('map-search').contains(e.target)) {
+        searchResults.style.display = 'none';
+      }
+    });
 
     // ============================
     // VISITOR TOOLS
