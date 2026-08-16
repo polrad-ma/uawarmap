@@ -54,23 +54,35 @@
     .sidebar-btn:hover { background: #3a3a3a; }
     .sidebar-btn.active { background: #555; border-color: #777; color: white; }
 
-    /* Map Title Banner (Restored Original Design & Moved Right) */
+    /* Dark Theme Zoom Controls */
+    .leaflet-control-zoom a {
+      background-color: #171717 !important;
+      color: #ffffff !important;
+      border-color: rgba(255,255,255,0.2) !important;
+    }
+    .leaflet-control-zoom a:hover {
+      background-color: #2a2a2a !important;
+      color: #ffffff !important;
+    }
+
+    /* Map Title Banner (Dark Theme) */
     #map-title {
       position: absolute;
       top: 10px;
       left: 115px; /* Sits directly right of the zoom controls */
-      background: white;
-      border: 2px solid rgba(0,0,0,0.2);
+      background: #171717;
+      color: #ffffff;
+      border: 2px solid rgba(255,255,255,0.2);
       padding: 6px 12px;
       font-family: Helvetica, Arial, sans-serif;
       font-weight: bold;
       font-size: 20px;
       z-index: 1000;
       border-radius: 4px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
     }
 
-    /* Top-Center Search Bar */
+    /* Top-Center Search Bar (Dark Theme) */
     .leaflet-top.leaflet-center {
       top: 10px;
       left: 50%;
@@ -81,10 +93,10 @@
     }
     .leaflet-top.leaflet-center .leaflet-control { pointer-events: auto; }
     .leaflet-control-geosearch form {
-      background: white;
-      border: 2px solid rgba(0,0,0,0.2);
+      background: #171717;
+      border: 2px solid rgba(255,255,255,0.2);
       border-radius: 4px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
       margin: 0;
     }
     .leaflet-control-geosearch input.glass {
@@ -92,6 +104,26 @@
       font-size: 14px;
       padding: 8px 12px;
       width: 260px;
+      background: #171717;
+      color: #ffffff;
+      border: none;
+    }
+    .leaflet-control-geosearch input.glass::placeholder {
+      color: #bbbbbb;
+    }
+    .leaflet-control-geosearch .results {
+      background: #171717;
+      color: #ffffff;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .leaflet-control-geosearch .results > * {
+      background: #171717;
+      color: #ffffff;
+      border-bottom: 1px solid #333;
+    }
+    .leaflet-control-geosearch .results > *:hover {
+      background: #2a2a2a;
+      color: #ffffff;
     }
 
     /* Floating Panel containers that pop out of the sidebar */
@@ -261,7 +293,7 @@
       <p id="welcome-text">Welcome and thanks for using my map!<br><br>
 This map was created to show the situation in Ukraine. Of course, this map, like every other war map, is not 100% reliable or true.<br><br>
 Use the layers and the map tools featured here. Map updates are displayed via the bell icon on the left sidebar.<br><br>
-This map was inspired by <a href="https://x.com/M0nstas" target="_blank" rel="noopener">@M0nstas</a> and <a href="https://x.com/Playfra0" target="_blank" rel="noopener">@Playfra0</a> and other mappers, and was designed mainly with Claude AI. If used, please tag me, <a href="https://x.com/polrad_mapping_" target="_blank" rel="noopener">@polrad_mapping_</a>, in your posts.<br><br>
+This map was inspired by <a href="https://x.com/M0nstas" target="_blank" rel="noopener">@M0nstas</a> and <a href="https://x.com/Playfra0" target="_blank" rel="noopener">@Playfra0</a> and other mappers, and was designed mainly with Claude AI and Gemini AI. If used, please tag me, <a href="https://x.com/polrad_mapping_" target="_blank" rel="noopener">@polrad_mapping_</a>, in your posts.<br><br>
 I use multiple sources to update and clarify the map — mainly geolocation data, other mappers, and partially my own sources.</p>
     </div>
   </div>
