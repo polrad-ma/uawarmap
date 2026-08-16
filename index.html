@@ -5,7 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta charset="utf-8">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <!-- Leaflet GeoSearch CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-geosearch@3.11.0/dist/geosearch.css" />
+  
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <!-- Leaflet GeoSearch JS -->
+  <script src="https://unpkg.com/leaflet-geosearch@3.11.0/dist/geosearch.umd.js"></script>
+  
   <style>
     body { margin: 0; padding: 0; }
     #map { position: absolute; top: 0; bottom: 0; right: 0; left: 0; }
@@ -22,6 +28,32 @@
       font-size: 24px;
       z-index: 800;
     }
+
+    /* Top-Center Search Bar Positioning */
+    .leaflet-top.leaflet-center {
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      position: absolute;
+      pointer-events: none;
+      z-index: 1000;
+    }
+    .leaflet-top.leaflet-center .leaflet-control {
+      pointer-events: auto;
+    }
+    .leaflet-control-geosearch form {
+      background: white;
+      border: 2px solid rgba(0,0,0,0.2);
+      border-radius: 4px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+    .leaflet-control-geosearch input.glass {
+      font-family: Helvetica;
+      font-size: 14px;
+      padding: 8px 12px;
+      width: 260px;
+    }
+
     #toolbar {
       position: absolute;
       bottom: 20px;
@@ -270,6 +302,36 @@ I use multiple sources to update and clarify the map — mainly geolocation data
 
     map.createPane('markersPane');
     map.getPane('markersPane').style.zIndex = 650;
+
+    // ============================
+    // TOP-CENTER SEARCH CONTROL
+    // ============================
+    // Create top-center container
+    var topCenterContainer = L.DomUtil.create('div', 'leaflet-top leaflet-center');
+    map._controlContainer.appendChild(topCenterContainer);
+
+    var searchProvider = new GeoSearch.OpenStreetMapProvider();
+    var searchControl = GeoSearch.GeoSearchControl({
+      provider: searchProvider,
+      style: 'bar',
+      showMarker: true,
+      showPopup: false,
+      marker: {
+        icon: new L.Icon.Default(),
+        draggable: false
+      },
+      popupFormat: ({ query, result }) => result.label,
+      maxMarkers: 1,
+      retainZoomLevel: false,
+      animateZoom: true,
+      autoClose: true,
+      searchLabel: 'Search location or coordinates...',
+      keepResult: true
+    });
+
+    // Custom placement in top-center container
+    var searchElement = searchControl.onAdd(map);
+    topCenterContainer.appendChild(searchElement);
 
     // ============================
     // BASE LAYER SWITCHER
