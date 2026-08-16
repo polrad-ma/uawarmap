@@ -124,11 +124,15 @@
       color: #bbbbbb !important;
     }
 
-    /* Clear Button (X Icon) */
-    .leaflet-control-geosearch a.reset {
+    /* Clear Button (X Icon) Deep Overrides */
+    .leaflet-control-geosearch a.reset,
+    .leaflet-control-geosearch a.reset:hover,
+    .leaflet-control-geosearch a.reset:focus,
+    .leaflet-control-geosearch .reset {
+      background: #171717 !important;
       background-color: #171717 !important;
       color: #ffffff !important;
-      border-left: 1px solid rgba(255,255,255,0.2) !important;
+      border-left: 1px solid rgba(255, 255, 255, 0.2) !important;
       display: flex !important;
       align-items: center !important;
       justify-content: center !important;
@@ -138,6 +142,12 @@
       text-decoration: none !important;
       border: none !important;
       cursor: pointer;
+    }
+
+    .leaflet-control-geosearch a.reset::after,
+    .leaflet-control-geosearch a.reset::before {
+      color: #ffffff !important;
+      background-color: transparent !important;
     }
 
     .leaflet-control-geosearch a.reset:hover {
