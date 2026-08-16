@@ -1,17 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html translate="no">
 <head>
   <title>Russo-Ukrainian War Map (Polrad Mapping)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta charset="utf-8">
+  <!-- Prevents Chrome's auto-translate from rewriting the page's DOM,
+       which is known to break Leaflet (causes "baseVal" errors) -->
+  <meta name="google" content="notranslate">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <!-- Leaflet GeoSearch CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet-geosearch@3.11.0/dist/geosearch.css" />
-  
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <!-- Leaflet GeoSearch JS -->
-  <script src="https://unpkg.com/leaflet-geosearch@3.11.0/dist/geosearch.umd.js"></script>
-  
+  <!-- Turf.js: used only to calculate a polygon's real-world area in km² when clicked -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Turf.js/6.5.0/turf.min.js"></script>
   <style>
     body { margin: 0; padding: 0; }
     #map { position: absolute; top: 0; bottom: 0; right: 0; left: 0; }
@@ -29,29 +28,53 @@
       z-index: 800;
     }
 
-    /* Top-Center Search Bar Positioning */
-    .leaflet-top.leaflet-center {
+    #search-bar {
+      position: absolute;
       top: 10px;
       left: 50%;
       transform: translateX(-50%);
-      position: absolute;
-      pointer-events: none;
-      z-index: 1000;
-    }
-    .leaflet-top.leaflet-center .leaflet-control {
-      pointer-events: auto;
-    }
-    .leaflet-control-geosearch form {
+      z-index: 900;
       background: white;
       border: 2px solid rgba(0,0,0,0.2);
       border-radius: 4px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-    }
-    .leaflet-control-geosearch input.glass {
+      padding: 8px;
       font-family: Helvetica;
-      font-size: 14px;
-      padding: 8px 12px;
-      width: 260px;
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    #search-input {
+      font-family: Helvetica;
+      font-size: 13px;
+      padding: 6px 8px;
+      border: 1px solid #999;
+      border-radius: 3px;
+      width: 220px;
+    }
+    #search-btn {
+      font-family: Helvetica;
+      font-size: 13px;
+      padding: 6px 10px;
+      border: 1px solid #999;
+      border-radius: 3px;
+      background: #f5f5f5;
+      cursor: pointer;
+    }
+    #search-btn:hover { background: #e8e8e8; }
+    #search-status {
+      position: absolute;
+      top: 46px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 900;
+      background: white;
+      border: 1px solid rgba(0,0,0,0.2);
+      border-radius: 4px;
+      padding: 4px 8px;
+      font-family: Helvetica;
+      font-size: 12px;
+      color: #333;
+      display: none;
     }
 
     #toolbar {
@@ -104,37 +127,63 @@
     .color-btn.selected { border-color: #000; }
     #tool-result { margin-top: 6px; font-size: 12px; color: #333; min-height: 32px; }
 
-    #updates-icon {
-      position: absolute;
-      bottom: 20px;
-      right: 10px;
-      z-index: 900;
+    .layer-panel {
       background: white;
-      border: 2px solid rgba(0,0,0,0.2);
+      border-radius: 4px;
+      padding: 8px 10px;
+      font-family: Helvetica;
+      font-size: 13px;
+      width: 220px;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+    }
+    .layer-panel h4 {
+      margin: 0 0 6px 0;
+      font-size: 14px;
+    }
+    .layer-group-title {
+      font-weight: bold;
+      margin-top: 8px;
+      margin-bottom: 2px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .layer-group-title:first-of-type { margin-top: 0; }
+    .layer-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-left: 18px;
+      margin-bottom: 2px;
+    }
+    .layer-item label, .layer-group-title label {
+      cursor: pointer;
+    }
+
+    .updates-control-icon {
+      background: white;
       border-radius: 50%;
-      width: 44px;
-      height: 44px;
+      width: 40px;
+      height: 40px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 22px;
+      font-size: 20px;
       cursor: pointer;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.4);
     }
-    #updates-icon:hover { background: #f0f0f0; }
+    .updates-control-icon:hover { background: #f0f0f0; }
     #updates-panel {
       display: none;
-      position: absolute;
-      bottom: 74px;
-      right: 10px;
-      z-index: 900;
       background: white;
-      border: 2px solid rgba(0,0,0,0.2);
       border-radius: 4px;
       padding: 12px;
       font-family: Helvetica;
-      width: 280px;
-      max-height: 60vh;
+      width: 260px;
+      max-height: 50vh;
       overflow-y: auto;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+      margin-top: 4px;
     }
     #updates-panel.show { display: block; }
     #updates-panel h4 { margin: 0 0 8px 0; font-size: 15px; }
@@ -142,10 +191,13 @@
     .update-item:last-child { border-bottom: none; }
     .update-date { font-weight: bold; font-size: 12px; color: #555; display: block; margin-bottom: 2px; }
 
-    /* WELCOME / INFO BOX */
+    /* WELCOME / INFO BOX (shown automatically when the map loads) */
     #welcome-overlay {
       position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
       background: rgba(0,0,0,0.45);
       z-index: 1000;
       display: flex;
@@ -164,24 +216,43 @@
       box-shadow: 0 2px 12px rgba(0,0,0,0.4);
       position: relative;
     }
-    #welcome-box h3 { margin: 0 0 10px 0; font-size: 18px; padding-right: 20px; }
-    #welcome-box p { margin: 0; font-size: 14px; line-height: 1.5; color: #333; white-space: pre-wrap; }
+    #welcome-box h3 {
+      margin: 0 0 10px 0;
+      font-size: 18px;
+      padding-right: 20px;
+    }
+    #welcome-box p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #333;
+      white-space: pre-wrap;
+    }
     #welcome-close {
       position: absolute;
-      top: 12px; right: 14px;
-      background: none; border: none;
-      font-size: 20px; line-height: 1;
-      cursor: pointer; color: #666;
+      top: 12px;
+      right: 14px;
+      background: none;
+      border: none;
+      font-size: 20px;
+      line-height: 1;
+      cursor: pointer;
+      color: #666;
     }
     #welcome-close:hover { color: #000; }
 
-    /* WATERMARK */
+    /* WATERMARK — tiled, semi-transparent, not a map layer so it can't be
+       toggled off. Sits above the map tiles/polygons but below the UI
+       panels (which all have z-index 900+), and ignores clicks entirely. */
     #watermark-overlay {
       position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
       z-index: 750;
       pointer-events: none;
-      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='160'><text x='10' y='90' font-family='Helvetica, Arial, sans-serif' font-size='22' font-weight='bold' fill='%23ffffff' fill-opacity='0.12' stroke='%23000000' stroke-opacity='0.07' stroke-width='0.5' transform='rotate(-25 160 80)'>POLRAD MAPPING</text></svg>");
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='160'><text x='10' y='90' font-family='Helvetica, Arial, sans-serif' font-size='22' font-weight='bold' fill='%23ffffff' fill-opacity='0.25' stroke='%23000000' stroke-opacity='0.15' stroke-width='0.5' transform='rotate(-25 160 80)'>POLRAD MAPPING</text></svg>");
       background-repeat: repeat;
     }
   </style>
@@ -191,24 +262,27 @@
   <div id="map"></div>
   <div id="watermark-overlay"></div>
 
+  <!-- WELCOME / INFO BOX -->
   <div id="welcome-overlay">
     <div id="welcome-box">
       <button id="welcome-close" onclick="document.getElementById('welcome-overlay').style.display='none'">&times;</button>
       <h3>Welcome</h3>
       <p id="welcome-text">Welcome and thanks for using my map!<br><br>
 This map was created to show the situation in Ukraine. Of course, this map, like every other war map, is not 100% reliable or true.<br><br>
-Use the layers and the map tools featured here. Map updates are displayed via the bell icon in the bottom-right corner.<br><br>
+Use the layers and the map tools featured here. Map updates are displayed via the bell icon in the top-right corner.<br><br>
 This map was inspired by <a href="https://x.com/M0nstas" target="_blank" rel="noopener">@M0nstas</a> and <a href="https://x.com/Playfra0" target="_blank" rel="noopener">@Playfra0</a> and other mappers, and was designed mainly with Claude AI. If used, please tag me, <a href="https://x.com/polrad_mapping_" target="_blank" rel="noopener">@polrad_mapping_</a>, in your posts.<br><br>
 I use multiple sources to update and clarify the map — mainly geolocation data, other mappers, and partially my own sources.</p>
     </div>
   </div>
 
-  <div id="updates-icon" onclick="toggleUpdatesPanel()" title="Map Updates">🔔</div>
-  <div id="updates-panel">
-    <h4>Map Updates</h4>
-    <div id="updates-content">Loading...</div>
+  <!-- SEARCH BAR -->
+  <div id="search-bar">
+    <input type="text" id="search-input" placeholder="Search a town, city, or lat,lng" />
+    <button id="search-btn" onclick="runSearch()">Search</button>
   </div>
+  <div id="search-status"></div>
 
+  <!-- MAP TOOLS -->
   <div id="toolbar">
     <h4>Map Tools</h4>
 
@@ -245,27 +319,17 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       { attribution: 'Tiles &copy; Esri &mdash; Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community' }
     );
 
-    var hybridEsri = L.layerGroup([
-      L.tileLayer(
-        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-        { attribution: 'Tiles &copy; Esri &mdash; Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community' }
-      ),
-      L.tileLayer(
-        'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
-        { attribution: 'Labels &copy; Esri' }
-      )
-    ]);
+    var hybridBase = L.tileLayer(
+      'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+      { attribution: 'Tiles &copy; Esri &mdash; Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community' }
+    );
 
-    var hybridCarto = L.layerGroup([
-      L.tileLayer(
-        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-        { attribution: 'Tiles &copy; Esri &mdash; Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community' }
-      ),
-      L.tileLayer(
-        'https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png',
-        { attribution: 'Labels &copy; <a href="https://carto.com/attribution">CARTO</a>' }
-      )
-    ]);
+    var hybridLabels = L.tileLayer(
+      'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
+      { attribution: 'Labels &copy; Esri' }
+    );
+
+    var hybrid = L.layerGroup([hybridBase, hybridLabels]);
 
     var streets = L.tileLayer(
       'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
@@ -297,140 +361,146 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       center: [48.00, 37.75],
       zoom: 7,
       scrollWheelZoom: true,
-      layers: [hybridEsri]
+      layers: [hybrid]
     });
 
     map.createPane('markersPane');
     map.getPane('markersPane').style.zIndex = 650;
 
     // ============================
-    // TOP-CENTER SEARCH CONTROL
-    // ============================
-    // Create top-center container
-    var topCenterContainer = L.DomUtil.create('div', 'leaflet-top leaflet-center');
-    map._controlContainer.appendChild(topCenterContainer);
-
-    var searchProvider = new GeoSearch.OpenStreetMapProvider();
-    var searchControl = GeoSearch.GeoSearchControl({
-      provider: searchProvider,
-      style: 'bar',
-      showMarker: true,
-      showPopup: false,
-      marker: {
-        icon: new L.Icon.Default(),
-        draggable: false
-      },
-      popupFormat: ({ query, result }) => result.label,
-      maxMarkers: 1,
-      retainZoomLevel: false,
-      animateZoom: true,
-      autoClose: true,
-      searchLabel: 'Search location or coordinates...',
-      keepResult: true
-    });
-
-    // Custom placement in top-center container
-    var searchElement = searchControl.onAdd(map);
-    topCenterContainer.appendChild(searchElement);
-
-    // ============================
-    // BASE LAYER SWITCHER
+    // BASE LAYER SWITCHER (satellite/streets/topo — topright, Leaflet control)
     // ============================
     var baseLayers = {
-      "Hybrid (Satellite + Esri Labels)": hybridEsri,
-      "Hybrid (Satellite + CARTO Labels)": hybridCarto,
+      "Hybrid (Satellite + Labels)": hybrid,
       "Satellite (Esri)": satellite,
       "Streets (Light)": streets,
       "Streets (OSM Standard)": osmStandard,
       "Topographic": topo
     };
 
-    L.control.layers(baseLayers, null, { collapsed: false }).addTo(map);
-
-    // Dynamic layer stores
-    var mainLayers = {};
-    var extraLayers = {};
-
-    // ============================
-    // CITIES CAPTURED THIS YEAR (2026)
-    // ============================
-    var cityIcon = L.icon({
-      iconUrl: 'city-icon.png',
-      iconSize: [28, 28],
-      iconAnchor: [14, 14],
-      popupAnchor: [0, -14]
-    });
-
-    var capturedCities = [
-      { name: "Pokrovsk",          date: "February 2026", lat: 48.2822, lng: 37.1758 },
-      { name: "Toretsk",           date: "January 2026",  lat: 48.3917, lng: 37.8728 },
-      { name: "Velyka Novosilka",  date: "January 2026",  lat: 47.8389, lng: 36.8344 },
-      { name: "Chasiv Yar",        date: "January 2026",  lat: 48.5803, lng: 37.8372 },
-      { name: "Kurakhove",         date: "January 2026",  lat: 47.9850, lng: 37.2831 }
-    ];
-
-    var cityMarkers = L.layerGroup();
-    capturedCities.forEach(function(city) {
-      L.marker([city.lat, city.lng], { pane: 'markersPane', icon: cityIcon })
-        .bindPopup("<b>" + city.name + "</b><br>Captured " + city.date)
-        .addTo(cityMarkers);
-    });
-    cityMarkers.addTo(map);
-    
-    // Put into Extra Layers box
-    extraLayers["Cities Captured This Year"] = cityMarkers;
-
-    // ============================
-    // VISITOR DRAWINGS & MEASUREMENTS
-    // ============================
-    var userDrawings = L.layerGroup().addTo(map);
-    
-    // Put into Extra Layers box
-    extraLayers["My Drawings & Measurements"] = userDrawings;
+    L.control.layers(baseLayers, null, { collapsed: false, position: 'topright' }).addTo(map);
 
     // ============================
     // GEOJSON LAYERS
+    // category: 'standard' or 'helper' — controls which group it appears in
     // ============================
     var layerFiles = [
       {
+        key: "ru_territory",
         file: "neatogeo_Russian-controlled%20territory.geojson",
         name: "Russian-controlled territory",
         color: "#F0001B",
-        group: "main",
+        category: "standard",
         styleOverrides: {}
       },
       {
+        key: "ua_territory",
+        file: "neatogeo_Ukrainian-controlled%20territory.geojson",
+        name: "Ukrainian-controlled territory",
+        color: "#1427a5",
+        category: "standard",
+        styleOverrides: {}
+      },
+      {
+        key: "regained",
+        file: "neatogeo_Territories%20regained%20in%20the%20last%20month.geojson",
+        name: "Territories regained in the last month",
+        color: "#2ecc71",
+        category: "standard",
+        styleOverrides: {}
+      },
+      {
+        key: "advances",
+        file: "neatogeo_Advances%20%28both%20sides%29.geojson",
+        name: "Advances (both sides)",
+        color: "#f1c40f",
+        category: "standard",
+        styleOverrides: {}
+      },
+      {
+        key: "frontline_towns",
         file: "neatogeo_Frontline%20towns%20%28from%20PWM%29.geojson",
         name: "Frontline towns (from PWM)",
         color: "#ffffff",
         outlineColor: "#ffffff",
         fillOpacity: 0,
-        group: "extra",
-        styleOverrides: {}
-      },
-      {
-        file: "neatogeo_Ukrainian-controlled%20territory.geojson",
-        name: "Ukrainian-controlled territory",
-        color: "#1427a5",
-        group: "main",
-        styleOverrides: {}
-      },
-      {
-        file: "neatogeo_Advances%20%28both%20sides%29.geojson",
-        name: "Advances (both sides)",
-        color: "#f1c40f",
-        group: "main",
-        styleOverrides: {}
-      },
-      {
-        file: "neatogeo_Territories%20regained%20in%20the%20last%20month.geojson",
-        name: "Territories regained in the last month",
-        color: "#2ecc71",
-        group: "main",
+        category: "helper",
         styleOverrides: {}
       }
     ];
 
+    // ============================
+    // CATEGORIZED LAYERS PANEL (custom Leaflet control, topright)
+    // Stacks automatically below the base layer switcher — no manual
+    // positioning/offsets needed, and no overlap issues.
+    // ============================
+    var layerRegistry = {}; // key -> { leafletLayer, checkboxEl, category }
+
+    var LayerPanelControl = L.Control.extend({
+      options: { position: 'topright' },
+      onAdd: function() {
+        var div = L.DomEvent.disableClickPropagation(L.DomUtil.create('div', 'layer-panel'));
+        div.innerHTML =
+          '<h4>Map Layers</h4>' +
+          '<div class="layer-group-title"><input type="checkbox" id="group-standard" checked onchange="toggleGroup(\'standard\', this.checked)"><label for="group-standard">Standard Map</label></div>' +
+          '<div id="group-items-standard"></div>' +
+          '<div class="layer-group-title"><input type="checkbox" id="group-helper" checked onchange="toggleGroup(\'helper\', this.checked)"><label for="group-helper">Helping Elements</label></div>' +
+          '<div id="group-items-helper"></div>';
+        return div;
+      }
+    });
+    map.addControl(new LayerPanelControl());
+
+    function addLayerToPanel(key, name, category, leafletLayer) {
+      layerRegistry[key] = { leafletLayer: leafletLayer, category: category };
+      var container = document.getElementById('group-items-' + category);
+      var id = 'layer-item-' + key;
+      var item = document.createElement('div');
+      item.className = 'layer-item';
+      item.innerHTML =
+        '<input type="checkbox" id="' + id + '" checked onchange="toggleLayer(\'' + key + '\', this.checked)">' +
+        '<label for="' + id + '">' + name + '</label>';
+      container.appendChild(item);
+      layerRegistry[key].checkboxEl = item.querySelector('input');
+    }
+
+    function toggleLayer(key, visible) {
+      var entry = layerRegistry[key];
+      if (!entry) return;
+      if (visible) {
+        entry.leafletLayer.addTo(map);
+      } else {
+        map.removeLayer(entry.leafletLayer);
+      }
+      updateGroupCheckbox(entry.category);
+    }
+
+    function toggleGroup(category, visible) {
+      Object.keys(layerRegistry).forEach(function(key) {
+        var entry = layerRegistry[key];
+        if (entry.category !== category) return;
+        entry.checkboxEl.checked = visible;
+        if (visible) {
+          entry.leafletLayer.addTo(map);
+        } else {
+          map.removeLayer(entry.leafletLayer);
+        }
+      });
+    }
+
+    function updateGroupCheckbox(category) {
+      var keys = Object.keys(layerRegistry).filter(function(k) { return layerRegistry[k].category === category; });
+      var checkedCount = keys.filter(function(k) { return layerRegistry[k].checkboxEl.checked; }).length;
+      var groupBox = document.getElementById('group-' + category);
+      if (!groupBox) return;
+      groupBox.checked = checkedCount === keys.length;
+      groupBox.indeterminate = checkedCount > 0 && checkedCount < keys.length;
+    }
+
+    // ============================
+    // LOAD GEOJSON LAYERS
+    // Clicking a polygon shows its name and calculated area (km²) via Turf.js
+    // ============================
     layerFiles.forEach(function(layerInfo) {
       fetch(layerInfo.file)
         .then(function(response) {
@@ -446,16 +516,31 @@ I use multiple sources to update and clarify the map — mainly geolocation data
               var lineColor = (override && override.outlineColor) || layerInfo.outlineColor || fillColor;
               var fillOpacity = (layerInfo.fillOpacity !== undefined) ? layerInfo.fillOpacity : 0.4;
               return { color: lineColor, weight: 2, fillColor: fillColor, fillOpacity: fillOpacity };
+            },
+            onEachFeature: function(feature, layerObj) {
+              layerObj.on('click', function(e) {
+                L.DomEvent.stopPropagation(e); // don't let this reach the drawing tools' map click handler
+
+                var name = (feature.properties && feature.properties.name) || layerInfo.name;
+                var popupContent = '<b>' + name + '</b>';
+
+                try {
+                  if (feature.geometry && (feature.geometry.type === 'Polygon' || feature.geometry.type === 'MultiPolygon')) {
+                    var areaM2 = turf.area(feature);
+                    var areaKm2 = (areaM2 / 1e6).toFixed(2);
+                    popupContent += '<br>Area: ' + areaKm2 + ' km&sup2;';
+                  }
+                } catch (err) {
+                  console.error('Could not calculate area for feature:', err);
+                }
+
+                layerObj.bindPopup(popupContent).openPopup(e.latlng);
+              });
             }
           }).addTo(map);
 
-          if (layerInfo.group === "main") {
-            mainLayers[layerInfo.name] = layer;
-          } else {
-            extraLayers[layerInfo.name] = layer;
-          }
-
-          updateGroupedLayerControl();
+          addLayerToPanel(layerInfo.key, layerInfo.name, layerInfo.category, layer);
+          console.log(layerInfo.name + " loaded. Feature count:", data.features.length);
         })
         .catch(function(error) {
           console.error("Could not load layer '" + layerInfo.name + "':", error);
@@ -463,142 +548,43 @@ I use multiple sources to update and clarify the map — mainly geolocation data
     });
 
     // ============================
-    // GROUPED LAYER CONTROL
+    // CAPTURED CITIES (helper category)
     // ============================
-    var groupedLayerControl = L.control({ position: 'topright' });
+    var cityIcon = L.icon({
+      iconUrl: 'city-icon.png',
+      iconSize: [28, 28],
+      iconAnchor: [14, 14],
+      popupAnchor: [0, -14]
+    });
 
-    groupedLayerControl.onAdd = function() {
-      var div = L.DomUtil.create('div', 'leaflet-control-layers leaflet-control');
-      div.id = 'grouped-layer-control';
-      L.DomEvent.disableClickPropagation(div);
-      L.DomEvent.disableScrollPropagation(div);
-      return div;
-    };
+    var capturedCities = [
+      { name: "Chasiv Yar",       date: "July 28", lat: 48.58025, lng: 37.83719 },
+      { name: "Kostiantynivka",   date: "July 28", lat: 48.52486, lng: 37.6986  },
+      { name: "Bilytske",         date: "July 26", lat: 48.40581, lng: 37.18269 },
+      { name: "Rodynske",         date: "July 13", lat: 48.35097, lng: 37.20877 }
+    ];
 
-    groupedLayerControl.addTo(map);
+    var cityMarkers = L.layerGroup();
 
-    function updateGroupedLayerControl() {
-      var container = document.getElementById('grouped-layer-control');
-      if (!container) return;
+    capturedCities.forEach(function(city) {
+      L.marker([city.lat, city.lng], { pane: 'markersPane', icon: cityIcon })
+        .bindPopup("<b>" + city.name + "</b><br>Captured " + city.date)
+        .addTo(cityMarkers);
+    });
 
-      container.innerHTML = '';
-
-      function addGroup(sectionTitle, layers) {
-        var section = document.createElement('div');
-        section.style.padding = '6px 8px';
-
-        var title = document.createElement('div');
-        title.style.fontWeight = 'bold';
-        title.style.marginBottom = '5px';
-        title.textContent = sectionTitle;
-        section.appendChild(title);
-
-        var names = Object.keys(layers);
-        var allCheckbox = document.createElement('input');
-        allCheckbox.type = 'checkbox';
-
-        var visibleCount = names.filter(function(name) {
-          return map.hasLayer(layers[name]);
-        }).length;
-
-        allCheckbox.checked = names.length > 0 && visibleCount === names.length;
-        allCheckbox.indeterminate = visibleCount > 0 && visibleCount < names.length;
-
-        var allLabel = document.createElement('label');
-        allLabel.style.display = 'block';
-        allLabel.style.marginBottom = '5px';
-        allLabel.style.fontWeight = 'bold';
-        allLabel.appendChild(allCheckbox);
-        allLabel.appendChild(document.createTextNode(' All ' + sectionTitle));
-        section.appendChild(allLabel);
-
-        allCheckbox.addEventListener('change', function() {
-          names.forEach(function(name) {
-            if (allCheckbox.checked) {
-              if (!map.hasLayer(layers[name])) map.addLayer(layers[name]);
-            } else {
-              if (map.hasLayer(layers[name])) map.removeLayer(layers[name]);
-            }
-          });
-          updateGroupedLayerControl();
-        });
-
-        names.forEach(function(name) {
-          var checkbox = document.createElement('input');
-          checkbox.type = 'checkbox';
-          checkbox.checked = map.hasLayer(layers[name]);
-
-          checkbox.addEventListener('change', function() {
-            if (checkbox.checked) {
-              map.addLayer(layers[name]);
-            } else {
-              map.removeLayer(layers[name]);
-            }
-            updateGroupedLayerControl();
-          });
-
-          var label = document.createElement('label');
-          label.style.display = 'block';
-          label.style.marginLeft = '10px';
-          label.style.marginBottom = '3px';
-          label.appendChild(checkbox);
-          label.appendChild(document.createTextNode(' ' + name));
-          section.appendChild(label);
-        });
-
-        return section;
-      }
-
-      container.appendChild(addGroup('Main Layers', mainLayers));
-
-      var separator = document.createElement('div');
-      separator.style.borderTop = '1px solid #ccc';
-      container.appendChild(separator);
-
-      container.appendChild(addGroup('Extra Layers', extraLayers));
-    }
-
-    updateGroupedLayerControl();
+    cityMarkers.addTo(map);
+    addLayerToPanel("captured_cities", "Captured cities", "helper", cityMarkers);
 
     // ============================
-    // MAP UPDATES PANEL
-    // ============================
-    function toggleUpdatesPanel() {
-      document.getElementById('updates-panel').classList.toggle('show');
-    }
-
-    fetch('updates.json')
-      .then(function(response) {
-        if (!response.ok) throw new Error('HTTP error, status = ' + response.status);
-        return response.json();
-      })
-      .then(function(updates) {
-        var container = document.getElementById('updates-content');
-        container.innerHTML = '';
-        if (!updates.length) {
-          container.innerHTML = '<em>No updates yet.</em>';
-          return;
-        }
-        updates.forEach(function(item) {
-          var div = document.createElement('div');
-          div.className = 'update-item';
-          div.innerHTML = '<span class="update-date">' + item.date + '</span>' + item.text;
-          container.appendChild(div);
-        });
-      })
-      .catch(function(error) {
-        document.getElementById('updates-content').innerHTML = '<em>Could not load updates.</em>';
-        console.error('Could not load updates.json:', error);
-      });
-
-    // ============================
-    // VISITOR TOOLS
+    // VISITOR TOOLS (helper category — registered after userDrawings is created below)
     // ============================
     var activeTool = null;
     var currentColor = '#ff0000';
     var drawingPoints = [];
     var previewLayer = null;
     var isMouseDown = false;
+    var userDrawings = L.layerGroup().addTo(map);
+    addLayerToPanel("user_drawings", "My Drawings & Measurements", "helper", userDrawings);
 
     var toolResult = document.getElementById('tool-result');
     var drawTools = ['polygon', 'freehand', 'arrow', 'rectangle'];
@@ -785,6 +771,122 @@ I use multiple sources to update and clarify the map — mainly geolocation data
     function clearDrawings() {
       userDrawings.clearLayers();
       toolResult.innerText = "Cleared.";
+    }
+
+    // ============================
+    // MAP UPDATES PANEL (custom Leaflet control, topright)
+    // Content comes from updates.json in the repo — only you can edit
+    // that file via GitHub, so only you can change what visitors see.
+    // Registered as a Leaflet control so it stacks below the layers
+    // panel automatically, with no overlap.
+    // ============================
+    var UpdatesControl = L.Control.extend({
+      options: { position: 'topright' },
+      onAdd: function() {
+        var wrapper = L.DomEvent.disableClickPropagation(L.DomUtil.create('div'));
+
+        var icon = L.DomUtil.create('div', 'updates-control-icon', wrapper);
+        icon.innerHTML = '🔔';
+        icon.title = 'Map Updates';
+        icon.onclick = function() {
+          document.getElementById('updates-panel').classList.toggle('show');
+        };
+
+        var panel = L.DomUtil.create('div', '', wrapper);
+        panel.id = 'updates-panel';
+        panel.innerHTML = '<h4>Map Updates</h4><div id="updates-content">Loading...</div>';
+
+        return wrapper;
+      }
+    });
+    map.addControl(new UpdatesControl());
+
+    fetch('updates.json')
+      .then(function(response) {
+        if (!response.ok) throw new Error('HTTP error, status = ' + response.status);
+        return response.json();
+      })
+      .then(function(updates) {
+        var container = document.getElementById('updates-content');
+        container.innerHTML = '';
+        if (!updates.length) {
+          container.innerHTML = '<em>No updates yet.</em>';
+          return;
+        }
+        updates.forEach(function(item) {
+          var div = document.createElement('div');
+          div.className = 'update-item';
+          div.innerHTML = '<span class="update-date">' + item.date + '</span>' + item.text;
+          container.appendChild(div);
+        });
+      })
+      .catch(function(error) {
+        document.getElementById('updates-content').innerHTML = '<em>Could not load updates.</em>';
+        console.error('Could not load updates.json:', error);
+      });
+
+    // ============================
+    // SEARCH BAR
+    // Tries, in order: "lat,lng" coordinates -> known captured cities ->
+    // general place-name lookup via OpenStreetMap's free Nominatim service.
+    // ============================
+    var searchMarker = null;
+    var searchStatus = document.getElementById('search-status');
+
+    function showSearchStatus(msg) {
+      searchStatus.innerText = msg;
+      searchStatus.style.display = 'block';
+      setTimeout(function() { searchStatus.style.display = 'none'; }, 4000);
+    }
+
+    document.getElementById('search-input').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') runSearch();
+    });
+
+    function goToPoint(lat, lng, label, zoom) {
+      if (searchMarker) map.removeLayer(searchMarker);
+      searchMarker = L.marker([lat, lng]).addTo(map).bindPopup(label).openPopup();
+      map.setView([lat, lng], zoom || 11);
+    }
+
+    function runSearch() {
+      var query = document.getElementById('search-input').value.trim();
+      if (!query) return;
+
+      var coordMatch = query.match(/^(-?\d+(\.\d+)?)\s*,\s*(-?\d+(\.\d+)?)$/);
+      if (coordMatch) {
+        var lat = parseFloat(coordMatch[1]);
+        var lng = parseFloat(coordMatch[3]);
+        goToPoint(lat, lng, "Lat: " + lat.toFixed(5) + ", Lng: " + lng.toFixed(5), 12);
+        return;
+      }
+
+      var queryLower = query.toLowerCase();
+      var cityMatch = capturedCities.find(function(c) { return c.name.toLowerCase().indexOf(queryLower) !== -1; });
+      if (cityMatch) {
+        goToPoint(cityMatch.lat, cityMatch.lng, "<b>" + cityMatch.name + "</b><br>Captured " + cityMatch.date, 12);
+        return;
+      }
+
+      showSearchStatus("Searching...");
+      fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + encodeURIComponent(query))
+        .then(function(response) {
+          if (!response.ok) throw new Error('HTTP error, status = ' + response.status);
+          return response.json();
+        })
+        .then(function(results) {
+          if (!results.length) {
+            showSearchStatus("No results for '" + query + "'.");
+            return;
+          }
+          var result = results[0];
+          goToPoint(parseFloat(result.lat), parseFloat(result.lon), result.display_name, 11);
+          searchStatus.style.display = 'none';
+        })
+        .catch(function(error) {
+          showSearchStatus("Search failed. Try again.");
+          console.error('Search error:', error);
+        });
     }
 
   </script>
