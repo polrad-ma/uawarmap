@@ -11,6 +11,8 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <!-- Leaflet GeoSearch JS -->
   <script src="https://unpkg.com/leaflet-geosearch@3.11.0/dist/geosearch.umd.js"></script>
+  <!-- Turf.js for Area Calculation -->
+  <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
   
   <style>
     body { margin: 0; padding: 0; }
@@ -303,12 +305,32 @@ I use multiple sources to update and clarify the map — mainly geolocation data
     map.createPane('markersPane');
     map.getPane('markersPane').style.zIndex = 650;
 
+    // Helper Function to Calculate Area using Turf.js
+    function calculateAreaAndBindPopup(layer, title) {
+      layer.on('click', function(e) {
+        if (activeTool) return; // Don't trigger popup while actively using map tools
+
+        var geojson = layer.toGeoJSON();
+        var areaInMeters = turf.area(geojson);
+        var areaInKm2 = (areaInMeters / 1000000).toFixed(2);
+
+        var nameText = (geojson.properties && geojson.properties.name) ? "<b>" + geojson.properties.name + "</b><br>" : "";
+        var titleText = title ? "<b>" + title + "</b><br>" : "";
+
+        L.popup()
+          .setLatLng(e.latlng)
+          .setContent(titleText + nameText + "<b>Area:</b> " + areaInKm2 + " km²")
+          .openOn(map);
+
+        L.DomEvent.stopPropagation(e);
+      });
+    }
+
     // ============================
     // TOP-CENTER SEARCH CONTROL
     // ============================
-    // Create top-center container
     var topCenterContainer = L.DomUtil.create('div', 'leaflet-top leaflet-center');
-    map.getContainer().appendChild(topCenterContainer); // public API — avoids relying on Leaflet internals that can crash the script
+    map.getContainer().appendChild(topCenterContainer);
 
     var searchProvider = new GeoSearch.OpenStreetMapProvider();
     var searchControl = GeoSearch.GeoSearchControl({
@@ -329,7 +351,6 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       keepResult: true
     });
 
-    // Custom placement in top-center container
     var searchElement = searchControl.onAdd(map);
     topCenterContainer.appendChild(searchElement);
 
@@ -347,7 +368,6 @@ I use multiple sources to update and clarify the map — mainly geolocation data
 
     L.control.layers(baseLayers, null, { collapsed: false }).addTo(map);
 
-    // Dynamic layer stores
     var mainLayers = {};
     var extraLayers = {};
 
@@ -362,36 +382,28 @@ I use multiple sources to update and clarify the map — mainly geolocation data
     });
 
     var capturedCities = [
-      // Notable cities/towns captured by Russian forces since 24 February 2022.
-      // Dates compiled from mainstream news reporting (Reuters, BBC, AP, Kyiv Post,
-      // Moscow Times) as aggregated by Wikipedia's territorial-control timeline —
-      // not sourced from ISW or DeepState as requested.
-      // NOTE: Pokrovsk and Myrnohrad dates below differ from what you mentioned
-      // (24 Nov 2025 / 28 Dec 2025) — most mainstream reporting places these captures
-      // in late January and early February 2026 respectively. Adjust if you have
-      // more specific/confirmed sourcing.
-      { name: "Popasna",            date: "7 May 2022",         lat: 48.6480, lng: 38.3540 },
-      { name: "Mariupol",           date: "20 May 2022",        lat: 47.0971, lng: 37.5434 },
-      { name: "Sievierodonetsk",    date: "25 June 2022",       lat: 48.9483, lng: 38.4931 },
-      { name: "Lysychansk",         date: "3 July 2022",        lat: 48.9142, lng: 38.4436 },
-      { name: "Soledar",            date: "16 January 2023",    lat: 48.6825, lng: 38.0706 },
-      { name: "Bakhmut",            date: "20 May 2023",        lat: 48.5956, lng: 37.9999 },
-      { name: "Marinka",            date: "25 December 2023",   lat: 47.9631, lng: 37.4880 },
-      { name: "Avdiivka",           date: "17 February 2024",   lat: 48.1391, lng: 37.7461 },
-      { name: "Novohrodivka",       date: "27 August 2024",     lat: 48.2833, lng: 37.3167 },
+      { name: "Popasna",            date: "7 May 2022",        lat: 48.6480, lng: 38.3540 },
+      { name: "Mariupol",           date: "20 May 2022",       lat: 47.0971, lng: 37.5434 },
+      { name: "Sievierodonetsk",    date: "25 June 2022",      lat: 48.9483, lng: 38.4931 },
+      { name: "Lysychansk",         date: "3 July 2022",       lat: 48.9142, lng: 38.4436 },
+      { name: "Soledar",            date: "16 January 2023",   lat: 48.6825, lng: 38.0706 },
+      { name: "Bakhmut",            date: "20 May 2023",       lat: 48.5956, lng: 37.9999 },
+      { name: "Marinka",            date: "25 December 2023",  lat: 47.9631, lng: 37.4880 },
+      { name: "Avdiivka",           date: "17 February 2024",  lat: 48.1391, lng: 37.7461 },
+      { name: "Novohrodivka",       date: "27 August 2024",    lat: 48.2833, lng: 37.3167 },
       { name: "Kostiantynivka (Pokrovsk Raion)", date: "27 August 2024", lat: 48.52486, lng: 37.6986 },
-      { name: "Krasnohorivka",      date: "9 September 2024",   lat: 48.0339, lng: 37.4676 },
-      { name: "Ukrainsk",           date: "17 September 2024",  lat: 48.1667, lng: 37.3833 },
-      { name: "Vuhledar",           date: "1 October 2024",     lat: 47.8258, lng: 37.2792 },
-      { name: "Selydove",           date: "30 October 2024",    lat: 48.1333, lng: 37.2000 },
-      { name: "Kurakhove",          date: "25 December 2024",   lat: 47.9850, lng: 37.2831 },
-      { name: "Velyka Novosilka",   date: "28 January 2025",    lat: 47.8389, lng: 36.8344 },
-      { name: "Chasiv Yar",         date: "August 2025",        lat: 48.58025, lng: 37.83719 },
-      { name: "Toretsk",            date: "August 2025",        lat: 48.3917, lng: 37.8728 },
-      { name: "Siversk",            date: "20 December 2025",   lat: 48.8667, lng: 38.0500 },
-      { name: "Pokrovsk",           date: "January 2026",       lat: 48.2822, lng: 37.1758 },
-      { name: "Myrnohrad",          date: "February 2026",      lat: 48.3167, lng: 37.2333 },
-      { name: "Huliaipole",         date: "February 2026",      lat: 47.6583, lng: 36.2667 }
+      { name: "Krasnohorivka",      date: "9 September 2024",  lat: 48.0339, lng: 37.4676 },
+      { name: "Ukrainsk",           date: "17 September 2024", lat: 48.1667, lng: 37.3833 },
+      { name: "Vuhledar",           date: "1 October 2024",    lat: 47.8258, lng: 37.2792 },
+      { name: "Selydove",           date: "30 October 2024",   lat: 48.1333, lng: 37.2000 },
+      { name: "Kurakhove",          date: "25 December 2024",  lat: 47.9850, lng: 37.2831 },
+      { name: "Velyka Novosilka",   date: "28 January 2025",   lat: 47.8389, lng: 36.8344 },
+      { name: "Chasiv Yar",         date: "August 2025",       lat: 48.58025, lng: 37.83719 },
+      { name: "Toretsk",            date: "August 2025",       lat: 48.3917, lng: 37.8728 },
+      { name: "Siversk",            date: "20 December 2025",  lat: 48.8667, lng: 38.0500 },
+      { name: "Pokrovsk",           date: "January 2026",      lat: 48.2822, lng: 37.1758 },
+      { name: "Myrnohrad",          date: "February 2026",     lat: 48.3167, lng: 37.2333 },
+      { name: "Huliaipole",         date: "February 2026",     lat: 47.6583, lng: 36.2667 }
     ];
 
     var cityMarkers = L.layerGroup();
@@ -401,16 +413,13 @@ I use multiple sources to update and clarify the map — mainly geolocation data
         .addTo(cityMarkers);
     });
     cityMarkers.addTo(map);
-    
-    // Put into Extra Layers box
+
     extraLayers["Cities Captured (since Feb 2022)"] = cityMarkers;
 
     // ============================
     // VISITOR DRAWINGS & MEASUREMENTS
     // ============================
     var userDrawings = L.layerGroup().addTo(map);
-    
-    // Put into Extra Layers box
     extraLayers["My Drawings & Measurements"] = userDrawings;
 
     // ============================
@@ -471,6 +480,12 @@ I use multiple sources to update and clarify the map — mainly geolocation data
               var lineColor = (override && override.outlineColor) || layerInfo.outlineColor || fillColor;
               var fillOpacity = (layerInfo.fillOpacity !== undefined) ? layerInfo.fillOpacity : 0.4;
               return { color: lineColor, weight: 2, fillColor: fillColor, fillOpacity: fillOpacity };
+            },
+            onEachFeature: function(feature, featureLayer) {
+              // Attach area calculator popup on polygon features
+              if (feature.geometry && (feature.geometry.type === "Polygon" || feature.geometry.type === "MultiPolygon")) {
+                calculateAreaAndBindPopup(featureLayer, layerInfo.name);
+              }
             }
           }).addTo(map);
 
@@ -751,7 +766,9 @@ I use multiple sources to update and clarify the map — mainly geolocation data
           drawingPoints.push(e.latlng);
         } else {
           var bounds = L.latLngBounds(drawingPoints[0], e.latlng);
-          userDrawings.addLayer(L.rectangle(bounds, { color: currentColor, weight: 2, fillColor: currentColor, fillOpacity: 0.4 }));
+          var rect = L.rectangle(bounds, { color: currentColor, weight: 2, fillColor: currentColor, fillOpacity: 0.4 });
+          userDrawings.addLayer(rect);
+          calculateAreaAndBindPopup(rect, "Drawn Rectangle");
           if (previewLayer) { map.removeLayer(previewLayer); previewLayer = null; }
           drawingPoints = [];
         }
@@ -792,7 +809,9 @@ I use multiple sources to update and clarify the map — mainly geolocation data
     function finishShape() {
       if (activeTool === 'polygon' && drawingPoints.length >= 2) {
         if (drawingPoints.length >= 3) {
-          userDrawings.addLayer(L.polygon(drawingPoints, { color: currentColor, weight: 2, fillColor: currentColor, fillOpacity: 0.4 }));
+          var poly = L.polygon(drawingPoints, { color: currentColor, weight: 2, fillColor: currentColor, fillOpacity: 0.4 });
+          userDrawings.addLayer(poly);
+          calculateAreaAndBindPopup(poly, "Drawn Polygon");
         } else {
           userDrawings.addLayer(L.polyline(drawingPoints, { color: currentColor, weight: 3 }));
         }
