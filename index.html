@@ -15,65 +15,108 @@
   <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
   
   <style>
-    body { margin: 0; padding: 0; }
+    body { margin: 0; padding: 0; font-family: Helvetica, Arial, sans-serif; }
     #map { position: absolute; top: 0; bottom: 0; right: 0; left: 0; }
-    
+
+    /* Map Title Banner */
     #map-title {
       position: absolute;
       top: 10px;
-      left: 50px;
+      left: 70px;
       background: white;
       border: 2px solid rgba(0,0,0,0.2);
       padding: 6px 12px;
-      font-family: Helvetica;
       font-weight: bold;
-      font-size: 20px;
+      font-size: 16px;
       z-index: 800;
       border-radius: 4px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     }
 
-    /* Positioned search bar directly under the map title */
-    #search-container {
+    /* Top-Center Search Bar */
+    .leaflet-top.leaflet-center {
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
       position: absolute;
-      top: 55px;
-      left: 50px;
-      z-index: 800;
+      pointer-events: none;
+      z-index: 1000;
     }
-    #search-container .leaflet-control-geosearch form {
+    .leaflet-top.leaflet-center .leaflet-control {
+      pointer-events: auto;
+    }
+    .leaflet-control-geosearch form {
       background: white;
       border: 2px solid rgba(0,0,0,0.2);
       border-radius: 4px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
       margin: 0;
     }
-    #search-container .leaflet-control-geosearch input.glass {
-      font-family: Helvetica;
-      font-size: 13px;
-      padding: 6px 10px;
-      width: 250px;
+    .leaflet-control-geosearch input.glass {
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      padding: 8px 12px;
+      width: 260px;
     }
 
-    #toolbar {
+    /* Vertical Sidebar Container */
+    #sidebar-bar {
       position: absolute;
-      bottom: 20px;
+      top: 60px;
       left: 10px;
-      z-index: 900;
+      z-index: 950;
       background: white;
       border: 2px solid rgba(0,0,0,0.2);
-      border-radius: 4px;
-      padding: 8px;
-      font-family: Helvetica;
-      width: 220px;
+      border-radius: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 4px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
     }
-    #toolbar h4 { margin: 0 0 6px 0; font-size: 14px; }
+
+    .sidebar-btn {
+      width: 40px;
+      height: 40px;
+      background: #f8f9fa;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .sidebar-btn:hover { background: #e9ecef; }
+    .sidebar-btn.active { background: #333; border-color: #333; filter: invert(0); color: white; }
+
+    /* Floating Panel container next to Sidebar */
+    .sidebar-panel {
+      display: none;
+      position: absolute;
+      top: 60px;
+      left: 62px;
+      z-index: 940;
+      background: white;
+      border: 2px solid rgba(0,0,0,0.2);
+      border-radius: 6px;
+      padding: 12px;
+      width: 250px;
+      max-height: 75vh;
+      overflow-y: auto;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    }
+    .sidebar-panel.show { display: block; }
+    .sidebar-panel h4 { margin: 0 0 10px 0; font-size: 15px; border-bottom: 1px solid #ddd; padding-bottom: 6px; }
+
+    /* Tool Buttons styling */
     .tool-btn {
       display: block;
       width: 100%;
       margin-bottom: 4px;
       padding: 6px 8px;
       font-size: 13px;
-      font-family: Helvetica;
       border: 1px solid #999;
       border-radius: 3px;
       background: #f5f5f5;
@@ -94,7 +137,6 @@
       width: 47%;
       padding: 6px 4px;
       font-size: 12px;
-      font-family: Helvetica;
       border: 2px solid #999;
       border-radius: 3px;
       cursor: pointer;
@@ -102,45 +144,15 @@
       color: white;
     }
     .color-btn.selected { border-color: #000; }
-    #tool-result { margin-top: 6px; font-size: 12px; color: #333; min-height: 32px; }
+    #tool-result { margin-top: 6px; font-size: 12px; color: #333; min-height: 24px; }
 
-    #updates-icon {
-      position: absolute;
-      bottom: 20px;
-      right: 10px;
-      z-index: 900;
-      background: white;
-      border: 2px solid rgba(0,0,0,0.2);
-      border-radius: 50%;
-      width: 44px;
-      height: 44px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-      cursor: pointer;
-    }
-    #updates-icon:hover { background: #f0f0f0; }
-    #updates-panel {
-      display: none;
-      position: absolute;
-      bottom: 74px;
-      right: 10px;
-      z-index: 900;
-      background: white;
-      border: 2px solid rgba(0,0,0,0.2);
-      border-radius: 4px;
-      padding: 12px;
-      font-family: Helvetica;
-      width: 280px;
-      max-height: 60vh;
-      overflow-y: auto;
-    }
-    #updates-panel.show { display: block; }
-    #updates-panel h4 { margin: 0 0 8px 0; font-size: 15px; }
+    /* Updates Panel Styling */
     .update-item { border-bottom: 1px solid #eee; padding: 6px 0; font-size: 13px; }
     .update-item:last-child { border-bottom: none; }
     .update-date { font-weight: bold; font-size: 12px; color: #555; display: block; margin-bottom: 2px; }
+
+    /* Hide standard leaflet layers control so we manage it in sidebar */
+    .leaflet-control-layers { display: none !important; }
 
     /* WELCOME / INFO BOX */
     #welcome-overlay {
@@ -156,7 +168,6 @@
       background: white;
       border-radius: 6px;
       padding: 20px 24px;
-      font-family: Helvetica;
       max-width: 420px;
       width: 90%;
       max-height: 70vh;
@@ -187,32 +198,29 @@
   </style>
 </head>
 <body>
-  <div id="map-title">Russo-Ukrainian War Map (Polrad Mapping)</div>
-  <div id="search-container"></div>
+  <div id="map-title">Russo-Ukrainian War Map</div>
   <div id="map"></div>
   <div id="watermark-overlay"></div>
 
-  <div id="welcome-overlay">
-    <div id="welcome-box">
-      <button id="welcome-close" onclick="document.getElementById('welcome-overlay').style.display='none'">&times;</button>
-      <h3>Welcome</h3>
-      <p id="welcome-text">Welcome and thanks for using my map!<br><br>
-This map was created to show the situation in Ukraine. Of course, this map, like every other war map, is not 100% reliable or true.<br><br>
-Use the layers and the map tools featured here. Map updates are displayed via the bell icon in the bottom-right corner.<br><br>
-This map was inspired by <a href="https://x.com/M0nstas" target="_blank" rel="noopener">@M0nstas</a> and <a href="https://x.com/Playfra0" target="_blank" rel="noopener">@Playfra0</a> and other mappers, and was designed mainly with Claude AI. If used, please tag me, <a href="https://x.com/polrad_mapping_" target="_blank" rel="noopener">@polrad_mapping_</a>, in your posts.<br><br>
-I use multiple sources to update and clarify the map — mainly geolocation data, other mappers, and partially my own sources.</p>
+  <!-- Vertical Sidebar Icons Bar -->
+  <div id="sidebar-bar">
+    <button class="sidebar-btn" id="btn-tab-layers" onclick="toggleTab('layers')" title="Layers & Basemaps">🗺️</button>
+    <button class="sidebar-btn" id="btn-tab-tools" onclick="toggleTab('tools')" title="Map Tools & Draw">✏️</button>
+    <button class="sidebar-btn" id="btn-tab-updates" onclick="toggleTab('updates')" title="Map Updates">🔔</button>
+  </div>
+
+  <!-- Sidebar Sub-Panels -->
+  <div class="sidebar-panel" id="panel-layers">
+    <h4>Basemaps & Layers</h4>
+    <div id="basemap-selector-container">
+      <strong>Base Map</strong>
+      <div id="basemap-options" style="margin-top: 6px; margin-bottom: 12px; font-size: 13px;"></div>
     </div>
+    <div id="grouped-layer-container"></div>
   </div>
 
-  <div id="updates-icon" onclick="toggleUpdatesPanel()" title="Map Updates">🔔</div>
-  <div id="updates-panel">
-    <h4>Map Updates</h4>
-    <div id="updates-content">Loading...</div>
-  </div>
-
-  <div id="toolbar">
+  <div class="sidebar-panel" id="panel-tools">
     <h4>Map Tools</h4>
-
     <button class="tool-btn" id="btn-draw-toggle" onclick="toggleDrawSubmenu()">Draw ▾</button>
 
     <div id="draw-submenu">
@@ -237,59 +245,56 @@ I use multiple sources to update and clarify the map — mainly geolocation data
     <div id="tool-result">Select a tool to get started.</div>
   </div>
 
+  <div class="sidebar-panel" id="panel-updates">
+    <h4>Map Updates</h4>
+    <div id="updates-content">Loading...</div>
+  </div>
+
+  <div id="welcome-overlay">
+    <div id="welcome-box">
+      <button id="welcome-close" onclick="document.getElementById('welcome-overlay').style.display='none'">&times;</button>
+      <h3>Welcome</h3>
+      <p id="welcome-text">Welcome and thanks for using my map!<br><br>
+This map was created to show the situation in Ukraine. Of course, this map, like every other war map, is not 100% reliable or true.<br><br>
+Use the layers and the map tools featured here. Map updates are displayed via the bell icon on the left sidebar.<br><br>
+This map was inspired by <a href="https://x.com/M0nstas" target="_blank" rel="noopener">@M0nstas</a> and <a href="https://x.com/Playfra0" target="_blank" rel="noopener">@Playfra0</a> and other mappers, and was designed mainly with Claude AI. If used, please tag me, <a href="https://x.com/polrad_mapping_" target="_blank" rel="noopener">@polrad_mapping_</a>, in your posts.<br><br>
+I use multiple sources to update and clarify the map — mainly geolocation data, other mappers, and partially my own sources.</p>
+    </div>
+  </div>
+
   <script>
     // ============================
     // BASEMAPS
     // ============================
     var satellite = L.tileLayer(
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-      { attribution: 'Tiles &copy; Esri &mdash; Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community' }
+      { attribution: 'Tiles &copy; Esri' }
     );
 
     var hybridEsri = L.layerGroup([
-      L.tileLayer(
-        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-        { attribution: 'Tiles &copy; Esri &mdash; Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community' }
-      ),
-      L.tileLayer(
-        'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
-        { attribution: 'Labels &copy; Esri' }
-      )
+      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: 'Tiles &copy; Esri' }),
+      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', { attribution: 'Labels &copy; Esri' })
     ]);
 
     var hybridCarto = L.layerGroup([
-      L.tileLayer(
-        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-        { attribution: 'Tiles &copy; Esri &mdash; Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community' }
-      ),
-      L.tileLayer(
-        'https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png',
-        { attribution: 'Labels &copy; <a href="https://carto.com/attribution">CARTO</a>' }
-      )
+      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: 'Tiles &copy; Esri' }),
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png', { attribution: 'Labels &copy; CARTO' })
     ]);
 
-    var streets = L.tileLayer(
-      'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-      {
-        attribution:
-          '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors, ' +
-          '&copy; <a href="https://carto.com/attribution">CARTO</a>'
-      }
-    );
+    var streets = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { attribution: '&copy; CARTO' });
+    var osmStandard = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap' });
+    var topo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenTopoMap' });
 
-    var osmStandard = L.tileLayer(
-      'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-      { attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors' }
-    );
+    var baseLayers = {
+      "Hybrid (Esri Labels)": hybridEsri,
+      "Hybrid (CARTO Labels)": hybridCarto,
+      "Satellite (Esri)": satellite,
+      "Streets (Light)": streets,
+      "Streets (OSM)": osmStandard,
+      "Topographic": topo
+    };
 
-    var topo = L.tileLayer(
-      'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
-      {
-        attribution:
-          '&copy; <a href="https://opentopomap.org">OpenTopoMap</a> (CC-BY-SA), ' +
-          '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
-      }
-    );
+    var currentBaseLayer = hybridEsri;
 
     // ============================
     // CREATE MAP
@@ -298,21 +303,88 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       center: [48.00, 37.75],
       zoom: 7,
       scrollWheelZoom: true,
-      layers: [hybridEsri]
+      layers: [currentBaseLayer]
     });
 
     map.createPane('markersPane');
     map.getPane('markersPane').style.zIndex = 650;
 
-    // Helper Function to Calculate Area using Turf.js
+    // ============================
+    // TOP-CENTER SEARCH CONTROL
+    // ============================
+    var topCenterContainer = L.DomUtil.create('div', 'leaflet-top leaflet-center');
+    map.getContainer().appendChild(topCenterContainer);
+
+    var searchProvider = new GeoSearch.OpenStreetMapProvider();
+    var searchControl = GeoSearch.GeoSearchControl({
+      provider: searchProvider,
+      style: 'bar',
+      showMarker: true,
+      showPopup: false,
+      marker: { icon: new L.Icon.Default(), draggable: false },
+      popupFormat: ({ query, result }) => result.label,
+      maxMarkers: 1,
+      retainZoomLevel: false,
+      animateZoom: true,
+      autoClose: true,
+      searchLabel: 'Search location or coordinates...',
+      keepResult: true
+    });
+
+    topCenterContainer.appendChild(searchControl.onAdd(map));
+
+    // ============================
+    // SIDEBAR TAB TOGGLE LOGIC
+    // ============================
+    function toggleTab(tabName) {
+      var panel = document.getElementById('panel-' + tabName);
+      var btn = document.getElementById('btn-tab-' + tabName);
+      var isCurrentlyShow = panel.classList.contains('show');
+
+      document.querySelectorAll('.sidebar-panel').forEach(p => p.classList.remove('show'));
+      document.querySelectorAll('.sidebar-btn').forEach(b => b.classList.remove('active'));
+
+      if (!isCurrentlyShow) {
+        panel.classList.add('show');
+        btn.classList.add('active');
+      }
+    }
+
+    // Populate Basemap Radio Options in Panel
+    var basemapContainer = document.getElementById('basemap-options');
+    Object.keys(baseLayers).forEach(function(key) {
+      var label = document.createElement('label');
+      label.style.display = 'block';
+      label.style.marginBottom = '4px';
+      label.style.cursor = 'pointer';
+
+      var radio = document.createElement('input');
+      radio.type = 'radio';
+      radio.name = 'basemap';
+      radio.checked = baseLayers[key] === currentBaseLayer;
+
+      radio.addEventListener('change', function() {
+        if (radio.checked) {
+          map.removeLayer(currentBaseLayer);
+          currentBaseLayer = baseLayers[key];
+          map.addLayer(currentBaseLayer);
+        }
+      });
+
+      label.appendChild(radio);
+      label.appendChild(document.createTextNode(' ' + key));
+      basemapContainer.appendChild(label);
+    });
+
+    // ============================
+    // AREA CALCULATION
+    // ============================
     function calculateAreaAndBindPopup(layer, title) {
       layer.on('click', function(e) {
         if (activeTool) return;
-
         var geojson = layer.toGeoJSON();
         var areaInMeters = turf.area(geojson);
         var areaInKm2 = (areaInMeters / 1000000).toFixed(2);
-
         var nameText = (geojson.properties && geojson.properties.name) ? "<b>" + geojson.properties.name + "</b><br>" : "";
         var titleText = title ? "<b>" + title + "</b><br>" : "";
 
@@ -326,50 +398,11 @@ I use multiple sources to update and clarify the map — mainly geolocation data
     }
 
     // ============================
-    // SEARCH CONTROL (Placed under Title)
+    // CITIES & LAYERS
     // ============================
-    var searchProvider = new GeoSearch.OpenStreetMapProvider();
-    var searchControl = GeoSearch.GeoSearchControl({
-      provider: searchProvider,
-      style: 'bar',
-      showMarker: true,
-      showPopup: false,
-      marker: {
-        icon: new L.Icon.Default(),
-        draggable: false
-      },
-      popupFormat: ({ query, result }) => result.label,
-      maxMarkers: 1,
-      retainZoomLevel: false,
-      animateZoom: true,
-      autoClose: true,
-      searchLabel: 'Search location or coordinates...',
-      keepResult: true
-    });
-
-    var searchElement = searchControl.onAdd(map);
-    document.getElementById('search-container').appendChild(searchElement);
-
-    // ============================
-    // BASE LAYER SWITCHER
-    // ============================
-    var baseLayers = {
-      "Hybrid (Satellite + Esri Labels)": hybridEsri,
-      "Hybrid (Satellite + CARTO Labels)": hybridCarto,
-      "Satellite (Esri)": satellite,
-      "Streets (Light)": streets,
-      "Streets (OSM Standard)": osmStandard,
-      "Topographic": topo
-    };
-
-    L.control.layers(baseLayers, null, { collapsed: false }).addTo(map);
-
     var mainLayers = {};
     var extraLayers = {};
 
-    // ============================
-    // CITIES CAPTURED BY RUSSIA SINCE 24 FEBRUARY 2022
-    // ============================
     var cityIcon = L.icon({
       iconUrl: 'city-icon.png',
       iconSize: [28, 28],
@@ -378,28 +411,28 @@ I use multiple sources to update and clarify the map — mainly geolocation data
     });
 
     var capturedCities = [
-      { name: "Popasna",            date: "7 May 2022",        lat: 48.6480, lng: 38.3540 },
-      { name: "Mariupol",           date: "20 May 2022",       lat: 47.0971, lng: 37.5434 },
-      { name: "Sievierodonetsk",    date: "25 June 2022",      lat: 48.9483, lng: 38.4931 },
-      { name: "Lysychansk",         date: "3 July 2022",       lat: 48.9142, lng: 38.4436 },
-      { name: "Soledar",            date: "16 January 2023",   lat: 48.6825, lng: 38.0706 },
-      { name: "Bakhmut",            date: "20 May 2023",       lat: 48.5956, lng: 37.9999 },
-      { name: "Marinka",            date: "25 December 2023",  lat: 47.9631, lng: 37.4880 },
-      { name: "Avdiivka",           date: "17 February 2024",  lat: 48.1391, lng: 37.7461 },
-      { name: "Novohrodivka",       date: "27 August 2024",    lat: 48.2833, lng: 37.3167 },
+      { name: "Popasna", date: "7 May 2022", lat: 48.6480, lng: 38.3540 },
+      { name: "Mariupol", date: "20 May 2022", lat: 47.0971, lng: 37.5434 },
+      { name: "Sievierodonetsk", date: "25 June 2022", lat: 48.9483, lng: 38.4931 },
+      { name: "Lysychansk", date: "3 July 2022", lat: 48.9142, lng: 38.4436 },
+      { name: "Soledar", date: "16 January 2023", lat: 48.6825, lng: 38.0706 },
+      { name: "Bakhmut", date: "20 May 2023", lat: 48.5956, lng: 37.9999 },
+      { name: "Marinka", date: "25 December 2023", lat: 47.9631, lng: 37.4880 },
+      { name: "Avdiivka", date: "17 February 2024", lat: 48.1391, lng: 37.7461 },
+      { name: "Novohrodivka", date: "27 August 2024", lat: 48.2833, lng: 37.3167 },
       { name: "Kostiantynivka (Pokrovsk Raion)", date: "27 August 2024", lat: 48.52486, lng: 37.6986 },
-      { name: "Krasnohorivka",      date: "9 September 2024",  lat: 48.0339, lng: 37.4676 },
-      { name: "Ukrainsk",           date: "17 September 2024", lat: 48.1667, lng: 37.3833 },
-      { name: "Vuhledar",           date: "1 October 2024",    lat: 47.8258, lng: 37.2792 },
-      { name: "Selydove",           date: "30 October 2024",   lat: 48.1333, lng: 37.2000 },
-      { name: "Kurakhove",          date: "25 December 2024",  lat: 47.9850, lng: 37.2831 },
-      { name: "Velyka Novosilka",   date: "28 January 2025",   lat: 47.8389, lng: 36.8344 },
-      { name: "Chasiv Yar",         date: "August 2025",       lat: 48.58025, lng: 37.83719 },
-      { name: "Toretsk",            date: "August 2025",       lat: 48.3917, lng: 37.8728 },
-      { name: "Siversk",            date: "20 December 2025",  lat: 48.8667, lng: 38.0500 },
-      { name: "Pokrovsk",           date: "January 2026",      lat: 48.2822, lng: 37.1758 },
-      { name: "Myrnohrad",          date: "February 2026",     lat: 48.3167, lng: 37.2333 },
-      { name: "Huliaipole",         date: "February 2026",     lat: 47.6583, lng: 36.2667 }
+      { name: "Krasnohorivka", date: "9 September 2024", lat: 48.0339, lng: 37.4676 },
+      { name: "Ukrainsk", date: "17 September 2024", lat: 48.1667, lng: 37.3833 },
+      { name: "Vuhledar", date: "1 October 2024", lat: 47.8258, lng: 37.2792 },
+      { name: "Selydove", date: "30 October 2024", lat: 48.1333, lng: 37.2000 },
+      { name: "Kurakhove", date: "25 December 2024", lat: 47.9850, lng: 37.2831 },
+      { name: "Velyka Novosilka", date: "28 January 2025", lat: 47.8389, lng: 36.8344 },
+      { name: "Chasiv Yar", date: "August 2025", lat: 48.58025, lng: 37.83719 },
+      { name: "Toretsk", date: "August 2025", lat: 48.3917, lng: 37.8728 },
+      { name: "Siversk", date: "20 December 2025", lat: 48.8667, lng: 38.0500 },
+      { name: "Pokrovsk", date: "January 2026", lat: 48.2822, lng: 37.1758 },
+      { name: "Myrnohrad", date: "February 2026", lat: 48.3167, lng: 37.2333 },
+      { name: "Huliaipole", date: "February 2026", lat: 47.6583, lng: 36.2667 }
     ];
 
     var cityMarkers = L.layerGroup();
@@ -409,73 +442,26 @@ I use multiple sources to update and clarify the map — mainly geolocation data
         .addTo(cityMarkers);
     });
     cityMarkers.addTo(map);
+    extraLayers["Cities Captured"] = cityMarkers;
 
-    extraLayers["Cities Captured (since Feb 2022)"] = cityMarkers;
-
-    // ============================
-    // VISITOR DRAWINGS & MEASUREMENTS
-    // ============================
     var userDrawings = L.layerGroup().addTo(map);
-    extraLayers["My Drawings & Measurements"] = userDrawings;
+    extraLayers["My Drawings"] = userDrawings;
 
-    // ============================
-    // GEOJSON LAYERS
-    // ============================
     var layerFiles = [
-      {
-        file: "Russian-controlled%20territory.geojson",
-        name: "Russian-controlled territory",
-        color: "#F0001B",
-        group: "main",
-        styleOverrides: {}
-      },
-      {
-        file: "neatogeo_Frontline%20towns%20%28from%20PWM%29.geojson",
-        name: "Frontline towns (from PWM)",
-        color: "#ffffff",
-        outlineColor: "#ffffff",
-        fillOpacity: 0,
-        group: "extra",
-        styleOverrides: {}
-      },
-      {
-        file: "Ukrainian-controlled%20territory.geojson",
-        name: "Ukrainian-controlled territory",
-        color: "#1427a5",
-        group: "main",
-        styleOverrides: {}
-      },
-      {
-        file: "Advances%20%28both%20sides%29.geojson",
-        name: "Advances (both sides)",
-        color: "#f1c40f",
-        group: "main",
-        styleOverrides: {}
-      },
-      {
-        file: "Territories%20regained%20in%20the%20last%20month.geojson",
-        name: "Territories regained in the last month",
-        color: "#2ecc71",
-        group: "main",
-        styleOverrides: {}
-      }
+      { file: "Russian-controlled%20territory.geojson", name: "Russian-controlled territory", color: "#F0001B", group: "main" },
+      { file: "neatogeo_Frontline%20towns%20%28from%20PWM%29.geojson", name: "Frontline towns", color: "#ffffff", outlineColor: "#ffffff", fillOpacity: 0, group: "extra" },
+      { file: "Ukrainian-controlled%20territory.geojson", name: "Ukrainian-controlled territory", color: "#1427a5", group: "main" },
+      { file: "Advances%20%28both%20sides%29.geojson", name: "Advances (both sides)", color: "#f1c40f", group: "main" },
+      { file: "Territories%20regained%20in%20the%20last%20month.geojson", name: "Territories regained", color: "#2ecc71", group: "main" }
     ];
 
     layerFiles.forEach(function(layerInfo) {
       fetch(layerInfo.file)
-        .then(function(response) {
-          if (!response.ok) throw new Error('HTTP error, status = ' + response.status + ' for ' + layerInfo.file);
-          return response.json();
-        })
-        .then(function(data) {
+        .then(response => response.json())
+        .then(data => {
           var layer = L.geoJSON(data, {
-            style: function(feature) {
-              var featureName = feature.properties && feature.properties.name;
-              var override = featureName && layerInfo.styleOverrides[featureName];
-              var fillColor = (override && override.color) || layerInfo.color;
-              var lineColor = (override && override.outlineColor) || layerInfo.outlineColor || fillColor;
-              var fillOpacity = (layerInfo.fillOpacity !== undefined) ? layerInfo.fillOpacity : 0.4;
-              return { color: lineColor, weight: 2, fillColor: fillColor, fillOpacity: fillOpacity };
+            style: function() {
+              return { color: layerInfo.outlineColor || layerInfo.color, weight: 2, fillColor: layerInfo.color, fillOpacity: layerInfo.fillOpacity !== undefined ? layerInfo.fillOpacity : 0.4 };
             },
             onEachFeature: function(feature, featureLayer) {
               if (feature.geometry && (feature.geometry.type === "Polygon" || feature.geometry.type === "MultiPolygon")) {
@@ -484,97 +470,42 @@ I use multiple sources to update and clarify the map — mainly geolocation data
             }
           }).addTo(map);
 
-          if (layerInfo.group === "main") {
-            mainLayers[layerInfo.name] = layer;
-          } else {
-            extraLayers[layerInfo.name] = layer;
-          }
+          if (layerInfo.group === "main") mainLayers[layerInfo.name] = layer;
+          else extraLayers[layerInfo.name] = layer;
 
-          updateGroupedLayerControl();
-        })
-        .catch(function(error) {
-          console.error("Could not load layer '" + layerInfo.name + "':", error);
-        });
+          updateSidebarLayerControl();
+        }).catch(err => console.error("Layer load error:", err));
     });
 
-    // ============================
-    // GROUPED LAYER CONTROL
-    // ============================
-    var groupedLayerControl = L.control({ position: 'topright' });
-
-    groupedLayerControl.onAdd = function() {
-      var div = L.DomUtil.create('div', 'leaflet-control-layers leaflet-control');
-      div.id = 'grouped-layer-control';
-      L.DomEvent.disableClickPropagation(div);
-      L.DomEvent.disableScrollPropagation(div);
-      return div;
-    };
-
-    groupedLayerControl.addTo(map);
-
-    function updateGroupedLayerControl() {
-      var container = document.getElementById('grouped-layer-control');
+    function updateSidebarLayerControl() {
+      var container = document.getElementById('grouped-layer-container');
       if (!container) return;
-
       container.innerHTML = '';
 
       function addGroup(sectionTitle, layers) {
         var section = document.createElement('div');
-        section.style.padding = '6px 8px';
+        section.style.marginBottom = '10px';
 
         var title = document.createElement('div');
         title.style.fontWeight = 'bold';
-        title.style.marginBottom = '5px';
+        title.style.fontSize = '13px';
+        title.style.marginBottom = '4px';
         title.textContent = sectionTitle;
         section.appendChild(title);
 
-        var names = Object.keys(layers);
-        var allCheckbox = document.createElement('input');
-        allCheckbox.type = 'checkbox';
-
-        var visibleCount = names.filter(function(name) {
-          return map.hasLayer(layers[name]);
-        }).length;
-
-        allCheckbox.checked = names.length > 0 && visibleCount === names.length;
-        allCheckbox.indeterminate = visibleCount > 0 && visibleCount < names.length;
-
-        var allLabel = document.createElement('label');
-        allLabel.style.display = 'block';
-        allLabel.style.marginBottom = '5px';
-        allLabel.style.fontWeight = 'bold';
-        allLabel.appendChild(allCheckbox);
-        allLabel.appendChild(document.createTextNode(' All ' + sectionTitle));
-        section.appendChild(allLabel);
-
-        allCheckbox.addEventListener('change', function() {
-          names.forEach(function(name) {
-            if (allCheckbox.checked) {
-              if (!map.hasLayer(layers[name])) map.addLayer(layers[name]);
-            } else {
-              if (map.hasLayer(layers[name])) map.removeLayer(layers[name]);
-            }
-          });
-          updateGroupedLayerControl();
-        });
-
-        names.forEach(function(name) {
+        Object.keys(layers).forEach(function(name) {
           var checkbox = document.createElement('input');
           checkbox.type = 'checkbox';
           checkbox.checked = map.hasLayer(layers[name]);
 
           checkbox.addEventListener('change', function() {
-            if (checkbox.checked) {
-              map.addLayer(layers[name]);
-            } else {
-              map.removeLayer(layers[name]);
-            }
-            updateGroupedLayerControl();
+            if (checkbox.checked) map.addLayer(layers[name]);
+            else map.removeLayer(layers[name]);
           });
 
           var label = document.createElement('label');
           label.style.display = 'block';
-          label.style.marginLeft = '10px';
+          label.style.fontSize = '13px';
           label.style.marginBottom = '3px';
           label.appendChild(checkbox);
           label.appendChild(document.createTextNode(' ' + name));
@@ -585,46 +516,26 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       }
 
       container.appendChild(addGroup('Main Layers', mainLayers));
-
-      var separator = document.createElement('div');
-      separator.style.borderTop = '1px solid #ccc';
-      container.appendChild(separator);
-
       container.appendChild(addGroup('Extra Layers', extraLayers));
     }
-
-    updateGroupedLayerControl();
 
     // ============================
     // MAP UPDATES PANEL
     // ============================
-    function toggleUpdatesPanel() {
-      document.getElementById('updates-panel').classList.toggle('show');
-    }
-
     fetch('updates.json')
-      .then(function(response) {
-        if (!response.ok) throw new Error('HTTP error, status = ' + response.status);
-        return response.json();
-      })
-      .then(function(updates) {
+      .then(response => response.json())
+      .then(updates => {
         var container = document.getElementById('updates-content');
         container.innerHTML = '';
-        if (!updates.length) {
-          container.innerHTML = '<em>No updates yet.</em>';
-          return;
-        }
-        updates.forEach(function(item) {
+        if (!updates.length) { container.innerHTML = '<em>No updates yet.</em>'; return; }
+        updates.forEach(item => {
           var div = document.createElement('div');
           div.className = 'update-item';
           div.innerHTML = '<span class="update-date">' + item.date + '</span>' + item.text;
           container.appendChild(div);
         });
       })
-      .catch(function(error) {
-        document.getElementById('updates-content').innerHTML = '<em>Could not load updates.</em>';
-        console.error('Could not load updates.json:', error);
-      });
+      .catch(() => document.getElementById('updates-content').innerHTML = '<em>Could not load updates.</em>');
 
     // ============================
     // VISITOR TOOLS
@@ -656,10 +567,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
 
       document.getElementById('color-row').classList.toggle('show', drawTools.indexOf(activeTool) !== -1);
       document.getElementById('ruler-controls').classList.toggle('show', activeTool === 'ruler');
-
-      if (drawTools.indexOf(tool) !== -1) {
-        document.getElementById('draw-submenu').classList.add('show');
-      }
+      if (drawTools.indexOf(tool) !== -1) document.getElementById('draw-submenu').classList.add('show');
     }
 
     function resetDrawingState() {
@@ -670,7 +578,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
     }
 
     function updateToolButtons() {
-      document.querySelectorAll('.tool-btn').forEach(function(btn) { btn.classList.remove('active'); });
+      document.querySelectorAll('.tool-btn').forEach(btn => btn.classList.remove('active'));
       if (activeTool) {
         var btn = document.getElementById('btn-' + activeTool);
         if (btn) btn.classList.add('active');
@@ -681,10 +589,10 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       var msgs = {
         polygon: "Click points to trace a shape, then click 'Finish Shape'.",
         freehand: "Click and drag on the map to draw freely.",
-        arrow: "Click a start point, then click an end point to place an arrow.",
-        rectangle: "Click one corner, then click the opposite corner.",
+        arrow: "Click start point, then click end point to place an arrow.",
+        rectangle: "Click one corner, then click opposite corner.",
         ruler: "Click points to measure distance, then click 'Finish Measuring'.",
-        coords: "Click anywhere on the map to see its coordinates."
+        coords: "Click anywhere on the map to see coordinates."
       };
       toolResult.innerText = activeTool ? msgs[activeTool] : "Select a tool to get started.";
     }
@@ -731,10 +639,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       if (!activeTool) return;
 
       if (activeTool === 'coords') {
-        L.popup()
-          .setLatLng(e.latlng)
-          .setContent("Lat: " + e.latlng.lat.toFixed(5) + "<br>Lng: " + e.latlng.lng.toFixed(5))
-          .openOn(map);
+        L.popup().setLatLng(e.latlng).setContent("Lat: " + e.latlng.lat.toFixed(5) + "<br>Lng: " + e.latlng.lng.toFixed(5)).openOn(map);
         toolResult.innerText = "Lat: " + e.latlng.lat.toFixed(5) + ", Lng: " + e.latlng.lng.toFixed(5);
         return;
       }
@@ -742,24 +647,19 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       if (activeTool === 'polygon' || activeTool === 'ruler') {
         drawingPoints.push(e.latlng);
         if (previewLayer) map.removeLayer(previewLayer);
-        previewLayer = L.polyline(drawingPoints, {
-          color: activeTool === 'ruler' ? '#000000' : currentColor,
-          weight: 3,
-          dashArray: activeTool === 'ruler' ? '6,6' : null
-        }).addTo(map);
+        previewLayer = L.polyline(drawingPoints, { color: activeTool === 'ruler' ? '#000000' : currentColor, weight: 3, dashArray: activeTool === 'ruler' ? '6,6' : null }).addTo(map);
 
         if (activeTool === 'ruler' && drawingPoints.length > 1) {
           var total = 0;
           for (var i = 1; i < drawingPoints.length; i++) total += map.distance(drawingPoints[i - 1], drawingPoints[i]);
-          toolResult.innerText = "Distance so far: " + (total / 1000).toFixed(2) + " km (" + Math.round(total) + " m)";
+          toolResult.innerText = "Distance: " + (total / 1000).toFixed(2) + " km";
         }
         return;
       }
 
       if (activeTool === 'rectangle') {
-        if (drawingPoints.length === 0) {
-          drawingPoints.push(e.latlng);
-        } else {
+        if (drawingPoints.length === 0) drawingPoints.push(e.latlng);
+        else {
           var bounds = L.latLngBounds(drawingPoints[0], e.latlng);
           var rect = L.rectangle(bounds, { color: currentColor, weight: 2, fillColor: currentColor, fillOpacity: 0.4 });
           userDrawings.addLayer(rect);
@@ -771,9 +671,8 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       }
 
       if (activeTool === 'arrow') {
-        if (drawingPoints.length === 0) {
-          drawingPoints.push(e.latlng);
-        } else {
+        if (drawingPoints.length === 0) drawingPoints.push(e.latlng);
+        else {
           addArrow(drawingPoints[0], e.latlng, currentColor);
           if (previewLayer) { map.removeLayer(previewLayer); previewLayer = null; }
           drawingPoints = [];
@@ -783,7 +682,6 @@ I use multiple sources to update and clarify the map — mainly geolocation data
 
     function addArrow(start, end, color) {
       userDrawings.addLayer(L.polyline([start, end], { color: color, weight: 3 }));
-
       var p1 = map.latLngToLayerPoint(start);
       var p2 = map.latLngToLayerPoint(end);
       var angle = Math.atan2(p2.y - p1.y, p2.x - p1.x);
@@ -793,12 +691,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       var leftPt = L.point(p2.x - headLength * Math.cos(angle - headAngle), p2.y - headLength * Math.sin(angle - headAngle));
       var rightPt = L.point(p2.x - headLength * Math.cos(angle + headAngle), p2.y - headLength * Math.sin(angle + headAngle));
 
-      var leftLatLng = map.layerPointToLatLng(leftPt);
-      var rightLatLng = map.layerPointToLatLng(rightPt);
-
-      userDrawings.addLayer(
-        L.polygon([end, leftLatLng, rightLatLng], { color: color, fillColor: color, fillOpacity: 1, weight: 1 })
-      );
+      userDrawings.addLayer(L.polygon([end, map.layerPointToLatLng(leftPt), map.layerPointToLatLng(rightPt)], { color: color, fillColor: color, fillOpacity: 1, weight: 1 }));
     }
 
     function finishShape() {
@@ -814,9 +707,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
         var total = 0;
         for (var i = 1; i < drawingPoints.length; i++) total += map.distance(drawingPoints[i - 1], drawingPoints[i]);
         var km = (total / 1000).toFixed(2);
-        userDrawings.addLayer(
-          L.polyline(drawingPoints, { color: '#000000', weight: 2, dashArray: '6,6' }).bindPopup("Distance: " + km + " km")
-        );
+        userDrawings.addLayer(L.polyline(drawingPoints, { color: '#000000', weight: 2, dashArray: '6,6' }).bindPopup("Distance: " + km + " km"));
       }
       setActiveTool(null);
     }
@@ -825,7 +716,6 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       userDrawings.clearLayers();
       toolResult.innerText = "Cleared.";
     }
-
   </script>
 </body>
 </html>
