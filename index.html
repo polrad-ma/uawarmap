@@ -361,7 +361,8 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       center: [48.00, 37.75],
       zoom: 7,
       scrollWheelZoom: true,
-      layers: [hybrid]
+      layers: [hybrid],
+      renderer: L.canvas() // avoids SVG-related DOM errors caused by some browser extensions/translate tools
     });
 
     map.createPane('markersPane');
