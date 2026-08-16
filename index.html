@@ -143,13 +143,13 @@
     }
     #welcome-close:hover { color: #000; }
 
-    /* WATERMARK */
+    /* WATERMARK — more transparent now */
     #watermark-overlay {
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
       z-index: 750;
       pointer-events: none;
-      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='160'><text x='10' y='90' font-family='Helvetica, Arial, sans-serif' font-size='22' font-weight='bold' fill='%23ffffff' fill-opacity='0.25' stroke='%23000000' stroke-opacity='0.15' stroke-width='0.5' transform='rotate(-25 160 80)'>POLRAD MAPPING</text></svg>");
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='160'><text x='10' y='90' font-family='Helvetica, Arial, sans-serif' font-size='22' font-weight='bold' fill='%23ffffff' fill-opacity='0.12' stroke='%23000000' stroke-opacity='0.07' stroke-width='0.5' transform='rotate(-25 160 80)'>POLRAD MAPPING</text></svg>");
       background-repeat: repeat;
     }
   </style>
@@ -213,17 +213,29 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       { attribution: 'Tiles &copy; Esri &mdash; Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community' }
     );
 
-    var hybridBase = L.tileLayer(
-      'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-      { attribution: 'Tiles &copy; Esri &mdash; Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community' }
-    );
+    // Hybrid option 1: Esri satellite + Esri place-name/boundary labels
+    var hybridEsri = L.layerGroup([
+      L.tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        { attribution: 'Tiles &copy; Esri &mdash; Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community' }
+      ),
+      L.tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
+        { attribution: 'Labels &copy; Esri' }
+      )
+    ]);
 
-    var hybridLabels = L.tileLayer(
-      'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
-      { attribution: 'Labels &copy; Esri' }
-    );
-
-    var hybrid = L.layerGroup([hybridBase, hybridLabels]);
+    // Hybrid option 2: Esri satellite + CARTO road/label overlay (different style/density)
+    var hybridCarto = L.layerGroup([
+      L.tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        { attribution: 'Tiles &copy; Esri &mdash; Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community' }
+      ),
+      L.tileLayer(
+        'https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png',
+        { attribution: 'Labels &copy; <a href="https://carto.com/attribution">CARTO</a>' }
+      )
+    ]);
 
     var streets = L.tileLayer(
       'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
@@ -255,7 +267,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       center: [48.00, 37.75],
       zoom: 7,
       scrollWheelZoom: true,
-      layers: [hybrid]
+      layers: [hybridEsri]
     });
 
     map.createPane('markersPane');
@@ -265,7 +277,8 @@ I use multiple sources to update and clarify the map — mainly geolocation data
     // LAYER SWITCHER
     // ============================
     var baseLayers = {
-      "Hybrid (Satellite + Labels)": hybrid,
+      "Hybrid (Satellite + Esri Labels)": hybridEsri,
+      "Hybrid (Satellite + CARTO Labels)": hybridCarto,
       "Satellite (Esri)": satellite,
       "Streets (Light)": streets,
       "Streets (OSM Standard)": osmStandard,
