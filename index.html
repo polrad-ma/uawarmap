@@ -349,11 +349,22 @@ I use multiple sources to update and clarify the map — mainly geolocation data
     // ============================
     var searchMarker = null;
 
-    // Approximate search area: Ukraine plus European Russia.
-    // Nominatim is also filtered by country codes for Ukraine and Russia.
-    var searchViewbox = '19.0,56.5,60.5,44.0';
+    // Approximate geographic limits used as a final safety filter.
+    var searchBounds = {
+      minLat: 44.0,
+      maxLat: 56.5,
+      minLng: 19.0,
+      maxLng: 60.5
+    };
 
-    function showSearchResults(message) {
+    function isInsideSearchArea(lat, lng) {
+      return lat >= searchBounds.minLat &&
+             lat <= searchBounds.maxLat &&
+             lng >= searchBounds.minLng &&
+             lng <= searchBounds.maxLng;
+    }
+
+    function showSearchMessage(message) {
       var box = document.getElementById('map-search-results');
       box.innerHTML = '<div class="map-search-message">' + message + '</div>';
       box.style.display = 'block';
@@ -363,6 +374,26 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       var box = document.getElementById('map-search-results');
       box.innerHTML = '';
       box.style.display = 'none';
+    }
+
+    function selectSearchResult(result) {
+      var lat = parseFloat(result.lat);
+      var lng = parseFloat(result.lon);
+
+      if (!isInsideSearchArea(lat, lng)) {
+        showSearchMessage('That location is outside Ukraine and European Russia.');
+        return;
+      }
+
+      clearSearchResults();
+      map.setView([lat, lng], 12);
+
+      if (searchMarker) map.removeLayer(searchMarker);
+
+      searchMarker = L.marker([lat, lng])
+        .addTo(map)
+        .bindPopup('<b>' + (result.name || 'Location') + '</b>')
+        .openPopup();
     }
 
     function performMapSearch() {
@@ -376,70 +407,73 @@ I use multiple sources to update and clarify the map — mainly geolocation data
 
       // Coordinates: "lat, lng" or "lat lng"
       var coordMatch = query.match(/^\s*(-?\d+(?:\.\d+)?)\s*[, ]\s*(-?\d+(?:\.\d+)?)\s*$/);
+
       if (coordMatch) {
         var lat = parseFloat(coordMatch[1]);
         var lng = parseFloat(coordMatch[2]);
 
-        // Broad geographic check for Ukraine + European Russia.
-        if (lat >= 44.0 && lat <= 56.5 && lng >= 19.0 && lng <= 60.5) {
-          clearSearchResults();
-          map.setView([lat, lng], 12);
-          if (searchMarker) map.removeLayer(searchMarker);
-          searchMarker = L.marker([lat, lng]).addTo(map)
-            .bindPopup('<b>Coordinates</b><br>' + lat + ', ' + lng)
-            .openPopup();
-          return;
-        } else {
-          showSearchResults('Coordinates are outside the search area.');
+        if (!isInsideSearchArea(lat, lng)) {
+          showSearchMessage('Coordinates are outside Ukraine and European Russia.');
           return;
         }
+
+        clearSearchResults();
+        map.setView([lat, lng], 12);
+
+        if (searchMarker) map.removeLayer(searchMarker);
+
+        searchMarker = L.marker([lat, lng])
+          .addTo(map)
+          .bindPopup('<b>Coordinates</b><br>' + lat + ', ' + lng)
+          .openPopup();
+
+        return;
       }
 
-      showSearchResults('Searching...');
+      showSearchMessage('Searching...');
 
+      // Search Ukraine and Russia through Nominatim.
+      // We deliberately do not use "bounded=1" or a viewbox here,
+      // because those can make Nominatim return no results for valid places.
       var url = 'https://nominatim.openstreetmap.org/search'
         + '?format=jsonv2'
         + '&q=' + encodeURIComponent(query)
-        + '&limit=5'
+        + '&limit=10'
         + '&countrycodes=ua,ru'
-        + '&viewbox=' + searchViewbox
-        + '&bounded=1'
         + '&addressdetails=1';
 
       fetch(url, {
-        headers: { 'Accept': 'application/json' }
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json'
+        }
       })
       .then(function(response) {
-        if (!response.ok) throw new Error('Search request failed');
+        if (!response.ok) throw new Error('HTTP ' + response.status);
         return response.json();
       })
       .then(function(results) {
         var box = document.getElementById('map-search-results');
         box.innerHTML = '';
 
-        if (!results.length) {
-          showSearchResults('No towns or cities found in Ukraine or European Russia.');
+        var filtered = results.filter(function(result) {
+          var lat = parseFloat(result.lat);
+          var lng = parseFloat(result.lon);
+          return isInsideSearchArea(lat, lng);
+        });
+
+        if (!filtered.length) {
+          showSearchMessage('No matching location found in Ukraine or European Russia.');
           return;
         }
 
-        results.forEach(function(result) {
+        filtered.forEach(function(result) {
           var item = document.createElement('div');
           item.className = 'map-search-result';
           item.textContent = result.display_name;
-
           item.addEventListener('click', function() {
-            var lat = parseFloat(result.lat);
-            var lng = parseFloat(result.lon);
-
-            clearSearchResults();
-            map.setView([lat, lng], 12);
-
-            if (searchMarker) map.removeLayer(searchMarker);
-            searchMarker = L.marker([lat, lng]).addTo(map)
-              .bindPopup('<b>' + result.name + '</b>')
-              .openPopup();
+            selectSearchResult(result);
           });
-
           box.appendChild(item);
         });
 
@@ -447,7 +481,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       })
       .catch(function(error) {
         console.error('Map search failed:', error);
-        showSearchResults('Search failed. Please try again.');
+        showSearchMessage('Search failed. Check your internet connection and try again.');
       });
     }
 
