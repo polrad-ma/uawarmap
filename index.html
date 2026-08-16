@@ -93,8 +93,8 @@
     }
     .leaflet-top.leaflet-center .leaflet-control { pointer-events: auto; }
     .leaflet-control-geosearch form {
-      background: #171717;
-      border: 2px solid rgba(255,255,255,0.2);
+      background: #171717 !important;
+      border: 2px solid rgba(255,255,255,0.2) !important;
       border-radius: 4px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.4);
       margin: 0;
@@ -104,40 +104,40 @@
       font-size: 14px;
       padding: 8px 12px;
       width: 260px;
-      background: #171717;
-      color: #ffffff;
+      background: #171717 !important;
+      color: #ffffff !important;
       border: none;
     }
     .leaflet-control-geosearch input.glass::placeholder {
-      color: #bbbbbb;
+      color: #bbbbbb !important;
     }
-    /* Style for the clear button (X icon) inside search bar */
+
+    /* Clear Button (X Icon) */
     .leaflet-control-geosearch a.reset {
       color: #ffffff !important;
-      background: transparent !important;
-      font-weight: bold;
-      font-size: 16px;
-      line-height: 26px;
-      text-align: center;
+      background-color: transparent !important;
+      font-size: 18px !important;
+      line-height: 26px !important;
+      text-decoration: none !important;
       opacity: 0.8;
+      border: none !important;
     }
     .leaflet-control-geosearch a.reset:hover {
-      opacity: 1;
       color: #ff5555 !important;
+      opacity: 1;
     }
-    .leaflet-control-geosearch .results {
-      background: #171717;
-      color: #ffffff;
-      border: 1px solid rgba(255,255,255,0.2);
+
+    /* Search Dropdown & Result Items */
+    .leaflet-control-geosearch .results,
+    .leaflet-control-geosearch .results * {
+      background-color: #171717 !important;
+      color: #ffffff !important;
+      border-color: rgba(255, 255, 255, 0.2) !important;
     }
-    .leaflet-control-geosearch .results > * {
-      background: #171717;
-      color: #ffffff;
-      border-bottom: 1px solid #333;
-    }
+    .leaflet-control-geosearch .results > .active,
     .leaflet-control-geosearch .results > *:hover {
-      background: #2a2a2a;
-      color: #ffffff;
+      background-color: #2a2a2a !important;
+      color: #ffffff !important;
     }
 
     /* Floating Panel containers that pop out of the sidebar */
@@ -238,7 +238,7 @@
     /* WATERMARK */
     #watermark-overlay {
       position: absolute;
-      top: 0; left: 60px; right: 0; bottom: 0; /* Shifted 60px to match map */
+      top: 0; left: 60px; right: 0; bottom: 0;
       z-index: 750;
       pointer-events: none;
       background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='160'><text x='10' y='90' font-family='Helvetica, Arial, sans-serif' font-size='22' font-weight='bold' fill='%23ffffff' fill-opacity='0.12' stroke='%23000000' stroke-opacity='0.07' stroke-width='0.5' transform='rotate(-25 160 80)'>POLRAD MAPPING</text></svg>");
