@@ -1,9 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html translate="no">
 <head>
   <title>Russo-Ukrainian War Map (Polrad Mapping)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta charset="utf-8">
+  <!-- Prevents Chrome's auto-translate from rewriting the page's DOM,
+       which is known to break Leaflet (causes "baseVal" errors) -->
+  <meta name="google" content="notranslate">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <!-- Turf.js: used only to calculate a polygon's real-world area in km² when clicked -->
