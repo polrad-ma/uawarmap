@@ -152,84 +152,11 @@
       background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='160'><text x='10' y='90' font-family='Helvetica, Arial, sans-serif' font-size='22' font-weight='bold' fill='%23ffffff' fill-opacity='0.12' stroke='%23000000' stroke-opacity='0.07' stroke-width='0.5' transform='rotate(-25 160 80)'>POLRAD MAPPING</text></svg>");
       background-repeat: repeat;
     }
-
-    /* MAP SEARCH */
-    #map-search {
-      position: absolute;
-      top: 12px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 950;
-      width: min(420px, 70vw);
-      font-family: Helvetica;
-    }
-    #map-search-row {
-      display: flex;
-      background: white;
-      border: 2px solid rgba(0,0,0,0.25);
-      border-radius: 5px;
-      box-shadow: 0 1px 5px rgba(0,0,0,0.25);
-      overflow: hidden;
-    }
-    #map-search-input {
-      flex: 1;
-      min-width: 0;
-      border: 0;
-      outline: 0;
-      padding: 9px 11px;
-      font-size: 14px;
-      font-family: Helvetica;
-    }
-    #map-search-button {
-      border: 0;
-      border-left: 1px solid #ddd;
-      background: #f5f5f5;
-      cursor: pointer;
-      padding: 0 12px;
-      font-size: 16px;
-    }
-    #map-search-button:hover { background: #e8e8e8; }
-    #map-search-results {
-      display: none;
-      margin-top: 4px;
-      background: white;
-      border: 1px solid #bbb;
-      border-radius: 4px;
-      box-shadow: 0 2px 7px rgba(0,0,0,0.25);
-      overflow: hidden;
-      max-height: 280px;
-      overflow-y: auto;
-    }
-    .map-search-result {
-      padding: 8px 10px;
-      border-bottom: 1px solid #eee;
-      cursor: pointer;
-      font-size: 13px;
-      line-height: 1.3;
-    }
-    .map-search-result:last-child { border-bottom: 0; }
-    .map-search-result:hover { background: #f0f0f0; }
-    .map-search-message {
-      padding: 9px 10px;
-      color: #555;
-      font-size: 13px;
-    }
   </style>
 </head>
 <body>
   <div id="map-title">Russo-Ukrainian War Map (Polrad Mapping)</div>
   <div id="map"></div>
-
-  <div id="map-search">
-    <div id="map-search-row">
-      <input id="map-search-input" type="text"
-             placeholder="Search for coordinates..."
-             autocomplete="off">
-      <button id="map-search-button" title="Search">🔎</button>
-    </div>
-    <div id="map-search-results"></div>
-  </div>
-
   <div id="watermark-overlay"></div>
 
   <div id="welcome-overlay">
@@ -343,163 +270,6 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       layers: [hybridEsri]
     });
 
-
-    // ============================
-    // MAP SEARCH — UKRAINE + EUROPEAN RUSSIA
-    // ============================
-    var searchMarker = null;
-
-    // Approximate geographic limits used as a final safety filter.
-    var searchBounds = {
-      minLat: 44.0,
-      maxLat: 56.5,
-      minLng: 19.0,
-      maxLng: 60.5
-    };
-
-    function isInsideSearchArea(lat, lng) {
-      return lat >= searchBounds.minLat &&
-             lat <= searchBounds.maxLat &&
-             lng >= searchBounds.minLng &&
-             lng <= searchBounds.maxLng;
-    }
-
-    function showSearchMessage(message) {
-      var box = document.getElementById('map-search-results');
-      box.innerHTML = '<div class="map-search-message">' + message + '</div>';
-      box.style.display = 'block';
-    }
-
-    function clearSearchResults() {
-      var box = document.getElementById('map-search-results');
-      box.innerHTML = '';
-      box.style.display = 'none';
-    }
-
-    function selectSearchResult(result) {
-      var lat = parseFloat(result.lat);
-      var lng = parseFloat(result.lon);
-
-      if (!isInsideSearchArea(lat, lng)) {
-        showSearchMessage('That location is outside Ukraine and European Russia.');
-        return;
-      }
-
-      clearSearchResults();
-      map.setView([lat, lng], 12);
-
-      if (searchMarker) map.removeLayer(searchMarker);
-
-      searchMarker = L.marker([lat, lng])
-        .addTo(map)
-        .bindPopup('<b>' + (result.name || 'Location') + '</b>')
-        .openPopup();
-    }
-
-    function performMapSearch() {
-      var input = document.getElementById('map-search-input');
-      var query = input.value.trim();
-
-      if (!query) {
-        clearSearchResults();
-        return;
-      }
-
-      // Coordinates: "lat, lng" or "lat lng"
-      var coordMatch = query.match(/^\s*(-?\d+(?:\.\d+)?)\s*[, ]\s*(-?\d+(?:\.\d+)?)\s*$/);
-
-      if (coordMatch) {
-        var lat = parseFloat(coordMatch[1]);
-        var lng = parseFloat(coordMatch[2]);
-
-        if (!isInsideSearchArea(lat, lng)) {
-          showSearchMessage('Coordinates are outside Ukraine and European Russia.');
-          return;
-        }
-
-        clearSearchResults();
-        map.setView([lat, lng], 12);
-
-        if (searchMarker) map.removeLayer(searchMarker);
-
-        searchMarker = L.marker([lat, lng])
-          .addTo(map)
-          .bindPopup('<b>Coordinates</b><br>' + lat + ', ' + lng)
-          .openPopup();
-
-        return;
-      }
-
-      showSearchMessage('Searching...');
-
-      // Search Ukraine and Russia through Nominatim.
-      // We deliberately do not use "bounded=1" or a viewbox here,
-      // because those can make Nominatim return no results for valid places.
-      var url = 'https://nominatim.openstreetmap.org/search'
-        + '?format=jsonv2'
-        + '&q=' + encodeURIComponent(query)
-        + '&limit=10'
-        + '&countrycodes=ua,ru'
-        + '&addressdetails=1';
-
-      fetch(url, {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json'
-        }
-      })
-      .then(function(response) {
-        if (!response.ok) throw new Error('HTTP ' + response.status);
-        return response.json();
-      })
-      .then(function(results) {
-        var box = document.getElementById('map-search-results');
-        box.innerHTML = '';
-
-        var filtered = results.filter(function(result) {
-          var lat = parseFloat(result.lat);
-          var lng = parseFloat(result.lon);
-          return isInsideSearchArea(lat, lng);
-        });
-
-        if (!filtered.length) {
-          showSearchMessage('No matching location found in Ukraine or European Russia.');
-          return;
-        }
-
-        filtered.forEach(function(result) {
-          var item = document.createElement('div');
-          item.className = 'map-search-result';
-          item.textContent = result.display_name;
-          item.addEventListener('click', function() {
-            selectSearchResult(result);
-          });
-          box.appendChild(item);
-        });
-
-        box.style.display = 'block';
-      })
-      .catch(function(error) {
-        console.error('Map search failed:', error);
-        showSearchMessage('Search failed. Check your internet connection and try again.');
-      });
-    }
-
-    document.getElementById('map-search-button')
-      .addEventListener('click', performMapSearch);
-
-    document.getElementById('map-search-input')
-      .addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') performMapSearch();
-        if (e.key === 'Escape') clearSearchResults();
-      });
-
-    document.addEventListener('click', function(e) {
-      var search = document.getElementById('map-search');
-      if (!search.contains(e.target)) clearSearchResults();
-    });
-
-
     map.createPane('markersPane');
     map.getPane('markersPane').style.zIndex = 650;
 
@@ -525,6 +295,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
         file: "neatogeo_Russian-controlled%20territory.geojson",
         name: "Russian-controlled territory",
         color: "#F0001B",
+        group: "main",
         styleOverrides: {}
       },
       {
@@ -533,27 +304,34 @@ I use multiple sources to update and clarify the map — mainly geolocation data
         color: "#ffffff",
         outlineColor: "#ffffff",
         fillOpacity: 0,
+        group: "extra",
         styleOverrides: {}
       },
       {
         file: "neatogeo_Ukrainian-controlled%20territory.geojson",
         name: "Ukrainian-controlled territory",
         color: "#1427a5",
+        group: "main",
         styleOverrides: {}
       },
       {
         file: "neatogeo_Advances%20%28both%20sides%29.geojson",
         name: "Advances (both sides)",
         color: "#f1c40f",
+        group: "main",
         styleOverrides: {}
       },
       {
         file: "neatogeo_Territories%20regained%20in%20the%20last%20month.geojson",
         name: "Territories regained in the last month",
         color: "#2ecc71",
+        group: "main",
         styleOverrides: {}
       }
     ];
+
+    var mainLayers = {};
+    var extraLayers = {};
 
     layerFiles.forEach(function(layerInfo) {
       fetch(layerInfo.file)
@@ -572,13 +350,118 @@ I use multiple sources to update and clarify the map — mainly geolocation data
               return { color: lineColor, weight: 2, fillColor: fillColor, fillOpacity: fillOpacity };
             }
           }).addTo(map);
-          layerControl.addOverlay(layer, layerInfo.name);
+
+          if (layerInfo.group === "main") {
+            mainLayers[layerInfo.name] = layer;
+          } else {
+            extraLayers[layerInfo.name] = layer;
+          }
+
           console.log(layerInfo.name + " loaded. Feature count:", data.features.length);
+          updateGroupedLayerControl();
         })
         .catch(function(error) {
           console.error("Could not load layer '" + layerInfo.name + "':", error);
         });
     });
+
+    // ============================
+    // GROUPED LAYER CONTROL
+    // ============================
+    var groupedLayerControl = L.control({ position: 'topright' });
+
+    groupedLayerControl.onAdd = function() {
+      var div = L.DomUtil.create('div', 'leaflet-control-layers leaflet-control');
+      div.id = 'grouped-layer-control';
+      L.DomEvent.disableClickPropagation(div);
+      L.DomEvent.disableScrollPropagation(div);
+      return div;
+    };
+
+    groupedLayerControl.addTo(map);
+
+    function updateGroupedLayerControl() {
+      var container = document.getElementById('grouped-layer-control');
+      if (!container) return;
+
+      container.innerHTML = '';
+
+      function addGroup(sectionTitle, layers) {
+        var section = document.createElement('div');
+        section.style.padding = '6px 8px';
+
+        var title = document.createElement('div');
+        title.style.fontWeight = 'bold';
+        title.style.marginBottom = '5px';
+        title.textContent = sectionTitle;
+        section.appendChild(title);
+
+        var names = Object.keys(layers);
+        var allCheckbox = document.createElement('input');
+        allCheckbox.type = 'checkbox';
+
+        var visibleCount = names.filter(function(name) {
+          return map.hasLayer(layers[name]);
+        }).length;
+
+        allCheckbox.checked = names.length > 0 && visibleCount === names.length;
+        allCheckbox.indeterminate = visibleCount > 0 && visibleCount < names.length;
+
+        var allLabel = document.createElement('label');
+        allLabel.style.display = 'block';
+        allLabel.style.marginBottom = '5px';
+        allLabel.style.fontWeight = 'bold';
+        allLabel.appendChild(allCheckbox);
+        allLabel.appendChild(document.createTextNode(' All ' + sectionTitle));
+        section.appendChild(allLabel);
+
+        allCheckbox.addEventListener('change', function() {
+          names.forEach(function(name) {
+            if (allCheckbox.checked) {
+              if (!map.hasLayer(layers[name])) map.addLayer(layers[name]);
+            } else {
+              if (map.hasLayer(layers[name])) map.removeLayer(layers[name]);
+            }
+          });
+          updateGroupedLayerControl();
+        });
+
+        names.forEach(function(name) {
+          var checkbox = document.createElement('input');
+          checkbox.type = 'checkbox';
+          checkbox.checked = map.hasLayer(layers[name]);
+
+          checkbox.addEventListener('change', function() {
+            if (checkbox.checked) {
+              map.addLayer(layers[name]);
+            } else {
+              map.removeLayer(layers[name]);
+            }
+            updateGroupedLayerControl();
+          });
+
+          var label = document.createElement('label');
+          label.style.display = 'block';
+          label.style.marginLeft = '10px';
+          label.style.marginBottom = '3px';
+          label.appendChild(checkbox);
+          label.appendChild(document.createTextNode(' ' + name));
+          section.appendChild(label);
+        });
+
+        return section;
+      }
+
+      container.appendChild(addGroup('Main Layers', mainLayers));
+
+      var separator = document.createElement('div');
+      separator.style.borderTop = '1px solid #ccc';
+      container.appendChild(separator);
+
+      container.appendChild(addGroup('Extra Layers', extraLayers));
+    }
+
+    updateGroupedLayerControl();
 
     // ============================
     // CAPTURED CITIES
