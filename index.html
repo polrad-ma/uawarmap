@@ -69,7 +69,7 @@
     #map-title {
       position: absolute;
       top: 10px;
-      left: 115px; /* Sits directly right of the zoom controls */
+      left: 115px;
       background: #171717;
       color: #ffffff;
       border: 2px solid rgba(255,255,255,0.2);
@@ -106,6 +106,8 @@
       border-radius: 4px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.4);
       margin: 0;
+      display: flex !important;
+      align-items: center;
     }
 
     .leaflet-control-geosearch input.glass {
@@ -123,20 +125,23 @@
     }
 
     /* Clear Button (X Icon) */
-    .leaflet-control-geosearch a.reset,
-    .leaflet-control-geosearch a.reset:hover,
-    .leaflet-control-geosearch a.reset:focus {
+    .leaflet-control-geosearch a.reset {
       background-color: #171717 !important;
       color: #ffffff !important;
+      border-left: 1px solid rgba(255,255,255,0.2) !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      height: 100% !important;
+      padding: 0 10px !important;
       font-size: 18px !important;
-      line-height: 26px !important;
       text-decoration: none !important;
       border: none !important;
-      padding: 0 8px !important;
       cursor: pointer;
     }
 
     .leaflet-control-geosearch a.reset:hover {
+      background-color: #2a2a2a !important;
       color: #ff5555 !important;
     }
 
@@ -157,7 +162,7 @@
       color: #ffffff !important;
     }
 
-    /* Floating Panel containers that pop out of the sidebar */
+    /* Floating Panel containers */
     .sidebar-panel {
       display: none;
       position: absolute;
@@ -217,40 +222,57 @@
     .update-item:last-child { border-bottom: none; }
     .update-date { font-weight: bold; font-size: 12px; color: #555; display: block; margin-bottom: 2px; }
 
-    /* Hide standard leaflet layers control so we manage it in sidebar */
+    /* Hide standard leaflet layers control */
     .leaflet-control-layers { display: none !important; }
 
-    /* WELCOME / INFO BOX */
+    /* WELCOME / INFO BOX (DARK THEME) */
     #welcome-overlay {
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.45);
+      background: rgba(0,0,0,0.6);
       z-index: 3000;
       display: flex;
       align-items: center;
       justify-content: center;
     }
     #welcome-box {
-      background: white;
+      background: #171717 !important;
+      color: #ffffff !important;
+      border: 2px solid rgba(255,255,255,0.2);
       border-radius: 6px;
       padding: 20px 24px;
       max-width: 420px;
       width: 90%;
       max-height: 70vh;
       overflow-y: auto;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.6);
       position: relative;
     }
-    #welcome-box h3 { margin: 0 0 10px 0; font-size: 18px; padding-right: 20px; }
-    #welcome-box p { margin: 0; font-size: 14px; line-height: 1.5; color: #333; white-space: pre-wrap; }
+    #welcome-box h3 {
+      margin: 0 0 10px 0;
+      font-size: 18px;
+      padding-right: 20px;
+      color: #ffffff !important;
+    }
+    #welcome-box p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #ffffff !important;
+      white-space: pre-wrap;
+    }
+    #welcome-box a {
+      color: #64b5f6 !important;
+    }
     #welcome-close {
       position: absolute;
       top: 12px; right: 14px;
       background: none; border: none;
       font-size: 20px; line-height: 1;
-      cursor: pointer; color: #666;
+      cursor: pointer;
+      color: #ffffff !important;
     }
-    #welcome-close:hover { color: #000; }
+    #welcome-close:hover { color: #ff5555 !important; }
 
     /* WATERMARK */
     #watermark-overlay {
@@ -330,9 +352,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
   </div>
 
   <script>
-    // ============================
     // BASEMAPS
-    // ============================
     var satellite = L.tileLayer(
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
       { attribution: 'Tiles &copy; Esri' }
@@ -363,9 +383,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
 
     var currentBaseLayer = hybridEsri;
 
-    // ============================
     // CREATE MAP
-    // ============================
     var map = L.map('map', {
       center: [48.00, 37.75],
       zoom: 7,
@@ -376,9 +394,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
     map.createPane('markersPane');
     map.getPane('markersPane').style.zIndex = 650;
 
-    // ============================
     // TOP-CENTER SEARCH CONTROL
-    // ============================
     var topCenterContainer = L.DomUtil.create('div', 'leaflet-top leaflet-center');
     map.getContainer().appendChild(topCenterContainer);
 
@@ -400,9 +416,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
 
     topCenterContainer.appendChild(searchControl.onAdd(map));
 
-    // ============================
     // SIDEBAR TAB TOGGLE LOGIC
-    // ============================
     function toggleTab(tabName) {
       var panel = document.getElementById('panel-' + tabName);
       var btn = document.getElementById('btn-tab-' + tabName);
@@ -443,9 +457,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       basemapContainer.appendChild(label);
     });
 
-    // ============================
     // AREA CALCULATION
-    // ============================
     function calculateAreaAndBindPopup(layer, title) {
       layer.on('click', function(e) {
         if (activeTool) return;
@@ -464,9 +476,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       });
     }
 
-    // ============================
     // CITIES & LAYERS
-    // ============================
     var mainLayers = {};
     var extraLayers = {};
 
@@ -586,9 +596,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       container.appendChild(addGroup('Extra Layers', extraLayers));
     }
 
-    // ============================
     // MAP UPDATES PANEL
-    // ============================
     fetch('updates.json')
       .then(response => response.json())
       .then(updates => {
@@ -604,9 +612,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       })
       .catch(() => document.getElementById('updates-content').innerHTML = '<em>Could not load updates.</em>');
 
-    // ============================
     // VISITOR TOOLS
-    // ============================
     var activeTool = null;
     var currentColor = '#ff0000';
     var drawingPoints = [];
