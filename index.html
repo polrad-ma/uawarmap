@@ -290,7 +290,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
     var extraLayers = {};
 
     // ============================
-    // CAPTURED CITIES
+    // CITIES CAPTURED THIS YEAR (2026)
     // ============================
     var cityIcon = L.icon({
       iconUrl: 'city-icon.png',
@@ -300,10 +300,11 @@ I use multiple sources to update and clarify the map — mainly geolocation data
     });
 
     var capturedCities = [
-      { name: "Chasiv Yar",       date: "July 28", lat: 48.58025, lng: 37.83719 },
-      { name: "Kostiantynivka",   date: "July 28", lat: 48.52486, lng: 37.6986  },
-      { name: "Bilytske",         date: "July 26", lat: 48.40581, lng: 37.18269 },
-      { name: "Rodynske",         date: "July 13", lat: 48.35097, lng: 37.20877 }
+      { name: "Pokrovsk",          date: "February 2026", lat: 48.2822, lng: 37.1758 },
+      { name: "Toretsk",           date: "January 2026",  lat: 48.3917, lng: 37.8728 },
+      { name: "Velyka Novosilka",  date: "January 2026",  lat: 47.8389, lng: 36.8344 },
+      { name: "Chasiv Yar",        date: "January 2026",  lat: 48.5803, lng: 37.8372 },
+      { name: "Kurakhove",         date: "January 2026",  lat: 47.9850, lng: 37.2831 }
     ];
 
     var cityMarkers = L.layerGroup();
@@ -315,7 +316,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
     cityMarkers.addTo(map);
     
     // Put into Extra Layers box
-    extraLayers["Captured cities"] = cityMarkers;
+    extraLayers["Cities Captured This Year"] = cityMarkers;
 
     // ============================
     // VISITOR DRAWINGS & MEASUREMENTS
