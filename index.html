@@ -82,7 +82,7 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.4);
     }
 
-    /* Top-Center Search Bar (Dark Theme) */
+    /* Top-Center Search Bar Container */
     .leaflet-top.leaflet-center {
       top: 10px;
       left: 50%;
@@ -92,50 +92,67 @@
       z-index: 1000;
     }
     .leaflet-top.leaflet-center .leaflet-control { pointer-events: auto; }
+
+    /* Root & Form Dark Theme Overrides for GeoSearch */
+    .leaflet-control-geosearch,
+    .leaflet-control-geosearch form,
+    .leaflet-control-geosearch input {
+      background-color: #171717 !important;
+      color: #ffffff !important;
+    }
+
     .leaflet-control-geosearch form {
-      background: #171717 !important;
       border: 2px solid rgba(255,255,255,0.2) !important;
       border-radius: 4px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.4);
       margin: 0;
     }
+
     .leaflet-control-geosearch input.glass {
       font-family: Helvetica, Arial, sans-serif;
       font-size: 14px;
       padding: 8px 12px;
       width: 260px;
-      background: #171717 !important;
+      background-color: #171717 !important;
       color: #ffffff !important;
-      border: none;
+      border: none !important;
     }
+
     .leaflet-control-geosearch input.glass::placeholder {
       color: #bbbbbb !important;
     }
 
     /* Clear Button (X Icon) */
-    .leaflet-control-geosearch a.reset {
+    .leaflet-control-geosearch a.reset,
+    .leaflet-control-geosearch a.reset:hover,
+    .leaflet-control-geosearch a.reset:focus {
+      background-color: #171717 !important;
       color: #ffffff !important;
-      background-color: transparent !important;
       font-size: 18px !important;
       line-height: 26px !important;
       text-decoration: none !important;
-      opacity: 0.8;
       border: none !important;
+      padding: 0 8px !important;
+      cursor: pointer;
     }
+
     .leaflet-control-geosearch a.reset:hover {
       color: #ff5555 !important;
-      opacity: 1;
     }
 
     /* Search Dropdown & Result Items */
     .leaflet-control-geosearch .results,
-    .leaflet-control-geosearch .results * {
+    .leaflet-control-geosearch .results > *,
+    .leaflet-control-geosearch .results > * * {
       background-color: #171717 !important;
       color: #ffffff !important;
       border-color: rgba(255, 255, 255, 0.2) !important;
     }
+
     .leaflet-control-geosearch .results > .active,
-    .leaflet-control-geosearch .results > *:hover {
+    .leaflet-control-geosearch .results > .active *,
+    .leaflet-control-geosearch .results > *:hover,
+    .leaflet-control-geosearch .results > *:hover * {
       background-color: #2a2a2a !important;
       color: #ffffff !important;
     }
