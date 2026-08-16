@@ -17,43 +17,41 @@
   <style>
     body { margin: 0; padding: 0; }
     #map { position: absolute; top: 0; bottom: 0; right: 0; left: 0; }
+    
     #map-title {
-      position: relative;
-      margin-top: 10px;
-      margin-left: 50px;
-      float: left;
+      position: absolute;
+      top: 10px;
+      left: 50px;
       background: white;
       border: 2px solid rgba(0,0,0,0.2);
-      padding: 6px 8px;
+      padding: 6px 12px;
       font-family: Helvetica;
       font-weight: bold;
-      font-size: 24px;
+      font-size: 20px;
       z-index: 800;
+      border-radius: 4px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     }
 
-    /* Top-Center Search Bar Positioning */
-    .leaflet-top.leaflet-center {
-      top: 10px;
-      left: 50%;
-      transform: translateX(-50%);
+    /* Positioned search bar directly under the map title */
+    #search-container {
       position: absolute;
-      pointer-events: none;
-      z-index: 1000;
+      top: 55px;
+      left: 50px;
+      z-index: 800;
     }
-    .leaflet-top.leaflet-center .leaflet-control {
-      pointer-events: auto;
-    }
-    .leaflet-control-geosearch form {
+    #search-container .leaflet-control-geosearch form {
       background: white;
       border: 2px solid rgba(0,0,0,0.2);
       border-radius: 4px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      margin: 0;
     }
-    .leaflet-control-geosearch input.glass {
+    #search-container .leaflet-control-geosearch input.glass {
       font-family: Helvetica;
-      font-size: 14px;
-      padding: 8px 12px;
-      width: 260px;
+      font-size: 13px;
+      padding: 6px 10px;
+      width: 250px;
     }
 
     #toolbar {
@@ -190,6 +188,7 @@
 </head>
 <body>
   <div id="map-title">Russo-Ukrainian War Map (Polrad Mapping)</div>
+  <div id="search-container"></div>
   <div id="map"></div>
   <div id="watermark-overlay"></div>
 
@@ -308,7 +307,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
     // Helper Function to Calculate Area using Turf.js
     function calculateAreaAndBindPopup(layer, title) {
       layer.on('click', function(e) {
-        if (activeTool) return; // Don't trigger popup while actively using map tools
+        if (activeTool) return;
 
         var geojson = layer.toGeoJSON();
         var areaInMeters = turf.area(geojson);
@@ -327,11 +326,8 @@ I use multiple sources to update and clarify the map — mainly geolocation data
     }
 
     // ============================
-    // TOP-CENTER SEARCH CONTROL
+    // SEARCH CONTROL (Placed under Title)
     // ============================
-    var topCenterContainer = L.DomUtil.create('div', 'leaflet-top leaflet-center');
-    map.getContainer().appendChild(topCenterContainer);
-
     var searchProvider = new GeoSearch.OpenStreetMapProvider();
     var searchControl = GeoSearch.GeoSearchControl({
       provider: searchProvider,
@@ -352,7 +348,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
     });
 
     var searchElement = searchControl.onAdd(map);
-    topCenterContainer.appendChild(searchElement);
+    document.getElementById('search-container').appendChild(searchElement);
 
     // ============================
     // BASE LAYER SWITCHER
@@ -482,7 +478,6 @@ I use multiple sources to update and clarify the map — mainly geolocation data
               return { color: lineColor, weight: 2, fillColor: fillColor, fillOpacity: fillOpacity };
             },
             onEachFeature: function(feature, featureLayer) {
-              // Attach area calculator popup on polygon features
               if (feature.geometry && (feature.geometry.type === "Polygon" || feature.geometry.type === "MultiPolygon")) {
                 calculateAreaAndBindPopup(featureLayer, layerInfo.name);
               }
