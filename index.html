@@ -176,7 +176,7 @@
     .sidebar-panel {
       display: none;
       position: absolute;
-      top: 20px;
+      top: 55px; /* Shifted down to avoid overlapping the title banner */
       left: 75px;
       z-index: 1900;
       background: white;
@@ -406,11 +406,19 @@ I use multiple sources to update and clarify the map — mainly geolocation data
     map.createPane('markersPane');
     map.getPane('markersPane').style.zIndex = 650;
 
-    // TOP-CENTER SEARCH CONTROL
+    // TOP-CENTER SEARCH CONTROL (CONFINED TO REGION)
     var topCenterContainer = L.DomUtil.create('div', 'leaflet-top leaflet-center');
     map.getContainer().appendChild(topCenterContainer);
 
-    var searchProvider = new GeoSearch.OpenStreetMapProvider();
+    var searchProvider = new GeoSearch.OpenStreetMapProvider({
+      params: {
+        'accept-language': 'en',
+        countrycodes: 'ua,ru',
+        viewbox: '22.13,44.38,40.25,53.50',
+        bounded: 1
+      }
+    });
+
     var searchControl = GeoSearch.GeoSearchControl({
       provider: searchProvider,
       style: 'bar',
@@ -542,7 +550,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       { name: "Chasiv Yar", date: "28 July 2026", lat: 48.58025, lng: 37.83719 },
       { name: "Berdyansk", date: "27 February 2022", lat: 46.75774, lng: 36.79871 },
       { name: "Melitopol", date: "24 February 2022", lat: 46.84610, lng: 35.37186 },
-      { name: "Rodynske", date: "13 July 2026", lat:  48.35351, lng: 37.20760 },
+      { name: "Rodynske", date: "13 July 2026", lat: 48.35351, lng: 37.20760 },
       { name: "Toretsk", date: "2 February 2025", lat: 48.3917, lng: 37.8728 },
       { name: "Siversk", date: "13 December 2025", lat: 48.86929, lng: 38.08960 },
       { name: "Pokrovsk", date: "22 November 2025", lat: 48.2822, lng: 37.1758 },
@@ -798,33 +806,28 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       var leftPt = L.point(p2.x - headLength * Math.cos(angle - headAngle), p2.y - headLength * Math.sin(angle - headAngle));
       var rightPt = L.point(p2.x - headLength * Math.cos(angle + headAngle), p2.y - headLength * Math.sin(angle + headAngle));
 
-      userDrawings.addLayer(L.polygon([end, map.layerPointToLatLng(leftPt), map.layerPointToLatLng(rightPt)], { color: color, fillColor: color, fillOpacity: 1, weight: 1 }));
+      var head = L.polygon([map.layerPointToLatLng(p2), map.layerPointToLatLng(leftPt), map.layerPointToLatLng(rightPt)], {
+        color: color,
+        fillColor: color,
+        fillOpacity: 1
+      });
+      userDrawings.addLayer(head);
     }
 
     function finishShape() {
-      if (activeTool === 'polygon' && drawingPoints.length >= 2) {
-        if (drawingPoints.length >= 3) {
-          var poly = L.polygon(drawingPoints, { color: currentColor, weight: 2, fillColor: currentColor, fillOpacity: 0.4 });
-          userDrawings.addLayer(poly);
-          calculateAreaAndBindPopup(poly, "Drawn Polygon");
-        } else {
-          userDrawings.addLayer(L.polyline(drawingPoints, { color: currentColor, weight: 3 }));
-        }
-      } else if (activeTool === 'ruler' && drawingPoints.length >= 2) {
-        var total = 0;
-        for (var i = 1; i < drawingPoints.length; i++) total += map.distance(drawingPoints[i - 1], drawingPoints[i]);
-        var km = (total / 1000).toFixed(2);
-        userDrawings.addLayer(L.polyline(drawingPoints, { color: '#000000', weight: 2, dashArray: '6,6' }).bindPopup("Distance: " + km + " km"));
+      if (activeTool === 'polygon' && drawingPoints.length >= 3) {
+        var poly = L.polygon(drawingPoints, { color: currentColor, weight: 2, fillColor: currentColor, fillOpacity: 0.4 });
+        userDrawings.addLayer(poly);
+        calculateAreaAndBindPopup(poly, "Drawn Polygon");
       }
-      setActiveTool(null);
+      resetDrawingState();
     }
 
     function clearDrawings() {
       userDrawings.clearLayers();
-      if (previewLayer) { map.removeLayer(previewLayer); previewLayer = null; }
-      drawingPoints = [];
-      document.getElementById('draw-result').innerText = "Cleared.";
-      document.getElementById('ruler-result').innerText = "Cleared.";
+      resetDrawingState();
+      document.getElementById('ruler-result').innerText = "Click points on the map to measure distance.";
+      document.getElementById('draw-result').innerText = "Select a shape to draw.";
     }
   </script>
 </body>
