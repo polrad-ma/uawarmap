@@ -351,6 +351,7 @@
     <button class="sidebar-btn" id="btn-tab-draw" onclick="toggleTab('draw')" title="Draw Tools">✏️</button>
     <button class="sidebar-btn" id="btn-tab-ruler" onclick="toggleTab('ruler')" title="Ruler / Measure">📏</button>
     <button class="sidebar-btn" id="btn-tab-coords" onclick="toggleTab('coords')" title="Coordinates">📍</button>
+    <button class="sidebar-btn" id="btn-toggle-crosshair" onclick="toggleCrosshairButton()" title="Toggle Center Crosshair">🎯</button>
     <button class="sidebar-btn" id="btn-tab-updates" onclick="toggleTab('updates')" title="Map Updates">🔔</button>
   </div>
 
@@ -367,13 +368,6 @@
       <div id="basemap-options" style="margin-top: 6px; margin-bottom: 12px; font-size: 13px;"></div>
     </div>
     <div id="grouped-layer-container"></div>
-
-    <div style="margin-top: 15px; padding-top: 10px; border-top: 1px solid #ddd;">
-      <strong>Map Display Controls</strong>
-      <label style="display: block; font-size: 13px; margin-top: 6px; cursor: pointer;">
-        <input type="checkbox" id="toggle-crosshair" onchange="toggleCrosshair(this.checked)"> Enable Center Crosshair
-      </label>
-    </div>
   </div>
 
   <div class="sidebar-panel" id="panel-draw">
@@ -474,14 +468,13 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       maxWidth: 150
     }).addTo(map);
 
-    var currentUnit = 'km'; // Default measurement unit
+    var currentUnit = 'km';
 
     function setMeasurementUnit(unit) {
       currentUnit = unit;
       document.getElementById('unit-km').classList.toggle('selected', unit === 'km');
       document.getElementById('unit-mi').classList.toggle('selected', unit === 'mi');
 
-      // Update scale bar configuration based on selection
       map.removeControl(scaleControl);
       scaleControl = L.control.scale({
         position: 'bottomleft',
@@ -490,7 +483,6 @@ I use multiple sources to update and clarify the map — mainly geolocation data
         maxWidth: 150
       }).addTo(map);
 
-      // Recalculate current ruler measurement if active
       if (drawingPoints.length > 1 && activeTool === 'ruler') {
         var totalMeters = 0;
         for (var i = 1; i < drawingPoints.length; i++) {
@@ -510,15 +502,19 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       }
     }
 
-    // TOGGLE CENTER CROSSHAIR
-    function toggleCrosshair(enable) {
-      document.getElementById('map-crosshair').style.display = enable ? 'block' : 'none';
+    // TOGGLE CENTER CROSSHAIR FROM MAIN MENU BUTTON
+    var isCrosshairActive = false;
+
+    function toggleCrosshairButton() {
+      isCrosshairActive = !isCrosshairActive;
+      document.getElementById('map-crosshair').style.display = isCrosshairActive ? 'block' : 'none';
+      document.getElementById('btn-toggle-crosshair').classList.toggle('active', isCrosshairActive);
     }
 
     map.createPane('markersPane');
     map.getPane('markersPane').style.zIndex = 650;
 
-    // TOP-CENTER SEARCH CONTROL (CONFINED TO REGION)
+    // TOP-CENTER SEARCH CONTROL
     var topCenterContainer = L.DomUtil.create('div', 'leaflet-top leaflet-center');
     map.getContainer().appendChild(topCenterContainer);
 
@@ -552,16 +548,17 @@ I use multiple sources to update and clarify the map — mainly geolocation data
     function toggleTab(tabName) {
       var panel = document.getElementById('panel-' + tabName);
       var btn = document.getElementById('btn-tab-' + tabName);
-      var isCurrentlyShow = panel.classList.contains('show');
+      var isCurrentlyShow = panel ? panel.classList.contains('show') : false;
 
       document.querySelectorAll('.sidebar-panel').forEach(p => p.classList.remove('show'));
-      document.querySelectorAll('.sidebar-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.sidebar-btn').forEach(b => {
+        if (b.id !== 'btn-toggle-crosshair') b.classList.remove('active');
+      });
 
-      if (!isCurrentlyShow) {
+      if (panel && !isCurrentlyShow) {
         panel.classList.add('show');
-        btn.classList.add('active');
+        if (btn) btn.classList.add('active');
 
-        // Automatically trigger mode depending on tab selected
         if (tabName === 'ruler') {
           setActiveTool('ruler');
         } else if (tabName === 'coords') {
