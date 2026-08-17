@@ -195,7 +195,7 @@
     .tool-btn {
       display: block;
       width: 100%;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
       padding: 6px 8px;
       font-size: 13px;
       border: 1px solid #999;
@@ -206,13 +206,10 @@
     }
     .tool-btn:hover { background: #e8e8e8; }
     .tool-btn.active { background: #333; color: white; border-color: #333; }
-    #draw-submenu, #color-row, #ruler-controls {
-      display: none;
-      margin-bottom: 4px;
-      padding-left: 10px;
-      border-left: 2px solid #ddd;
+    
+    #color-row {
+      margin-bottom: 8px;
     }
-    #draw-submenu.show, #color-row.show, #ruler-controls.show { display: block; }
     .color-btn {
       display: inline-block;
       width: 47%;
@@ -225,7 +222,7 @@
       color: white;
     }
     .color-btn.selected { border-color: #000; }
-    #tool-result { margin-top: 6px; font-size: 12px; color: #333; min-height: 24px; }
+    .panel-result { margin-top: 8px; font-size: 12px; color: #333; min-height: 24px; }
 
     /* Updates Panel Styling */
     .update-item { border-bottom: 1px solid #eee; padding: 6px 0; font-size: 13px; }
@@ -300,7 +297,9 @@
   <!-- Dark Sidebar Stripe -->
   <div id="left-sidebar">
     <button class="sidebar-btn" id="btn-tab-layers" onclick="toggleTab('layers')" title="Layers & Basemaps">🗺️</button>
-    <button class="sidebar-btn" id="btn-tab-tools" onclick="toggleTab('tools')" title="Map Tools & Draw">✏️</button>
+    <button class="sidebar-btn" id="btn-tab-draw" onclick="toggleTab('draw')" title="Draw Tools">✏️</button>
+    <button class="sidebar-btn" id="btn-tab-ruler" onclick="toggleTab('ruler')" title="Ruler / Measure">📏</button>
+    <button class="sidebar-btn" id="btn-tab-coords" onclick="toggleTab('coords')" title="Coordinates">📍</button>
     <button class="sidebar-btn" id="btn-tab-updates" onclick="toggleTab('updates')" title="Map Updates">🔔</button>
   </div>
 
@@ -318,30 +317,33 @@
     <div id="grouped-layer-container"></div>
   </div>
 
-  <div class="sidebar-panel" id="panel-tools">
-    <h4>Map Tools</h4>
-    <button class="tool-btn" id="btn-draw-toggle" onclick="toggleDrawSubmenu()">Draw ▾</button>
-
-    <div id="draw-submenu">
-      <button class="tool-btn" id="btn-polygon" onclick="setActiveTool('polygon')">Polygon</button>
-      <button class="tool-btn" id="btn-freehand" onclick="setActiveTool('freehand')">Draw Freely</button>
-      <button class="tool-btn" id="btn-arrow" onclick="setActiveTool('arrow')">Arrow</button>
-      <button class="tool-btn" id="btn-rectangle" onclick="setActiveTool('rectangle')">Rectangle</button>
-      <div id="color-row">
-        <span class="color-btn selected" id="color-red" style="background:#ff0000;" onclick="setColor('#ff0000')">Red</span>
-        <span class="color-btn" id="color-blue" style="background:#0000ff;" onclick="setColor('#0000ff')">Blue</span>
-      </div>
-      <button class="tool-btn" onclick="finishShape()">Finish Shape</button>
+  <div class="sidebar-panel" id="panel-draw">
+    <h4>Draw Tools</h4>
+    <button class="tool-btn" id="btn-polygon" onclick="setActiveTool('polygon')">Polygon</button>
+    <button class="tool-btn" id="btn-freehand" onclick="setActiveTool('freehand')">Draw Freely</button>
+    <button class="tool-btn" id="btn-arrow" onclick="setActiveTool('arrow')">Arrow</button>
+    <button class="tool-btn" id="btn-rectangle" onclick="setActiveTool('rectangle')">Rectangle</button>
+    
+    <div id="color-row">
+      <span class="color-btn selected" id="color-red" style="background:#ff0000;" onclick="setColor('#ff0000')">Red</span>
+      <span class="color-btn" id="color-blue" style="background:#0000ff;" onclick="setColor('#0000ff')">Blue</span>
     </div>
 
-    <button class="tool-btn" id="btn-ruler" onclick="setActiveTool('ruler')">Ruler (Measure Distance)</button>
-    <div id="ruler-controls">
-      <button class="tool-btn" onclick="finishShape()">Finish Measuring</button>
-    </div>
-
-    <button class="tool-btn" id="btn-coords" onclick="setActiveTool('coords')">Show Coordinates</button>
+    <button class="tool-btn" onclick="finishShape()">Finish Shape</button>
     <button class="tool-btn" onclick="clearDrawings()">Clear My Drawings</button>
-    <div id="tool-result">Select a tool to get started.</div>
+    <div class="panel-result" id="draw-result">Select a shape to draw.</div>
+  </div>
+
+  <div class="sidebar-panel" id="panel-ruler">
+    <h4>Ruler (Measure)</h4>
+    <button class="tool-btn" onclick="finishShape()">Finish Measuring</button>
+    <button class="tool-btn" onclick="clearDrawings()">Clear Line</button>
+    <div class="panel-result" id="ruler-result">Click points on the map to measure distance.</div>
+  </div>
+
+  <div class="sidebar-panel" id="panel-coords">
+    <h4>Coordinates</h4>
+    <div class="panel-result" id="coords-result">Click anywhere on the map to display its precise coordinates.</div>
   </div>
 
   <div class="sidebar-panel" id="panel-updates">
@@ -438,6 +440,17 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       if (!isCurrentlyShow) {
         panel.classList.add('show');
         btn.classList.add('active');
+
+        // Automatically trigger mode depending on tab selected
+        if (tabName === 'ruler') {
+          setActiveTool('ruler');
+        } else if (tabName === 'coords') {
+          setActiveTool('coords');
+        } else if (tabName !== 'draw' && (activeTool === 'ruler' || activeTool === 'coords')) {
+          setActiveTool(null);
+        }
+      } else {
+        setActiveTool(null);
       }
     }
 
@@ -629,13 +642,6 @@ I use multiple sources to update and clarify the map — mainly geolocation data
     var previewLayer = null;
     var isMouseDown = false;
 
-    var toolResult = document.getElementById('tool-result');
-    var drawTools = ['polygon', 'freehand', 'arrow', 'rectangle'];
-
-    function toggleDrawSubmenu() {
-      document.getElementById('draw-submenu').classList.toggle('show');
-    }
-
     function setColor(color) {
       currentColor = color;
       document.getElementById('color-red').classList.toggle('selected', color === '#ff0000');
@@ -647,10 +653,6 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       resetDrawingState();
       updateToolButtons();
       updateInstructions();
-
-      document.getElementById('color-row').classList.toggle('show', drawTools.indexOf(activeTool) !== -1);
-      document.getElementById('ruler-controls').classList.toggle('show', activeTool === 'ruler');
-      if (drawTools.indexOf(tool) !== -1) document.getElementById('draw-submenu').classList.add('show');
     }
 
     function resetDrawingState() {
@@ -661,7 +663,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
     }
 
     function updateToolButtons() {
-      document.querySelectorAll('.tool-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('#panel-draw .tool-btn').forEach(btn => btn.classList.remove('active'));
       if (activeTool) {
         var btn = document.getElementById('btn-' + activeTool);
         if (btn) btn.classList.add('active');
@@ -669,15 +671,22 @@ I use multiple sources to update and clarify the map — mainly geolocation data
     }
 
     function updateInstructions() {
+      var drawMsg = document.getElementById('draw-result');
+      var rulerMsg = document.getElementById('ruler-result');
+      var coordsMsg = document.getElementById('coords-result');
+
       var msgs = {
         polygon: "Click points to trace a shape, then click 'Finish Shape'.",
         freehand: "Click and drag on the map to draw freely.",
         arrow: "Click start point, then click end point to place an arrow.",
         rectangle: "Click one corner, then click opposite corner.",
-        ruler: "Click points to measure distance, then click 'Finish Measuring'.",
-        coords: "Click anywhere on the map to see coordinates."
+        ruler: "Click points on the map to measure distance.",
+        coords: "Click anywhere on the map to display its precise coordinates."
       };
-      toolResult.innerText = activeTool ? msgs[activeTool] : "Select a tool to get started.";
+
+      if (activeTool === 'ruler') rulerMsg.innerText = msgs.ruler;
+      else if (activeTool === 'coords') coordsMsg.innerText = msgs.coords;
+      else drawMsg.innerText = activeTool ? msgs[activeTool] : "Select a shape to draw.";
     }
 
     map.on('mousedown', function(e) {
@@ -723,7 +732,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
 
       if (activeTool === 'coords') {
         L.popup().setLatLng(e.latlng).setContent("Lat: " + e.latlng.lat.toFixed(5) + "<br>Lng: " + e.latlng.lng.toFixed(5)).openOn(map);
-        toolResult.innerText = "Lat: " + e.latlng.lat.toFixed(5) + ", Lng: " + e.latlng.lng.toFixed(5);
+        document.getElementById('coords-result').innerText = "Lat: " + e.latlng.lat.toFixed(5) + ", Lng: " + e.latlng.lng.toFixed(5);
         return;
       }
 
@@ -735,7 +744,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
         if (activeTool === 'ruler' && drawingPoints.length > 1) {
           var total = 0;
           for (var i = 1; i < drawingPoints.length; i++) total += map.distance(drawingPoints[i - 1], drawingPoints[i]);
-          toolResult.innerText = "Distance: " + (total / 1000).toFixed(2) + " km";
+          document.getElementById('ruler-result').innerText = "Distance: " + (total / 1000).toFixed(2) + " km";
         }
         return;
       }
@@ -797,7 +806,10 @@ I use multiple sources to update and clarify the map — mainly geolocation data
 
     function clearDrawings() {
       userDrawings.clearLayers();
-      toolResult.innerText = "Cleared.";
+      if (previewLayer) { map.removeLayer(previewLayer); previewLayer = null; }
+      drawingPoints = [];
+      document.getElementById('draw-result').innerText = "Cleared.";
+      document.getElementById('ruler-result').innerText = "Cleared.";
     }
   </script>
 </body>
