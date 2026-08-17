@@ -176,7 +176,7 @@
     .sidebar-panel {
       display: none;
       position: absolute;
-      top: 55px; /* Shifted down to avoid overlapping the title banner */
+      top: 90px; /* Shifted down to safely clear title banner and zoom controls */
       left: 75px;
       z-index: 1900;
       background: white;
@@ -184,7 +184,7 @@
       border-radius: 6px;
       padding: 12px;
       width: 250px;
-      max-height: 80vh;
+      max-height: calc(100vh - 110px);
       overflow-y: auto;
       box-shadow: 0 4px 12px rgba(0,0,0,0.25);
     }
