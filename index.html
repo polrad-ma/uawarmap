@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html>
 <head>
   <title>Russo-Ukrainian War Map (Polrad Mapping)</title>
@@ -8,17 +7,13 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <!-- Leaflet GeoSearch CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet-geosearch@3.11.0/dist/geosearch.css" />
-
+  
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
   <!-- Leaflet GeoSearch JS -->
-
   <script src="https://unpkg.com/leaflet-geosearch@3.11.0/dist/geosearch.umd.js"></script>
-
   <!-- Turf.js for Area Calculation -->
-
   <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
-
+  
   <style>
     body { margin: 0; padding: 0; font-family: Helvetica, Arial, sans-serif; background: #f4f4f4; }
     
@@ -358,12 +353,10 @@
       background-repeat: repeat;
     }
   </style>
-
 </head>
 <body>
 
   <!-- Dark Sidebar Stripe -->
-
   <div id="left-sidebar">
     <button class="sidebar-btn" id="btn-tab-layers" onclick="toggleTab('layers')" title="Layers & Basemaps">🗺️</button>
     <button class="sidebar-btn" id="btn-tab-draw" onclick="toggleTab('draw')" title="Draw Tools">✏️</button>
@@ -380,7 +373,6 @@
   <div id="watermark-overlay"></div>
 
   <!-- Sidebar Sub-Panels -->
-
   <div class="sidebar-panel" id="panel-layers">
     <h4>Basemaps & Layers</h4>
     <div id="basemap-selector-container">
@@ -396,20 +388,19 @@
     <button class="tool-btn" id="btn-freehand" onclick="setActiveTool('freehand')">Draw Freely</button>
     <button class="tool-btn" id="btn-arrow" onclick="setActiveTool('arrow')">Arrow</button>
     <button class="tool-btn" id="btn-rectangle" onclick="setActiveTool('rectangle')">Rectangle</button>
+    
+    <div id="color-row">
+      <span class="color-btn selected" id="color-red" style="background:#ff0000; color:white;" onclick="setColor('#ff0000')">Red</span>
+      <span class="color-btn" id="color-blue" style="background:#0000ff; color:white;" onclick="setColor('#0000ff')">Blue</span>
+      <span class="color-btn" id="color-green" style="background:#2ecc71; color:white;" onclick="setColor('#2ecc71')">Green</span>
+      <span class="color-btn" id="color-yellow" style="background:#f1c40f; color:black;" onclick="setColor('#f1c40f')">Yellow</span>
+      <span class="color-btn" id="color-black" style="background:#171717; color:white;" onclick="setColor('#171717')">Black</span>
+      <span class="color-btn" id="color-white" style="background:#ffffff; color:black;" onclick="setColor('#ffffff')">White</span>
+    </div>
 
-<div id="color-row">
-  <span class="color-btn selected" id="color-red" style="background:#ff0000; color:white;" onclick="setColor('#ff0000')">Red</span>
-  <span class="color-btn" id="color-blue" style="background:#0000ff; color:white;" onclick="setColor('#0000ff')">Blue</span>
-  <span class="color-btn" id="color-green" style="background:#2ecc71; color:white;" onclick="setColor('#2ecc71')">Green</span>
-  <span class="color-btn" id="color-yellow" style="background:#f1c40f; color:black;" onclick="setColor('#f1c40f')">Yellow</span>
-  <span class="color-btn" id="color-black" style="background:#171717; color:white;" onclick="setColor('#171717')">Black</span>
-  <span class="color-btn" id="color-white" style="background:#ffffff; color:black;" onclick="setColor('#ffffff')">White</span>
-</div>
-
-<button class="tool-btn" onclick="finishShape()">Finish Shape</button>
-<button class="tool-btn" onclick="clearDrawings()">Clear My Drawings</button>
-<div class="panel-result" id="draw-result">Select a shape to draw.</div>
-
+    <button class="tool-btn" onclick="finishShape()">Finish Shape</button>
+    <button class="tool-btn" onclick="clearDrawings()">Clear My Drawings</button>
+    <div class="panel-result" id="draw-result">Select a shape to draw.</div>
   </div>
 
   <div class="sidebar-panel" id="panel-ruler">
@@ -470,29 +461,152 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       }
     }
 
+    // ============================
     // BASEMAPS
+    // ============================
+
+    // Satellite imagery
     var satellite = L.tileLayer(
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-      { attribution: 'Tiles &copy; Esri' }
+      {
+        attribution: 'Imagery &copy; Esri'
+      }
     );
 
+    // 1. Esri satellite + place names and boundaries
     var hybridEsri = L.layerGroup([
-      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: 'Tiles &copy; Esri' }),
-      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', { attribution: 'Labels &copy; Esri' })
+      L.tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        { attribution: 'Imagery &copy; Esri' }
+      ),
+      L.tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
+        { attribution: 'Labels &copy; Esri' }
+      )
     ]);
 
+    // 2. Esri satellite + roads + place names
+    var hybridEsriTransport = L.layerGroup([
+      L.tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        { attribution: 'Imagery &copy; Esri' }
+      ),
+      L.tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}',
+        { attribution: 'Roads &copy; Esri' }
+      ),
+      L.tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
+        { attribution: 'Labels &copy; Esri' }
+      )
+    ]);
+
+    // 3. Esri satellite + roads only
+    var hybridEsriRoads = L.layerGroup([
+      L.tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        { attribution: 'Imagery &copy; Esri' }
+      ),
+      L.tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}',
+        { attribution: 'Roads &copy; Esri' }
+      )
+    ]);
+
+    // 4. Esri satellite + CARTO labels
     var hybridCarto = L.layerGroup([
-      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: 'Tiles &copy; Esri' }),
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png', { attribution: 'Labels &copy; CARTO' })
+      L.tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        { attribution: 'Imagery &copy; Esri' }
+      ),
+      L.tileLayer(
+        'https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png',
+        { attribution: 'Labels &copy; CARTO' }
+      )
     ]);
 
-    var streets = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { attribution: '&copy; CARTO' });
-    var osmStandard = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap' });
-    var topo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenTopoMap' });
+    // 5. Esri satellite + Esri roads + CARTO labels
+    var hybridCartoEsriRoads = L.layerGroup([
+      L.tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        { attribution: 'Imagery &copy; Esri' }
+      ),
+      L.tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}',
+        { attribution: 'Roads &copy; Esri' }
+      ),
+      L.tileLayer(
+        'https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png',
+        { attribution: 'Labels &copy; CARTO' }
+      )
+    ]);
+
+    // 6. Esri satellite + Esri boundaries + CARTO labels
+    var hybridCartoEsriPlaces = L.layerGroup([
+      L.tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        { attribution: 'Imagery &copy; Esri' }
+      ),
+      L.tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
+        { attribution: 'Boundaries &copy; Esri' }
+      ),
+      L.tileLayer(
+        'https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png',
+        { attribution: 'Labels &copy; CARTO' }
+      )
+    ]);
+
+    // 7. Full hybrid: Esri satellite + roads + boundaries + CARTO labels
+    var hybridFull = L.layerGroup([
+      L.tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        { attribution: 'Imagery &copy; Esri' }
+      ),
+      L.tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}',
+        { attribution: 'Roads &copy; Esri' }
+      ),
+      L.tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
+        { attribution: 'Boundaries &copy; Esri' }
+      ),
+      L.tileLayer(
+        'https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png',
+        { attribution: 'Labels &copy; CARTO' }
+      )
+    ]);
+
+    // Normal non-hybrid maps
+    var streets = L.tileLayer(
+      'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+      {
+        attribution: '&copy; OpenStreetMap contributors, &copy; CARTO'
+      }
+    );
+
+    var osmStandard = L.tileLayer(
+      'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+      {
+        attribution: '&copy; OpenStreetMap contributors'
+      }
+    );
+
+    var topo = L.tileLayer(
+      'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
+      {
+        attribution: '&copy; OpenTopoMap (CC-BY-SA), &copy; OpenStreetMap contributors'
+      }
+    );
 
     var baseLayers = {
-      "Hybrid (Esri Labels)": hybridEsri,
-      "Hybrid (CARTO Labels)": hybridCarto,
+      "Hybrid — Esri Labels": hybridEsri,
+      "Hybrid — Esri Roads + Labels": hybridEsriTransport,
+      "Hybrid — Esri Roads": hybridEsriRoads,
+      "Hybrid — CARTO Labels": hybridCarto,
+      "Hybrid — CARTO Labels + Esri Roads": hybridCartoEsriRoads,
+      "Hybrid — CARTO Labels + Esri Places": hybridCartoEsriPlaces,
+      "Hybrid — Full": hybridFull,
       "Satellite (Esri)": satellite,
       "Streets (Light)": streets,
       "Streets (OSM)": osmStandard,
@@ -500,14 +614,6 @@ I use multiple sources to update and clarify the map — mainly geolocation data
     };
 
     var currentBaseLayer = hybridEsri;
-
-    // CREATE MAP
-    var map = L.map('map', {
-      center: [48.00, 37.75],
-      zoom: 7,
-      scrollWheelZoom: true,
-      layers: [currentBaseLayer]
-    });
 
     // MAP SCALE CONTROL (Bottom-Left Corner)
     var scaleControl = L.control.scale({
@@ -1000,6 +1106,5 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       document.getElementById('draw-result').innerText = "Select a shape to draw.";
     }
   </script>
-
 </body>
 </html>
