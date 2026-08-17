@@ -1,126 +1,1005 @@
-// BASEMAPS
-// All hybrid maps below use standard Leaflet tile layers/layerGroups.
-// No extra Leaflet plugins are required.
+<!DOCTYPE html>
 
-var esriImagery = L.tileLayer(
-  'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-  { attribution: 'Tiles &copy; Esri' }
-);
+<html>
+<head>
+  <title>Russo-Ukrainian War Map (Polrad Mapping)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <!-- Leaflet GeoSearch CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-geosearch@3.11.0/dist/geosearch.css" />
 
-// 1. Esri imagery + boundaries & place names
-var hybridEsri = L.layerGroup([
-  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-    attribution: 'Imagery &copy; Esri'
-  }),
-  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
-    attribution: 'Labels &copy; Esri'
-  })
-]);
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-// 2. Esri imagery + transportation + place names
-var hybridEsriTransport = L.layerGroup([
-  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-    attribution: 'Imagery &copy; Esri'
-  }),
-  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}', {
-    attribution: 'Transportation &copy; Esri'
-  }),
-  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
-    attribution: 'Labels &copy; Esri'
-  })
-]);
+  <!-- Leaflet GeoSearch JS -->
 
-// 3. Esri imagery + transportation only
-var hybridEsriRoads = L.layerGroup([
-  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-    attribution: 'Imagery &copy; Esri'
-  }),
-  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}', {
-    attribution: 'Transportation &copy; Esri'
-  })
-]);
+  <script src="https://unpkg.com/leaflet-geosearch@3.11.0/dist/geosearch.umd.js"></script>
 
-// 4. Esri imagery + CARTO Voyager labels
-var hybridCarto = L.layerGroup([
-  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-    attribution: 'Imagery &copy; Esri'
-  }),
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png', {
-    attribution: 'Labels &copy; CARTO'
-  })
-]);
+  <!-- Turf.js for Area Calculation -->
 
-// 5. Esri imagery + CARTO Voyager labels + roads
-var hybridCartoEsriRoads = L.layerGroup([
-  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-    attribution: 'Imagery &copy; Esri'
-  }),
-  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}', {
-    attribution: 'Transportation &copy; Esri'
-  }),
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png', {
-    attribution: 'Labels &copy; CARTO'
-  })
-]);
+  <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
 
-// 6. Esri imagery + CARTO labels + Esri boundaries
-var hybridCartoEsriPlaces = L.layerGroup([
-  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-    attribution: 'Imagery &copy; Esri'
-  }),
-  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
-    attribution: 'Boundaries &copy; Esri'
-  }),
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png', {
-    attribution: 'Labels &copy; CARTO'
-  })
-]);
+  <style>
+    body { margin: 0; padding: 0; font-family: Helvetica, Arial, sans-serif; background: #f4f4f4; }
+    
+    /* Shift map to make room for the left sidebar */
+    #map { position: absolute; top: 0; bottom: 0; right: 0; left: 60px; }
 
-// 7. Full hybrid
-var hybridFull = L.layerGroup([
-  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-    attribution: 'Imagery &copy; Esri'
-  }),
-  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}', {
-    attribution: 'Transportation &copy; Esri'
-  }),
-  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
-    attribution: 'Boundaries &copy; Esri'
-  }),
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png', {
-    attribution: 'Labels &copy; CARTO'
-  })
-]);
+    /* The Dark Stripe (Full Height Left Sidebar) */
+    #left-sidebar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 60px;
+      background: #171717;
+      border-right: 2px solid rgba(0,0,0,0.2);
+      z-index: 2000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 20px;
+      gap: 15px;
+      box-shadow: 2px 0 8px rgba(0,0,0,0.15);
+    }
 
-var satellite = esriImagery;
+    .sidebar-btn {
+      width: 44px;
+      height: 44px;
+      background: #2a2a2a;
+      border: 1px solid #444;
+      border-radius: 6px;
+      font-size: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #ffffff;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .sidebar-btn:hover { background: #3a3a3a; }
+    .sidebar-btn.active { background: #555; border-color: #777; color: white; }
 
-var streets = L.tileLayer(
-  'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-  { attribution: '&copy; CARTO' }
-);
+    /* Dark Theme Zoom Controls */
+    .leaflet-control-zoom a {
+      background-color: #171717 !important;
+      color: #ffffff !important;
+      border-color: rgba(255,255,255,0.2) !important;
+    }
+    .leaflet-control-zoom a:hover {
+      background-color: #2a2a2a !important;
+      color: #ffffff !important;
+    }
 
-var osmStandard = L.tileLayer(
-  'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-  { attribution: '&copy; OpenStreetMap contributors' }
-);
+    /* Map Title Banner (Dark Theme) */
+    #map-title {
+      position: absolute;
+      top: 10px;
+      left: 115px;
+      background: #171717;
+      color: #ffffff;
+      border: 2px solid rgba(255,255,255,0.2);
+      padding: 6px 12px;
+      font-family: Helvetica, Arial, sans-serif;
+      font-weight: bold;
+      font-size: 20px;
+      z-index: 1000;
+      border-radius: 4px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+    }
 
-var topo = L.tileLayer(
-  'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
-  { attribution: '&copy; OpenTopoMap (CC-BY-SA)' }
-);
+    /* Center Crosshair Overlay */
+    #map-crosshair {
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: calc(50% + 30px);
+      width: 24px;
+      height: 24px;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 1500;
+    }
 
-var baseLayers = {
-  "Hybrid — Esri Places": hybridEsri,
-  "Hybrid — Esri Roads + Places": hybridEsriTransport,
-  "Hybrid — Esri Roads": hybridEsriRoads,
-  "Hybrid — CARTO Labels": hybridCarto,
-  "Hybrid — CARTO Labels + Esri Roads": hybridCartoEsriRoads,
-  "Hybrid — CARTO Labels + Esri Places": hybridCartoEsriPlaces,
-  "Hybrid — Full (Esri + CARTO)": hybridFull,
-  "Satellite (Esri)": satellite,
-  "Streets (Light)": streets,
-  "Streets (OpenStreetMap)": osmStandard,
-  "Topographic": topo
-};
+    #map-crosshair::before,
+    #map-crosshair::after {
+      content: '';
+      position: absolute;
+      background: rgba(255, 255, 255, 0.85);
+      box-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
+    }
 
-var currentBaseLayer = hybridEsri;
+    #map-crosshair::before {
+      top: 11px;
+      left: 0;
+      width: 24px;
+      height: 2px;
+    }
+
+    #map-crosshair::after {
+      top: 0;
+      left: 11px;
+      width: 2px;
+      height: 24px;
+    }
+
+    /* Top-Center Search Bar Container */
+    .leaflet-top.leaflet-center {
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      position: absolute;
+      pointer-events: none;
+      z-index: 1000;
+    }
+    .leaflet-top.leaflet-center .leaflet-control { pointer-events: auto; }
+
+    /* Root & Form Dark Theme Overrides for GeoSearch */
+    .leaflet-control-geosearch,
+    .leaflet-control-geosearch form,
+    .leaflet-control-geosearch input {
+      background-color: #171717 !important;
+      color: #ffffff !important;
+    }
+
+    .leaflet-control-geosearch form {
+      border: 2px solid rgba(255,255,255,0.2) !important;
+      border-radius: 4px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+      margin: 0;
+      display: flex !important;
+      align-items: center;
+    }
+
+    .leaflet-control-geosearch input.glass {
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      padding: 8px 12px;
+      width: 260px;
+      background-color: #171717 !important;
+      color: #ffffff !important;
+      border: none !important;
+    }
+
+    .leaflet-control-geosearch input.glass::placeholder {
+      color: #bbbbbb !important;
+    }
+
+    /* Clear Button (X Icon) Deep Overrides */
+    .leaflet-control-geosearch a.reset,
+    .leaflet-control-geosearch a.reset:hover,
+    .leaflet-control-geosearch a.reset:focus,
+    .leaflet-control-geosearch .reset {
+      background: #171717 !important;
+      background-color: #171717 !important;
+      color: #ffffff !important;
+      border-left: 1px solid rgba(255, 255, 255, 0.2) !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      height: 100% !important;
+      padding: 0 10px !important;
+      font-size: 18px !important;
+      text-decoration: none !important;
+      border: none !important;
+      cursor: pointer;
+    }
+
+    .leaflet-control-geosearch a.reset::after,
+    .leaflet-control-geosearch a.reset::before {
+      color: #ffffff !important;
+      background-color: transparent !important;
+    }
+
+    .leaflet-control-geosearch a.reset:hover {
+      background-color: #2a2a2a !important;
+      color: #ff5555 !important;
+    }
+
+    /* Search Dropdown & Result Items */
+    .leaflet-control-geosearch .results,
+    .leaflet-control-geosearch .results > *,
+    .leaflet-control-geosearch .results > * * {
+      background-color: #171717 !important;
+      color: #ffffff !important;
+      border-color: rgba(255, 255, 255, 0.2) !important;
+    }
+
+    .leaflet-control-geosearch .results > .active,
+    .leaflet-control-geosearch .results > .active *,
+    .leaflet-control-geosearch .results > *:hover,
+    .leaflet-control-geosearch .results > *:hover * {
+      background-color: #2a2a2a !important;
+      color: #ffffff !important;
+    }
+
+    /* Floating Panel containers */
+    .sidebar-panel {
+      display: none;
+      position: absolute;
+      top: 90px;
+      left: 75px;
+      z-index: 1900;
+      background: white;
+      border: 2px solid rgba(0,0,0,0.2);
+      border-radius: 6px;
+      padding: 12px;
+      width: 250px;
+      max-height: calc(100vh - 110px);
+      overflow-y: auto;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    }
+    .sidebar-panel.show { display: block; }
+    .sidebar-panel h4 { margin: 0 0 10px 0; font-size: 15px; border-bottom: 1px solid #ddd; padding-bottom: 6px; }
+
+    /* Tool Buttons styling */
+    .tool-btn {
+      display: block;
+      width: 100%;
+      margin-bottom: 6px;
+      padding: 6px 8px;
+      font-size: 13px;
+      border: 1px solid #999;
+      border-radius: 3px;
+      background: #f5f5f5;
+      cursor: pointer;
+      text-align: left;
+    }
+    .tool-btn:hover { background: #e8e8e8; }
+    .tool-btn.active { background: #333; color: white; border-color: #333; }
+    
+    #color-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+    .unit-row {
+      margin-bottom: 8px;
+    }
+    .color-btn, .unit-btn {
+      display: block;
+      padding: 6px 4px;
+      font-size: 12px;
+      border: 2px solid #999;
+      border-radius: 3px;
+      cursor: pointer;
+      text-align: center;
+      background: #eee;
+      color: #333;
+      box-sizing: border-box;
+    }
+    .unit-btn {
+      display: inline-block;
+      width: 47%;
+    }
+    .color-btn.selected, .unit-btn.selected { border-color: #000; font-weight: bold; }
+    .panel-result { margin-top: 8px; font-size: 12px; color: #333; min-height: 24px; }
+
+    /* Updates Panel Styling */
+    .update-item { border-bottom: 1px solid #eee; padding: 6px 0; font-size: 13px; }
+    .update-item:last-child { border-bottom: none; }
+    .update-date { font-weight: bold; font-size: 12px; color: #555; display: block; margin-bottom: 2px; }
+
+    /* Custom Leaflet Control Styling for Scale */
+    .leaflet-bottom.leaflet-left {
+      left: 70px;
+      bottom: 10px;
+    }
+    .leaflet-control-scale-line {
+      background: rgba(23, 23, 23, 0.85) !important;
+      color: #ffffff !important;
+      border: 1px solid rgba(255, 255, 255, 0.4) !important;
+      border-top: none !important;
+      padding: 2px 5px !important;
+      font-size: 11px !important;
+      font-weight: bold;
+    }
+
+    /* Hide standard leaflet layers control */
+    .leaflet-control-layers { display: none !important; }
+
+    /* WELCOME / INFO BOX (DARK THEME) */
+    #welcome-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 3000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #welcome-box {
+      background: #171717 !important;
+      color: #ffffff !important;
+      border: 2px solid rgba(255,255,255,0.2);
+      border-radius: 6px;
+      padding: 20px 24px;
+      max-width: 420px;
+      width: 90%;
+      max-height: 70vh;
+      overflow-y: auto;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.6);
+      position: relative;
+    }
+    #welcome-box h3 {
+      margin: 0 0 10px 0;
+      font-size: 18px;
+      padding-right: 20px;
+      color: #ffffff !important;
+    }
+    #welcome-box p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #ffffff !important;
+      white-space: pre-wrap;
+    }
+    #welcome-box a {
+      color: #64b5f6 !important;
+    }
+    #welcome-close {
+      position: absolute;
+      top: 12px; right: 14px;
+      background: none; border: none;
+      font-size: 20px; line-height: 1;
+      cursor: pointer;
+      color: #ffffff !important;
+    }
+    #welcome-close:hover { color: #ff5555 !important; }
+
+    /* WATERMARK */
+    #watermark-overlay {
+      position: absolute;
+      top: 0; left: 60px; right: 0; bottom: 0;
+      z-index: 750;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='160'><text x='10' y='90' font-family='Helvetica, Arial, sans-serif' font-size='22' font-weight='bold' fill='%23ffffff' fill-opacity='0.12' stroke='%23000000' stroke-opacity='0.07' stroke-width='0.5' transform='rotate(-25 160 80)'>POLRAD MAPPING</text></svg>");
+      background-repeat: repeat;
+    }
+  </style>
+
+</head>
+<body>
+
+  <!-- Dark Sidebar Stripe -->
+
+  <div id="left-sidebar">
+    <button class="sidebar-btn" id="btn-tab-layers" onclick="toggleTab('layers')" title="Layers & Basemaps">🗺️</button>
+    <button class="sidebar-btn" id="btn-tab-draw" onclick="toggleTab('draw')" title="Draw Tools">✏️</button>
+    <button class="sidebar-btn" id="btn-tab-ruler" onclick="toggleTab('ruler')" title="Ruler / Measure">📏</button>
+    <button class="sidebar-btn" id="btn-tab-coords" onclick="toggleTab('coords')" title="Coordinates">📍</button>
+    <button class="sidebar-btn" id="btn-toggle-crosshair" onclick="toggleCrosshairButton()" title="Toggle Center Crosshair">🎯</button>
+    <button class="sidebar-btn" id="btn-tab-updates" onclick="toggleTab('updates')" title="Map Updates">🔔</button>
+    <button class="sidebar-btn" id="btn-fullscreen" onclick="toggleFullScreen()" title="Toggle Fullscreen">⛶</button>
+  </div>
+
+  <div id="map-title">Russo-Ukrainian War Map (Polrad Mapping)</div>
+  <div id="map"></div>
+  <div id="map-crosshair"></div>
+  <div id="watermark-overlay"></div>
+
+  <!-- Sidebar Sub-Panels -->
+
+  <div class="sidebar-panel" id="panel-layers">
+    <h4>Basemaps & Layers</h4>
+    <div id="basemap-selector-container">
+      <strong>Base Map</strong>
+      <div id="basemap-options" style="margin-top: 6px; margin-bottom: 12px; font-size: 13px;"></div>
+    </div>
+    <div id="grouped-layer-container"></div>
+  </div>
+
+  <div class="sidebar-panel" id="panel-draw">
+    <h4>Draw Tools</h4>
+    <button class="tool-btn" id="btn-polygon" onclick="setActiveTool('polygon')">Polygon</button>
+    <button class="tool-btn" id="btn-freehand" onclick="setActiveTool('freehand')">Draw Freely</button>
+    <button class="tool-btn" id="btn-arrow" onclick="setActiveTool('arrow')">Arrow</button>
+    <button class="tool-btn" id="btn-rectangle" onclick="setActiveTool('rectangle')">Rectangle</button>
+
+<div id="color-row">
+  <span class="color-btn selected" id="color-red" style="background:#ff0000; color:white;" onclick="setColor('#ff0000')">Red</span>
+  <span class="color-btn" id="color-blue" style="background:#0000ff; color:white;" onclick="setColor('#0000ff')">Blue</span>
+  <span class="color-btn" id="color-green" style="background:#2ecc71; color:white;" onclick="setColor('#2ecc71')">Green</span>
+  <span class="color-btn" id="color-yellow" style="background:#f1c40f; color:black;" onclick="setColor('#f1c40f')">Yellow</span>
+  <span class="color-btn" id="color-black" style="background:#171717; color:white;" onclick="setColor('#171717')">Black</span>
+  <span class="color-btn" id="color-white" style="background:#ffffff; color:black;" onclick="setColor('#ffffff')">White</span>
+</div>
+
+<button class="tool-btn" onclick="finishShape()">Finish Shape</button>
+<button class="tool-btn" onclick="clearDrawings()">Clear My Drawings</button>
+<div class="panel-result" id="draw-result">Select a shape to draw.</div>
+
+  </div>
+
+  <div class="sidebar-panel" id="panel-ruler">
+    <h4>Ruler (Measure)</h4>
+    <div class="unit-row">
+      <span class="unit-btn selected" id="unit-km" onclick="setMeasurementUnit('km')">Kilometers (km)</span>
+      <span class="unit-btn" id="unit-mi" onclick="setMeasurementUnit('mi')">Miles (mi)</span>
+    </div>
+    <button class="tool-btn" onclick="finishShape()">Finish Measuring</button>
+    <button class="tool-btn" onclick="clearDrawings()">Clear Line</button>
+    <div class="panel-result" id="ruler-result">Click points on the map to measure distance.</div>
+  </div>
+
+  <div class="sidebar-panel" id="panel-coords">
+    <h4>Coordinates</h4>
+    <div class="panel-result" id="coords-result">Click anywhere on the map to display its precise coordinates.</div>
+  </div>
+
+  <div class="sidebar-panel" id="panel-updates">
+    <h4>Map Updates</h4>
+    <div id="updates-content">Loading...</div>
+  </div>
+
+  <div id="welcome-overlay">
+    <div id="welcome-box">
+      <button id="welcome-close" onclick="document.getElementById('welcome-overlay').style.display='none'">&times;</button>
+      <h3>Welcome</h3>
+      <p id="welcome-text">Welcome and thanks for using my map!<br><br>
+This map was created to show the situation in Ukraine. Of course, this map, like every other war map, is not 100% reliable or true.<br><br>
+Use the layers and the map tools featured here. Map updates are displayed via the bell icon on the left sidebar.<br><br>
+This map was inspired by <a href="https://x.com/M0nstas" target="_blank" rel="noopener">@M0nstas</a> and <a href="https://x.com/Playfra0" target="_blank" rel="noopener">@Playfra0</a> and other mappers, and was designed mainly with Claude AI and Gemini AI. If used, please tag me, <a href="https://x.com/polrad_mapping_" target="_blank" rel="noopener">@polrad_mapping_</a>, in your posts.<br><br>
+I use multiple sources to update and clarify the map — mainly geolocation data, other mappers, and partially my own sources.</p>
+    </div>
+  </div>
+
+  <script>
+    // FULLSCREEN TOGGLE FUNCTION
+    function toggleFullScreen() {
+      var btn = document.getElementById('btn-fullscreen');
+      if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
+        if (document.documentElement.requestFullscreen) {
+          document.documentElement.requestFullscreen();
+        } else if (document.documentElement.webkitRequestFullscreen) {
+          document.documentElement.webkitRequestFullscreen();
+        } else if (document.documentElement.msRequestFullscreen) {
+          document.documentElement.msRequestFullscreen();
+        }
+        if (btn) btn.classList.add('active');
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) {
+          document.msExitFullscreen();
+        }
+        if (btn) btn.classList.remove('active');
+      }
+    }
+
+    // BASEMAPS
+    var satellite = L.tileLayer(
+      'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+      { attribution: 'Tiles &copy; Esri' }
+    );
+
+    var hybridEsri = L.layerGroup([
+      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: 'Tiles &copy; Esri' }),
+      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', { attribution: 'Labels &copy; Esri' })
+    ]);
+
+    var hybridCarto = L.layerGroup([
+      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: 'Tiles &copy; Esri' }),
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png', { attribution: 'Labels &copy; CARTO' })
+    ]);
+
+    var streets = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { attribution: '&copy; CARTO' });
+    var osmStandard = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap' });
+    var topo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenTopoMap' });
+
+    var baseLayers = {
+      "Hybrid (Esri Labels)": hybridEsri,
+      "Hybrid (CARTO Labels)": hybridCarto,
+      "Satellite (Esri)": satellite,
+      "Streets (Light)": streets,
+      "Streets (OSM)": osmStandard,
+      "Topographic": topo
+    };
+
+    var currentBaseLayer = hybridEsri;
+
+    // CREATE MAP
+    var map = L.map('map', {
+      center: [48.00, 37.75],
+      zoom: 7,
+      scrollWheelZoom: true,
+      layers: [currentBaseLayer]
+    });
+
+    // MAP SCALE CONTROL (Bottom-Left Corner)
+    var scaleControl = L.control.scale({
+      position: 'bottomleft',
+      metric: true,
+      imperial: true,
+      maxWidth: 150
+    }).addTo(map);
+
+    var currentUnit = 'km';
+
+    function setMeasurementUnit(unit) {
+      currentUnit = unit;
+      document.getElementById('unit-km').classList.toggle('selected', unit === 'km');
+      document.getElementById('unit-mi').classList.toggle('selected', unit === 'mi');
+
+      map.removeControl(scaleControl);
+      scaleControl = L.control.scale({
+        position: 'bottomleft',
+        metric: (unit === 'km'),
+        imperial: (unit === 'mi'),
+        maxWidth: 150
+      }).addTo(map);
+
+      if (drawingPoints.length > 1 && activeTool === 'ruler') {
+        var totalMeters = 0;
+        for (var i = 1; i < drawingPoints.length; i++) {
+          totalMeters += map.distance(drawingPoints[i - 1], drawingPoints[i]);
+        }
+        updateRulerDisplay(totalMeters);
+      }
+    }
+
+    function updateRulerDisplay(meters) {
+      if (currentUnit === 'mi') {
+        var miles = (meters / 1609.344).toFixed(2);
+        document.getElementById('ruler-result').innerText = "Distance: " + miles + " mi";
+      } else {
+        var km = (meters / 1000).toFixed(2);
+        document.getElementById('ruler-result').innerText = "Distance: " + km + " km";
+      }
+    }
+
+    // TOGGLE CENTER CROSSHAIR FROM MAIN MENU BUTTON
+    var isCrosshairActive = false;
+
+    function toggleCrosshairButton() {
+      isCrosshairActive = !isCrosshairActive;
+      document.getElementById('map-crosshair').style.display = isCrosshairActive ? 'block' : 'none';
+      document.getElementById('btn-toggle-crosshair').classList.toggle('active', isCrosshairActive);
+    }
+
+    map.createPane('markersPane');
+    map.getPane('markersPane').style.zIndex = 650;
+
+    // TOP-CENTER SEARCH CONTROL
+    var topCenterContainer = L.DomUtil.create('div', 'leaflet-top leaflet-center');
+    map.getContainer().appendChild(topCenterContainer);
+
+    var searchProvider = new GeoSearch.OpenStreetMapProvider({
+      params: {
+        'accept-language': 'en',
+        countrycodes: 'ua,ru',
+        viewbox: '22.13,44.38,40.25,53.50',
+        bounded: 1
+      }
+    });
+
+    var searchControl = GeoSearch.GeoSearchControl({
+      provider: searchProvider,
+      style: 'bar',
+      showMarker: true,
+      showPopup: false,
+      marker: { icon: new L.Icon.Default(), draggable: false },
+      popupFormat: ({ query, result }) => result.label,
+      maxMarkers: 1,
+      retainZoomLevel: false,
+      animateZoom: true,
+      autoClose: true,
+      searchLabel: 'Search location or coordinates...',
+      keepResult: true
+    });
+
+    topCenterContainer.appendChild(searchControl.onAdd(map));
+
+    // SIDEBAR TAB TOGGLE LOGIC
+    function toggleTab(tabName) {
+      var panel = document.getElementById('panel-' + tabName);
+      var btn = document.getElementById('btn-tab-' + tabName);
+      var isCurrentlyShow = panel ? panel.classList.contains('show') : false;
+
+      document.querySelectorAll('.sidebar-panel').forEach(p => p.classList.remove('show'));
+      document.querySelectorAll('.sidebar-btn').forEach(b => {
+        if (b.id !== 'btn-toggle-crosshair' && b.id !== 'btn-fullscreen') b.classList.remove('active');
+      });
+
+      if (panel && !isCurrentlyShow) {
+        panel.classList.add('show');
+        if (btn) btn.classList.add('active');
+
+        if (tabName === 'ruler') {
+          setActiveTool('ruler');
+        } else if (tabName === 'coords') {
+          setActiveTool('coords');
+        } else if (tabName !== 'draw' && (activeTool === 'ruler' || activeTool === 'coords')) {
+          setActiveTool(null);
+        }
+      } else {
+        setActiveTool(null);
+      }
+    }
+
+    // Populate Basemap Radio Options in Panel
+    var basemapContainer = document.getElementById('basemap-options');
+    Object.keys(baseLayers).forEach(function(key) {
+      var label = document.createElement('label');
+      label.style.display = 'block';
+      label.style.marginBottom = '4px';
+      label.style.cursor = 'pointer';
+
+      var radio = document.createElement('input');
+      radio.type = 'radio';
+      radio.name = 'basemap';
+      radio.checked = baseLayers[key] === currentBaseLayer;
+
+      radio.addEventListener('change', function() {
+        if (radio.checked) {
+          map.removeLayer(currentBaseLayer);
+          currentBaseLayer = baseLayers[key];
+          map.addLayer(currentBaseLayer);
+        }
+      });
+
+      label.appendChild(radio);
+      label.appendChild(document.createTextNode(' ' + key));
+      basemapContainer.appendChild(label);
+    });
+
+    // AREA CALCULATION
+    function calculateAreaAndBindPopup(layer, title) {
+      layer.on('click', function(e) {
+        if (activeTool) return;
+        var geojson = layer.toGeoJSON();
+        var areaInMeters = turf.area(geojson);
+        var areaInKm2 = (areaInMeters / 1000000).toFixed(2);
+        var areaInMi2 = (areaInMeters / 2589988.11).toFixed(2);
+        var nameText = (geojson.properties && geojson.properties.name) ? "<b>" + geojson.properties.name + "</b><br>" : "";
+        var titleText = title ? "<b>" + title + "</b><br>" : "";
+
+        L.popup()
+          .setLatLng(e.latlng)
+          .setContent(titleText + nameText + "<b>Area:</b> " + areaInKm2 + " km² (" + areaInMi2 + " sq mi)")
+          .openOn(map);
+
+        L.DomEvent.stopPropagation(e);
+      });
+    }
+
+    // CITIES & LAYERS
+    var mainLayers = {};
+    var extraLayers = {};
+
+    var cityIcon = L.icon({
+      iconUrl: 'city-icon.png',
+      iconSize: [28, 28],
+      iconAnchor: [14, 14],
+      popupAnchor: [0, -14]
+    });
+
+    var capturedCities = [
+      { name: "Popasna", date: "7 May 2022", lat: 48.6480, lng: 38.3540 },
+      { name: "Mariupol", date: "20 May 2022", lat: 47.0971, lng: 37.5434 },
+      { name: "Sievierodonetsk", date: "25 June 2022", lat: 48.9483, lng: 38.4931 },
+      { name: "Bilytske", date: "26 July 2026", lat: 48.40687, lng: 37.18220 },
+      { name: "Lysychansk", date: "3 July 2022", lat: 48.9142, lng: 38.4436 },
+      { name: "Enerhodar", date: "28 February 2022", lat: 47.49958, lng: 34.63577 },
+      { name: "Rubizhne", date: "13 May 2022", lat: 49.01986, lng: 38.37936 },
+      { name: "Kreminna", date: "18 April 2022", lat: 49.04783, lng: 38.22925 },
+      { name: "Soledar", date: "16 January 2023", lat: 48.6825, lng: 38.0706 },
+      { name: "Bakhmut (Artyomovsk)", date: "20 May 2023", lat: 48.5956, lng: 37.9999 },
+      { name: "Nova Kakhovka", date: "27 February 2022", lat: 46.75045, lng: 33.34368 },
+      { name: "Tokmak", date: "2 March 2022", lat: 47.25686, lng: 35.70282 },
+      { name: "Vasylivka", date: "2 March 2022", lat: 47.43697, lng: 35.27470 },
+      { name: "Marinka", date: "25 December 2023", lat: 47.94452, lng: 37.50561 },
+      { name: "Avdiivka", date: "17 February 2024", lat: 48.1391, lng: 37.7461 },
+      { name: "Novohrodivka", date: "27 August 2024", lat: 48.20260, lng: 37.33686 },
+      { name: "Kostiantynivka", date: "28 July 2026", lat: 48.52486, lng: 37.6986 },
+      { name: "Krasnohorivka", date: "9 September 2024", lat: 48.00198, lng: 37.51488 },
+      { name: "Henichesk", date: "24 February 2022", lat: 46.17412, lng: 34.80194 },
+      { name: "Skadovsk", date: "24 February 2022", lat: 46.12465, lng: 32.91229 },
+      { name: "Ukrainsk", date: "17 September 2024", lat: 48.09709, lng: 37.36472 },
+      { name: "Sudzha, Kursk Oblast", date: "13 March 2025", lat: 51.18948, lng: 35.26995 },
+      { name: "Vuhledar", date: "1 October 2024", lat: 47.78064, lng: 37.24726 },
+      { name: "Selydove", date: "30 October 2024", lat: 48.14868, lng: 37.30614 },
+      { name: "Vovchansk", date: "2 December 2025", lat: 50.28737, lng: 36.94050 },
+      { name: "Kurakhove", date: "25 December 2024", lat: 47.9850, lng: 37.2831 },
+      { name: "Volnovakha", date: "11 March 2022", lat: 47.60107, lng: 37.48535 },
+      { name: "Polohy", date: "4 March 2022", lat: 47.47823, lng: 36.25265 },
+      { name: "Chasiv Yar", date: "28 July 2026", lat: 48.58025, lng: 37.83719 },
+      { name: "Berdyansk", date: "27 February 2022", lat: 46.75774, lng: 36.79871 },
+      { name: "Melitopol", date: "24 February 2022", lat: 46.84610, lng: 35.37186 },
+      { name: "Rodynske", date: "13 July 2026", lat: 48.35351, lng: 37.20760 },
+      { name: "Toretsk", date: "2 February 2025", lat: 48.3917, lng: 37.8728 },
+      { name: "Siversk", date: "13 December 2025", lat: 48.86929, lng: 38.08960 },
+      { name: "Pokrovsk", date: "22 November 2025", lat: 48.2822, lng: 37.1758 },
+      { name: "Myrnohrad", date: "28 December 2025", lat: 48.30843, lng: 37.25670 },
+      { name: "Huliaipole", date: "28 December 2025", lat: 47.6583, lng: 36.2667 }
+    ];
+
+    var cityMarkers = L.layerGroup();
+    capturedCities.forEach(function(city) {
+      L.marker([city.lat, city.lng], { pane: 'markersPane', icon: cityIcon })
+        .bindPopup("<b>" + city.name + "</b><br>Captured " + city.date)
+        .addTo(cityMarkers);
+    });
+    cityMarkers.addTo(map);
+    extraLayers["Cities Captured"] = cityMarkers;
+
+    var userDrawings = L.layerGroup().addTo(map);
+    extraLayers["My Drawings"] = userDrawings;
+
+    var layerFiles = [
+      { file: "Russian-controlled%20territory.geojson", name: "Russian-controlled territory", color: "#F0001B", group: "main" },
+      { file: "neatogeo_Frontline%20towns%20%28from%20PWM%29.geojson", name: "Frontline towns", color: "#ffffff", outlineColor: "#ffffff", fillOpacity: 0, group: "extra" },
+      { file: "Ukrainian-controlled%20territory.geojson", name: "Ukrainian-controlled territory", color: "#1427a5", group: "main" },
+      { file: "Advances%20%28both%20sides%29.geojson", name: "Advances (both sides)", color: "#f1c40f", group: "main" },
+      { file: "Territories%20regained%20in%20the%20last%20month.geojson", name: "Territories regained", color: "#2ecc71", group: "main" }
+    ];
+
+    layerFiles.forEach(function(layerInfo) {
+      fetch(layerInfo.file)
+        .then(response => response.json())
+        .then(data => {
+          var layer = L.geoJSON(data, {
+            style: function() {
+              return { color: layerInfo.outlineColor || layerInfo.color, weight: 2, fillColor: layerInfo.color, fillOpacity: layerInfo.fillOpacity !== undefined ? layerInfo.fillOpacity : 0.4 };
+            },
+            onEachFeature: function(feature, featureLayer) {
+              if (feature.geometry && (feature.geometry.type === "Polygon" || feature.geometry.type === "MultiPolygon")) {
+                calculateAreaAndBindPopup(featureLayer, layerInfo.name);
+              }
+            }
+          }).addTo(map);
+
+          if (layerInfo.group === "main") mainLayers[layerInfo.name] = layer;
+          else extraLayers[layerInfo.name] = layer;
+
+          updateSidebarLayerControl();
+        }).catch(err => console.error("Layer load error:", err));
+    });
+
+    function updateSidebarLayerControl() {
+      var container = document.getElementById('grouped-layer-container');
+      if (!container) return;
+      container.innerHTML = '';
+
+      function addGroup(sectionTitle, layers) {
+        var section = document.createElement('div');
+        section.style.marginBottom = '10px';
+
+        var title = document.createElement('div');
+        title.style.fontWeight = 'bold';
+        title.style.fontSize = '13px';
+        title.style.marginBottom = '4px';
+        title.textContent = sectionTitle;
+        section.appendChild(title);
+
+        Object.keys(layers).forEach(function(name) {
+          var checkbox = document.createElement('input');
+          checkbox.type = 'checkbox';
+          checkbox.checked = map.hasLayer(layers[name]);
+
+          checkbox.addEventListener('change', function() {
+            if (checkbox.checked) map.addLayer(layers[name]);
+            else map.removeLayer(layers[name]);
+          });
+
+          var label = document.createElement('label');
+          label.style.display = 'block';
+          label.style.fontSize = '13px';
+          label.style.marginBottom = '3px';
+          label.appendChild(checkbox);
+          label.appendChild(document.createTextNode(' ' + name));
+          section.appendChild(label);
+        });
+
+        return section;
+      }
+
+      container.appendChild(addGroup('Main Layers', mainLayers));
+      container.appendChild(addGroup('Extra Layers', extraLayers));
+    }
+
+    // MAP UPDATES PANEL
+    fetch('updates.json')
+      .then(response => response.json())
+      .then(updates => {
+        var container = document.getElementById('updates-content');
+        container.innerHTML = '';
+        if (!updates.length) { container.innerHTML = '<em>No updates yet.</em>'; return; }
+        updates.forEach(item => {
+          var div = document.createElement('div');
+          div.className = 'update-item';
+          div.innerHTML = '<span class="update-date">' + item.date + '</span>' + item.text;
+          container.appendChild(div);
+        });
+      })
+      .catch(() => document.getElementById('updates-content').innerHTML = '<em>Could not load updates.</em>');
+
+    // VISITOR TOOLS
+    var activeTool = null;
+    var currentColor = '#ff0000';
+    var drawingPoints = [];
+    var previewLayer = null;
+    var isMouseDown = false;
+
+    function setColor(color) {
+      currentColor = color;
+      var colorMap = {
+        '#ff0000': 'color-red',
+        '#0000ff': 'color-blue',
+        '#2ecc71': 'color-green',
+        '#f1c40f': 'color-yellow',
+        '#171717': 'color-black',
+        '#ffffff': 'color-white'
+      };
+
+      Object.keys(colorMap).forEach(key => {
+        var el = document.getElementById(colorMap[key]);
+        if (el) el.classList.toggle('selected', key === color);
+      });
+    }
+
+    function setActiveTool(tool) {
+      activeTool = (activeTool === tool) ? null : tool;
+      resetDrawingState();
+      updateToolButtons();
+      updateInstructions();
+    }
+
+    function resetDrawingState() {
+      drawingPoints = [];
+      if (previewLayer) { map.removeLayer(previewLayer); previewLayer = null; }
+      isMouseDown = false;
+      map.dragging.enable();
+    }
+
+    function updateToolButtons() {
+      document.querySelectorAll('#panel-draw .tool-btn').forEach(btn => btn.classList.remove('active'));
+      if (activeTool) {
+        var btn = document.getElementById('btn-' + activeTool);
+        if (btn) btn.classList.add('active');
+      }
+    }
+
+    function updateInstructions() {
+      var drawMsg = document.getElementById('draw-result');
+      var rulerMsg = document.getElementById('ruler-result');
+      var coordsMsg = document.getElementById('coords-result');
+
+      var msgs = {
+        polygon: "Click points to trace a shape, then click 'Finish Shape'.",
+        freehand: "Click and drag on the map to draw freely.",
+        arrow: "Click start point, then click end point to place an arrow.",
+        rectangle: "Click one corner, then click opposite corner.",
+        ruler: "Click points on the map to measure distance.",
+        coords: "Click anywhere on the map to display its precise coordinates."
+      };
+
+      if (activeTool === 'ruler') rulerMsg.innerText = msgs.ruler;
+      else if (activeTool === 'coords') coordsMsg.innerText = msgs.coords;
+      else drawMsg.innerText = activeTool ? msgs[activeTool] : "Select a shape to draw.";
+    }
+
+    map.on('mousedown', function(e) {
+      if (activeTool !== 'freehand') return;
+      isMouseDown = true;
+      map.dragging.disable();
+      drawingPoints = [e.latlng];
+      if (previewLayer) map.removeLayer(previewLayer);
+      previewLayer = L.polyline(drawingPoints, { color: currentColor, weight: 3 }).addTo(map);
+    });
+
+    map.on('mousemove', function(e) {
+      if (activeTool === 'freehand' && isMouseDown) {
+        drawingPoints.push(e.latlng);
+        previewLayer.setLatLngs(drawingPoints);
+        return;
+      }
+      if (activeTool === 'rectangle' && drawingPoints.length === 1) {
+        var bounds = L.latLngBounds(drawingPoints[0], e.latlng);
+        if (previewLayer) map.removeLayer(previewLayer);
+        previewLayer = L.rectangle(bounds, { color: currentColor, weight: 2, fillColor: currentColor, fillOpacity: 0.3 }).addTo(map);
+        return;
+      }
+      if (activeTool === 'arrow' && drawingPoints.length === 1) {
+        if (previewLayer) map.removeLayer(previewLayer);
+        previewLayer = L.polyline([drawingPoints[0], e.latlng], { color: currentColor, weight: 3 }).addTo(map);
+      }
+    });
+
+    map.on('mouseup', function() {
+      if (activeTool !== 'freehand' || !isMouseDown) return;
+      isMouseDown = false;
+      map.dragging.enable();
+      if (drawingPoints.length >= 2) {
+        userDrawings.addLayer(L.polyline(drawingPoints, { color: currentColor, weight: 3 }));
+      }
+      if (previewLayer) { map.removeLayer(previewLayer); previewLayer = null; }
+      drawingPoints = [];
+    });
+
+    map.on('click', function(e) {
+      if (!activeTool) return;
+
+      if (activeTool === 'coords') {
+        L.popup().setLatLng(e.latlng).setContent("Lat: " + e.latlng.lat.toFixed(5) + "<br>Lng: " + e.latlng.lng.toFixed(5)).openOn(map);
+        document.getElementById('coords-result').innerText = "Lat: " + e.latlng.lat.toFixed(5) + ", Lng: " + e.latlng.lng.toFixed(5);
+        return;
+      }
+
+      if (activeTool === 'polygon' || activeTool === 'ruler') {
+        drawingPoints.push(e.latlng);
+        if (previewLayer) map.removeLayer(previewLayer);
+        previewLayer = L.polyline(drawingPoints, { color: activeTool === 'ruler' ? '#000000' : currentColor, weight: 3, dashArray: activeTool === 'ruler' ? '6,6' : null }).addTo(map);
+
+        if (activeTool === 'ruler' && drawingPoints.length > 1) {
+          var total = 0;
+          for (var i = 1; i < drawingPoints.length; i++) total += map.distance(drawingPoints[i - 1], drawingPoints[i]);
+          updateRulerDisplay(total);
+        }
+        return;
+      }
+
+      if (activeTool === 'rectangle') {
+        if (drawingPoints.length === 0) drawingPoints.push(e.latlng);
+        else {
+          var bounds = L.latLngBounds(drawingPoints[0], e.latlng);
+          var rect = L.rectangle(bounds, { color: currentColor, weight: 2, fillColor: currentColor, fillOpacity: 0.4 });
+          userDrawings.addLayer(rect);
+          calculateAreaAndBindPopup(rect, "Drawn Rectangle");
+          if (previewLayer) { map.removeLayer(previewLayer); previewLayer = null; }
+          drawingPoints = [];
+        }
+        return;
+      }
+
+      if (activeTool === 'arrow') {
+        if (drawingPoints.length === 0) drawingPoints.push(e.latlng);
+        else {
+          addArrow(drawingPoints[0], e.latlng, currentColor);
+          if (previewLayer) { map.removeLayer(previewLayer); previewLayer = null; }
+          drawingPoints = [];
+        }
+      }
+    });
+
+    function addArrow(start, end, color) {
+      userDrawings.addLayer(L.polyline([start, end], { color: color, weight: 3 }));
+      var p1 = map.latLngToLayerPoint(start);
+      var p2 = map.latLngToLayerPoint(end);
+      var angle = Math.atan2(p2.y - p1.y, p2.x - p1.x);
+      var headLength = 12;
+      var headAngle = Math.PI / 7;
+
+      var leftPt = L.point(p2.x - headLength * Math.cos(angle - headAngle), p2.y - headLength * Math.sin(angle - headAngle));
+      var rightPt = L.point(p2.x - headLength * Math.cos(angle + headAngle), p2.y - headLength * Math.sin(angle + headAngle));
+
+      var head = L.polygon([map.layerPointToLatLng(p2), map.layerPointToLatLng(leftPt), map.layerPointToLatLng(rightPt)], {
+        color: color,
+        fillColor: color,
+        fillOpacity: 1
+      });
+      userDrawings.addLayer(head);
+    }
+
+    function finishShape() {
+      if (activeTool === 'polygon' && drawingPoints.length >= 3) {
+        var poly = L.polygon(drawingPoints, { color: currentColor, weight: 2, fillColor: currentColor, fillOpacity: 0.4 });
+        userDrawings.addLayer(poly);
+        calculateAreaAndBindPopup(poly, "Drawn Polygon");
+      }
+      resetDrawingState();
+    }
+
+    function clearDrawings() {
+      userDrawings.clearLayers();
+      resetDrawingState();
+      document.getElementById('ruler-result').innerText = "Click points on the map to measure distance.";
+      document.getElementById('draw-result').innerText = "Select a shape to draw.";
+    }
+  </script>
+
+</body>
+</html>
