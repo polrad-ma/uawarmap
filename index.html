@@ -49,6 +49,7 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
+      color: #ffffff;
       transition: background 0.15s, border-color 0.15s;
     }
     .sidebar-btn:hover { background: #3a3a3a; }
@@ -363,6 +364,7 @@
     <button class="sidebar-btn" id="btn-tab-coords" onclick="toggleTab('coords')" title="Coordinates">📍</button>
     <button class="sidebar-btn" id="btn-toggle-crosshair" onclick="toggleCrosshairButton()" title="Toggle Center Crosshair">🎯</button>
     <button class="sidebar-btn" id="btn-tab-updates" onclick="toggleTab('updates')" title="Map Updates">🔔</button>
+    <button class="sidebar-btn" id="btn-fullscreen" onclick="toggleFullScreen()" title="Toggle Fullscreen">⛶</button>
   </div>
 
   <div id="map-title">Russo-Ukrainian War Map (Polrad Mapping)</div>
@@ -435,6 +437,30 @@ I use multiple sources to update and clarify the map — mainly geolocation data
   </div>
 
   <script>
+    // FULLSCREEN TOGGLE FUNCTION
+    function toggleFullScreen() {
+      var btn = document.getElementById('btn-fullscreen');
+      if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
+        if (document.documentElement.requestFullscreen) {
+          document.documentElement.requestFullscreen();
+        } else if (document.documentElement.webkitRequestFullscreen) {
+          document.documentElement.webkitRequestFullscreen();
+        } else if (document.documentElement.msRequestFullscreen) {
+          document.documentElement.msRequestFullscreen();
+        }
+        if (btn) btn.classList.add('active');
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) {
+          document.msExitFullscreen();
+        }
+        if (btn) btn.classList.remove('active');
+      }
+    }
+
     // BASEMAPS
     var satellite = L.tileLayer(
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
@@ -566,7 +592,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
 
       document.querySelectorAll('.sidebar-panel').forEach(p => p.classList.remove('show'));
       document.querySelectorAll('.sidebar-btn').forEach(b => {
-        if (b.id !== 'btn-toggle-crosshair') b.classList.remove('active');
+        if (b.id !== 'btn-toggle-crosshair' && b.id !== 'btn-fullscreen') b.classList.remove('active');
       });
 
       if (panel && !isCurrentlyShow) {
