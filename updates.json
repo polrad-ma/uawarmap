@@ -1,15 +1,23 @@
 [
   {
+    "date": "17 August 2026 (Update 3)",
+    "text": "Ukrainian forces have cleared the northern part of Rizdvyanka/Rozhdestvenske. 8.64 km² cleared"
+  },
+  {
+    "date": "17 August 2026 (Update 2)",
+    "text": "Russian army captured Novomykolaivka on the Druzhkivka direction. 14.3 km² consolidated"
+  },
+  {
     "date": "17 August 2026",
-    "text": "Map online. Russian forces advanced in Mala Tokmachka, Novodanylivka (already reported on X), in Petrivka (south of Druzhkivka), and captured the forest north of Okhrimivka. The villages of Hirke (Omelnyk direction), Kutuzivka/Stepy and Vilne (Dobropillya direction) were fully captured by the RuAF."
+    "text": "Map online. Russian forces advanced in Mala Tokmachka, Novodanylivka (already reported on X), in Petrivka (south of Druzhkivka), and captured the forest north of Okhrimivka. The villages of Hirke (Omelnyk direction), Kutuzivka/Stepy and Vilne (Dobropillya direction) were fully captured by the RuAF. Overall 42.47 km² were captured."
   },
   {
     "date": "16 August 2026 (Update 2)",
-    "text": "Added polygon area and more drawing tools."
+    "text": "Test update. Added polygon area and more drawing tools."
   },
   {
     "date": "16 August 2026 (Update 1)",
-    "text": "Added more captured city markers. Russians advanced into Mohritsya and north of Kostiantynivka (32.1km²)."
+    "text": "Test update. Added more captured city markers. Russians advanced into Mohritsya and north of Kostiantynivka (32.1km²)."
   },
   {
     "date": "15 August 2026",
