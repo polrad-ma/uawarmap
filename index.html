@@ -82,6 +82,41 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.4);
     }
 
+    /* Center Crosshair Overlay */
+    #map-crosshair {
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: calc(50% + 30px);
+      width: 24px;
+      height: 24px;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 1500;
+    }
+
+    #map-crosshair::before,
+    #map-crosshair::after {
+      content: '';
+      position: absolute;
+      background: rgba(255, 255, 255, 0.85);
+      box-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
+    }
+
+    #map-crosshair::before {
+      top: 11px;
+      left: 0;
+      width: 24px;
+      height: 2px;
+    }
+
+    #map-crosshair::after {
+      top: 0;
+      left: 11px;
+      width: 2px;
+      height: 24px;
+    }
+
     /* Top-Center Search Bar Container */
     .leaflet-top.leaflet-center {
       top: 10px;
@@ -176,7 +211,7 @@
     .sidebar-panel {
       display: none;
       position: absolute;
-      top: 90px; /* Shifted down to safely clear title banner and zoom controls */
+      top: 90px;
       left: 75px;
       z-index: 1900;
       background: white;
@@ -207,10 +242,10 @@
     .tool-btn:hover { background: #e8e8e8; }
     .tool-btn.active { background: #333; color: white; border-color: #333; }
     
-    #color-row {
+    #color-row, .unit-row {
       margin-bottom: 8px;
     }
-    .color-btn {
+    .color-btn, .unit-btn {
       display: inline-block;
       width: 47%;
       padding: 6px 4px;
@@ -219,15 +254,31 @@
       border-radius: 3px;
       cursor: pointer;
       text-align: center;
-      color: white;
+      background: #eee;
+      color: #333;
     }
-    .color-btn.selected { border-color: #000; }
+    .color-btn.selected, .unit-btn.selected { border-color: #000; background: #333; color: white; }
     .panel-result { margin-top: 8px; font-size: 12px; color: #333; min-height: 24px; }
 
     /* Updates Panel Styling */
     .update-item { border-bottom: 1px solid #eee; padding: 6px 0; font-size: 13px; }
     .update-item:last-child { border-bottom: none; }
     .update-date { font-weight: bold; font-size: 12px; color: #555; display: block; margin-bottom: 2px; }
+
+    /* Custom Leaflet Control Styling for Scale */
+    .leaflet-bottom.leaflet-left {
+      left: 70px;
+      bottom: 10px;
+    }
+    .leaflet-control-scale-line {
+      background: rgba(23, 23, 23, 0.85) !important;
+      color: #ffffff !important;
+      border: 1px solid rgba(255, 255, 255, 0.4) !important;
+      border-top: none !important;
+      padding: 2px 5px !important;
+      font-size: 11px !important;
+      font-weight: bold;
+    }
 
     /* Hide standard leaflet layers control */
     .leaflet-control-layers { display: none !important; }
@@ -305,6 +356,7 @@
 
   <div id="map-title">Russo-Ukrainian War Map (Polrad Mapping)</div>
   <div id="map"></div>
+  <div id="map-crosshair"></div>
   <div id="watermark-overlay"></div>
 
   <!-- Sidebar Sub-Panels -->
@@ -315,6 +367,13 @@
       <div id="basemap-options" style="margin-top: 6px; margin-bottom: 12px; font-size: 13px;"></div>
     </div>
     <div id="grouped-layer-container"></div>
+
+    <div style="margin-top: 15px; padding-top: 10px; border-top: 1px solid #ddd;">
+      <strong>Map Display Controls</strong>
+      <label style="display: block; font-size: 13px; margin-top: 6px; cursor: pointer;">
+        <input type="checkbox" id="toggle-crosshair" onchange="toggleCrosshair(this.checked)"> Enable Center Crosshair
+      </label>
+    </div>
   </div>
 
   <div class="sidebar-panel" id="panel-draw">
@@ -325,8 +384,8 @@
     <button class="tool-btn" id="btn-rectangle" onclick="setActiveTool('rectangle')">Rectangle</button>
     
     <div id="color-row">
-      <span class="color-btn selected" id="color-red" style="background:#ff0000;" onclick="setColor('#ff0000')">Red</span>
-      <span class="color-btn" id="color-blue" style="background:#0000ff;" onclick="setColor('#0000ff')">Blue</span>
+      <span class="color-btn selected" id="color-red" style="background:#ff0000; color:white;" onclick="setColor('#ff0000')">Red</span>
+      <span class="color-btn" id="color-blue" style="background:#0000ff; color:white;" onclick="setColor('#0000ff')">Blue</span>
     </div>
 
     <button class="tool-btn" onclick="finishShape()">Finish Shape</button>
@@ -336,6 +395,10 @@
 
   <div class="sidebar-panel" id="panel-ruler">
     <h4>Ruler (Measure)</h4>
+    <div class="unit-row">
+      <span class="unit-btn selected" id="unit-km" onclick="setMeasurementUnit('km')">Kilometers (km)</span>
+      <span class="unit-btn" id="unit-mi" onclick="setMeasurementUnit('mi')">Miles (mi)</span>
+    </div>
     <button class="tool-btn" onclick="finishShape()">Finish Measuring</button>
     <button class="tool-btn" onclick="clearDrawings()">Clear Line</button>
     <div class="panel-result" id="ruler-result">Click points on the map to measure distance.</div>
@@ -402,6 +465,55 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       scrollWheelZoom: true,
       layers: [currentBaseLayer]
     });
+
+    // MAP SCALE CONTROL (Bottom-Left Corner)
+    var scaleControl = L.control.scale({
+      position: 'bottomleft',
+      metric: true,
+      imperial: true,
+      maxWidth: 150
+    }).addTo(map);
+
+    var currentUnit = 'km'; // Default measurement unit
+
+    function setMeasurementUnit(unit) {
+      currentUnit = unit;
+      document.getElementById('unit-km').classList.toggle('selected', unit === 'km');
+      document.getElementById('unit-mi').classList.toggle('selected', unit === 'mi');
+
+      // Update scale bar configuration based on selection
+      map.removeControl(scaleControl);
+      scaleControl = L.control.scale({
+        position: 'bottomleft',
+        metric: (unit === 'km'),
+        imperial: (unit === 'mi'),
+        maxWidth: 150
+      }).addTo(map);
+
+      // Recalculate current ruler measurement if active
+      if (drawingPoints.length > 1 && activeTool === 'ruler') {
+        var totalMeters = 0;
+        for (var i = 1; i < drawingPoints.length; i++) {
+          totalMeters += map.distance(drawingPoints[i - 1], drawingPoints[i]);
+        }
+        updateRulerDisplay(totalMeters);
+      }
+    }
+
+    function updateRulerDisplay(meters) {
+      if (currentUnit === 'mi') {
+        var miles = (meters / 1609.344).toFixed(2);
+        document.getElementById('ruler-result').innerText = "Distance: " + miles + " mi";
+      } else {
+        var km = (meters / 1000).toFixed(2);
+        document.getElementById('ruler-result').innerText = "Distance: " + km + " km";
+      }
+    }
+
+    // TOGGLE CENTER CROSSHAIR
+    function toggleCrosshair(enable) {
+      document.getElementById('map-crosshair').style.display = enable ? 'block' : 'none';
+    }
 
     map.createPane('markersPane');
     map.getPane('markersPane').style.zIndex = 650;
@@ -495,12 +607,13 @@ I use multiple sources to update and clarify the map — mainly geolocation data
         var geojson = layer.toGeoJSON();
         var areaInMeters = turf.area(geojson);
         var areaInKm2 = (areaInMeters / 1000000).toFixed(2);
+        var areaInMi2 = (areaInMeters / 2589988.11).toFixed(2);
         var nameText = (geojson.properties && geojson.properties.name) ? "<b>" + geojson.properties.name + "</b><br>" : "";
         var titleText = title ? "<b>" + title + "</b><br>" : "";
 
         L.popup()
           .setLatLng(e.latlng)
-          .setContent(titleText + nameText + "<b>Area:</b> " + areaInKm2 + " km²")
+          .setContent(titleText + nameText + "<b>Area:</b> " + areaInKm2 + " km² (" + areaInMi2 + " sq mi)")
           .openOn(map);
 
         L.DomEvent.stopPropagation(e);
@@ -767,7 +880,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
         if (activeTool === 'ruler' && drawingPoints.length > 1) {
           var total = 0;
           for (var i = 1; i < drawingPoints.length; i++) total += map.distance(drawingPoints[i - 1], drawingPoints[i]);
-          document.getElementById('ruler-result').innerText = "Distance: " + (total / 1000).toFixed(2) + " km";
+          updateRulerDisplay(total);
         }
         return;
       }
