@@ -396,8 +396,11 @@
     <h4>Draw Tools</h4>
     <button class="tool-btn" id="btn-polygon" onclick="setActiveTool('polygon')">Polygon</button>
     <button class="tool-btn" id="btn-freehand" onclick="setActiveTool('freehand')">Draw Freely</button>
+    <button class="tool-btn" id="btn-dashed-freehand" onclick="setActiveTool('dashed-freehand')">Dashed Freehand</button>
+    <button class="tool-btn" id="btn-dashed-line" onclick="setActiveTool('dashed-line')">Dashed Line</button>
     <button class="tool-btn" id="btn-arrow" onclick="setActiveTool('arrow')">Arrow</button>
     <button class="tool-btn" id="btn-rectangle" onclick="setActiveTool('rectangle')">Rectangle</button>
+    <button class="tool-btn" id="btn-eraser" onclick="setActiveTool('eraser')">Eraser</button>
 
 <div id="color-row">
   <span class="color-btn selected" id="color-red" style="background:#ff0000; color:white;" onclick="setColor('#ff0000')">Red</span>
@@ -815,16 +818,9 @@ I use multiple sources to update and clarify the map — mainly geolocation data
           var div = document.createElement('div');
           div.className = 'update-item';
 
-          // Convert links in update text into clickable links.
-          // You can use either:
-          //   https://example.com
-          // or a hidden link:
-          //   [Click here](https://example.com)
           function makeLinksClickable(text) {
             var hiddenLinks = [];
 
-            // Temporarily protect [word](https://...) links so the raw-URL
-            // converter does not modify the URL inside them.
             text = text.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, function(match, label, url) {
               var token = '___UPDATE_LINK_' + hiddenLinks.length + '___';
               hiddenLinks.push(
@@ -835,11 +831,9 @@ I use multiple sources to update and clarify the map — mainly geolocation data
               return token;
             });
 
-            // Turn ordinary URLs into clickable links.
             text = text.replace(/(^|[\s>])(https?:\/\/[^\s<]+)/g, function(match, before, url) {
               var trailing = '';
 
-              // Keep common punctuation outside the clickable URL.
               while (/[.,!?;:]$/.test(url)) {
                 trailing = url.slice(-1) + trailing;
                 url = url.slice(0, -1);
@@ -852,7 +846,6 @@ I use multiple sources to update and clarify the map — mainly geolocation data
                 trailing;
             });
 
-            // Restore hidden/labelled links.
             hiddenLinks.forEach(function(link, index) {
               text = text.replace('___UPDATE_LINK_' + index + '___', link);
             });
@@ -877,6 +870,15 @@ I use multiple sources to update and clarify the map — mainly geolocation data
     var drawingPoints = [];
     var previewLayer = null;
     var isMouseDown = false;
+
+    function attachEraser(layer) {
+      layer.on('click', function(e) {
+        if (activeTool === 'eraser') {
+          userDrawings.removeLayer(layer);
+          L.DomEvent.stopPropagation(e);
+        }
+      });
+    }
 
     function setColor(color) {
       currentColor = color;
@@ -925,8 +927,11 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       var msgs = {
         polygon: "Click points to trace a shape, then click 'Finish Shape'.",
         freehand: "Click and drag on the map to draw freely.",
+        'dashed-freehand': "Click and drag on the map to draw a dashed line freely.",
+        'dashed-line': "Click points to draw a dashed line, then click 'Finish Shape'.",
         arrow: "Click start point, then click end point to place an arrow.",
         rectangle: "Click one corner, then click opposite corner.",
+        eraser: "Click on any drawn shape or line to erase it.",
         ruler: "Click points on the map to measure distance.",
         coords: "Click anywhere on the map to display its precise coordinates."
       };
@@ -937,16 +942,20 @@ I use multiple sources to update and clarify the map — mainly geolocation data
     }
 
     map.on('mousedown', function(e) {
-      if (activeTool !== 'freehand') return;
+      if (activeTool !== 'freehand' && activeTool !== 'dashed-freehand') return;
       isMouseDown = true;
       map.dragging.disable();
       drawingPoints = [e.latlng];
       if (previewLayer) map.removeLayer(previewLayer);
-      previewLayer = L.polyline(drawingPoints, { color: currentColor, weight: 3 }).addTo(map);
+      
+      var options = { color: currentColor, weight: 3 };
+      if (activeTool === 'dashed-freehand') options.dashArray = '6, 6';
+
+      previewLayer = L.polyline(drawingPoints, options).addTo(map);
     });
 
     map.on('mousemove', function(e) {
-      if (activeTool === 'freehand' && isMouseDown) {
+      if ((activeTool === 'freehand' || activeTool === 'dashed-freehand') && isMouseDown) {
         drawingPoints.push(e.latlng);
         previewLayer.setLatLngs(drawingPoints);
         return;
@@ -964,11 +973,16 @@ I use multiple sources to update and clarify the map — mainly geolocation data
     });
 
     map.on('mouseup', function() {
-      if (activeTool !== 'freehand' || !isMouseDown) return;
+      if ((activeTool !== 'freehand' && activeTool !== 'dashed-freehand') || !isMouseDown) return;
       isMouseDown = false;
       map.dragging.enable();
       if (drawingPoints.length >= 2) {
-        userDrawings.addLayer(L.polyline(drawingPoints, { color: currentColor, weight: 3 }));
+        var options = { color: currentColor, weight: 3 };
+        if (activeTool === 'dashed-freehand') options.dashArray = '6, 6';
+        
+        var line = L.polyline(drawingPoints, options);
+        attachEraser(line);
+        userDrawings.addLayer(line);
       }
       if (previewLayer) { map.removeLayer(previewLayer); previewLayer = null; }
       drawingPoints = [];
@@ -983,10 +997,14 @@ I use multiple sources to update and clarify the map — mainly geolocation data
         return;
       }
 
-      if (activeTool === 'polygon' || activeTool === 'ruler') {
+      if (activeTool === 'polygon' || activeTool === 'dashed-line' || activeTool === 'ruler') {
         drawingPoints.push(e.latlng);
         if (previewLayer) map.removeLayer(previewLayer);
-        previewLayer = L.polyline(drawingPoints, { color: activeTool === 'ruler' ? '#000000' : currentColor, weight: 3, dashArray: activeTool === 'ruler' ? '6,6' : null }).addTo(map);
+        
+        var options = { color: activeTool === 'ruler' ? '#000000' : currentColor, weight: 3 };
+        if (activeTool === 'ruler' || activeTool === 'dashed-line') options.dashArray = '6,6';
+
+        previewLayer = L.polyline(drawingPoints, options).addTo(map);
 
         if (activeTool === 'ruler' && drawingPoints.length > 1) {
           var total = 0;
@@ -1001,6 +1019,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
         else {
           var bounds = L.latLngBounds(drawingPoints[0], e.latlng);
           var rect = L.rectangle(bounds, { color: currentColor, weight: 2, fillColor: currentColor, fillOpacity: 0.4 });
+          attachEraser(rect);
           userDrawings.addLayer(rect);
           calculateAreaAndBindPopup(rect, "Drawn Rectangle");
           if (previewLayer) { map.removeLayer(previewLayer); previewLayer = null; }
@@ -1020,7 +1039,11 @@ I use multiple sources to update and clarify the map — mainly geolocation data
     });
 
     function addArrow(start, end, color) {
-      userDrawings.addLayer(L.polyline([start, end], { color: color, weight: 3 }));
+      var arrowGroup = L.layerGroup();
+      
+      var line = L.polyline([start, end], { color: color, weight: 3 });
+      arrowGroup.addLayer(line);
+
       var p1 = map.latLngToLayerPoint(start);
       var p2 = map.latLngToLayerPoint(end);
       var angle = Math.atan2(p2.y - p1.y, p2.x - p1.x);
@@ -1035,14 +1058,24 @@ I use multiple sources to update and clarify the map — mainly geolocation data
         fillColor: color,
         fillOpacity: 1
       });
-      userDrawings.addLayer(head);
+      arrowGroup.addLayer(head);
+
+      attachEraser(line);
+      attachEraser(head);
+
+      userDrawings.addLayer(arrowGroup);
     }
 
     function finishShape() {
       if (activeTool === 'polygon' && drawingPoints.length >= 3) {
         var poly = L.polygon(drawingPoints, { color: currentColor, weight: 2, fillColor: currentColor, fillOpacity: 0.4 });
+        attachEraser(poly);
         userDrawings.addLayer(poly);
         calculateAreaAndBindPopup(poly, "Drawn Polygon");
+      } else if (activeTool === 'dashed-line' && drawingPoints.length >= 2) {
+        var line = L.polyline(drawingPoints, { color: currentColor, weight: 3, dashArray: '6,6' });
+        attachEraser(line);
+        userDrawings.addLayer(line);
       }
       resetDrawingState();
     }
