@@ -280,6 +280,8 @@
     .update-item { border-bottom: 1px solid #eee; padding: 6px 0; font-size: 13px; }
     .update-item:last-child { border-bottom: none; }
     .update-date { font-weight: bold; font-size: 12px; color: #555; display: block; margin-bottom: 2px; }
+    .update-item a { color: #1976d2; text-decoration: underline; }
+    .update-item a:hover { opacity: 0.8; }
 
     /* Custom Leaflet Control Styling for Scale */
     .leaflet-bottom.leaflet-left {
@@ -812,7 +814,58 @@ I use multiple sources to update and clarify the map — mainly geolocation data
         updates.forEach(item => {
           var div = document.createElement('div');
           div.className = 'update-item';
-          div.innerHTML = '<span class="update-date">' + item.date + '</span>' + item.text;
+
+          // Convert links in update text into clickable links.
+          // You can use either:
+          //   https://example.com
+          // or a hidden link:
+          //   [Click here](https://example.com)
+          function makeLinksClickable(text) {
+            var hiddenLinks = [];
+
+            // Temporarily protect [word](https://...) links so the raw-URL
+            // converter does not modify the URL inside them.
+            text = text.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, function(match, label, url) {
+              var token = '___UPDATE_LINK_' + hiddenLinks.length + '___';
+              hiddenLinks.push(
+                '<a href="' + url + '" target="_blank" rel="noopener noreferrer">' +
+                label +
+                '</a>'
+              );
+              return token;
+            });
+
+            // Turn ordinary URLs into clickable links.
+            text = text.replace(/(^|[\s>])(https?:\/\/[^\s<]+)/g, function(match, before, url) {
+              var trailing = '';
+
+              // Keep common punctuation outside the clickable URL.
+              while (/[.,!?;:]$/.test(url)) {
+                trailing = url.slice(-1) + trailing;
+                url = url.slice(0, -1);
+              }
+
+              return before +
+                '<a href="' + url + '" target="_blank" rel="noopener noreferrer">' +
+                url +
+                '</a>' +
+                trailing;
+            });
+
+            // Restore hidden/labelled links.
+            hiddenLinks.forEach(function(link, index) {
+              text = text.replace('___UPDATE_LINK_' + index + '___', link);
+            });
+
+            return text;
+          }
+
+          div.innerHTML =
+            '<span class="update-date">' +
+            item.date +
+            '</span>' +
+            makeLinksClickable(item.text);
+
           container.appendChild(div);
         });
       })
