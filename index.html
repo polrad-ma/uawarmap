@@ -698,13 +698,16 @@ I use multiple sources to update and clarify the map — mainly geolocation data
     var userDrawings = L.layerGroup().addTo(map);
     extraLayers["My Drawings"] = userDrawings;
 
+    // noOutline: true removes the border entirely (stroke:false) so only the
+    // fill shows. Only applied to the territory/advance polygon layers below —
+    // the towns/cities line layer (fillOpacity:0) is left exactly as it was.
     var layerFiles = [
-      { file: "Russian-controlled%20territory.geojson", name: "Russian-controlled territory", color: "#F0001B", group: "main" },
+      { file: "Russian-controlled%20territory.geojson", name: "Russian-controlled territory", color: "#F0001B", group: "main", noOutline: true },
       { file: "neatogeo_Frontline%20towns%20%28from%20PWM%29.geojson", name: "Towns, villages and cities (credit to PWM)", color: "#ffffff", outlineColor: "#ffffff", fillOpacity: 0, group: "extra" },
-      { file: "Ukrainian-controlled%20territory.geojson", name: "Ukrainian-controlled territory", color: "#1427a5", group: "main" },
-      { file: "Ukrainian%20advances.geojson", name: "Ukrainian advances", color: "#2974ff", group: "main" },
-      { file: "Russian%20advances.geojson", name: "Russian advances", color: "#f1c40f", group: "main" },
-      { file: "Territories%20regained%20in%20the%20last%20month.geojson", name: "Territories regained", color: "#2ecc71", group: "main" }
+      { file: "Ukrainian-controlled%20territory.geojson", name: "Ukrainian-controlled territory", color: "#1427a5", group: "main", noOutline: true },
+      { file: "Ukrainian%20advances.geojson", name: "Ukrainian advances", color: "#2974ff", group: "main", noOutline: true },
+      { file: "Russian%20advances.geojson", name: "Russian advances", color: "#f1c40f", group: "main", noOutline: true },
+      { file: "Territories%20regained%20in%20the%20last%20month.geojson", name: "Territories regained", color: "#2ecc71", group: "main", noOutline: true }
     ];
 
     layerFiles.forEach(function(layerInfo) {
@@ -713,7 +716,9 @@ I use multiple sources to update and clarify the map — mainly geolocation data
         .then(data => {
           var layer = L.geoJSON(data, {
             style: function() {
-              return { color: layerInfo.outlineColor || layerInfo.color, weight: 2, fillColor: layerInfo.color, fillOpacity: layerInfo.fillOpacity !== undefined ? layerInfo.fillOpacity : 0.4 };
+              var style = { color: layerInfo.outlineColor || layerInfo.color, weight: 2, fillColor: layerInfo.color, fillOpacity: layerInfo.fillOpacity !== undefined ? layerInfo.fillOpacity : 0.4 };
+              if (layerInfo.noOutline) { style.stroke = false; }
+              return style;
             },
             onEachFeature: function(feature, featureLayer) {
               if (feature.geometry && (feature.geometry.type === "Polygon" || feature.geometry.type === "MultiPolygon")) {
