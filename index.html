@@ -12,6 +12,47 @@
   <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
 
   <style>
+    :root {
+      --panel-bg: #1b1b1b;
+      --panel-text: #f5f5f5;
+      --panel-border: rgba(255,255,255,0.15);
+      --panel-heading-border: rgba(255,255,255,0.15);
+      --btn-bg: #2a2a2a;
+      --btn-bg-hover: #383838;
+      --btn-border: #555555;
+      --btn-text: #f0f0f0;
+      --result-text: #cccccc;
+      --muted-text: #aaaaaa;
+      --searchbar-bg: #171717;
+      --searchbar-text: #ffffff;
+      --searchbar-border: rgba(255,255,255,0.2);
+      --link-color: #64b5f6;
+    }
+    body.light-mode {
+      --panel-bg: #ffffff;
+      --panel-text: #222222;
+      --panel-border: rgba(0,0,0,0.2);
+      --panel-heading-border: #dddddd;
+      --btn-bg: #f5f5f5;
+      --btn-bg-hover: #e8e8e8;
+      --btn-border: #999999;
+      --btn-text: #333333;
+      --result-text: #333333;
+      --muted-text: #555555;
+      --searchbar-bg: #ffffff;
+      --searchbar-text: #171717;
+      --searchbar-border: rgba(0,0,0,0.2);
+      --link-color: #1976d2;
+    }
+
+    /* Prevents accidental text/element selection while a draw tool is active */
+    .no-select-mode, .no-select-mode * {
+      user-select: none !important;
+      -webkit-user-select: none !important;
+      -moz-user-select: none !important;
+      -ms-user-select: none !important;
+    }
+
     body { margin: 0; padding: 0; font-family: Helvetica, Arial, sans-serif; background: #f4f4f4; }
     
     #map { position: absolute; top: 0; bottom: 0; right: 0; left: 60px; }
@@ -112,12 +153,12 @@
     .leaflet-control-geosearch,
     .leaflet-control-geosearch form,
     .leaflet-control-geosearch input {
-      background-color: #171717 !important;
-      color: #ffffff !important;
+      background-color: var(--searchbar-bg) !important;
+      color: var(--searchbar-text) !important;
     }
 
     .leaflet-control-geosearch form {
-      border: 2px solid rgba(255,255,255,0.2) !important;
+      border: 2px solid var(--searchbar-border) !important;
       border-radius: 4px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.4);
       margin: 0;
@@ -130,21 +171,21 @@
       font-size: 14px;
       padding: 8px 12px;
       width: 260px;
-      background-color: #171717 !important;
-      color: #ffffff !important;
+      background-color: var(--searchbar-bg) !important;
+      color: var(--searchbar-text) !important;
       border: none !important;
     }
 
-    .leaflet-control-geosearch input.glass::placeholder { color: #bbbbbb !important; }
+    .leaflet-control-geosearch input.glass::placeholder { color: #999999 !important; }
 
     .leaflet-control-geosearch a.reset,
     .leaflet-control-geosearch a.reset:hover,
     .leaflet-control-geosearch a.reset:focus,
     .leaflet-control-geosearch .reset {
-      background: #171717 !important;
-      background-color: #171717 !important;
-      color: #ffffff !important;
-      border-left: 1px solid rgba(255, 255, 255, 0.2) !important;
+      background: var(--searchbar-bg) !important;
+      background-color: var(--searchbar-bg) !important;
+      color: var(--searchbar-text) !important;
+      border-left: 1px solid var(--searchbar-border) !important;
       display: flex !important;
       align-items: center !important;
       justify-content: center !important;
@@ -158,29 +199,29 @@
 
     .leaflet-control-geosearch a.reset::after,
     .leaflet-control-geosearch a.reset::before {
-      color: #ffffff !important;
+      color: var(--searchbar-text) !important;
       background-color: transparent !important;
     }
 
     .leaflet-control-geosearch a.reset:hover {
-      background-color: #2a2a2a !important;
+      background-color: var(--btn-bg-hover) !important;
       color: #ff5555 !important;
     }
 
     .leaflet-control-geosearch .results,
     .leaflet-control-geosearch .results > *,
     .leaflet-control-geosearch .results > * * {
-      background-color: #171717 !important;
-      color: #ffffff !important;
-      border-color: rgba(255, 255, 255, 0.2) !important;
+      background-color: var(--searchbar-bg) !important;
+      color: var(--searchbar-text) !important;
+      border-color: var(--searchbar-border) !important;
     }
 
     .leaflet-control-geosearch .results > .active,
     .leaflet-control-geosearch .results > .active *,
     .leaflet-control-geosearch .results > *:hover,
     .leaflet-control-geosearch .results > *:hover * {
-      background-color: #2a2a2a !important;
-      color: #ffffff !important;
+      background-color: var(--btn-bg-hover) !important;
+      color: var(--searchbar-text) !important;
     }
 
     .sidebar-panel {
@@ -189,8 +230,9 @@
       top: 90px;
       left: 75px;
       z-index: 1900;
-      background: white;
-      border: 2px solid rgba(0,0,0,0.2);
+      background: var(--panel-bg);
+      color: var(--panel-text);
+      border: 2px solid var(--panel-border);
       border-radius: 6px;
       padding: 12px;
       width: 250px;
@@ -199,14 +241,13 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.25);
     }
     .sidebar-panel.show { display: block; }
-    .sidebar-panel h4 { margin: 0 0 10px 0; font-size: 15px; border-bottom: 1px solid #ddd; padding-bottom: 6px; }
+    .sidebar-panel h4 { margin: 0 0 10px 0; font-size: 15px; border-bottom: 1px solid var(--panel-heading-border); padding-bottom: 6px; }
 
     .tool-group-header {
       font-weight: bold;
       font-size: 13px;
       margin: 10px 0 4px 0;
-      color: #333;
-      border-bottom: 1px solid #eee;
+      border-bottom: 1px solid var(--panel-heading-border);
       padding-bottom: 2px;
     }
 
@@ -216,13 +257,14 @@
       margin-bottom: 6px;
       padding: 6px 8px;
       font-size: 13px;
-      border: 1px solid #999;
+      border: 1px solid var(--btn-border);
       border-radius: 3px;
-      background: #f5f5f5;
+      background: var(--btn-bg);
+      color: var(--btn-text);
       cursor: pointer;
       text-align: left;
     }
-    .tool-btn:hover { background: #e8e8e8; }
+    .tool-btn:hover { background: var(--btn-bg-hover); }
     .tool-btn.active { background: #333; color: white; border-color: #333; }
     
     #color-row {
@@ -234,7 +276,6 @@
     .thickness-row {
       margin-bottom: 10px;
       font-size: 12px;
-      color: #333;
     }
     .thickness-row label {
       display: flex;
@@ -251,23 +292,46 @@
       display: block;
       padding: 6px 4px;
       font-size: 12px;
-      border: 2px solid #999;
+      border: 2px solid var(--btn-border);
       border-radius: 3px;
       cursor: pointer;
       text-align: center;
-      background: #eee;
-      color: #333;
+      background: var(--btn-bg);
+      color: var(--btn-text);
       box-sizing: border-box;
     }
     .unit-btn { display: inline-block; width: 47%; }
     .color-btn.selected, .unit-btn.selected { border-color: #000; font-weight: bold; }
-    .panel-result { margin-top: 8px; font-size: 12px; color: #333; min-height: 24px; }
+    .panel-result { margin-top: 8px; font-size: 12px; color: var(--result-text); min-height: 24px; }
 
-    .update-item { border-bottom: 1px solid #eee; padding: 6px 0; font-size: 13px; }
+    .update-item { border-bottom: 1px solid var(--panel-heading-border); padding: 6px 0; font-size: 13px; }
     .update-item:last-child { border-bottom: none; }
-    .update-date { font-weight: bold; font-size: 12px; color: #555; display: block; margin-bottom: 2px; }
-    .update-item a { color: #1976d2; text-decoration: underline; }
+    .update-date { font-weight: bold; font-size: 12px; color: var(--muted-text); display: block; margin-bottom: 2px; }
+    .update-item a { color: var(--link-color); text-decoration: underline; }
     .update-item a:hover { opacity: 0.8; }
+
+    .settings-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      font-size: 13px;
+    }
+    .settings-row label { cursor: pointer; }
+    .settings-link-row {
+      margin-top: 14px;
+      padding-top: 10px;
+      border-top: 1px solid var(--panel-heading-border);
+      font-size: 13px;
+    }
+    .settings-link-row a {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--link-color);
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    .settings-link-row a:hover { opacity: 0.8; }
 
     .leaflet-bottom.leaflet-left { left: 70px; bottom: 10px; }
     .leaflet-control-scale-line {
@@ -334,8 +398,8 @@
     <button class="sidebar-btn" id="btn-tab-draw" onclick="toggleTab('draw')" title="Draw Tools">✏️</button>
     <button class="sidebar-btn" id="btn-tab-ruler" onclick="toggleTab('ruler')" title="Ruler / Measure">📏</button>
     <button class="sidebar-btn" id="btn-tab-coords" onclick="toggleTab('coords')" title="Coordinates">📍</button>
-    <button class="sidebar-btn" id="btn-toggle-crosshair" onclick="toggleCrosshairButton()" title="Toggle Center Crosshair">🎯</button>
     <button class="sidebar-btn" id="btn-tab-updates" onclick="toggleTab('updates')" title="Map Updates">🔔</button>
+    <button class="sidebar-btn" id="btn-tab-settings" onclick="toggleTab('settings')" title="Settings">⚙️</button>
     <button class="sidebar-btn" id="btn-fullscreen" onclick="toggleFullScreen()" title="Toggle Fullscreen">⛶</button>
   </div>
 
@@ -370,6 +434,8 @@
     <div class="tool-group-header">Shapes & Utilities</div>
     <button class="tool-btn" id="btn-polygon" onclick="setActiveTool('polygon')">Polygon</button>
     <button class="tool-btn" id="btn-rectangle" onclick="setActiveTool('rectangle')">Rectangle</button>
+    <button class="tool-btn" id="btn-flag-ua" onclick="setActiveTool('flag-ua')">🇺🇦 Ukraine Flag</button>
+    <button class="tool-btn" id="btn-flag-ru" onclick="setActiveTool('flag-ru')">🇷🇺 Russia Flag</button>
     <button class="tool-btn" id="btn-eraser" onclick="setActiveTool('eraser')">Eraser</button>
 
     <div class="thickness-row" style="margin-top: 10px;">
@@ -410,6 +476,30 @@
   <div class="sidebar-panel" id="panel-updates">
     <h4>Map Updates</h4>
     <div id="updates-content">Loading...</div>
+  </div>
+
+  <div class="sidebar-panel" id="panel-settings">
+    <h4>Settings</h4>
+
+    <div class="settings-row">
+      <label for="toggle-dark-theme">Dark theme</label>
+      <input type="checkbox" id="toggle-dark-theme" checked onchange="setDarkTheme(this.checked)">
+    </div>
+
+    <div class="settings-row">
+      <label for="toggle-polygon-borders">Polygon borders</label>
+      <input type="checkbox" id="toggle-polygon-borders" onchange="togglePolygonBorders(this.checked)">
+    </div>
+
+    <div class="settings-row">
+      <label for="toggle-crosshair">Center crosshair</label>
+      <input type="checkbox" id="toggle-crosshair" onchange="toggleCrosshairSetting(this.checked)">
+    </div>
+
+    <div class="settings-link-row">
+      <a href="https://x.com/polrad_mapping_" target="_blank" rel="noopener">Twitter/X</a>
+      <a href="https://polrad-ma.github.io/login/">Log In</a>
+    </div>
   </div>
 
   <div id="welcome-overlay">
@@ -526,12 +616,16 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       }
     }
 
-    var isCrosshairActive = false;
+    function toggleCrosshairSetting(checked) {
+      document.getElementById('map-crosshair').style.display = checked ? 'block' : 'none';
+    }
 
-    function toggleCrosshairButton() {
-      isCrosshairActive = !isCrosshairActive;
-      document.getElementById('map-crosshair').style.display = isCrosshairActive ? 'block' : 'none';
-      document.getElementById('btn-toggle-crosshair').classList.toggle('active', isCrosshairActive);
+    function setDarkTheme(enabled) {
+      document.body.classList.toggle('light-mode', !enabled);
+    }
+
+    function togglePolygonBorders(checked) {
+      polygonBordersEnabled = checked;
     }
 
     map.createPane('markersPane');
@@ -573,7 +667,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
 
       document.querySelectorAll('.sidebar-panel').forEach(p => p.classList.remove('show'));
       document.querySelectorAll('.sidebar-btn').forEach(b => {
-        if (b.id !== 'btn-toggle-crosshair' && b.id !== 'btn-fullscreen') b.classList.remove('active');
+        if (b.id !== 'btn-fullscreen') b.classList.remove('active');
       });
 
       if (panel && !isCurrentlyShow) {
@@ -646,6 +740,20 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       popupAnchor: [0, -14]
     });
 
+    var ukraineFlagIcon = L.icon({
+      iconUrl: 'https://pics.clipartpng.com/midle/Ukraine_Flag_PNG_Clip_Art-1811.png',
+      iconSize: [32, 21],
+      iconAnchor: [16, 21],
+      popupAnchor: [0, -21]
+    });
+
+    var russiaFlagIcon = L.icon({
+      iconUrl: 'https://pics.clipartpng.com/midle/Russia_Flag_PNG_Clip_Art-1857.png',
+      iconSize: [32, 21],
+      iconAnchor: [16, 21],
+      popupAnchor: [0, -21]
+    });
+
     var capturedCities = [
       { name: "Popasna", date: "7 May 2022", lat: 48.6480, lng: 38.3540 },
       { name: "Mariupol", date: "20 May 2022", lat: 47.0971, lng: 37.5434 },
@@ -663,6 +771,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       { name: "Marinka", date: "25 December 2023", lat: 47.94452, lng: 37.50561 },
       { name: "Avdiivka", date: "17 February 2024", lat: 48.1391, lng: 37.7461 },
       { name: "Novohrodivka", date: "27 August 2024", lat: 48.20260, lng: 37.33686 },
+      { name: "Kostiantynivka", date: "28 July 2026", lat: 48.52486, lng: 37.6986 },
       { name: "Krasnohorivka", date: "9 September 2024", lat: 48.00198, lng: 37.51488 },
       { name: "Henichesk", date: "24 February 2022", lat: 46.17412, lng: 34.80194 },
       { name: "Skadovsk", date: "24 February 2022", lat: 46.12465, lng: 32.91229 },
@@ -839,6 +948,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
     var drawingPoints = [];
     var previewLayer = null;
     var isMouseDown = false;
+    var polygonBordersEnabled = false;
 
     function attachEraser(layer) {
       layer.on('click', function(e) {
@@ -876,6 +986,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       resetDrawingState();
       updateToolButtons();
       updateInstructions();
+      document.body.classList.toggle('no-select-mode', !!activeTool);
     }
 
     function resetDrawingState() {
@@ -908,6 +1019,8 @@ I use multiple sources to update and clarify the map — mainly geolocation data
         arrow: "Click start point, then click end point to place an arrow.",
         'dashed-arrow': "Click start point, then click end point to place a dashed arrow.",
         rectangle: "Click one corner, then click opposite corner.",
+        'flag-ua': "Click anywhere on the map to drop a Ukraine flag marker.",
+        'flag-ru': "Click anywhere on the map to drop a Russia flag marker.",
         eraser: "Click on any drawn shape or line to erase it.",
         ruler: "Click points on the map to measure distance.",
         coords: "Click anywhere on the map to display its precise coordinates."
@@ -920,6 +1033,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
 
     map.on('mousedown', function(e) {
       if (activeTool !== 'freehand' && activeTool !== 'dashed-freehand' && activeTool !== 'freehand-arrow' && activeTool !== 'dashed-freehand-arrow') return;
+      if (e.originalEvent) e.originalEvent.preventDefault();
       isMouseDown = true;
       map.dragging.disable();
       drawingPoints = [e.latlng];
@@ -1012,6 +1126,15 @@ I use multiple sources to update and clarify the map — mainly geolocation data
         return;
       }
 
+      if (activeTool === 'flag-ua' || activeTool === 'flag-ru') {
+        var flagIcon = (activeTool === 'flag-ua') ? ukraineFlagIcon : russiaFlagIcon;
+        var flagLabel = (activeTool === 'flag-ua') ? 'Ukraine flag' : 'Russia flag';
+        var flagMarker = L.marker(e.latlng, { icon: flagIcon }).bindPopup(flagLabel);
+        attachEraser(flagMarker);
+        userDrawings.addLayer(flagMarker);
+        return;
+      }
+
       if (activeTool === 'arrow' || activeTool === 'dashed-arrow') {
         if (drawingPoints.length === 0) drawingPoints.push(e.latlng);
         else {
@@ -1091,7 +1214,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
 
     function finishShape() {
       if (activeTool === 'polygon' && drawingPoints.length >= 3) {
-        var poly = L.polygon(drawingPoints, { color: currentColor, weight: currentThickness, fillColor: currentColor, fillOpacity: 0.4 });
+        var poly = L.polygon(drawingPoints, { color: currentColor, weight: currentThickness, fillColor: currentColor, fillOpacity: 0.4, stroke: polygonBordersEnabled });
         attachEraser(poly);
         userDrawings.addLayer(poly);
         calculateAreaAndBindPopup(poly, "Drawn Polygon");
