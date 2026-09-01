@@ -23,9 +23,10 @@
       --btn-text: #f0f0f0;
       --result-text: #cccccc;
       --muted-text: #aaaaaa;
-      --searchbar-bg: #171717;
-      --searchbar-text: #ffffff;
-      --searchbar-border: rgba(255,255,255,0.2);
+      --chrome-bg: #171717;
+      --chrome-btn-bg: #2a2a2a;
+      --chrome-text: #ffffff;
+      --chrome-border: rgba(255,255,255,0.2);
       --link-color: #64b5f6;
     }
     body.light-mode {
@@ -39,9 +40,10 @@
       --btn-text: #333333;
       --result-text: #333333;
       --muted-text: #555555;
-      --searchbar-bg: #ffffff;
-      --searchbar-text: #171717;
-      --searchbar-border: rgba(0,0,0,0.2);
+      --chrome-bg: #ffffff;
+      --chrome-btn-bg: #f0f0f0;
+      --chrome-text: #171717;
+      --chrome-border: rgba(0,0,0,0.2);
       --link-color: #1976d2;
     }
 
@@ -63,7 +65,7 @@
       left: 0;
       bottom: 0;
       width: 60px;
-      background: #171717;
+      background: var(--chrome-bg);
       border-right: 2px solid rgba(0,0,0,0.2);
       z-index: 2000;
       display: flex;
@@ -77,45 +79,95 @@
     .sidebar-btn {
       width: 44px;
       height: 44px;
-      background: #2a2a2a;
-      border: 1px solid #444;
+      background: var(--chrome-btn-bg);
+      border: 1px solid var(--chrome-border);
       border-radius: 6px;
       font-size: 22px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      color: #ffffff;
+      color: var(--chrome-text);
       transition: background 0.15s, border-color 0.15s;
     }
-    .sidebar-btn:hover { background: #3a3a3a; }
+    .sidebar-btn:hover { background: var(--btn-bg-hover); }
     .sidebar-btn.active { background: #555; border-color: #777; color: white; }
 
     .leaflet-control-zoom a {
-      background-color: #171717 !important;
-      color: #ffffff !important;
-      border-color: rgba(255,255,255,0.2) !important;
+      background-color: var(--chrome-bg) !important;
+      color: var(--chrome-text) !important;
+      border-color: var(--chrome-border) !important;
     }
     .leaflet-control-zoom a:hover {
-      background-color: #2a2a2a !important;
-      color: #ffffff !important;
+      background-color: var(--chrome-btn-bg) !important;
+      color: var(--chrome-text) !important;
     }
 
-    #map-title {
+    #app-header {
       position: absolute;
       top: 10px;
-      left: 115px;
-      background: #171717;
-      color: #ffffff;
-      border: 2px solid rgba(255,255,255,0.2);
-      padding: 6px 12px;
-      font-family: Helvetica, Arial, sans-serif;
-      font-weight: bold;
-      font-size: 20px;
-      z-index: 1000;
-      border-radius: 4px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+      left: 72px;
+      z-index: 2100;
+      background: var(--chrome-bg);
+      color: var(--chrome-text);
+      border: 1px solid var(--chrome-border);
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+      overflow: hidden;
+      width: 240px;
     }
+    #app-header-top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+    }
+    #app-logo {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+    #app-title-text {
+      font-weight: bold;
+      font-size: 14px;
+      letter-spacing: 0.3px;
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    #search-toggle-btn {
+      background: var(--chrome-btn-bg);
+      border: 1px solid var(--chrome-border);
+      color: var(--chrome-text);
+      border-radius: 6px;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+    #search-toggle-btn:hover { background: var(--btn-bg-hover); }
+    #app-header-search {
+      display: none;
+      border-top: 1px solid var(--chrome-border);
+      padding: 6px 8px;
+    }
+    #app-header-search.show { display: block; }
+
+    /* The GeoSearch control gets appended inside #app-header-search — style it inline here */
+    #app-header-search .leaflet-control-geosearch { width: 100%; }
+    #app-header-search .leaflet-control-geosearch form {
+      border: none !important;
+      box-shadow: none !important;
+      width: 100%;
+    }
+    #app-header-search .leaflet-control-geosearch input.glass { width: 100%; box-sizing: border-box; }
 
     #map-crosshair {
       display: none;
@@ -140,27 +192,14 @@
     #map-crosshair::before { top: 11px; left: 0; width: 24px; height: 2px; }
     #map-crosshair::after { top: 0; left: 11px; width: 2px; height: 24px; }
 
-    .leaflet-top.leaflet-center {
-      top: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      position: absolute;
-      pointer-events: none;
-      z-index: 1000;
-    }
-    .leaflet-top.leaflet-center .leaflet-control { pointer-events: auto; }
-
     .leaflet-control-geosearch,
     .leaflet-control-geosearch form,
     .leaflet-control-geosearch input {
-      background-color: var(--searchbar-bg) !important;
-      color: var(--searchbar-text) !important;
+      background-color: var(--chrome-bg) !important;
+      color: var(--chrome-text) !important;
     }
 
     .leaflet-control-geosearch form {
-      border: 2px solid var(--searchbar-border) !important;
-      border-radius: 4px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
       margin: 0;
       display: flex !important;
       align-items: center;
@@ -168,11 +207,10 @@
 
     .leaflet-control-geosearch input.glass {
       font-family: Helvetica, Arial, sans-serif;
-      font-size: 14px;
-      padding: 8px 12px;
-      width: 260px;
-      background-color: var(--searchbar-bg) !important;
-      color: var(--searchbar-text) !important;
+      font-size: 13px;
+      padding: 6px 8px;
+      background-color: var(--chrome-bg) !important;
+      color: var(--chrome-text) !important;
       border: none !important;
     }
 
@@ -182,16 +220,16 @@
     .leaflet-control-geosearch a.reset:hover,
     .leaflet-control-geosearch a.reset:focus,
     .leaflet-control-geosearch .reset {
-      background: var(--searchbar-bg) !important;
-      background-color: var(--searchbar-bg) !important;
-      color: var(--searchbar-text) !important;
-      border-left: 1px solid var(--searchbar-border) !important;
+      background: var(--chrome-bg) !important;
+      background-color: var(--chrome-bg) !important;
+      color: var(--chrome-text) !important;
+      border-left: 1px solid var(--chrome-border) !important;
       display: flex !important;
       align-items: center !important;
       justify-content: center !important;
       height: 100% !important;
-      padding: 0 10px !important;
-      font-size: 18px !important;
+      padding: 0 8px !important;
+      font-size: 16px !important;
       text-decoration: none !important;
       border: none !important;
       cursor: pointer;
@@ -199,7 +237,7 @@
 
     .leaflet-control-geosearch a.reset::after,
     .leaflet-control-geosearch a.reset::before {
-      color: var(--searchbar-text) !important;
+      color: var(--chrome-text) !important;
       background-color: transparent !important;
     }
 
@@ -211,9 +249,9 @@
     .leaflet-control-geosearch .results,
     .leaflet-control-geosearch .results > *,
     .leaflet-control-geosearch .results > * * {
-      background-color: var(--searchbar-bg) !important;
-      color: var(--searchbar-text) !important;
-      border-color: var(--searchbar-border) !important;
+      background-color: var(--chrome-bg) !important;
+      color: var(--chrome-text) !important;
+      border-color: var(--chrome-border) !important;
     }
 
     .leaflet-control-geosearch .results > .active,
@@ -221,7 +259,7 @@
     .leaflet-control-geosearch .results > *:hover,
     .leaflet-control-geosearch .results > *:hover * {
       background-color: var(--btn-bg-hover) !important;
-      color: var(--searchbar-text) !important;
+      color: var(--chrome-text) !important;
     }
 
     .sidebar-panel {
@@ -403,7 +441,14 @@
     <button class="sidebar-btn" id="btn-fullscreen" onclick="toggleFullScreen()" title="Toggle Fullscreen">⛶</button>
   </div>
 
-  <div id="map-title">Russo-Ukrainian War Map (Polrad Mapping)</div>
+  <div id="app-header">
+    <div id="app-header-top">
+      <img id="app-logo" src="https://pbs.twimg.com/profile_images/2093664692505870336/xNyRmIXM_400x400.jpg" alt="Polrad Mapping">
+      <span id="app-title-text">POLRAD MAPPING</span>
+      <button id="search-toggle-btn" onclick="toggleHeaderSearch()" title="Search">🔍</button>
+    </div>
+    <div id="app-header-search"></div>
+  </div>
   <div id="map"></div>
   <div id="map-crosshair"></div>
   <div id="watermark-overlay"></div>
@@ -631,8 +676,9 @@ I use multiple sources to update and clarify the map — mainly geolocation data
     map.createPane('markersPane');
     map.getPane('markersPane').style.zIndex = 650;
 
-    var topCenterContainer = L.DomUtil.create('div', 'leaflet-top leaflet-center');
-    map.getContainer().appendChild(topCenterContainer);
+    var appHeaderEl = document.getElementById('app-header');
+    L.DomEvent.disableClickPropagation(appHeaderEl);
+    L.DomEvent.disableScrollPropagation(appHeaderEl);
 
     var searchProvider = new GeoSearch.OpenStreetMapProvider({
       params: {
@@ -658,7 +704,16 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       keepResult: true
     });
 
-    topCenterContainer.appendChild(searchControl.onAdd(map));
+    document.getElementById('app-header-search').appendChild(searchControl.onAdd(map));
+
+    function toggleHeaderSearch() {
+      var box = document.getElementById('app-header-search');
+      box.classList.toggle('show');
+      if (box.classList.contains('show')) {
+        var input = box.querySelector('input.glass');
+        if (input) input.focus();
+      }
+    }
 
     function toggleTab(tabName) {
       var panel = document.getElementById('panel-' + tabName);
@@ -771,6 +826,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       { name: "Marinka", date: "25 December 2023", lat: 47.94452, lng: 37.50561 },
       { name: "Avdiivka", date: "17 February 2024", lat: 48.1391, lng: 37.7461 },
       { name: "Novohrodivka", date: "27 August 2024", lat: 48.20260, lng: 37.33686 },
+      { name: "Kostiantynivka", date: "28 July 2026", lat: 48.52486, lng: 37.6986 },
       { name: "Krasnohorivka", date: "9 September 2024", lat: 48.00198, lng: 37.51488 },
       { name: "Henichesk", date: "24 February 2022", lat: 46.17412, lng: 34.80194 },
       { name: "Skadovsk", date: "24 February 2022", lat: 46.12465, lng: 32.91229 },
