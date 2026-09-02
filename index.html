@@ -156,43 +156,37 @@
     #app-header-search {
       display: none;
       position: absolute;
-      top: calc(100% + 6px);
+      top: calc(100% + 5px);
       left: 0;
-      width: 100%;
+      width: 240px;
       box-sizing: border-box;
       background: var(--chrome-bg);
       border: 1px solid var(--chrome-border);
       border-radius: 8px;
-      padding: 6px 8px;
+      padding: 6px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.35);
       z-index: 2200;
     }
     #app-header-search.show { display: block; }
+    #header-search-row { display: flex; gap: 5px; }
+    #header-search-input {
+      flex: 1; min-width: 0; height: 30px; box-sizing: border-box;
+      border: 1px solid var(--chrome-border); border-radius: 5px;
+      padding: 0 8px; background: var(--chrome-btn-bg);
+      color: var(--chrome-text); outline: none; font-size: 12px;
+    }
+    #header-search-go {
+      width: 30px; height: 30px; border: 1px solid var(--chrome-border);
+      border-radius: 5px; background: var(--chrome-btn-bg);
+      color: var(--chrome-text); cursor: pointer;
+    }
+    #header-search-results { display: none; margin-top: 5px; max-height: 160px; overflow-y: auto; }
+    #header-search-results.show { display: block; }
+    .header-search-result { padding: 7px; border-radius: 5px; cursor: pointer; color: var(--chrome-text); font-size: 12px; }
+    .header-search-result:hover { background: var(--btn-bg-hover); }
 
-    /* Never allow the GeoSearch control to appear as a separate
-       search bar on the map. */
-    /* Hide every standalone GeoSearch control on the map.
-       The only visible search field is the one inside the POLRAD header. */
-    .leaflet-control-geosearch {
-      display: none !important;
-    }
-    #app-header-search .leaflet-control-geosearch {
-      display: block !important;
-    }
-
-    /* The GeoSearch control gets appended inside #app-header-search — style it inline here */
-    #app-header-search .leaflet-control-geosearch {
-      width: 100%;
-      position: static !important;
-      position: static !important;
-      margin: 0 !important;
-    }
-    #app-header-search .leaflet-control-geosearch form {
-      border: none !important;
-      box-shadow: none !important;
-      width: 100%;
-    }
-    #app-header-search .leaflet-control-geosearch input.glass { width: 100%; box-sizing: border-box; }
+    /* GeoSearch is no longer used as a visible map control. */
+    .leaflet-control-geosearch { display: none !important; }
 
     #map-crosshair {
       display: none;
@@ -472,7 +466,13 @@
       <span id="app-title-text">POLRAD MAPPING</span>
       <button id="search-toggle-btn" onclick="toggleHeaderSearch()" title="Search">🔍</button>
     </div>
-    <div id="app-header-search"></div>
+    <div id="app-header-search">
+      <div id="header-search-row">
+        <input id="header-search-input" type="text" placeholder="Search town, city or coordinates..." autocomplete="off">
+        <button id="header-search-go" type="button">↵</button>
+      </div>
+      <div id="header-search-results"></div>
+    </div>
   </div>
   <div id="map"></div>
   <div id="map-crosshair"></div>
@@ -718,31 +718,71 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       }
     });
 
-    var searchControl = GeoSearch.GeoSearchControl({
-      provider: searchProvider,
-      style: 'bar',
-      showMarker: true,
-      showPopup: false,
-      marker: { icon: new L.Icon.Default(), draggable: false },
-      popupFormat: ({ query, result }) => result.label,
-      maxMarkers: 1,
-      retainZoomLevel: false,
-      animateZoom: true,
-      autoClose: true,
-      searchLabel: 'Search location or coordinates...',
-      keepResult: true
-    });
+    var searchResultMarker = null;
 
-    document.getElementById('app-header-search').appendChild(searchControl.onAdd(map));
+    function escapeSearchText(value) {
+      return String(value).replace(/[&<>"']/g, function(c) {
+        return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+      });
+    }
+
+    function showSearchLocation(lat, lng, label) {
+      map.setView([lat, lng], Math.max(map.getZoom(), 10));
+      if (searchResultMarker) map.removeLayer(searchResultMarker);
+      searchResultMarker = L.marker([lat, lng]).addTo(map)
+        .bindPopup(escapeSearchText(label)).openPopup();
+    }
+
+    function runHeaderSearch() {
+      var input = document.getElementById('header-search-input');
+      var results = document.getElementById('header-search-results');
+      var query = input.value.trim();
+      if (!query) return;
+
+      var coord = query.match(/^\s*(-?\d+(?:\.\d+)?)\s*[, ]\s*(-?\d+(?:\.\d+)?)\s*$/);
+      if (coord) {
+        var lat = Number(coord[1]), lng = Number(coord[2]);
+        if (lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180) {
+          showSearchLocation(lat, lng, query);
+          results.classList.remove('show');
+          return;
+        }
+      }
+
+      results.innerHTML = '<div class="header-search-result">Searching...</div>';
+      results.classList.add('show');
+
+      searchProvider.search({ query: query }).then(function(found) {
+        results.innerHTML = '';
+        if (!found || !found.length) {
+          results.innerHTML = '<div class="header-search-result">No results found.</div>';
+          return;
+        }
+        found.slice(0, 5).forEach(function(r) {
+          var item = document.createElement('div');
+          item.className = 'header-search-result';
+          item.textContent = r.label || query;
+          item.onclick = function() {
+            showSearchLocation(r.y, r.x, r.label || query);
+            results.classList.remove('show');
+          };
+          results.appendChild(item);
+        });
+      }).catch(function() {
+        results.innerHTML = '<div class="header-search-result">Search failed.</div>';
+      });
+    }
 
     function toggleHeaderSearch() {
       var box = document.getElementById('app-header-search');
       box.classList.toggle('show');
-      if (box.classList.contains('show')) {
-        var input = box.querySelector('input.glass');
-        if (input) input.focus();
-      }
+      if (box.classList.contains('show')) document.getElementById('header-search-input').focus();
     }
+
+    document.getElementById('header-search-go').addEventListener('click', runHeaderSearch);
+    document.getElementById('header-search-input').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') runHeaderSearch();
+    });
 
     function toggleTab(tabName) {
       var panel = document.getElementById('panel-' + tabName);
@@ -855,7 +895,6 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       { name: "Marinka", date: "25 December 2023", lat: 47.94452, lng: 37.50561 },
       { name: "Avdiivka", date: "17 February 2024", lat: 48.1391, lng: 37.7461 },
       { name: "Novohrodivka", date: "27 August 2024", lat: 48.20260, lng: 37.33686 },
-      { name: "Kostiantynivka", date: "28 July 2026", lat: 48.52486, lng: 37.6986 },
       { name: "Krasnohorivka", date: "9 September 2024", lat: 48.00198, lng: 37.51488 },
       { name: "Henichesk", date: "24 February 2022", lat: 46.17412, lng: 34.80194 },
       { name: "Skadovsk", date: "24 February 2022", lat: 46.12465, lng: 32.91229 },
