@@ -105,7 +105,7 @@
 
     #app-header {
       position: absolute;
-      top: 75px;
+      top: 10px;
       left: 72px;
       z-index: 2100;
       background: var(--chrome-bg);
@@ -113,7 +113,7 @@
       border: 1px solid var(--chrome-border);
       border-radius: 10px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.35);
-      overflow: hidden;
+      overflow: visible;
       width: 240px;
     }
     #app-header-top {
@@ -642,8 +642,12 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       center: [48.00, 37.75],
       zoom: 7,
       scrollWheelZoom: true,
+      zoomControl: false,
       layers: [currentBaseLayer]
     });
+
+    // Put Leaflet's zoom controls in the bottom-right corner.
+    L.control.zoom({ position: 'bottomright' }).addTo(map);
 
     var scaleControl = L.control.scale({
       position: 'bottomleft',
@@ -851,6 +855,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       { name: "Marinka", date: "25 December 2023", lat: 47.94452, lng: 37.50561 },
       { name: "Avdiivka", date: "17 February 2024", lat: 48.1391, lng: 37.7461 },
       { name: "Novohrodivka", date: "27 August 2024", lat: 48.20260, lng: 37.33686 },
+      { name: "Kostiantynivka", date: "28 July 2026", lat: 48.52486, lng: 37.6986 },
       { name: "Krasnohorivka", date: "9 September 2024", lat: 48.00198, lng: 37.51488 },
       { name: "Henichesk", date: "24 February 2022", lat: 46.17412, lng: 34.80194 },
       { name: "Skadovsk", date: "24 February 2022", lat: 46.12465, lng: 32.91229 },
