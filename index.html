@@ -613,6 +613,18 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       { attribution: 'Tiles &copy; Esri' }
     );
 
+    // MapTiler Hybrid (satellite imagery + roads, labels, borders).
+    // Replace the placeholder with your own MapTiler API key.
+    var MAPTILER_API_KEY = 'YOUR_MAPTILER_API_KEY_HERE';
+    var maptilerHybrid = L.tileLayer(
+      'https://api.maptiler.com/maps/hybrid-v4/256/{z}/{x}/{y}.jpg?key=' + MAPTILER_API_KEY,
+      {
+        attribution: '&copy; MapTiler &copy; OpenStreetMap contributors',
+        maxZoom: 22,
+        tileSize: 256
+      }
+    );
+
     var hybridEsri = L.layerGroup([
       L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: 'Tiles &copy; Esri' }),
       L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', { attribution: 'Labels &copy; Esri' })
@@ -631,25 +643,17 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       maxZoom: 17
     });
 
-    // Colored elevation / relief layer, similar to the colorful elevation map style.
-    // Maps-for-Free publishes its relief maps under CC0.
-    var coloredRelief = L.tileLayer('https://maps-for-free.com/layer/relief/z{z}/row{y}/{z}_{x}-{y}.jpg', {
-      attribution: 'Relief data: Maps-for-Free (CC0)',
-      maxNativeZoom: 12,
-      maxZoom: 19
-    });
-
     var baseLayers = {
+      "MapTiler Hybrid": maptilerHybrid,
       "Hybrid (Esri Labels)": hybridEsri,
       "Hybrid (CARTO Labels)": hybridCarto,
       "Satellite (Esri)": satellite,
       "Streets (Light)": streets,
       "Streets (OSM)": osmStandard,
-      "Topographic (Contours + Relief)": topo,
-      "Colored Elevation / Relief": coloredRelief
+      "Topographic (Contours + Relief)": topo
     };
 
-    var currentBaseLayer = hybridEsri;
+    var currentBaseLayer = maptilerHybrid;
 
     var map = L.map('map', {
       center: [48.00, 37.75],
