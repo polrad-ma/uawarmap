@@ -7,7 +7,8 @@
         "Name": "Многоугольник 2",
         "tessellate": -1,
         "extrude": 0,
-        "visibility": -1
+        "visibility": -1,
+        "layer": "Territories regained in the last month"
       },
       "geometry": {
         "type": "Polygon",
@@ -73,7 +74,8 @@
         "Name": "Многоугольник 3",
         "tessellate": -1,
         "extrude": 0,
-        "visibility": -1
+        "visibility": -1,
+        "layer": "Territories regained in the last month"
       },
       "geometry": {
         "type": "Polygon",
@@ -139,7 +141,8 @@
         "Name": "Многоугольник 4",
         "tessellate": -1,
         "extrude": 0,
-        "visibility": -1
+        "visibility": -1,
+        "layer": "Territories regained in the last month"
       },
       "geometry": {
         "type": "Polygon",
