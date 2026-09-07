@@ -1245,6 +1245,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
 
     var mainLayers = {};
     var extraLayers = {};
+    var helpLayers = {};
 
     var cityIcon = L.icon({
       iconUrl: 'city-icon.png',
@@ -1413,6 +1414,15 @@ I use multiple sources to update and clarify the map — mainly geolocation data
         group: "main",
         noOutline: true
       }
+,
+
+      {
+        file: "Fortifications%20%28thanks%20PMapping832%29.geojson",
+        name: "Fortifications (thanks PMapping832)",
+        color: "#8e44ad",
+        group: "help",
+        defaultOff: true
+      }
     ];
 
     layerFiles.forEach(function(layerInfo) {
@@ -1464,10 +1474,16 @@ I use multiple sources to update and clarify the map — mainly geolocation data
                   );
                 }
               }
-          }).addTo(map);
+          });
+
+          if (!layerInfo.defaultOff) {
+            layer.addTo(map);
+          }
 
           if (layerInfo.group === "main") {
             mainLayers[layerInfo.name] = layer;
+          } else if (layerInfo.group === "help") {
+            helpLayers[layerInfo.name] = layer;
           } else {
             extraLayers[layerInfo.name] = layer;
           }
@@ -1579,6 +1595,13 @@ I use multiple sources to update and clarify the map — mainly geolocation data
         addGroup(
           'Extra Layers',
           extraLayers
+        )
+      );
+
+      container.appendChild(
+        addGroup(
+          'Help Layers',
+          helpLayers
         )
       );
     }
