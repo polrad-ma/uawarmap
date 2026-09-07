@@ -1418,8 +1418,8 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       {
         file: "Fortifications%20%28thanks%20PMapping832%29.geojson",
         name: "Fortifications (thanks PMapping832)",
-        color: "#8e44ad",
-        group: "help",
+        color: "cyan",
+        group: "extra",
         defaultOff: true
       }
     ];
@@ -1481,8 +1481,6 @@ I use multiple sources to update and clarify the map — mainly geolocation data
 
           if (layerInfo.group === "main") {
             mainLayers[layerInfo.name] = layer;
-          } else if (layerInfo.group === "help") {
-            helpLayers[layerInfo.name] = layer;
           } else {
             extraLayers[layerInfo.name] = layer;
           }
