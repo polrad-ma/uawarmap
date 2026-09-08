@@ -10,9 +10,6 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet-geosearch@3.11.0/dist/geosearch.umd.js"></script>
   <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
-  <!-- Google Maps JavaScript API + Leaflet GoogleMutant -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAGf_KVFEZoVl7P2BDk-NvUxsSPUoAzueU&language=en"></script>
-  <script src="https://unpkg.com/leaflet.gridlayer.googlemutant@latest/dist/Leaflet.GoogleMutant.js"></script>
 
   <style>
     :root {
@@ -825,63 +822,45 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       }
     }
 
-    var satellite = L.tileLayer(
-      'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    /*
+     * BASEMAPS
+     *
+     * Default:
+     *   OpenAerialMap imagery + English OSM labels
+     *
+     * OpenAerialMap's current global mosaic endpoint is keyless.
+     * Wikimedia's OSM International tiles are used as a transparent
+     * English-language OSM label overlay.
+     */
+
+    var oamImagery = L.tileLayer(
+      'https://global.imagery.hotosm.org/{z}/{x}/{y}.png',
       {
-        attribution: 'Tiles &copy; Esri'
-      }
-    );
-
-    var googleHybrid = L.gridLayer.googleMutant({
-      type: 'hybrid',
-      maxZoom: 24
-    });
-
-    var MAPTILER_API_KEY = 'OSIVos0hGQi6oPh0K1CD';
-
-    var maptilerHybrid = L.tileLayer(
-      'https://api.maptiler.com/maps/hybrid-v4/256/{z}/{x}/{y}.jpg?key=' + MAPTILER_API_KEY,
-      {
-        attribution: '&copy; MapTiler &copy; OpenStreetMap contributors',
+        attribution: 'Imagery &copy; OpenAerialMap / HOTOSM',
         maxZoom: 22,
+        maxNativeZoom: 21,
         tileSize: 256
       }
     );
 
-    var hybridEsri = L.layerGroup([
-      L.tileLayer(
-        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-        {
-          attribution: 'Tiles &copy; Esri'
-        }
-      ),
-      L.tileLayer(
-        'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
-        {
-          attribution: 'Labels &copy; Esri'
-        }
-      )
-    ]);
-
-    var hybridCarto = L.layerGroup([
-      L.tileLayer(
-        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-        {
-          attribution: 'Tiles &copy; Esri'
-        }
-      ),
-      L.tileLayer(
-        'https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png',
-        {
-          attribution: 'Labels &copy; CARTO'
-        }
-      )
-    ]);
-
-    var streets = L.tileLayer(
-      'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+    var osmEnglishLabels = L.tileLayer(
+      'https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png?lang=en',
       {
-        attribution: '&copy; CARTO'
+        attribution: 'Labels &copy; OpenStreetMap contributors &copy; Wikimedia',
+        maxZoom: 20,
+        pane: 'overlayPane'
+      }
+    );
+
+    var oamEnglishHybrid = L.layerGroup([
+      oamImagery,
+      osmEnglishLabels
+    ]);
+
+    var satellite = L.tileLayer(
+      'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+      {
+        attribution: 'Tiles &copy; Esri'
       }
     );
 
@@ -901,17 +880,13 @@ I use multiple sources to update and clarify the map — mainly geolocation data
     );
 
     var baseLayers = {
-      "Google Hybrid (English)": googleHybrid,
-      "MapTiler Hybrid": maptilerHybrid,
-      "Hybrid (Esri Labels)": hybridEsri,
-      "Hybrid (CARTO Labels)": hybridCarto,
+      "OpenAerialMap + English OSM": oamEnglishHybrid,
       "Satellite (Esri)": satellite,
-      "Streets (Light)": streets,
       "Streets (OSM)": osmStandard,
       "Topographic (Contours + Relief)": topo
     };
 
-    var currentBaseLayer = googleHybrid;
+    var currentBaseLayer = oamEnglishHybrid;
 
     var map = L.map('map', {
       center: [48.00, 37.75],
