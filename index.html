@@ -10,6 +10,9 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet-geosearch@3.11.0/dist/geosearch.umd.js"></script>
   <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+  <!-- Google Maps JavaScript API + Leaflet GoogleMutant -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAGf_KVFEZoVl7P2BDk-NvUxsSPUoAzueU"></script>
+  <script src="https://unpkg.com/leaflet.gridlayer.googlemutant@latest/dist/Leaflet.GoogleMutant.js"></script>
 
   <style>
     :root {
@@ -829,16 +832,10 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       }
     );
 
-    var MAPTILER_API_KEY = 'rj4gnCm18XIMEFW2FkxW';
-
-    var maptilerHybrid = L.tileLayer(
-      'https://api.maptiler.com/maps/hybrid-v4/256/{z}/{x}/{y}.jpg?key=' + MAPTILER_API_KEY,
-      {
-        attribution: '&copy; MapTiler &copy; OpenStreetMap contributors',
-        maxZoom: 22,
-        tileSize: 256
-      }
-    );
+    var googleHybrid = L.gridLayer.googleMutant({
+      type: 'hybrid',
+      maxZoom: 24
+    });
 
     var hybridEsri = L.layerGroup([
       L.tileLayer(
@@ -893,7 +890,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
     );
 
     var baseLayers = {
-      "MapTiler Hybrid": maptilerHybrid,
+      "Google Hybrid": googleHybrid,
       "Hybrid (Esri Labels)": hybridEsri,
       "Hybrid (CARTO Labels)": hybridCarto,
       "Satellite (Esri)": satellite,
@@ -902,7 +899,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       "Topographic (Contours + Relief)": topo
     };
 
-    var currentBaseLayer = maptilerHybrid;
+    var currentBaseLayer = googleHybrid;
 
     var map = L.map('map', {
       center: [48.00, 37.75],
