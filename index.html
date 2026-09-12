@@ -825,8 +825,8 @@ I use multiple sources to update and clarify the map — mainly geolocation data
     /*
      * BASEMAPS
      *
-     * Default: Esri Satellite + OpenStreetMap Labels
-     * Alternatives: Esri Hybrid (Esri labels), Esri Satellite, OpenStreetMap, Topographic
+     * Default: Esri Hybrid (Satellite + Labels)
+     * Alternatives: Esri Satellite, OpenStreetMap, Topographic
      */
 
     var satellite = L.tileLayer(
@@ -855,31 +855,6 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       )
     ]);
 
-    // Esri Satellite + OpenStreetMap-data labels (CARTO's labels-only tiles,
-    // rendered from OSM data). Plain OSM raster tiles can't be split into
-    // base+labels, so this is the standard way to get "OSM labels over satellite"
-    // in plain Leaflet -- no MapLibre required.
-    var osmLabelsOnly = L.tileLayer(
-      'https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png',
-      {
-        attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
-        subdomains: 'abcd',
-        maxZoom: 19,
-        pane: 'markersPane'
-      }
-    );
-
-    var esriOsmHybrid = L.layerGroup([
-      L.tileLayer(
-        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-        {
-          attribution: 'Tiles &copy; Esri',
-          maxZoom: 19
-        }
-      ),
-      osmLabelsOnly
-    ]);
-
     var osmStandard = L.tileLayer(
       'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
       {
@@ -897,14 +872,13 @@ I use multiple sources to update and clarify the map — mainly geolocation data
     );
 
     var baseLayers = {
-      "Esri Satellite + OSM Labels": esriOsmHybrid,
-      "Esri Hybrid (Satellite + Esri Labels)": esriHybrid,
+      "Esri Hybrid (Satellite + Labels)": esriHybrid,
       "Esri Satellite": satellite,
       "OpenStreetMap": osmStandard,
       "Topographic": topo
     };
 
-    var currentBaseLayer = esriOsmHybrid;
+    var currentBaseLayer = esriHybrid;
 
     var map = L.map('map', {
       center: [48.00, 37.75],
