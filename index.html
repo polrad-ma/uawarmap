@@ -1412,8 +1412,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
      * =====================================================
      *
      * PWM design:
-     *   Main map layers + Gray Zone + My Drawings
-     *   (no Cities Captured or other extra layers)
+     *   Main map layers + Gray Zone + PWM detail layers + My Drawings
      *
      * AMK Mapping design:
      *   Russian-controlled territory
@@ -1442,6 +1441,10 @@ I use multiple sources to update and clarify the map — mainly geolocation data
         'Russian advances',
         'Territories regained',
         'Gray Zone',
+        'Towns, villages and cities (credit to PWM)',
+        'Cities Captured',
+        'Region borders',
+        'Land corridor to Crimea',
         'My Drawings'
       ],
 
@@ -1777,6 +1780,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
         document.getElementById(
           'grouped-layer-container'
         );
+
       if (!container) return;
 
       container.innerHTML = '';
