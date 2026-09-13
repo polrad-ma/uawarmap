@@ -672,7 +672,12 @@
 
     <div id="basemap-selector-container">
       <strong>Base Map</strong>
-      <div id="basemap-options" style="margin-top: 6px; margin-bottom: 12px; font-size: 13px;"></div>
+      <div id="basemap-options" style="margin-top: 6px; margin-bottom: 10px; font-size: 13px;"></div>
+    </div>
+
+    <div id="design-selector-container" style="margin-bottom: 10px;">
+      <strong>Map Design</strong>
+      <div id="design-options" style="margin-top: 6px; margin-bottom: 10px; font-size: 13px;"></div>
     </div>
 
     <div id="grouped-layer-container"></div>
@@ -1223,6 +1228,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
 
     var mainLayers = {};
     var extraLayers = {};
+    var helpLayers = {};
   
     var cityIcon = L.icon({
       iconUrl: 'city-icon.png',
@@ -1390,17 +1396,167 @@ I use multiple sources to update and clarify the map — mainly geolocation data
         color: "#0f9d58",
         group: "main",
         noOutline: true
-      }
-,
+      },
+
+      {
+        file: "Gray%20Zone.geojson",
+        name: "Gray Zone",
+        color: "#ffffff",
+        outlineColor: "#ffffff",
+        group: "main",
+        noOutline: true,
+        defaultOff: true
+      },
 
       {
         file: "Fortifications%20%28thanks%20PMapping832%29.geojson",
         name: "Fortifications (thanks PMapping832)",
-        color: "#00ffff",
+                color: "#00ffff",
         group: "extra",
         defaultOff: true
       }
     ];
+
+    /*
+     * =====================================================
+     * MAP DESIGNS
+     * =====================================================
+     *
+     * PWM design:
+     *   All layers except Fortifications
+     *
+     * AMK Mapping design:
+     *   Russian-controlled territory
+     *   Ukrainian-controlled territory
+     *   Territories regained
+     *
+     * Playfra design:
+     *   Fortifications
+     *   Russian-controlled territory
+     *   Gray Zone
+     *
+     * These are visibility presets. Individual layer
+     * checkboxes remain fully independent afterwards.
+     */
+
+    var currentDesign = 'PWM design';
+
+    var mapDesigns = {
+      'PWM design': null,
+
+      'AMK Mapping design': [
+        'Russian-controlled territory',
+        'Ukrainian-controlled territory',
+        'Territories regained'
+      ],
+
+      'Playfra design': [
+        'Fortifications (thanks PMapping832)',
+        'Russian-controlled territory',
+        'Gray Zone'
+      ]
+    };
+
+    function getAllLayerObjects() {
+      return Object.assign(
+        {},
+        mainLayers,
+        extraLayers,
+        helpLayers
+      );
+    }
+
+    function isLayerInCurrentDesign(name) {
+      if (currentDesign === 'PWM design') {
+        return name !== 'Fortifications (thanks PMapping832)';
+      }
+
+      var selectedLayers = mapDesigns[currentDesign];
+
+      return Array.isArray(selectedLayers) &&
+             selectedLayers.indexOf(name) !== -1;
+    }
+
+    function setLayerVisibility(name, visible) {
+      var layers = getAllLayerObjects();
+      var layer = layers[name];
+
+      if (!layer) return;
+
+      if (visible) {
+        if (!map.hasLayer(layer)) {
+          map.addLayer(layer);
+        }
+      } else {
+        if (map.hasLayer(layer)) {
+          map.removeLayer(layer);
+        }
+      }
+    }
+
+    function applyMapDesign(designName) {
+      if (!Object.prototype.hasOwnProperty.call(mapDesigns, designName)) {
+        return;
+      }
+
+      currentDesign = designName;
+
+      var layers = getAllLayerObjects();
+
+      Object.keys(layers).forEach(function(name) {
+        setLayerVisibility(
+          name,
+          isLayerInCurrentDesign(name)
+        );
+      });
+
+      updateSidebarLayerControl();
+    }
+
+    function updateDesignSelector() {
+      var container =
+        document.getElementById('design-options');
+
+      if (!container) return;
+
+      container.innerHTML = '';
+
+      Object.keys(mapDesigns).forEach(function(name) {
+        var label =
+          document.createElement('label');
+
+        label.style.display = 'block';
+        label.style.marginBottom = '4px';
+        label.style.cursor = 'pointer';
+
+        var radio =
+          document.createElement('input');
+
+        radio.type = 'radio';
+        radio.name = 'map-design';
+        radio.value = name;
+        radio.checked = name === currentDesign;
+
+        radio.addEventListener(
+          'change',
+          function() {
+            if (radio.checked) {
+              applyMapDesign(name);
+            }
+          }
+        );
+
+        label.appendChild(radio);
+
+        label.appendChild(
+          document.createTextNode(
+            ' ' + name
+          )
+        );
+
+        container.appendChild(label);
+      });
+    }
 
     layerFiles.forEach(function(layerInfo) {
 
@@ -1453,10 +1609,6 @@ I use multiple sources to update and clarify the map — mainly geolocation data
               }
           });
 
-          if (!layerInfo.defaultOff) {
-            layer.addTo(map);
-          }
-
           if (layerInfo.group === "main") {
             mainLayers[layerInfo.name] = layer;
           } else if (layerInfo.group === "help") {
@@ -1464,6 +1616,14 @@ I use multiple sources to update and clarify the map — mainly geolocation data
           } else {
             extraLayers[layerInfo.name] = layer;
           }
+
+          // Apply the currently selected design to this layer immediately.
+          // This also handles layers that finish loading after a design
+          // has already been selected.
+          setLayerVisibility(
+            layerInfo.name,
+            isLayerInCurrentDesign(layerInfo.name)
+          );
 
           updateSidebarLayerControl();
 
@@ -1581,7 +1741,11 @@ I use multiple sources to update and clarify the map — mainly geolocation data
           helpLayers
         )
       );
+
+      updateDesignSelector();
     }
+
+    updateDesignSelector();
 
     fetch('updates.json')
       .then(response => response.json())
