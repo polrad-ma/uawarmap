@@ -1228,7 +1228,6 @@ I use multiple sources to update and clarify the map — mainly geolocation data
 
     var mainLayers = {};
     var extraLayers = {};
-    var helpLayers = {};
   
     var cityIcon = L.icon({
       iconUrl: 'city-icon.png',
@@ -1399,19 +1398,9 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       },
 
       {
-        file: "Gray%20Zone.geojson",
-        name: "Gray Zone",
-        color: "#ffffff",
-        outlineColor: "#ffffff",
-        group: "main",
-        noOutline: true,
-        defaultOff: true
-      },
-
-      {
         file: "Fortifications%20%28thanks%20PMapping832%29.geojson",
         name: "Fortifications (thanks PMapping832)",
-                color: "#00ffff",
+        color: "#00ffff",
         group: "extra",
         defaultOff: true
       }
@@ -1423,7 +1412,8 @@ I use multiple sources to update and clarify the map — mainly geolocation data
      * =====================================================
      *
      * PWM design:
-     *   All layers except Fortifications
+     *   Main map layers + Gray Zone + My Drawings
+     *   (no Cities Captured or other extra layers)
      *
      * AMK Mapping design:
      *   Russian-controlled territory
@@ -1434,26 +1424,39 @@ I use multiple sources to update and clarify the map — mainly geolocation data
      *   Fortifications
      *   Russian-controlled territory
      *   Gray Zone
+     *   My Drawings
      *
      * These are visibility presets. Individual layer
      * checkboxes remain fully independent afterwards.
      */
 
-    var currentDesign = 'PWM design';
+    var currentDesign = 'Default';
 
     var mapDesigns = {
-      'PWM design': null,
+      'Default': 'ALL_EXCEPT_FORTIFICATIONS',
+
+      'PWM design': [
+        'Russian-controlled territory',
+        'Ukrainian-controlled territory',
+        'Ukrainian advances',
+        'Russian advances',
+        'Territories regained',
+        'Gray Zone',
+        'My Drawings'
+      ],
 
       'AMK Mapping design': [
         'Russian-controlled territory',
         'Ukrainian-controlled territory',
-        'Territories regained'
+        'Territories regained',
+        'My Drawings'
       ],
 
       'Playfra design': [
         'Fortifications (thanks PMapping832)',
         'Russian-controlled territory',
-        'Gray Zone'
+        'Gray Zone',
+        'My Drawings'
       ]
     };
 
@@ -1461,13 +1464,12 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       return Object.assign(
         {},
         mainLayers,
-        extraLayers,
-        helpLayers
+        extraLayers
       );
     }
 
     function isLayerInCurrentDesign(name) {
-      if (currentDesign === 'PWM design') {
+      if (currentDesign === 'Default') {
         return name !== 'Fortifications (thanks PMapping832)';
       }
 
@@ -1522,40 +1524,167 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       container.innerHTML = '';
 
       Object.keys(mapDesigns).forEach(function(name) {
-        var label =
-          document.createElement('label');
-
+        var label = document.createElement('label');
         label.style.display = 'block';
         label.style.marginBottom = '4px';
         label.style.cursor = 'pointer';
 
-        var radio =
-          document.createElement('input');
-
+        var radio = document.createElement('input');
         radio.type = 'radio';
         radio.name = 'map-design';
         radio.value = name;
         radio.checked = name === currentDesign;
 
-        radio.addEventListener(
-          'change',
-          function() {
-            if (radio.checked) {
-              applyMapDesign(name);
-            }
+        radio.addEventListener('change', function() {
+          if (radio.checked) {
+            applyMapDesign(name);
           }
-        );
+        });
 
         label.appendChild(radio);
-
-        label.appendChild(
-          document.createTextNode(
-            ' ' + name
-          )
-        );
-
+        label.appendChild(document.createTextNode(' ' + name));
         container.appendChild(label);
       });
+    }
+
+    /*
+     * =====================================================
+     * GRAY ZONE
+     * =====================================================
+     *
+     * The Gray Zone is generated automatically from the
+     * current Russian-controlled territory and the combined
+     * Ukrainian-controlled + regained territory.
+     *
+     * It is the space that lies close to BOTH sides of the
+     * frontline, while excluding the controlled polygons.
+     * No Gray Zone GeoJSON file is required.
+     *
+     * Increase/decrease this value to make the Gray Zone
+     * wider/narrower.
+     */
+
+    var GRAY_ZONE_DISTANCE_KM = 15;
+    var grayZoneLayer = L.geoJSON(null, {
+      style: function() {
+        return {
+          color: '#ffffff',
+          fillColor: '#ffffff',
+          fillOpacity: 0.35,
+          weight: 1,
+          stroke: false
+        };
+      }
+    });
+
+    mainLayers['Gray Zone'] = grayZoneLayer;
+
+    function unionFeatureCollection(features) {
+      if (!features.length) return null;
+
+      var result = features[0];
+
+      for (var i = 1; i < features.length; i++) {
+        try {
+          result = turf.union(result, features[i]);
+        } catch (error) {
+          console.warn('Gray Zone union error:', error);
+        }
+      }
+
+      return result;
+    }
+
+    function getFeaturesFromLayer(layer) {
+      if (!layer || !layer.toGeoJSON) return [];
+
+      var geojson = layer.toGeoJSON();
+
+      if (!geojson) return [];
+
+      if (geojson.type === 'FeatureCollection') {
+        return geojson.features || [];
+      }
+
+      if (geojson.type === 'Feature') {
+        return [geojson];
+      }
+
+      return [];
+    }
+
+    function rebuildGrayZone() {
+      var ruLayer = mainLayers['Russian-controlled territory'];
+      var uaLayer = mainLayers['Ukrainian-controlled territory'];
+      var regainedLayer = mainLayers['Territories regained'];
+
+      if (!ruLayer || !uaLayer || !regainedLayer) {
+        return;
+      }
+
+      var ruFeatures = getFeaturesFromLayer(ruLayer);
+      var uaFeatures = getFeaturesFromLayer(uaLayer);
+      var regainedFeatures = getFeaturesFromLayer(regainedLayer);
+
+      var ruUnion = unionFeatureCollection(ruFeatures);
+      var uaUnion = unionFeatureCollection(
+        uaFeatures.concat(regainedFeatures)
+      );
+
+      if (!ruUnion || !uaUnion) {
+        grayZoneLayer.clearLayers();
+        return;
+      }
+
+      try {
+        var ruBuffer = turf.buffer(
+          ruUnion,
+          GRAY_ZONE_DISTANCE_KM,
+          { units: 'kilometers', steps: 8 }
+        );
+
+        var uaBuffer = turf.buffer(
+          uaUnion,
+          GRAY_ZONE_DISTANCE_KM,
+          { units: 'kilometers', steps: 8 }
+        );
+
+        var betweenSides = turf.intersect(
+          ruBuffer,
+          uaBuffer
+        );
+
+        if (!betweenSides) {
+          grayZoneLayer.clearLayers();
+          return;
+        }
+
+        var controlledUnion = turf.union(
+          ruUnion,
+          uaUnion
+        );
+
+        var grayZone = controlledUnion
+          ? turf.difference(betweenSides, controlledUnion)
+          : betweenSides;
+
+        grayZoneLayer.clearLayers();
+
+        if (grayZone) {
+          grayZoneLayer.addData(grayZone);
+        }
+
+        setLayerVisibility(
+          'Gray Zone',
+          isLayerInCurrentDesign('Gray Zone')
+        );
+
+        updateSidebarLayerControl();
+
+      } catch (error) {
+        console.error('Gray Zone generation error:', error);
+        grayZoneLayer.clearLayers();
+      }
     }
 
     layerFiles.forEach(function(layerInfo) {
@@ -1611,8 +1740,6 @@ I use multiple sources to update and clarify the map — mainly geolocation data
 
           if (layerInfo.group === "main") {
             mainLayers[layerInfo.name] = layer;
-          } else if (layerInfo.group === "help") {
-            helpLayers[layerInfo.name] = layer;
           } else {
             extraLayers[layerInfo.name] = layer;
           }
@@ -1624,6 +1751,14 @@ I use multiple sources to update and clarify the map — mainly geolocation data
             layerInfo.name,
             isLayerInCurrentDesign(layerInfo.name)
           );
+
+          if (
+            layerInfo.name === 'Russian-controlled territory' ||
+            layerInfo.name === 'Ukrainian-controlled territory' ||
+            layerInfo.name === 'Territories regained'
+          ) {
+            rebuildGrayZone();
+          }
 
           updateSidebarLayerControl();
 
@@ -1642,7 +1777,6 @@ I use multiple sources to update and clarify the map — mainly geolocation data
         document.getElementById(
           'grouped-layer-container'
         );
-
       if (!container) return;
 
       container.innerHTML = '';
@@ -1732,13 +1866,6 @@ I use multiple sources to update and clarify the map — mainly geolocation data
         addGroup(
           'Extra Layers',
           extraLayers
-        )
-      );
-
-      container.appendChild(
-        addGroup(
-          'Help Layers',
-          helpLayers
         )
       );
 
