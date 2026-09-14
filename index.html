@@ -559,16 +559,65 @@
       display: none !important;
     }
 
-    #timeline-select {
-      width: 100%;
-      height: 32px;
+    #timeline-bar {
+      display: none;
+      position: absolute;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2050;
+      background: var(--chrome-bg);
+      border: 1px solid var(--chrome-border);
+      border-radius: 24px;
+      padding: 6px 8px;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+    }
+
+    #timeline-bar.show {
+      display: flex;
+    }
+
+    .timeline-nav-btn {
+      width: 30px;
+      height: 30px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      border: 1px solid var(--chrome-border);
+      background: var(--chrome-btn-bg);
+      color: var(--chrome-text);
+      cursor: pointer;
+      font-size: 16px;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .timeline-nav-btn:hover:not(:disabled) {
+      background: var(--btn-bg-hover);
+    }
+
+    .timeline-nav-btn:disabled {
+      opacity: 0.35;
+      cursor: default;
+    }
+
+    #timeline-date-input {
+      height: 30px;
       box-sizing: border-box;
-      border: 1px solid var(--btn-border);
-      border-radius: 4px;
-      background: var(--btn-bg);
-      color: var(--btn-text);
-      padding: 0 6px;
+      border: 1px solid var(--chrome-border);
+      border-radius: 16px;
+      background: var(--chrome-btn-bg);
+      color: var(--chrome-text);
+      padding: 0 10px;
       font-size: 13px;
+      color-scheme: dark;
+    }
+
+    body.light-mode #timeline-date-input {
+      color-scheme: light;
     }
 
     #timeline-banner {
@@ -689,7 +738,6 @@
     <button class="sidebar-btn" id="btn-tab-draw" onclick="toggleTab('draw')" title="Draw Tools">✏️</button>
     <button class="sidebar-btn" id="btn-tab-ruler" onclick="toggleTab('ruler')" title="Ruler / Measure">📏</button>
     <button class="sidebar-btn" id="btn-tab-coords" onclick="toggleTab('coords')" title="Coordinates">📍</button>
-    <button class="sidebar-btn" id="btn-tab-timeline" onclick="toggleTab('timeline')" title="Timeline">🕐</button>
     <button class="sidebar-btn" id="btn-tab-updates" onclick="toggleTab('updates')" title="Map Updates">🔔</button>
     <button class="sidebar-btn" id="btn-tab-settings" onclick="toggleTab('settings')" title="Settings">⚙️</button>
     <button class="sidebar-btn" id="btn-fullscreen" onclick="toggleFullScreen()" title="Toggle Fullscreen">⛶</button>
@@ -719,6 +767,12 @@
   <div id="map"></div>
   <div id="map-crosshair"></div>
   <div id="watermark-overlay"></div>
+
+  <div id="timeline-bar">
+    <button id="timeline-prev" class="timeline-nav-btn" title="Previous day">‹</button>
+    <input type="date" id="timeline-date-input" title="Jump to a date">
+    <button id="timeline-next" class="timeline-nav-btn" title="Next day">›</button>
+  </div>
 
   <div class="sidebar-panel" id="panel-layers">
     <h4>Basemaps & Layers</h4>
@@ -802,16 +856,6 @@
     <div class="panel-result" id="coords-result">
       Click anywhere on the map to display its precise coordinates.
     </div>
-  </div>
-
-  <div class="sidebar-panel" id="panel-timeline">
-    <h4>Timeline</h4>
-
-    <div id="timeline-select-container" style="margin-bottom:8px;">
-      <select id="timeline-select"></select>
-    </div>
-
-    <div class="panel-result" id="timeline-result">Loading available dates...</div>
   </div>
 
   <div class="sidebar-panel" id="panel-updates">
@@ -1986,6 +2030,16 @@ I use multiple sources to update and clarify the map — mainly geolocation data
 
     var TIMELINE_SKIP_LAYERS = ['My Drawings', 'Cities Captured'];
 
+    // The navigable sequence is every archived date (oldest to newest)
+    // plus a final virtual "live" entry. timelineIndex points at whatever
+    // is currently displayed. Note that after any publish, "live" and the
+    // most recent archived date are the same content (the worker writes
+    // both from the same payload) — "live" is kept as a distinct step
+    // mainly so the bar always has somewhere to land that is guaranteed
+    // current, even before today's first publish.
+    var timelineSequence = [];
+    var timelineIndex = -1;
+
     function loadTimelineManifest() {
       fetch('history/manifest.json')
         .then(function(response) {
@@ -1994,51 +2048,103 @@ I use multiple sources to update and clarify the map — mainly geolocation data
         })
         .then(function(dates) {
           timelineDates = Array.isArray(dates) ? dates.slice().sort() : [];
-          renderTimelineSelect();
+          buildTimelineSequence();
         })
         .catch(function() {
           timelineDates = [];
-          renderTimelineSelect();
+          buildTimelineSequence();
         });
     }
 
-    function renderTimelineSelect() {
-      var select = document.getElementById('timeline-select');
-      select.innerHTML = '';
+    function buildTimelineSequence() {
+      timelineSequence = timelineDates.slice();
+      timelineSequence.push('live');
+      timelineIndex = timelineSequence.length - 1; // start on Live
 
-      var liveOption = document.createElement('option');
-      liveOption.value = 'live';
-      liveOption.textContent = 'Live (current)';
-      select.appendChild(liveOption);
+      var bar = document.getElementById('timeline-bar');
+      if (timelineDates.length > 0) {
+        bar.classList.add('show');
+      } else {
+        bar.classList.remove('show');
+      }
 
-      timelineDates.forEach(function(date) {
-        var opt = document.createElement('option');
-        opt.value = date;
-        opt.textContent = date;
-        select.appendChild(opt);
-      });
-
-      select.value = 'live';
-
-      document.getElementById('timeline-result').innerText =
-        timelineDates.length
-          ? 'Select a date to view the map as it was that day.'
-          : 'No timeline history published yet.';
+      updateTimelineBarUI();
     }
 
-    document.getElementById('timeline-select')
-      .addEventListener('change', function(e) {
-        if (e.target.value === 'live') {
-          exitTimelineMode();
-        } else {
-          showTimelineDate(e.target.value);
+    function updateTimelineBarUI() {
+      var prevBtn = document.getElementById('timeline-prev');
+      var nextBtn = document.getElementById('timeline-next');
+      var dateInput = document.getElementById('timeline-date-input');
+
+      prevBtn.disabled = timelineIndex <= 0;
+      nextBtn.disabled = timelineIndex >= timelineSequence.length - 1;
+
+      var entry = timelineSequence[timelineIndex];
+
+      dateInput.value =
+        entry === 'live'
+          ? new Date().toISOString().slice(0, 10)
+          : entry;
+    }
+
+    function goToTimelineIndex(idx) {
+      idx = Math.max(0, Math.min(idx, timelineSequence.length - 1));
+      timelineIndex = idx;
+
+      var entry = timelineSequence[timelineIndex];
+
+      if (entry === 'live') {
+        exitTimelineMode();
+      } else {
+        showTimelineDate(entry);
+      }
+
+      updateTimelineBarUI();
+    }
+
+    document.getElementById('timeline-prev')
+      .addEventListener('click', function() {
+        if (timelineIndex > 0) goToTimelineIndex(timelineIndex - 1);
+      });
+
+    document.getElementById('timeline-next')
+      .addEventListener('click', function() {
+        if (timelineIndex < timelineSequence.length - 1) {
+          goToTimelineIndex(timelineIndex + 1);
         }
+      });
+
+    document.getElementById('timeline-date-input')
+      .addEventListener('change', function(e) {
+        var chosen = e.target.value; // "YYYY-MM-DD"
+        if (!chosen) return;
+
+        var exactIdx = timelineDates.indexOf(chosen);
+        var todayStr = new Date().toISOString().slice(0, 10);
+
+        if (exactIdx !== -1) {
+          goToTimelineIndex(exactIdx);
+          return;
+        }
+
+        if (chosen >= todayStr) {
+          goToTimelineIndex(timelineSequence.length - 1); // Live
+          return;
+        }
+
+        // No exact archive for that date: snap to the nearest earlier
+        // available date (there is no "in-between" data to show).
+        var nearestIdx = -1;
+        for (var i = 0; i < timelineDates.length; i++) {
+          if (timelineDates[i] <= chosen) nearestIdx = i;
+        }
+
+        goToTimelineIndex(nearestIdx !== -1 ? nearestIdx : 0);
       });
 
     document.getElementById('timeline-banner-live-btn')
       .addEventListener('click', function() {
-        document.getElementById('timeline-select').value = 'live';
-        exitTimelineMode();
+        goToTimelineIndex(timelineSequence.length - 1);
       });
 
     function updateTimelineBanner(date) {
@@ -2070,8 +2176,8 @@ I use multiple sources to update and clarify the map — mainly geolocation data
     }
 
     function showTimelineDate(date) {
-      document.getElementById('timeline-result').innerText =
-        'Loading ' + date + '...';
+      var dateInput = document.getElementById('timeline-date-input');
+      dateInput.title = 'Loading ' + date + '...';
 
       fetch('history/' + date + '.json')
         .then(function(response) {
@@ -2082,14 +2188,11 @@ I use multiple sources to update and clarify the map — mainly geolocation data
           timelineMode = true;
           applySnapshotToLayers(snapshot);
           updateTimelineBanner(date);
-
-          document.getElementById('timeline-result').innerText =
-            'Showing the map as of ' + date + '. Switch back to "Live" to resume the current map.';
+          dateInput.title = 'Jump to a date';
         })
         .catch(function(err) {
           console.error(err);
-          document.getElementById('timeline-result').innerText =
-            'Could not load that date.';
+          dateInput.title = 'Could not load ' + date;
         });
     }
 
@@ -2115,10 +2218,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       rebuildGrayZone();
       updateTimelineBanner(null);
 
-      document.getElementById('timeline-result').innerText =
-        timelineDates.length
-          ? 'Select a date to view the map as it was that day.'
-          : 'No timeline history published yet.';
+      document.getElementById('timeline-date-input').title = 'Jump to a date';
     }
 
     loadTimelineManifest();
