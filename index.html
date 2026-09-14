@@ -559,6 +559,53 @@
       display: none !important;
     }
 
+    #timeline-select {
+      width: 100%;
+      height: 32px;
+      box-sizing: border-box;
+      border: 1px solid var(--btn-border);
+      border-radius: 4px;
+      background: var(--btn-bg);
+      color: var(--btn-text);
+      padding: 0 6px;
+      font-size: 13px;
+    }
+
+    #timeline-banner {
+      display: none;
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2050;
+      background: #b45309;
+      color: #ffffff;
+      padding: 6px 10px 6px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      align-items: center;
+      gap: 10px;
+    }
+
+    #timeline-banner.show {
+      display: flex;
+    }
+
+    #timeline-banner-live-btn {
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.5);
+      color: #ffffff;
+      border-radius: 5px;
+      padding: 3px 9px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    #timeline-banner-live-btn:hover {
+      background: rgba(255,255,255,0.35);
+    }
+
     #welcome-overlay {
       position: absolute;
       top: 0;
@@ -642,6 +689,7 @@
     <button class="sidebar-btn" id="btn-tab-draw" onclick="toggleTab('draw')" title="Draw Tools">✏️</button>
     <button class="sidebar-btn" id="btn-tab-ruler" onclick="toggleTab('ruler')" title="Ruler / Measure">📏</button>
     <button class="sidebar-btn" id="btn-tab-coords" onclick="toggleTab('coords')" title="Coordinates">📍</button>
+    <button class="sidebar-btn" id="btn-tab-timeline" onclick="toggleTab('timeline')" title="Timeline">🕐</button>
     <button class="sidebar-btn" id="btn-tab-updates" onclick="toggleTab('updates')" title="Map Updates">🔔</button>
     <button class="sidebar-btn" id="btn-tab-settings" onclick="toggleTab('settings')" title="Settings">⚙️</button>
     <button class="sidebar-btn" id="btn-fullscreen" onclick="toggleFullScreen()" title="Toggle Fullscreen">⛶</button>
@@ -661,6 +709,11 @@
       </div>
       <div id="header-search-results"></div>
     </div>
+  </div>
+
+  <div id="timeline-banner">
+    <span>Viewing history: <strong id="timeline-banner-date"></strong></span>
+    <button id="timeline-banner-live-btn">Return to Live</button>
   </div>
 
   <div id="map"></div>
@@ -749,6 +802,16 @@
     <div class="panel-result" id="coords-result">
       Click anywhere on the map to display its precise coordinates.
     </div>
+  </div>
+
+  <div class="sidebar-panel" id="panel-timeline">
+    <h4>Timeline</h4>
+
+    <div id="timeline-select-container" style="margin-bottom:8px;">
+      <select id="timeline-select"></select>
+    </div>
+
+    <div class="panel-result" id="timeline-result">Loading available dates...</div>
   </div>
 
   <div class="sidebar-panel" id="panel-updates">
@@ -1228,6 +1291,14 @@ I use multiple sources to update and clarify the map — mainly geolocation data
 
     var mainLayers = {};
     var extraLayers = {};
+
+    // Caches the last known LIVE (non-timeline) GeoJSON for every
+    // file-backed layer, so switching the timeline back to "Live" can
+    // restore the current map without a network refetch.
+    var liveLayerData = {};
+
+    var timelineMode = false;
+    var timelineDates = [];
   
     var cityIcon = L.icon({
       iconUrl: 'city-icon.png',
@@ -1284,7 +1355,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       { name: "Berdyansk", date: "27 February 2022", lat: 46.75774, lng: 36.79871 },
       { name: "Melitopol", date: "24 February 2022", lat: 46.84610, lng: 35.37186 },
       { name: "Rodynske", date: "13 July 2026", lat: 48.35351, lng: 37.20760 },
-      { name: "Toretsk", date: "2 August 2025", lat: 48.3917, lng: 37.8728 },
+      { name: "Toretsk", date: "2 February 2025", lat: 48.3917, lng: 37.8728 },
       { name: "Siversk", date: "13 December 2025", lat: 48.86929, lng: 38.08960 },
       { name: "Pokrovsk", date: "22 November 2025", lat: 48.2822, lng: 37.1758 },
       { name: "Myrnohrad", date: "28 December 2025", lat: 48.30843, lng: 37.25670 },
@@ -1558,7 +1629,11 @@ I use multiple sources to update and clarify the map — mainly geolocation data
      *
      * It is the space that lies close to BOTH sides of the
      * frontline, while excluding the controlled polygons.
-     * No Gray Zone GeoJSON file is required.
+     * Both sides' "advances" layers are folded into their
+     * side's controlled area too, so the Gray Zone never
+     * overlaps an advance polygon.
+     *
+     * No Gray Zone GeoJSON file is required for the live view.
      *
      * Increase/decrease this value to make the Gray Zone
      * wider/narrower.
@@ -1617,19 +1692,33 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       var ruLayer = mainLayers['Russian-controlled territory'];
       var uaLayer = mainLayers['Ukrainian-controlled territory'];
       var regainedLayer = mainLayers['Territories regained'];
+      var ruAdvancesLayer = mainLayers['Russian advances'];
+      var uaAdvancesLayer = mainLayers['Ukrainian advances'];
 
       if (!ruLayer || !uaLayer || !regainedLayer) {
         return;
       }
 
-      var ruFeatures = getFeaturesFromLayer(ruLayer);
-      var uaFeatures = getFeaturesFromLayer(uaLayer);
-      var regainedFeatures = getFeaturesFromLayer(regainedLayer);
+      // Fold each side's "advances" into that side's controlled area
+      // before buffering, so the Gray Zone excludes advances too (not
+      // just the settled territory layers).
+      var ruFeatures = getFeaturesFromLayer(ruLayer)
+        .concat(
+          ruAdvancesLayer
+            ? getFeaturesFromLayer(ruAdvancesLayer)
+            : []
+        );
+
+      var uaFeatures = getFeaturesFromLayer(uaLayer)
+        .concat(getFeaturesFromLayer(regainedLayer))
+        .concat(
+          uaAdvancesLayer
+            ? getFeaturesFromLayer(uaAdvancesLayer)
+            : []
+        );
 
       var ruUnion = unionFeatureCollection(ruFeatures);
-      var uaUnion = unionFeatureCollection(
-        uaFeatures.concat(regainedFeatures)
-      );
+      var uaUnion = unionFeatureCollection(uaFeatures);
 
       if (!ruUnion || !uaUnion) {
         grayZoneLayer.clearLayers();
@@ -1744,6 +1833,10 @@ I use multiple sources to update and clarify the map — mainly geolocation data
             extraLayers[layerInfo.name] = layer;
           }
 
+          // Remember this as the current LIVE data for the timeline's
+          // "Live" mode to restore later without a refetch.
+          liveLayerData[layerInfo.name] = data;
+
           // Apply the currently selected design to this layer immediately.
           // This also handles layers that finish loading after a design
           // has already been selected.
@@ -1755,7 +1848,9 @@ I use multiple sources to update and clarify the map — mainly geolocation data
           if (
             layerInfo.name === 'Russian-controlled territory' ||
             layerInfo.name === 'Ukrainian-controlled territory' ||
-            layerInfo.name === 'Territories regained'
+            layerInfo.name === 'Territories regained' ||
+            layerInfo.name === 'Russian advances' ||
+            layerInfo.name === 'Ukrainian advances'
           ) {
             rebuildGrayZone();
           }
@@ -1874,6 +1969,159 @@ I use multiple sources to update and clarify the map — mainly geolocation data
     }
 
     updateDesignSelector();
+
+    /*
+     * =====================================================
+     * TIMELINE
+     * =====================================================
+     *
+     * Backed by history/manifest.json (a list of "YYYY-MM-DD" dates) and
+     * history/YYYY-MM-DD.json (a full snapshot for that date), both
+     * written by the editor's Publish action. Selecting a date swaps the
+     * data shown in the existing layer objects; "Live" restores the most
+     * recently fetched live data. "My Drawings" and "Cities Captured" are
+     * not archived (they aren't backed by a GeoJSON file the editor
+     * publishes), so they are left untouched by the timeline.
+     */
+
+    var TIMELINE_SKIP_LAYERS = ['My Drawings', 'Cities Captured'];
+
+    function loadTimelineManifest() {
+      fetch('history/manifest.json')
+        .then(function(response) {
+          if (!response.ok) throw new Error('No timeline data yet.');
+          return response.json();
+        })
+        .then(function(dates) {
+          timelineDates = Array.isArray(dates) ? dates.slice().sort() : [];
+          renderTimelineSelect();
+        })
+        .catch(function() {
+          timelineDates = [];
+          renderTimelineSelect();
+        });
+    }
+
+    function renderTimelineSelect() {
+      var select = document.getElementById('timeline-select');
+      select.innerHTML = '';
+
+      var liveOption = document.createElement('option');
+      liveOption.value = 'live';
+      liveOption.textContent = 'Live (current)';
+      select.appendChild(liveOption);
+
+      timelineDates.forEach(function(date) {
+        var opt = document.createElement('option');
+        opt.value = date;
+        opt.textContent = date;
+        select.appendChild(opt);
+      });
+
+      select.value = 'live';
+
+      document.getElementById('timeline-result').innerText =
+        timelineDates.length
+          ? 'Select a date to view the map as it was that day.'
+          : 'No timeline history published yet.';
+    }
+
+    document.getElementById('timeline-select')
+      .addEventListener('change', function(e) {
+        if (e.target.value === 'live') {
+          exitTimelineMode();
+        } else {
+          showTimelineDate(e.target.value);
+        }
+      });
+
+    document.getElementById('timeline-banner-live-btn')
+      .addEventListener('click', function() {
+        document.getElementById('timeline-select').value = 'live';
+        exitTimelineMode();
+      });
+
+    function updateTimelineBanner(date) {
+      var banner = document.getElementById('timeline-banner');
+
+      if (date) {
+        document.getElementById('timeline-banner-date').textContent = date;
+        banner.classList.add('show');
+      } else {
+        banner.classList.remove('show');
+      }
+    }
+
+    function applySnapshotToLayers(snapshot) {
+      var allLayers = getAllLayerObjects();
+
+      Object.keys(allLayers).forEach(function(name) {
+        if (TIMELINE_SKIP_LAYERS.indexOf(name) !== -1) return;
+
+        var layer = allLayers[name];
+        if (!layer || !layer.clearLayers) return;
+
+        layer.clearLayers();
+
+        if (snapshot[name]) {
+          layer.addData(snapshot[name]);
+        }
+      });
+    }
+
+    function showTimelineDate(date) {
+      document.getElementById('timeline-result').innerText =
+        'Loading ' + date + '...';
+
+      fetch('history/' + date + '.json')
+        .then(function(response) {
+          if (!response.ok) throw new Error('Could not load ' + date);
+          return response.json();
+        })
+        .then(function(snapshot) {
+          timelineMode = true;
+          applySnapshotToLayers(snapshot);
+          updateTimelineBanner(date);
+
+          document.getElementById('timeline-result').innerText =
+            'Showing the map as of ' + date + '. Switch back to "Live" to resume the current map.';
+        })
+        .catch(function(err) {
+          console.error(err);
+          document.getElementById('timeline-result').innerText =
+            'Could not load that date.';
+        });
+    }
+
+    function exitTimelineMode() {
+      timelineMode = false;
+
+      var allLayers = getAllLayerObjects();
+
+      Object.keys(allLayers).forEach(function(name) {
+        if (TIMELINE_SKIP_LAYERS.indexOf(name) !== -1) return;
+        if (name === 'Gray Zone') return; // recomputed below, not cached
+
+        var layer = allLayers[name];
+        if (!layer || !layer.clearLayers) return;
+
+        layer.clearLayers();
+
+        if (liveLayerData[name]) {
+          layer.addData(liveLayerData[name]);
+        }
+      });
+
+      rebuildGrayZone();
+      updateTimelineBanner(null);
+
+      document.getElementById('timeline-result').innerText =
+        timelineDates.length
+          ? 'Select a date to view the map as it was that day.'
+          : 'No timeline history published yet.';
+    }
+
+    loadTimelineManifest();
 
     fetch('updates.json')
       .then(response => response.json())
