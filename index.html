@@ -1399,7 +1399,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       { name: "Berdyansk", date: "27 February 2022", lat: 46.75774, lng: 36.79871 },
       { name: "Melitopol", date: "24 February 2022", lat: 46.84610, lng: 35.37186 },
       { name: "Rodynske", date: "13 July 2026", lat: 48.35351, lng: 37.20760 },
-      { name: "Toretsk", date: "2 August 2025", lat: 48.3917, lng: 37.8728 },
+      { name: "Toretsk", date: "2 February 2025", lat: 48.3917, lng: 37.8728 },
       { name: "Siversk", date: "13 December 2025", lat: 48.86929, lng: 38.08960 },
       { name: "Pokrovsk", date: "22 November 2025", lat: 48.2822, lng: 37.1758 },
       { name: "Myrnohrad", date: "28 December 2025", lat: 48.30843, lng: 37.25670 },
@@ -2028,7 +2028,23 @@ I use multiple sources to update and clarify the map — mainly geolocation data
      * publishes), so they are left untouched by the timeline.
      */
 
-    var TIMELINE_SKIP_LAYERS = ['My Drawings', 'Cities Captured'];
+    var TIMELINE_SKIP_LAYERS = [
+      'My Drawings',
+      'Cities Captured',
+      // Static reference data, not something that meaningfully changes
+      // day-to-day — keep it on live data regardless of which date is
+      // selected, instead of swapping it (and possibly blanking it) with
+      // every timeline navigation.
+      'Towns, villages and cities (credit to PWM)'
+    ];
+
+    // The editor/worker archive some layers under a different (longer)
+    // name than the short display name used here on the public map. Map
+    // short name -> the key actually used in history/<date>.json so the
+    // lookup doesn't silently miss.
+    var TIMELINE_NAME_ALIASES = {
+      'Territories regained': 'Territories regained in the last month'
+    };
 
     // The navigable sequence is every archived date (oldest to newest)
     // plus a final virtual "live" entry. timelineIndex points at whatever
@@ -2167,10 +2183,12 @@ I use multiple sources to update and clarify the map — mainly geolocation data
         var layer = allLayers[name];
         if (!layer || !layer.clearLayers) return;
 
+        var snapshotKey = TIMELINE_NAME_ALIASES[name] || name;
+
         layer.clearLayers();
 
-        if (snapshot[name]) {
-          layer.addData(snapshot[name]);
+        if (snapshot[snapshotKey]) {
+          layer.addData(snapshot[snapshotKey]);
         }
       });
     }
