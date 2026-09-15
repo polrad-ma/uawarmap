@@ -1518,6 +1518,16 @@ I use multiple sources to update and clarify the map — mainly geolocation data
         color: "#00ffff",
         group: "extra",
         defaultOff: true
+      },
+
+      {
+        file: "Frontlines.geojson",
+        name: "August 2024 Frontline",
+        color: "#ff0000",
+        outlineColor: "#ff0000",
+        fillOpacity: 0,
+        group: "extra",
+        defaultOff: true
       }
     ];
 
@@ -1585,7 +1595,10 @@ I use multiple sources to update and clarify the map — mainly geolocation data
 
     function isLayerInCurrentDesign(name) {
       if (currentDesign === 'Default') {
-        return name !== 'Fortifications (thanks PMapping832)';
+        return (
+          name !== 'Fortifications (thanks PMapping832)' &&
+          name !== 'August 2024 Frontline'
+        );
       }
 
       var selectedLayers = mapDesigns[currentDesign];
@@ -2031,6 +2044,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
     var TIMELINE_SKIP_LAYERS = [
       'My Drawings',
       'Cities Captured',
+      'August 2024 Frontline',
       // Static reference data, not something that meaningfully changes
       // day-to-day — keep it on live data regardless of which date is
       // selected, instead of swapping it (and possibly blanking it) with
