@@ -2073,9 +2073,14 @@ I use multiple sources to update and clarify the map — mainly geolocation data
     }
 
     function buildTimelineSequence() {
+      // No separate "live" entry: the worker writes the live files and the
+      // archive from the same publish payload, so the most recent archived
+      // date is always identical in content to Live. Treating them as one
+      // and the same means every prev/next click moves to genuinely
+      // different content, instead of the first click landing on a
+      // duplicate of what's already showing.
       timelineSequence = timelineDates.slice();
-      timelineSequence.push('live');
-      timelineIndex = timelineSequence.length - 1; // start on Live
+      timelineIndex = timelineSequence.length - 1; // latest date == "now"
 
       var bar = document.getElementById('timeline-bar');
       if (timelineDates.length > 0) {
@@ -2095,24 +2100,21 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       prevBtn.disabled = timelineIndex <= 0;
       nextBtn.disabled = timelineIndex >= timelineSequence.length - 1;
 
-      var entry = timelineSequence[timelineIndex];
-
       dateInput.value =
-        entry === 'live'
-          ? new Date().toISOString().slice(0, 10)
-          : entry;
+        timelineSequence[timelineIndex] ||
+        new Date().toISOString().slice(0, 10);
     }
 
     function goToTimelineIndex(idx) {
       idx = Math.max(0, Math.min(idx, timelineSequence.length - 1));
       timelineIndex = idx;
 
-      var entry = timelineSequence[timelineIndex];
-
-      if (entry === 'live') {
+      if (idx === timelineSequence.length - 1) {
+        // Latest archived date == current live state — show live directly
+        // rather than re-fetching a snapshot that would look identical.
         exitTimelineMode();
       } else {
-        showTimelineDate(entry);
+        showTimelineDate(timelineSequence[idx]);
       }
 
       updateTimelineBarUI();
@@ -2136,20 +2138,16 @@ I use multiple sources to update and clarify the map — mainly geolocation data
         if (!chosen) return;
 
         var exactIdx = timelineDates.indexOf(chosen);
-        var todayStr = new Date().toISOString().slice(0, 10);
 
         if (exactIdx !== -1) {
           goToTimelineIndex(exactIdx);
           return;
         }
 
-        if (chosen >= todayStr) {
-          goToTimelineIndex(timelineSequence.length - 1); // Live
-          return;
-        }
-
         // No exact archive for that date: snap to the nearest earlier
-        // available date (there is no "in-between" data to show).
+        // available date (there is no "in-between" data to show). If the
+        // chosen date is beyond every archived date, this naturally lands
+        // on the latest one, which goToTimelineIndex treats as "now".
         var nearestIdx = -1;
         for (var i = 0; i < timelineDates.length; i++) {
           if (timelineDates[i] <= chosen) nearestIdx = i;
