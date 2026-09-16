@@ -1613,18 +1613,24 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       );
     }
 
-   function isLayerInCurrentDesign(name) {
-   if (currentDesign === 'Default') {
-     return (
-       name !== 'Fortifications (thanks PMapping832)' &&
-       name !== 'August 2024 Frontline' &&
-       name !== 'Region borders' &&
-       name !== 'Land corridor to Crimea' &&
-       name !== 'Claimed DeepState Frontline' &&
-       name !== 'Claimed RIA Frontline' &&
-       name !== 'Cities Captured'
-     );
-   }
+function isLayerInCurrentDesign(name) {
+  if (currentDesign === 'Default') {
+    return (
+      name !== 'Fortifications (thanks PMapping832)' &&
+      name !== 'August 2024 Frontline' &&
+      name !== 'Region borders' &&
+      name !== 'Land corridor to Crimea' &&
+      name !== 'Claimed DeepState Frontline' &&
+      name !== 'Claimed RIA Frontline' &&
+      name !== 'Cities Captured'
+    );
+  }
+
+  var selectedLayers = mapDesigns[currentDesign];
+
+  return Array.isArray(selectedLayers) &&
+         selectedLayers.indexOf(name) !== -1;
+}
 
    var selectedLayers = mapDesigns[currentDesign];
 
