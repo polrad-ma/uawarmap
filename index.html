@@ -965,11 +965,37 @@ I use multiple sources to update and clarify the map — mainly geolocation data
         mapElement.style.height = '100vh';
         mapElement.style.position = 'absolute';
 
+        map.stop();
         map.invalidateSize(true);
 
-        // Give Leaflet/tile images a moment to finish rendering.
+        // Redraw every vector layer after resizing. This prevents Leaflet SVG
+        // paths and polygons from keeping their old renderer/clipping bounds.
+        function redrawLayer(layer) {
+          if (!layer) return;
+
+          if (typeof layer.redraw === 'function') {
+            try { layer.redraw(); } catch (e) {}
+          }
+
+          if (typeof layer.eachLayer === 'function') {
+            layer.eachLayer(function(child) {
+              redrawLayer(child);
+            });
+          }
+        }
+
+        map.eachLayer(function(layer) {
+          redrawLayer(layer);
+        });
+
+        // Give Leaflet two animation frames plus a short delay to finish
+        // rendering before html2canvas reads the map.
         await new Promise(function(resolve) {
-          setTimeout(resolve, 800);
+          requestAnimationFrame(function() {
+            requestAnimationFrame(function() {
+              setTimeout(resolve, 700);
+            });
+          });
         });
 
         var mapCanvas = await html2canvas(mapElement, {
@@ -978,7 +1004,16 @@ I use multiple sources to update and clarify the map — mainly geolocation data
           backgroundColor: '#ffffff',
           scale: 2,
           logging: false,
-          imageTimeout: 20000
+          imageTimeout: 20000,
+          foreignObjectRendering: false,
+          onclone: function(clonedDocument) {
+            // Avoid html2canvas clipping Leaflet SVG vector paths.
+            clonedDocument
+              .querySelectorAll('.leaflet-overlay-pane svg, .leaflet-shadow-pane svg')
+              .forEach(function(svg) {
+                svg.style.overflow = 'visible';
+              });
+          }
         });
 
         // Final exported image: white header + map.
@@ -1693,8 +1728,8 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       {
         file: "DeepState%20Frontline.geojson",
         name: "Claimed DeepState Frontline",
-        color: "#ff9900",
-        outlineColor: "#ff9900",
+        color: "#000000",
+        outlineColor: "#000000",
         fillOpacity: 0,
         group: "extra",
         defaultOff: true
@@ -1702,8 +1737,8 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       {
         file: "RIA%20Frontline.geojson",
         name: "Claimed RIA Frontline",
-        color: "#ff9900",
-        outlineColor: "#ff9900",
+        color: "#000000",
+        outlineColor: "#000000",
         fillOpacity: 0,
         group: "extra",
         defaultOff: true
@@ -1712,7 +1747,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
         file: "opsec.geojson",
         name: "Heavy Ukrainian OPSEC area",
         color: "#000000",
-        fillOpacity: 0.25,
+        fillOpacity: 0.40,
         group: "extra",
         noOutline: true,
         defaultOff: true
