@@ -11,6 +11,7 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet-geosearch@3.11.0/dist/geosearch.umd.js"></script>
   <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
   <style>
     :root {
@@ -742,6 +743,7 @@
     <button class="sidebar-btn" id="btn-tab-updates" onclick="toggleTab('updates')" title="Map Updates">🔔</button>
     <button class="sidebar-btn" id="btn-tab-settings" onclick="toggleTab('settings')" title="Settings">⚙️</button>
     <button class="sidebar-btn" id="btn-fullscreen" onclick="toggleFullScreen()" title="Toggle Fullscreen">⛶</button>
+    <button class="sidebar-btn" id="btn-screenshot" onclick="takeMapScreenshot()" title="Take Screenshot">📸</button>
   </div>
 
   <div id="app-header">
@@ -904,6 +906,190 @@ I use multiple sources to update and clarify the map — mainly geolocation data
 
   <script>
 
+    async function takeMapScreenshot() {
+      var mapElement = document.getElementById('map');
+      var button = document.getElementById('btn-screenshot');
+
+      if (!mapElement || typeof html2canvas === 'undefined') {
+        alert('Screenshot feature is not available.');
+        return;
+      }
+
+      if (button) {
+        button.disabled = true;
+        button.innerText = '…';
+      }
+
+      var hiddenElements = [];
+      var temporaryElements = [];
+
+      // Save the current map container styles.
+      var oldMapStyles = {
+        left: mapElement.style.left,
+        top: mapElement.style.top,
+        right: mapElement.style.right,
+        bottom: mapElement.style.bottom,
+        width: mapElement.style.width,
+        height: mapElement.style.height,
+        position: mapElement.style.position
+      };
+
+      function hideElement(el) {
+        if (!el) return;
+        hiddenElements.push({
+          element: el,
+          display: el.style.display
+        });
+        el.style.display = 'none';
+      }
+
+      try {
+        // Hide the application's UI so only the map itself is captured.
+        hideElement(document.getElementById('left-sidebar'));
+        hideElement(document.getElementById('app-header'));
+        hideElement(document.getElementById('timeline-banner'));
+        hideElement(document.getElementById('timeline-bar'));
+        hideElement(document.getElementById('map-crosshair'));
+        hideElement(document.getElementById('watermark-overlay'));
+
+        document.querySelectorAll('.sidebar-panel').forEach(hideElement);
+        document.querySelectorAll('.leaflet-control-zoom').forEach(hideElement);
+        document.querySelectorAll('.leaflet-popup').forEach(hideElement);
+
+        // Make the map fill the complete browser viewport while capturing.
+        mapElement.style.left = '0';
+        mapElement.style.top = '0';
+        mapElement.style.right = '0';
+        mapElement.style.bottom = '0';
+        mapElement.style.width = '100vw';
+        mapElement.style.height = '100vh';
+        mapElement.style.position = 'absolute';
+
+        map.invalidateSize(true);
+
+        // Give Leaflet/tile images a moment to finish rendering.
+        await new Promise(function(resolve) {
+          setTimeout(resolve, 800);
+        });
+
+        var mapCanvas = await html2canvas(mapElement, {
+          useCORS: true,
+          allowTaint: false,
+          backgroundColor: '#ffffff',
+          scale: 2,
+          logging: false,
+          imageTimeout: 20000
+        });
+
+        // Final exported image: white header + map.
+        var headerHeight = 76 * 2;
+        var padding = 16 * 2;
+        var finalWidth = mapCanvas.width + padding * 2;
+        var finalHeight = mapCanvas.height + headerHeight + padding;
+
+        var canvas = document.createElement('canvas');
+        canvas.width = finalWidth;
+        canvas.height = finalHeight;
+
+        var ctx = canvas.getContext('2d');
+
+        // White background.
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, finalWidth, finalHeight);
+
+        // Header separator.
+        ctx.strokeStyle = '#d9d9d9';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(0, headerHeight);
+        ctx.lineTo(finalWidth, headerHeight);
+        ctx.stroke();
+
+        // Logo.
+        var logo = new Image();
+        logo.crossOrigin = 'anonymous';
+
+        await new Promise(function(resolve) {
+          logo.onload = resolve;
+          logo.onerror = resolve;
+          logo.src = document.getElementById('app-logo').src;
+        });
+
+        var logoSize = 54 * 2;
+        var logoX = padding;
+        var logoY = (headerHeight - logoSize) / 2;
+
+        if (logo.complete && logo.naturalWidth > 0) {
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(
+            logoX + logoSize / 2,
+            logoY + logoSize / 2,
+            logoSize / 2,
+            0,
+            Math.PI * 2
+          );
+          ctx.clip();
+          ctx.drawImage(logo, logoX, logoY, logoSize, logoSize);
+          ctx.restore();
+        }
+
+        // Header title.
+        ctx.fillStyle = '#171717';
+        ctx.font = 'bold 28px Helvetica, Arial, sans-serif';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(
+          'POLRAD MAPPING',
+          logoX + logoSize + 18,
+          headerHeight / 2
+        );
+
+        // Current map.
+        ctx.drawImage(mapCanvas, padding, headerHeight);
+
+        // Export as PNG.
+        var link = document.createElement('a');
+        var date = new Date()
+          .toISOString()
+          .slice(0, 19)
+          .replace(/:/g, '-');
+
+        link.download = 'polrad-mapping-' + date + '.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+
+      } catch (error) {
+        console.error('Screenshot failed:', error);
+        alert(
+          'Screenshot failed. If the map is blank, the basemap provider is blocking browser canvas capture (CORS).'
+        );
+      } finally {
+        // Restore all hidden UI elements.
+        hiddenElements.forEach(function(item) {
+          item.element.style.display = item.display;
+        });
+
+        mapElement.style.left = oldMapStyles.left;
+        mapElement.style.top = oldMapStyles.top;
+        mapElement.style.right = oldMapStyles.right;
+        mapElement.style.bottom = oldMapStyles.bottom;
+        mapElement.style.width = oldMapStyles.width;
+        mapElement.style.height = oldMapStyles.height;
+        mapElement.style.position = oldMapStyles.position;
+
+        map.invalidateSize(true);
+
+        temporaryElements.forEach(function(el) {
+          if (el && el.parentNode) el.parentNode.removeChild(el);
+        });
+
+        if (button) {
+          button.disabled = false;
+          button.innerText = '📸';
+        }
+      }
+    }
+
     function toggleFullScreen() {
       var btn = document.getElementById('btn-fullscreen');
 
@@ -955,6 +1141,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
         'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
         {
           attribution: 'Tiles &copy; Esri',
+          crossOrigin: true,
           maxZoom: 19
         }
       ),
@@ -1520,6 +1707,14 @@ I use multiple sources to update and clarify the map — mainly geolocation data
         fillOpacity: 0,
         group: "extra",
         defaultOff: true
+      }
+      ,{
+        file: "opsec.geojson",
+        name: "Heavy Ukrainian OPSEC area",
+        color: "#ff00ff",
+        outlineColor: "#ff00ff",
+        fillOpacity: 0.25,
+        group: "extra"
       }
     ];
 
