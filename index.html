@@ -742,8 +742,8 @@
     <button class="sidebar-btn" id="btn-tab-coords" onclick="toggleTab('coords')" title="Coordinates">📍</button>
     <button class="sidebar-btn" id="btn-tab-updates" onclick="toggleTab('updates')" title="Map Updates">🔔</button>
     <button class="sidebar-btn" id="btn-tab-settings" onclick="toggleTab('settings')" title="Settings">⚙️</button>
-    <button class="sidebar-btn" id="btn-fullscreen" onclick="toggleFullScreen()" title="Toggle Fullscreen">⛶</button>
     <button class="sidebar-btn" id="btn-screenshot" onclick="takeMapScreenshot()" title="Take Screenshot">📸</button>
+    <button class="sidebar-btn" id="btn-fullscreen" onclick="toggleFullScreen()" title="Toggle Fullscreen">⛶</button>
   </div>
 
   <div id="app-header">
@@ -1711,10 +1711,11 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       ,{
         file: "opsec.geojson",
         name: "Heavy Ukrainian OPSEC area",
-        color: "#ff00ff",
-        outlineColor: "#ff00ff",
+        color: "#000000",
         fillOpacity: 0.25,
-        group: "extra"
+        group: "extra",
+        noOutline: true,
+        defaultOff: true
       }
     ];
 
@@ -1755,7 +1756,8 @@ I use multiple sources to update and clarify the map — mainly geolocation data
           name !== 'Land corridor to Crimea' &&
           name !== 'Claimed DeepState Frontline' &&
           name !== 'Claimed RIA Frontline' &&
-          name !== 'Cities Captured'
+          name !== 'Cities Captured' &&
+          name !== 'Heavy Ukrainian OPSEC area'
         );
       }
 
