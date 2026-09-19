@@ -9,6 +9,17 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet-geosearch@3.11.0/dist/geosearch.css" />
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+  window.polradGoogleAuthFailed = false;
+  window.gm_authFailure = function() {
+    window.polradGoogleAuthFailed = true;
+    if (typeof window.polradUseEsriFallback === 'function') {
+      window.polradUseEsriFallback();
+    }
+  };
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAGf_KVFEZoVl7P2BDk-NvUxsSPUoAzueU&language=en&region=US"></script>
+<script src="https://unpkg.com/leaflet.gridlayer.googlemutant@0.15.0/Leaflet.GoogleMutant.js"></script>
   <script src="https://unpkg.com/leaflet-geosearch@3.11.0/dist/geosearch.umd.js"></script>
   <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -1251,8 +1262,13 @@ I use multiple sources to update and clarify the map — mainly geolocation data
     /*
      * BASEMAPS
      *
-     * Default: Esri Hybrid (Satellite + Labels)
+     * Default: Google Hybrid (Satellite + English Labels)
+     * Automatic fallback: Esri Hybrid (Satellite + Esri Labels)
      * Alternatives: Esri Satellite, OpenStreetMap, Topographic
+     *
+     * Google Hybrid is supplied through Google Maps JS + Leaflet.GoogleMutant.
+     * If Google reports an API authentication/billing/key failure, the map
+     * automatically switches to Esri Hybrid.
      */
 
     var satellite = L.tileLayer(
@@ -1281,6 +1297,12 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       )
     ]);
 
+    var googleHybrid = L.gridLayer.googleMutant({
+      type: 'hybrid',
+      maxZoom: 20,
+      attribution: '&copy; Google'
+    });
+
     var osmStandard = L.tileLayer(
       'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
       {
@@ -1298,13 +1320,14 @@ I use multiple sources to update and clarify the map — mainly geolocation data
     );
 
     var baseLayers = {
+      "Google Hybrid (Satellite + English Labels)": googleHybrid,
       "Esri Hybrid (Satellite + Labels)": esriHybrid,
       "Esri Satellite": satellite,
       "OpenStreetMap": osmStandard,
       "Topographic": topo
     };
 
-    var currentBaseLayer = esriHybrid;
+    var currentBaseLayer = googleHybrid;
 
     var map = L.map('map', {
       center: [48.00, 37.75],
@@ -1313,6 +1336,38 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       zoomControl: false,
       layers: [currentBaseLayer]
     });
+
+    /*
+     * Google Maps can report an invalid/expired/restricted API key through
+     * gm_authFailure. Keep the user's current view and switch to Esri Hybrid.
+     */
+    window.polradUseEsriFallback = function() {
+      if (!map || !esriHybrid) return;
+
+      if (currentBaseLayer !== esriHybrid) {
+        var center = map.getCenter();
+        var zoom = map.getZoom();
+
+        if (map.hasLayer(currentBaseLayer)) {
+          map.removeLayer(currentBaseLayer);
+        }
+
+        currentBaseLayer = esriHybrid;
+        map.addLayer(esriHybrid);
+        map.setView(center, zoom, { animate: false });
+
+        var radios = document.querySelectorAll('input[name="basemap"]');
+        radios.forEach(function(radio) {
+          radio.checked =
+            baseLayers[radio.dataset.basemapKey] === esriHybrid;
+        });
+      }
+    };
+
+    // If Google failed while its API script was loading, fall back immediately.
+    if (window.polradGoogleAuthFailed) {
+      window.polradUseEsriFallback();
+    }
 
     L.control.zoom({
       position: 'bottomright'
@@ -1578,6 +1633,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
 
       radio.type = 'radio';
       radio.name = 'basemap';
+      radio.dataset.basemapKey = key;
       radio.checked =
         baseLayers[key] === currentBaseLayer;
 
