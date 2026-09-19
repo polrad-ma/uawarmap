@@ -1297,11 +1297,20 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       )
     ]);
 
-    var googleHybrid = L.gridLayer.googleMutant({
-      type: 'hybrid',
-      maxZoom: 20,
-      attribution: '&copy; Google'
-    });
+    // Google is optional: the map must still work if the API key is invalid,
+    // restricted, expired, billing is disabled, or the Google script/plugin fails.
+    var googleHybrid = null;
+    if (window.google && window.google.maps && L.gridLayer && L.gridLayer.googleMutant) {
+      try {
+        googleHybrid = L.gridLayer.googleMutant({
+          type: 'hybrid',
+          maxZoom: 20,
+          attribution: '&copy; Google'
+        });
+      } catch (e) {
+        googleHybrid = null;
+      }
+    }
 
     var osmStandard = L.tileLayer(
       'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -1320,14 +1329,22 @@ I use multiple sources to update and clarify the map — mainly geolocation data
     );
 
     var baseLayers = {
-      "Google Hybrid (Satellite + English Labels)": googleHybrid,
       "Esri Hybrid (Satellite + Labels)": esriHybrid,
       "Esri Satellite": satellite,
       "OpenStreetMap": osmStandard,
       "Topographic": topo
     };
 
-    var currentBaseLayer = googleHybrid;
+    // Start with Esri so the map is NEVER blank while Google loads or fails.
+    // Google Hybrid is promoted to the default only after Google is confirmed usable.
+    if (googleHybrid) {
+      baseLayers = {
+        "Google Hybrid (Satellite + English Labels)": googleHybrid,
+        ...baseLayers
+      };
+    }
+
+    var currentBaseLayer = esriHybrid;
 
     var map = L.map('map', {
       center: [48.00, 37.75],
@@ -1364,9 +1381,36 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       }
     };
 
-    // If Google failed while its API script was loading, fall back immediately.
+    // If Google failed while its API script was loading, stay on Esri.
     if (window.polradGoogleAuthFailed) {
       window.polradUseEsriFallback();
+    }
+
+    // Give Google a moment to finish loading. If it is genuinely available,
+    // switch to it; otherwise Esri remains the working fallback.
+    if (googleHybrid) {
+      window.setTimeout(function() {
+        if (window.polradGoogleAuthFailed) return;
+        if (!(window.google && window.google.maps)) return;
+
+        try {
+          var center = map.getCenter();
+          var zoom = map.getZoom();
+          if (currentBaseLayer !== googleHybrid) {
+            map.removeLayer(currentBaseLayer);
+            currentBaseLayer = googleHybrid;
+            map.addLayer(googleHybrid);
+            map.setView(center, zoom, { animate: false });
+
+            var radios = document.querySelectorAll('input[name="basemap"]');
+            radios.forEach(function(radio) {
+              radio.checked = baseLayers[radio.dataset.basemapKey] === googleHybrid;
+            });
+          }
+        } catch (e) {
+          window.polradUseEsriFallback();
+        }
+      }, 1500);
     }
 
     L.control.zoom({
