@@ -657,6 +657,76 @@
       background: rgba(255,255,255,0.35);
     }
 
+
+    #frontline-info-buttons {
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid var(--panel-heading-border);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .frontline-info-btn {
+      width: 100%;
+      height: 34px;
+      border: 1px solid var(--btn-border);
+      border-radius: 5px;
+      background: var(--btn-bg);
+      color: var(--btn-text);
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: bold;
+      line-height: 1;
+    }
+
+    .frontline-info-btn:hover {
+      background: var(--btn-bg-hover);
+    }
+
+    #frontline-flash-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      pointer-events: none;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 30px;
+      box-sizing: border-box;
+      background: rgba(0,0,0,0.72);
+    }
+
+    #frontline-flash-overlay.show {
+      display: flex;
+      animation: frontlineFlash 3s ease-in-out forwards;
+    }
+
+    #frontline-flash-text {
+      color: #ffffff;
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: clamp(34px, 6vw, 90px);
+      font-weight: 900;
+      line-height: 1.05;
+      text-transform: uppercase;
+      text-shadow:
+        0 3px 8px rgba(0,0,0,0.95),
+        0 0 24px rgba(255,255,255,0.25);
+      max-width: 92vw;
+    }
+
+    @keyframes frontlineFlash {
+      0%   { opacity: 0; }
+      10%  { opacity: 1; }
+      25%  { opacity: 0.25; }
+      40%  { opacity: 1; }
+      55%  { opacity: 0.25; }
+      70%  { opacity: 1; }
+      88%  { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
     #welcome-overlay {
       position: absolute;
       top: 0;
@@ -771,6 +841,10 @@
   <div id="map-crosshair"></div>
   <div id="watermark-overlay"></div>
 
+  <div id="frontline-flash-overlay">
+    <div id="frontline-flash-text"></div>
+  </div>
+
   <div id="timeline-bar">
     <button id="timeline-prev" class="timeline-nav-btn" title="Previous day">‹</button>
     <input type="date" id="timeline-date-input" title="Jump to a date">
@@ -791,6 +865,7 @@
     </div>
 
     <div id="grouped-layer-container"></div>
+    <div id="frontline-info-buttons"></div>
   </div>
 
   <div class="sidebar-panel" id="panel-draw">
@@ -1549,12 +1624,124 @@ I use multiple sources to update and clarify the map — mainly geolocation data
           )
           .openOn(map);
 
-        L.DomEvent.stopPropagation(e);
+        if (!activeTool) {
+          L.DomEvent.stopPropagation(e);
+        }
       });
     }
 
     var mainLayers = {};
     var extraLayers = {};
+
+    // Clickable information points for the two claimed frontline layers.
+    var frontlineInfoData = {
+      "Claimed DeepState Frontline": [
+        { lat: 50.28584079082061, lng: 36.93602332341913, text: "VOVCHANSK HOLDS!" },
+        { lat: 48.32279114308003, lng: 37.08038893069955, text: "HRYSHINE HOLDS!" },
+        { lat: 48.52083359061743, lng: 37.70201981156817, text: "KOSTIANTYNIVKA FULLY HOLDS!" },
+        { lat: 49.710807534944095, lng: 37.61305904011934, text: "KUPYANSK FULLY HOLDS!" }
+      ],
+      "Claimed RIA Frontline": [
+        { lat: 50.20332906521358, lng: 37.103753888142904, text: "BLYYI KOLDIAZ IS CAPTURED!" },
+        { lat: 50.31220069410365, lng: 37.41262019393645, text: "THE AFU ARE ENCIRCLED!" },
+        { lat: 49.85044063302137, lng: 37.676797052822295, text: "DVORICHNA HOLDS!" },
+        { lat: 49.38072697356903, lng: 37.61628005640067, text: "BOROVA IS CAPTURED!" },
+        { lat: 49.04556179007582, lng: 37.568307652934584, text: "SVIATOHIRSK IS CAPTURED!" },
+        { lat: 49.10268354710333, lng: 37.81243888267511, text: "THE SALIENT HOLDS!" },
+        { lat: 47.89747, lng: 36.18141, text: "FLAG RAISES ARE FIRM CONTROL!" },
+        { lat: 47.58973, lng: 35.36362, text: "STEPNOHIRSK HOLDS!" }
+      ]
+    };
+
+    var frontlineInfoMarkerGroups = {};
+
+    function showFrontlineFlash(text) {
+      var overlay = document.getElementById('frontline-flash-overlay');
+      var textEl = document.getElementById('frontline-flash-text');
+      if (!overlay || !textEl) return;
+
+      textEl.textContent = String(text).toUpperCase();
+      overlay.classList.remove('show');
+      void overlay.offsetWidth;
+      overlay.classList.add('show');
+
+      clearTimeout(showFrontlineFlash._timer);
+      showFrontlineFlash._timer = setTimeout(function() {
+        overlay.classList.remove('show');
+      }, 3000);
+    }
+
+    function createFrontlineInfoMarkers(layerName) {
+      if (frontlineInfoMarkerGroups[layerName]) return;
+
+      var group = L.layerGroup();
+
+      frontlineInfoData[layerName].forEach(function(point) {
+        var marker = L.circleMarker([point.lat, point.lng], {
+          radius: 7,
+          color: '#ffffff',
+          weight: 2,
+          fillColor: '#ff0000',
+          fillOpacity: 1,
+          pane: 'markersPane'
+        });
+
+        marker.on('click', function(e) {
+          L.DomEvent.stopPropagation(e);
+          showFrontlineFlash(point.text);
+        });
+
+        group.addLayer(marker);
+      });
+
+      frontlineInfoMarkerGroups[layerName] = group;
+    }
+
+    function setFrontlineInfoMarkersVisible(layerName, visible) {
+      createFrontlineInfoMarkers(layerName);
+      var group = frontlineInfoMarkerGroups[layerName];
+
+      if (visible) {
+        if (!map.hasLayer(group)) map.addLayer(group);
+      } else {
+        if (map.hasLayer(group)) map.removeLayer(group);
+      }
+    }
+
+    function updateFrontlineInfoButtons() {
+      var container = document.getElementById('frontline-info-buttons');
+      if (!container) return;
+
+      container.innerHTML = '';
+
+      Object.keys(frontlineInfoData).forEach(function(layerName) {
+        var layer = extraLayers[layerName];
+        if (!layer || !map.hasLayer(layer)) {
+          if (frontlineInfoMarkerGroups[layerName] &&
+              map.hasLayer(frontlineInfoMarkerGroups[layerName])) {
+            map.removeLayer(frontlineInfoMarkerGroups[layerName]);
+          }
+          return;
+        }
+
+        var button = document.createElement('button');
+        button.className = 'frontline-info-btn';
+        button.type = 'button';
+        button.textContent = '?';
+        button.title = 'Show information points for ' + layerName;
+
+        button.addEventListener('click', function() {
+          createFrontlineInfoMarkers(layerName);
+
+          var group = frontlineInfoMarkerGroups[layerName];
+          var shouldShow = !map.hasLayer(group);
+          setFrontlineInfoMarkersVisible(layerName, shouldShow);
+          button.classList.toggle('active', shouldShow);
+        });
+
+        container.appendChild(button);
+      });
+    }
 
     var liveLayerData = {};
 
@@ -1817,6 +2004,13 @@ I use multiple sources to update and clarify the map — mainly geolocation data
         if (map.hasLayer(layer)) {
           map.removeLayer(layer);
         }
+      }
+
+      if (
+        name === 'Claimed DeepState Frontline' ||
+        name === 'Claimed RIA Frontline'
+      ) {
+        updateFrontlineInfoButtons();
       }
     }
 
@@ -2146,6 +2340,8 @@ I use multiple sources to update and clarify the map — mainly geolocation data
                 } else {
                   map.removeLayer(layers[name]);
                 }
+
+                updateFrontlineInfoButtons();
               }
             );
 
@@ -2190,9 +2386,11 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       );
 
       updateDesignSelector();
+      updateFrontlineInfoButtons();
     }
 
     updateDesignSelector();
+    updateFrontlineInfoButtons();
 
     var TIMELINE_SKIP_LAYERS = [
       'My Drawings',
@@ -2747,7 +2945,46 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       drawingPoints = [];
     });
 
+    // Coordinate mode gets first priority even when the click lands on a
+    // GeoJSON feature or another map layer. This prevents layer click handlers
+    // from blocking coordinate selection.
+    map.getContainer().addEventListener('click', function(ev) {
+      if (activeTool !== 'coords') return;
+
+      var rect = map.getContainer().getBoundingClientRect();
+      var point = L.point(
+        ev.clientX - rect.left,
+        ev.clientY - rect.top
+      );
+      var latlng = map.containerPointToLatLng(point);
+
+      var coordsResult = document.getElementById('coords-result');
+      if (coordsResult) {
+        coordsResult.innerText =
+          "Lat: " + latlng.lat.toFixed(5) +
+          ", Lng: " + latlng.lng.toFixed(5);
+      }
+
+      // Store the result so the Leaflet click handler does not duplicate it.
+      map._coordinateClickHandled = true;
+
+      L.popup()
+        .setLatLng(latlng)
+        .setContent(
+          "Lat: " + latlng.lat.toFixed(5) +
+          "<br>Lng: " + latlng.lng.toFixed(5)
+        )
+        .openOn(map);
+    }, true);
+
     map.on('click', function(e) {
+      if (activeTool === 'coords') {
+        if (map._coordinateClickHandled) {
+          map._coordinateClickHandled = false;
+          return;
+        }
+      }
+
       if (!activeTool) return;
 
       if (activeTool === 'coords') {
