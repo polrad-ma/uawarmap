@@ -19,7 +19,7 @@
   };
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAGf_KVFEZoVl7P2BDk-NvUxsSPUoAzueU&language=en&region=US"></script>
-<script src="https://unpkg.com/leaflet.gridlayer.googlemutant@0.15.0/Leaflet.GoogleMutant.js"></script>
+<script src="https://unpkg.com/leaflet.gridlayer.googlemutant@0.16.0/dist/Leaflet.GoogleMutant.js"></script>
   <script src="https://unpkg.com/leaflet-geosearch@3.11.0/dist/geosearch.umd.js"></script>
   <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -1344,7 +1344,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       };
     }
 
-    var currentBaseLayer = esriHybrid;
+    var currentBaseLayer = googleHybrid || esriHybrid;
 
     var map = L.map('map', {
       center: [48.00, 37.75],
