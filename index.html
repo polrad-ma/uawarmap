@@ -658,6 +658,23 @@
     }
 
 
+    .coords-copy-btn {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 5px 10px;
+      border: 1px solid #777;
+      border-radius: 4px;
+      background: #333;
+      color: #fff;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .coords-copy-btn:hover {
+      background: #555;
+    }
+
     #frontline-info-buttons {
       margin-top: 12px;
       padding-top: 10px;
@@ -814,6 +831,7 @@
     <button class="sidebar-btn" id="btn-tab-settings" onclick="toggleTab('settings')" title="Settings">⚙️</button>
     <button class="sidebar-btn" id="btn-screenshot" onclick="takeMapScreenshot()" title="Take Screenshot">📸</button>
     <button class="sidebar-btn" id="btn-fullscreen" onclick="toggleFullScreen()" title="Toggle Fullscreen">⛶</button>
+    <button class="sidebar-btn" id="btn-frontline-info" type="button" title="Do you know what cope is?" aria-label="Do you know what cope is?">?</button>
   </div>
 
   <div id="app-header">
@@ -865,7 +883,6 @@
     </div>
 
     <div id="grouped-layer-container"></div>
-    <div id="frontline-info-buttons"></div>
   </div>
 
   <div class="sidebar-panel" id="panel-draw">
@@ -1655,6 +1672,44 @@ I use multiple sources to update and clarify the map — mainly geolocation data
 
     var frontlineInfoMarkerGroups = {};
 
+    function copyCoordinates(lat, lng, button) {
+      var coords = lat.toFixed(5) + ", " + lng.toFixed(5);
+
+      function copied() {
+        if (!button) return;
+        var oldText = button.textContent;
+        button.textContent = "Copied!";
+        setTimeout(function() {
+          button.textContent = oldText;
+        }, 1200);
+      }
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(coords).then(copied).catch(function() {
+          fallbackCopyCoordinates(coords, copied);
+        });
+      } else {
+        fallbackCopyCoordinates(coords, copied);
+      }
+    }
+
+    function fallbackCopyCoordinates(coords, onSuccess) {
+      var input = document.createElement('textarea');
+      input.value = coords;
+      input.style.position = 'fixed';
+      input.style.opacity = '0';
+      document.body.appendChild(input);
+      input.focus();
+      input.select();
+      try {
+        document.execCommand('copy');
+        if (onSuccess) onSuccess();
+      } catch (err) {
+        console.warn('Could not copy coordinates:', err);
+      }
+      document.body.removeChild(input);
+    }
+
     function showFrontlineFlash(text) {
       var overlay = document.getElementById('frontline-flash-overlay');
       var textEl = document.getElementById('frontline-flash-text');
@@ -1709,38 +1764,51 @@ I use multiple sources to update and clarify the map — mainly geolocation data
     }
 
     function updateFrontlineInfoButtons() {
-      var container = document.getElementById('frontline-info-buttons');
-      if (!container) return;
+      var button = document.getElementById('btn-frontline-info');
+      if (!button) return;
 
-      container.innerHTML = '';
-
-      Object.keys(frontlineInfoData).forEach(function(layerName) {
+      var activeLayerNames = Object.keys(frontlineInfoData).filter(function(layerName) {
         var layer = extraLayers[layerName];
-        if (!layer || !map.hasLayer(layer)) {
+        return layer && map.hasLayer(layer);
+      });
+
+      // Remove information points belonging to layers that are no longer active.
+      Object.keys(frontlineInfoData).forEach(function(layerName) {
+        if (activeLayerNames.indexOf(layerName) === -1) {
           if (frontlineInfoMarkerGroups[layerName] &&
               map.hasLayer(frontlineInfoMarkerGroups[layerName])) {
             map.removeLayer(frontlineInfoMarkerGroups[layerName]);
           }
-          return;
         }
+      });
 
-        var button = document.createElement('button');
-        button.className = 'frontline-info-btn';
-        button.type = 'button';
-        button.textContent = '?';
-        button.title = 'Show information points for ' + layerName;
+      button.style.display = activeLayerNames.length ? 'flex' : 'none';
 
-        button.addEventListener('click', function() {
+      // If no claimed frontline layer is active, there is nothing to show.
+      if (!activeLayerNames.length) {
+        button.classList.remove('active');
+        return;
+      }
+
+      button.title = 'Do you know what cope is?';
+      button.setAttribute('aria-label', 'Do you know what cope is?');
+
+      button.onclick = function() {
+        var shouldShow = false;
+
+        activeLayerNames.forEach(function(layerName) {
           createFrontlineInfoMarkers(layerName);
-
-          var group = frontlineInfoMarkerGroups[layerName];
-          var shouldShow = !map.hasLayer(group);
-          setFrontlineInfoMarkersVisible(layerName, shouldShow);
-          button.classList.toggle('active', shouldShow);
+          if (!map.hasLayer(frontlineInfoMarkerGroups[layerName])) {
+            shouldShow = true;
+          }
         });
 
-        container.appendChild(button);
-      });
+        activeLayerNames.forEach(function(layerName) {
+          setFrontlineInfoMarkersVisible(layerName, shouldShow);
+        });
+
+        button.classList.toggle('active', shouldShow);
+      };
     }
 
     var liveLayerData = {};
@@ -2968,12 +3036,16 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       // Store the result so the Leaflet click handler does not duplicate it.
       map._coordinateClickHandled = true;
 
+      var latText = latlng.lat.toFixed(5);
+      var lngText = latlng.lng.toFixed(5);
+      var popupContent =
+        "Lat: " + latText +
+        "<br>Lng: " + lngText +
+        "<br><button class=\"coords-copy-btn\" type=\"button\" onclick=\"copyCoordinates(" + latText + ", " + lngText + ", this); L.DomEvent.stopPropagation(event);\">Copy coordinates</button>";
+
       L.popup()
         .setLatLng(latlng)
-        .setContent(
-          "Lat: " + latlng.lat.toFixed(5) +
-          "<br>Lng: " + latlng.lng.toFixed(5)
-        )
+        .setContent(popupContent)
         .openOn(map);
     }, true);
 
@@ -2988,21 +3060,21 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       if (!activeTool) return;
 
       if (activeTool === 'coords') {
+        var latText = e.latlng.lat.toFixed(5);
+        var lngText = e.latlng.lng.toFixed(5);
+
         L.popup()
           .setLatLng(e.latlng)
           .setContent(
-            "Lat: " +
-            e.latlng.lat.toFixed(5) +
-            "<br>Lng: " +
-            e.latlng.lng.toFixed(5)
+            "Lat: " + latText +
+            "<br>Lng: " + lngText +
+            "<br><button class=\"coords-copy-btn\" type=\"button\" onclick=\"copyCoordinates(" + latText + ", " + lngText + ", this); L.DomEvent.stopPropagation(event);\">Copy coordinates</button>"
           )
           .openOn(map);
 
         document.getElementById('coords-result').innerText =
-          "Lat: " +
-          e.latlng.lat.toFixed(5) +
-          ", Lng: " +
-          e.latlng.lng.toFixed(5);
+          "Lat: " + latText +
+          ", Lng: " + lngText;
 
         return;
       }
