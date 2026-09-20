@@ -849,6 +849,7 @@
 
     <button class="tool-btn" id="btn-freehand" onclick="setActiveTool('freehand')">Freehand</button>
     <button class="tool-btn" id="btn-freehand-arrow" onclick="setActiveTool('freehand-arrow')">Freehand Arrow</button>
+    <button class="tool-btn" id="btn-line" onclick="setActiveTool('line')">Line</button>
     <button class="tool-btn" id="btn-arrow" onclick="setActiveTool('arrow')">Arrow</button>
 
     <div class="tool-group-header">Dashed Tools</div>
@@ -1420,6 +1421,22 @@
     map.createPane('advancesPane');
     map.getPane('advancesPane').style.zIndex = 420;
 
+    // User drawings get their own pane ABOVE the advances (420) but below the
+    // markers (650), so drawn shapes are never tinted/dimmed by advance layers.
+    map.createPane('drawingsPane');
+    map.getPane('drawingsPane').style.zIndex = 430;
+
+    // Every drawing shape (and its live preview) is created through these
+    // factories, so default them all to the drawings pane. GeoJSON layers do
+    // not use these factories and are therefore unaffected.
+    ['polyline', 'polygon', 'rectangle'].forEach(function(name) {
+      var original = L[name];
+      L[name] = function(shape, options) {
+        var opts = Object.assign({ pane: 'drawingsPane' }, options || {});
+        return original(shape, opts);
+      };
+    });
+
     var appHeaderEl = document.getElementById('app-header');
 
     L.DomEvent.disableClickPropagation(appHeaderEl);
@@ -1448,20 +1465,43 @@
       });
     }
 
+    function clearSearchMarker() {
+      if (searchResultMarker) {
+        var m = searchResultMarker;
+        searchResultMarker = null;
+        m.off('popupclose');
+        map.removeLayer(m);
+      }
+    }
+
     function showSearchLocation(lat, lng, label) {
       map.setView(
         [lat, lng],
         Math.max(map.getZoom(), 10)
       );
 
-      if (searchResultMarker) {
-        map.removeLayer(searchResultMarker);
-      }
+      clearSearchMarker();
+
+      var content = document.createElement('div');
+
+      var text = document.createElement('div');
+      text.textContent = label;
+      content.appendChild(text);
+
+      var removeBtn = document.createElement('button');
+      removeBtn.type = 'button';
+      removeBtn.className = 'coords-copy-btn';
+      removeBtn.textContent = 'Remove';
+      removeBtn.onclick = clearSearchMarker;
+      content.appendChild(removeBtn);
 
       searchResultMarker = L.marker([lat, lng])
         .addTo(map)
-        .bindPopup(escapeSearchText(label))
+        .bindPopup(content, { closeOnClick: false, autoClose: false })
         .openPopup();
+
+      // Closing the popup with its X also removes the pin.
+      searchResultMarker.on('popupclose', clearSearchMarker);
     }
 
     function runHeaderSearch() {
@@ -3020,6 +3060,7 @@
 
     function setActiveTool(tool) {
       activeTool = (activeTool === tool) ? null : tool;
+      if (activeTool !== 'coords') clearCoordMarker();
       resetDrawingState();
       updateToolButtons();
       updateInstructions();
@@ -3062,6 +3103,7 @@
         'freehand-arrow': "Click and drag to draw a line. An arrowhead will be added at the tip when you release.",
         'dashed-freehand': "Click and drag on the map to draw a dashed line freely.",
         'dashed-freehand-arrow': "Click and drag to draw a dashed line. An arrowhead will be added at the tip when you release.",
+        line: "Click points to draw a line, then click 'Finish Shape'.",
         'dashed-line': "Click points to draw a dashed line, then click 'Finish Shape'.",
         arrow: "Click start point, then click end point to place an arrow.",
         'dashed-arrow': "Click start point, then click end point to place a dashed arrow.",
@@ -3237,40 +3279,66 @@
       drawingPoints = [];
     });
 
+    // ---- Coordinates tool -------------------------------------------------
+    // A visible marker is placed on the picked point, and both the popup and
+    // the sidebar panel show a "Copy coordinates" button.
+    var coordMarker = null;
+
+    function clearCoordMarker() {
+      if (coordMarker) {
+        map.removeLayer(coordMarker);
+        coordMarker = null;
+      }
+    }
+
+    function selectCoordinate(latlng) {
+      var latText = latlng.lat.toFixed(5);
+      var lngText = latlng.lng.toFixed(5);
+
+      var copyButton =
+        "<button class=\"coords-copy-btn\" type=\"button\" " +
+        "onclick=\"copyCoordinates(" + latText + ", " + lngText + ", this)\">" +
+        "Copy coordinates</button>";
+
+      clearCoordMarker();
+
+      coordMarker = L.circleMarker(latlng, {
+        radius: 7,
+        color: '#ffffff',
+        weight: 2,
+        fillColor: '#ff0000',
+        fillOpacity: 1,
+        pane: 'markersPane'
+      }).addTo(map);
+
+      coordMarker
+        .bindPopup("Lat: " + latText + "<br>Lng: " + lngText + "<br>" + copyButton)
+        .openPopup();
+
+      document.getElementById('coords-result').innerHTML =
+        "Lat: " + latText + ", Lng: " + lngText + "<br>" + copyButton;
+    }
+
     // Coordinate mode gets first priority even when the click lands on a
     // GeoJSON feature or another map layer. This prevents layer click handlers
     // from blocking coordinate selection.
     map.getContainer().addEventListener('click', function(ev) {
       if (activeTool !== 'coords') return;
 
-      var rect = map.getContainer().getBoundingClientRect();
-      var point = L.point(
-        ev.clientX - rect.left,
-        ev.clientY - rect.top
-      );
-      var latlng = map.containerPointToLatLng(point);
+      // Clicks on popups/controls (e.g. the Copy button) must NOT be treated
+      // as a new coordinate pick, otherwise the popup is replaced before the
+      // button's click handler can run.
+      if (ev.target.closest('.leaflet-popup, .leaflet-control')) return;
 
-      var coordsResult = document.getElementById('coords-result');
-      if (coordsResult) {
-        coordsResult.innerText =
-          "Lat: " + latlng.lat.toFixed(5) +
-          ", Lng: " + latlng.lng.toFixed(5);
-      }
+      var rect = map.getContainer().getBoundingClientRect();
+      var latlng = map.containerPointToLatLng(
+        L.point(ev.clientX - rect.left, ev.clientY - rect.top)
+      );
 
       // Store the result so the Leaflet click handler does not duplicate it.
       map._coordinateClickHandled = true;
 
-      var latText = latlng.lat.toFixed(5);
-      var lngText = latlng.lng.toFixed(5);
-      var popupContent =
-        "Lat: " + latText +
-        "<br>Lng: " + lngText +
-        "<br><button class=\"coords-copy-btn\" type=\"button\" onclick=\"copyCoordinates(" + latText + ", " + lngText + ", this); L.DomEvent.stopPropagation(event);\">Copy coordinates</button>";
-
-      L.popup()
-        .setLatLng(latlng)
-        .setContent(popupContent)
-        .openOn(map);
+      selectCoordinate(latlng);
     }, true);
 
     map.on('click', function(e) {
@@ -3284,27 +3352,13 @@
       if (!activeTool) return;
 
       if (activeTool === 'coords') {
-        var latText = e.latlng.lat.toFixed(5);
-        var lngText = e.latlng.lng.toFixed(5);
-
-        L.popup()
-          .setLatLng(e.latlng)
-          .setContent(
-            "Lat: " + latText +
-            "<br>Lng: " + lngText +
-            "<br><button class=\"coords-copy-btn\" type=\"button\" onclick=\"copyCoordinates(" + latText + ", " + lngText + ", this); L.DomEvent.stopPropagation(event);\">Copy coordinates</button>"
-          )
-          .openOn(map);
-
-        document.getElementById('coords-result').innerText =
-          "Lat: " + latText +
-          ", Lng: " + lngText;
-
+        selectCoordinate(e.latlng);
         return;
       }
 
       if (
         activeTool === 'polygon' ||
+        activeTool === 'line' ||
         activeTool === 'dashed-line' ||
         activeTool === 'ruler'
       ) {
@@ -3552,14 +3606,19 @@
         calculateAreaAndBindPopup(poly, "Drawn Polygon");
 
       } else if (
-        activeTool === 'dashed-line' &&
+        (activeTool === 'dashed-line' || activeTool === 'line') &&
         drawingPoints.length >= 2
       ) {
-        var line = L.polyline(drawingPoints, {
+        var lineOptions = {
           color: currentColor,
-          weight: currentThickness,
-          dashArray: '6,6'
-        });
+          weight: currentThickness
+        };
+
+        if (activeTool === 'dashed-line') {
+          lineOptions.dashArray = '6,6';
+        }
+
+        var line = L.polyline(drawingPoints, lineOptions);
 
         attachEraser(line);
         userDrawings.addLayer(line);
