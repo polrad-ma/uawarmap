@@ -588,42 +588,6 @@
       color-scheme: light;
     }
 
-    #timeline-banner {
-      display: none;
-      position: absolute;
-      top: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 2050;
-      background: #b45309;
-      color: #ffffff;
-      padding: 6px 10px 6px 14px;
-      border-radius: 8px;
-      font-size: 13px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-      align-items: center;
-      gap: 10px;
-    }
-
-    #timeline-banner.show {
-      display: flex;
-    }
-
-    #timeline-banner-live-btn {
-      background: rgba(255,255,255,0.2);
-      border: 1px solid rgba(255,255,255,0.5);
-      color: #ffffff;
-      border-radius: 5px;
-      padding: 3px 9px;
-      cursor: pointer;
-      font-size: 12px;
-    }
-
-    #timeline-banner-live-btn:hover {
-      background: rgba(255,255,255,0.35);
-    }
-
-
     .coords-copy-btn {
       display: inline-block;
       margin-top: 8px;
@@ -854,11 +818,6 @@
     <button id="btn-advance-lock" type="button" title="Lock advance map movement" aria-label="Lock advance map movement">🔓</button>
   </div>
 
-  <div id="timeline-banner">
-    <span>Viewing history: <strong id="timeline-banner-date"></strong></span>
-    <button id="timeline-banner-live-btn">Return to Live</button>
-  </div>
-
   <div id="map"></div>
   <div id="map-crosshair"></div>
   <div id="watermark-overlay"></div>
@@ -1023,7 +982,6 @@
         // Hide the application's UI so only the map itself is captured.
         hideElement(document.getElementById('left-sidebar'));
         hideElement(document.getElementById('app-header'));
-        hideElement(document.getElementById('timeline-banner'));
         hideElement(document.getElementById('advance-bar'));
         hideElement(document.getElementById('map-crosshair'));
         hideElement(document.getElementById('watermark-overlay'));
@@ -2019,7 +1977,6 @@
         .then(function(snapshot) {
           timelineMode = true;
           applyAdvanceSnapshot(snapshot);
-          updateTimelineBanner(item.date || null);
           if (!options.skipFocus) focusAdvance(item);
         })
         .catch(function(error) {
@@ -2846,26 +2803,6 @@
         goToTimelineIndex(nearestIdx !== -1 ? nearestIdx : 0);
       });
 
-    document.getElementById('timeline-banner-live-btn')
-      .addEventListener('click', function() {
-        if (advances.length) {
-          showAdvance(advances.length - 1);
-          return;
-        }
-        goToTimelineIndex(timelineSequence.length - 1);
-      });
-
-    function updateTimelineBanner(date) {
-      var banner = document.getElementById('timeline-banner');
-
-      if (date) {
-        document.getElementById('timeline-banner-date').textContent = date;
-        banner.classList.add('show');
-      } else {
-        banner.classList.remove('show');
-      }
-    }
-
     function applySnapshotToLayers(snapshot) {
       var allLayers = getAllLayerObjects();
 
@@ -2897,7 +2834,6 @@
         .then(function(snapshot) {
           timelineMode = true;
           applySnapshotToLayers(snapshot);
-          updateTimelineBanner(date);
           dateInput.title = 'Jump to a date';
         })
         .catch(function(err) {
@@ -2926,7 +2862,6 @@
       });
 
       rebuildGrayZone();
-      updateTimelineBanner(null);
 
       document.getElementById('timeline-date-input').title = 'Jump to a date';
     }
