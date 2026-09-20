@@ -710,69 +710,6 @@
       100% { opacity: 0; }
     }
 
-    #welcome-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0,0,0,0.6);
-      z-index: 3000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    #welcome-box {
-      background: #171717 !important;
-      color: #ffffff !important;
-      border: 2px solid rgba(255,255,255,0.2);
-      border-radius: 6px;
-      padding: 20px 24px;
-      max-width: 420px;
-      width: 90%;
-      max-height: 70vh;
-      overflow-y: auto;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.6);
-      position: relative;
-    }
-
-    #welcome-box h3 {
-      margin: 0 0 10px 0;
-      font-size: 18px;
-      padding-right: 20px;
-      color: #ffffff !important;
-    }
-
-    #welcome-box p {
-      margin: 0;
-      font-size: 14px;
-      line-height: 1.5;
-      color: #ffffff !important;
-      white-space: pre-wrap;
-    }
-
-    #welcome-box a {
-      color: #64b5f6 !important;
-    }
-
-    #welcome-close {
-      position: absolute;
-      top: 12px;
-      right: 14px;
-      background: none;
-      border: none;
-      font-size: 20px;
-      line-height: 1;
-      cursor: pointer;
-      color: #ffffff !important;
-    }
-
-    #welcome-close:hover {
-      color: #ff5555 !important;
-    }
-
-
     /* Advance history */
     #advance-bar {
       position: absolute;
@@ -807,6 +744,20 @@
     }
     #advance-prev:hover, #advance-next:hover { background: rgba(255,255,255,.18); }
     #advance-prev:disabled, #advance-next:disabled { opacity: .35; cursor: default; }
+    #btn-advance-lock {
+      flex: 0 0 32px;
+      width: 32px;
+      height: 32px;
+      margin-left: 2px;
+      border: 0;
+      border-radius: 6px;
+      background: rgba(255,255,255,.10);
+      color: #fff;
+      font-size: 15px;
+      cursor: pointer;
+    }
+    #btn-advance-lock:hover { background: rgba(255,255,255,.18); }
+    #btn-advance-lock.active { background: rgba(255,255,255,.30); }
     #advance-main {
       min-width: 0;
       flex: 1;
@@ -833,11 +784,6 @@
     #advance-bar #timeline-date-input {
       flex: 0 0 auto;
     }
-    #advance-lock-note {
-      flex: 0 0 auto;
-      font-size: 12px;
-      opacity: .75;
-    }
     body.light-mode #advance-bar {
       background: rgba(255,255,255,.96);
       color: #222;
@@ -847,6 +793,11 @@
       background: #f1f3f4;
       color: #222;
     }
+    body.light-mode #btn-advance-lock {
+      background: #f1f3f4;
+      color: #222;
+    }
+    body.light-mode #btn-advance-lock.active { background: #d6dbe0; }
 
     #watermark-overlay {
       position: absolute;
@@ -873,7 +824,6 @@
     <button class="sidebar-btn" id="btn-tab-settings" onclick="toggleTab('settings')" title="Settings">⚙️</button>
     <button class="sidebar-btn" id="btn-screenshot" onclick="takeMapScreenshot()" title="Take Screenshot">📸</button>
     <button class="sidebar-btn" id="btn-fullscreen" onclick="toggleFullScreen()" title="Toggle Fullscreen">⛶</button>
-    <button class="sidebar-btn" id="btn-advance-lock" type="button" title="Lock advance map movement" aria-label="Lock advance map movement">🔓</button>
     <button class="sidebar-btn" id="btn-frontline-info" type="button" title="Do you know what cope is?" aria-label="Do you know what cope is?">?</button>
   </div>
 
@@ -899,9 +849,9 @@
       <div id="advance-text">Loading advances...</div>
       <div id="advance-area"></div>
       <input type="date" id="timeline-date-input" title="Jump to a date">
-      <div id="advance-lock-note"></div>
     </div>
     <button id="advance-next" type="button" title="Next advance">›</button>
+    <button id="btn-advance-lock" type="button" title="Lock advance map movement" aria-label="Lock advance map movement">🔓</button>
   </div>
 
   <div id="timeline-banner">
@@ -1027,20 +977,6 @@
     <div class="settings-link-row">
       <a href="https://x.com/polrad_mapping_" target="_blank" rel="noopener">Twitter/X</a>
       <a href="https://polrad-ma.github.io/login/">Log In</a>
-    </div>
-  </div>
-
-  <div id="welcome-overlay">
-    <div id="welcome-box">
-      <button id="welcome-close" onclick="document.getElementById('welcome-overlay').style.display='none'">&times;</button>
-
-      <h3>Welcome</h3>
-
-      <p id="welcome-text">Welcome and thanks for using my map!<br><br>
-This map was created to show the situation in Ukraine. Of course, this map, like every other war map, is not 100% reliable or true.<br><br>
-Use the layers and the map tools featured here. Map updates are displayed via the bell icon on the left sidebar.<br><br>
-This map was inspired by <a href="https://x.com/AMK_Mapping_" target="_blank" rel="noopener">@AMK_Mapping_s</a> and <a href="https://x.com/Playfra0" target="_blank" rel="noopener">@Playfra0</a> and other mappers, and was designed mainly with Claude AI and Gemini AI. If used, please tag me, <a href="https://x.com/polrad_mapping_" target="_blank" rel="noopener">@polrad_mapping_</a>, in your posts.<br><br>
-I use multiple sources to update and clarify the map — mainly geolocation data, other mappers, and partially my own sources.</p>
     </div>
   </div>
 
@@ -1977,8 +1913,6 @@ I use multiple sources to update and clarify the map — mainly geolocation data
         btn.setAttribute('aria-label', btn.title);
         btn.classList.toggle('active', advanceMapLocked);
       }
-      var note = document.getElementById('advance-lock-note');
-      if (note) note.textContent = advanceMapLocked ? '🔒' : '';
     }
 
     function formatAdvanceArea(item) {
