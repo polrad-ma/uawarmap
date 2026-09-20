@@ -1,0 +1,24 @@
+[
+  {
+    "id": "adv-1789896908946",
+    "date": "2026-09-20",
+    "time": "11:35:05",
+    "text": "Russian forces advanced near Novopidhorodne",
+    "side": "ru",
+    "areaChange": 4.59,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 4.59
+      }
+    ],
+    "areaDisplay": "+4.59 km²",
+    "focus": {
+      "lat": 48.26345551400188,
+      "lng": 36.938352584838874,
+      "zoom": 14
+    },
+    "polygonFids": [],
+    "snapshot": "history/advances/adv-1789896908946.json"
+  }
+]
