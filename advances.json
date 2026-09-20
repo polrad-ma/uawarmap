@@ -1,5 +1,51 @@
 [
   {
+    "id": "adv-1789921246064",
+    "date": "2026-09-20",
+    "time": "18:20:43",
+    "text": "Russian forces completed the capture of Kucheriv Yar on the Druzhkivka direction",
+    "side": "ru",
+    "areaChange": 4.62,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 4.62
+      }
+    ],
+    "areaDisplay": "+4.62 km²",
+    "focus": {
+      "lat": 48.5043791559714,
+      "lng": 37.31300354003907,
+      "zoom": 13
+    },
+    "polygonFids": [
+      "advance-1789921204844-xcdvosdgyo"
+    ],
+    "snapshot": "history/advances/adv-1789921246064.json"
+  },
+  {
+    "id": "adv-1789921109545",
+    "date": "2026-09-20",
+    "time": "18:18:27",
+    "text": "Correction of the frontline in Novopidhorodne",
+    "side": "ua",
+    "areaChange": 0,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": -3.26
+      }
+    ],
+    "areaDisplay": "-3.26 km²",
+    "focus": {
+      "lat": 48.25459835019639,
+      "lng": 36.914834976196296,
+      "zoom": 14
+    },
+    "polygonFids": [],
+    "snapshot": "history/advances/adv-1789921109545.json"
+  },
+  {
     "id": "adv-1789915651617",
     "date": "2026-09-20",
     "time": "16:47:29",
