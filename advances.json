@@ -1,5 +1,30 @@
 [
   {
+    "id": "adv-1789915651617",
+    "date": "2026-09-20",
+    "time": "16:47:29",
+    "text": "Ukrainian forces are conducting clearing operationsi n Dobropillia and Hannivka",
+    "side": "ua",
+    "areaChange": 3.24,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 3.24
+      }
+    ],
+    "areaDisplay": "+3.24 km²",
+    "focus": {
+      "lat": 48.47801388101845,
+      "lng": 37.12417602539063,
+      "zoom": 14
+    },
+    "polygonFids": [
+      "advance-1789915593311-84ykowo1wso",
+      "advance-1789915609909-uc4uovvhgvg"
+    ],
+    "snapshot": "history/advances/adv-1789915651617.json"
+  },
+  {
     "id": "adv-1789896908946",
     "date": "2026-09-20",
     "time": "11:35:05",
