@@ -1,5 +1,24 @@
 [
   {
+    "id": "adv-1789933993088",
+    "date": "2026-09-20",
+    "time": "21:53:10",
+    "text": "Russian forces captured the town of Budarky",
+    "side": "ru",
+    "areaChange": 0,
+    "areaEffects": [],
+    "areaDisplay": "",
+    "focus": {
+      "lat": 50.399573120916635,
+      "lng": 37.428445816040046,
+      "zoom": 14
+    },
+    "polygonFids": [
+      "advance-1789933873190-gcee1q2xjef"
+    ],
+    "snapshot": "history/advances/adv-1789933993088.json"
+  },
+  {
     "id": "adv-1789921246064",
     "date": "2026-09-20",
     "time": "18:20:43",
