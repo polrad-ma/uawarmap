@@ -1577,6 +1577,12 @@ I use multiple sources to update and clarify the map — mainly geolocation data
     map.createPane('markersPane');
     map.getPane('markersPane').style.zIndex = 650;
 
+    // Advance layers get their own pane ABOVE the territory layers (overlayPane
+    // is z-index 400). Without this, translucent red territory can be drawn on
+    // top of the yellow Russian advances and tint them red/pink.
+    map.createPane('advancesPane');
+    map.getPane('advancesPane').style.zIndex = 420;
+
     var appHeaderEl = document.getElementById('app-header');
 
     L.DomEvent.disableClickPropagation(appHeaderEl);
@@ -2324,6 +2330,7 @@ I use multiple sources to update and clarify the map — mainly geolocation data
         file: "Ukrainian%20advances.geojson",
         name: "Ukrainian advances",
         color: "#0288d1",
+        pane: 'advancesPane',
         group: "main",
         noOutline: true
       },
@@ -2331,6 +2338,8 @@ I use multiple sources to update and clarify the map — mainly geolocation data
         file: "Russian%20advances.geojson",
         name: "Russian advances",
         color: "#FFFF00",
+        fillOpacity: 0.7,
+        pane: 'advancesPane',
         group: "main",
         noOutline: true
       },
@@ -2593,16 +2602,25 @@ I use multiple sources to update and clarify the map — mainly geolocation data
       }
 
       try {
-        var ruBuffer = turf.buffer(
-          ruUnion,
-          GRAY_ZONE_DISTANCE_KM,
-          { units: 'kilometers', steps: 8 }
+        // Fewer arc steps + simplification keeps the buffer curves light
+        // (few points instead of thousands) without touching the exact
+        // territory edges, which are subtracted afterwards.
+        var ruBuffer = turf.simplify(
+          turf.buffer(
+            ruUnion,
+            GRAY_ZONE_DISTANCE_KM,
+            { units: 'kilometers', steps: 4 }
+          ),
+          { tolerance: 0.003, highQuality: false }
         );
 
-        var uaBuffer = turf.buffer(
-          uaUnion,
-          GRAY_ZONE_DISTANCE_KM,
-          { units: 'kilometers', steps: 8 }
+        var uaBuffer = turf.simplify(
+          turf.buffer(
+            uaUnion,
+            GRAY_ZONE_DISTANCE_KM,
+            { units: 'kilometers', steps: 4 }
+          ),
+          { tolerance: 0.003, highQuality: false }
         );
 
         var betweenSides = turf.intersect(
@@ -2650,6 +2668,8 @@ I use multiple sources to update and clarify the map — mainly geolocation data
         .then(data => {
 
           var layer = L.geoJSON(data, {
+
+            pane: layerInfo.pane || 'overlayPane',
 
             style: function() {
 
