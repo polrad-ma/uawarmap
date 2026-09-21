@@ -494,35 +494,7 @@
       color: var(--result-text);
       min-height: 24px;
     }
-
-    .update-item {
-      border-bottom: 1px solid var(--panel-heading-border);
-      padding: 6px 0;
-      font-size: 13px;
-    }
-
-    .update-item:last-child {
-      border-bottom: none;
-    }
-
-    .update-date {
-      font-weight: bold;
-      font-size: 12px;
-      color: var(--muted-text);
-      display: block;
-      margin-bottom: 2px;
-    }
-
-    .update-item a {
-      color: var(--link-color);
-      text-decoration: underline;
-    }
-
-    .update-item a:hover {
-      opacity: 0.8;
-    }
-
-    .settings-row {
+.settings-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -784,7 +756,6 @@
     <button class="sidebar-btn" id="btn-tab-draw" onclick="toggleTab('draw')" title="Draw Tools">✏️</button>
     <button class="sidebar-btn" id="btn-tab-ruler" onclick="toggleTab('ruler')" title="Ruler / Measure">📏</button>
     <button class="sidebar-btn" id="btn-tab-coords" onclick="toggleTab('coords')" title="Coordinates">📍</button>
-    <button class="sidebar-btn" id="btn-tab-updates" onclick="toggleTab('updates')" title="Map Updates">🔔</button>
     <button class="sidebar-btn" id="btn-tab-settings" onclick="toggleTab('settings')" title="Settings">⚙️</button>
     <button class="sidebar-btn" id="btn-screenshot" onclick="takeMapScreenshot()" title="Take Screenshot">📸</button>
     <button class="sidebar-btn" id="btn-fullscreen" onclick="toggleFullScreen()" title="Toggle Fullscreen">⛶</button>
@@ -909,11 +880,6 @@
     <div class="panel-result" id="coords-result">
       Click anywhere on the map to display its precise coordinates.
     </div>
-  </div>
-
-  <div class="sidebar-panel" id="panel-updates">
-    <h4>Map Updates</h4>
-    <div id="updates-content">Loading...</div>
   </div>
 
   <div class="sidebar-panel" id="panel-settings">
@@ -2909,115 +2875,7 @@
 
     loadTimelineManifest();
     loadAdvances();
-
-    fetch('updates.json')
-      .then(response => response.json())
-      .then(updates => {
-
-        var container =
-          document.getElementById(
-            'updates-content'
-          );
-
-        container.innerHTML = '';
-
-        if (!updates.length) {
-          container.innerHTML =
-            '<em>No updates yet.</em>';
-          return;
-        }
-
-        updates.forEach(item => {
-
-          var div =
-            document.createElement('div');
-
-          div.className =
-            'update-item';
-
-          function makeLinksClickable(text) {
-
-            var hiddenLinks = [];
-
-            text = text.replace(
-              /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,
-              function(match, label, url) {
-
-                var token =
-                  '___UPDATE_LINK_' +
-                  hiddenLinks.length +
-                  '___';
-
-                hiddenLinks.push(
-                  '<a href="' +
-                  url +
-                  '" target="_blank" rel="noopener noreferrer">' +
-                  label +
-                  '</a>'
-                );
-
-                return token;
-              }
-            );
-
-            text = text.replace(
-              /(^|[\s>])(https?:\/\/[^\s<]+)/g,
-              function(match, before, url) {
-
-                var trailing = '';
-
-                while (/[.,!?;:]$/.test(url)) {
-                  trailing =
-                    url.slice(-1) +
-                    trailing;
-
-                  url =
-                    url.slice(0, -1);
-                }
-
-                return before +
-                  '<a href="' +
-                  url +
-                  '" target="_blank" rel="noopener noreferrer">' +
-                  url +
-                  '</a>' +
-                  trailing;
-              }
-            );
-
-            hiddenLinks.forEach(
-              function(link, index) {
-
-                text = text.replace(
-                  '___UPDATE_LINK_' +
-                  index +
-                  '___',
-                  link
-                );
-              }
-            );
-
-            return text;
-          }
-
-          div.innerHTML =
-            '<span class="update-date">' +
-            item.date +
-            '</span>' +
-            makeLinksClickable(item.text);
-
-          container.appendChild(div);
-        });
-
-      })
-      .catch(() =>
-        document.getElementById(
-          'updates-content'
-        ).innerHTML =
-          '<em>Could not load updates.</em>'
-      );
-
-    var activeTool = null;
+var activeTool = null;
     var currentColor = '#ff0000';
     var currentThickness = 3;
     var drawingPoints = [];
