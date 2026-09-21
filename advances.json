@@ -1,5 +1,29 @@
 [
   {
+    "id": "adv-1790012846132",
+    "date": "2026-09-21",
+    "time": "19:47:26",
+    "text": "Russian forces captured Ivanivka. Infiltration groups are present in Blahodatne",
+    "side": "ru",
+    "areaChange": 3.82,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 3.82
+      }
+    ],
+    "areaDisplay": "+3.82 km²",
+    "focus": {
+      "lat": 50.246628587463974,
+      "lng": 37.29669570922852,
+      "zoom": 14
+    },
+    "polygonFids": [
+      "advance-1790012808487-ut1fyna4ivr"
+    ],
+    "snapshot": "history/advances/adv-1790012846132.json"
+  },
+  {
     "id": "adv-1789995070671",
     "date": "2026-09-21",
     "time": "14:51:07",
