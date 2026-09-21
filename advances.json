@@ -1,5 +1,29 @@
 [
   {
+    "id": "adv-1789967435974",
+    "date": "2026-09-21",
+    "time": "07:10:33",
+    "text": "Ukrainian Defense forces regained several positions south of Stavky",
+    "side": "ua",
+    "areaChange": 3.65,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 3.65
+      }
+    ],
+    "areaDisplay": "+3.65 km²",
+    "focus": {
+      "lat": 49.0291457688561,
+      "lng": 37.83760070800782,
+      "zoom": 13
+    },
+    "polygonFids": [
+      "advance-1789967394759-djrbzqzq05q"
+    ],
+    "snapshot": "history/advances/adv-1789967435974.json"
+  },
+  {
     "id": "adv-1789933993088",
     "date": "2026-09-20",
     "time": "21:53:10",
