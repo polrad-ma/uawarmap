@@ -494,7 +494,35 @@
       color: var(--result-text);
       min-height: 24px;
     }
-.settings-row {
+
+    .update-item {
+      border-bottom: 1px solid var(--panel-heading-border);
+      padding: 6px 0;
+      font-size: 13px;
+    }
+
+    .update-item:last-child {
+      border-bottom: none;
+    }
+
+    .update-date {
+      font-weight: bold;
+      font-size: 12px;
+      color: var(--muted-text);
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .update-item a {
+      color: var(--link-color);
+      text-decoration: underline;
+    }
+
+    .update-item a:hover {
+      opacity: 0.8;
+    }
+
+    .settings-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -756,6 +784,7 @@
     <button class="sidebar-btn" id="btn-tab-draw" onclick="toggleTab('draw')" title="Draw Tools">✏️</button>
     <button class="sidebar-btn" id="btn-tab-ruler" onclick="toggleTab('ruler')" title="Ruler / Measure">📏</button>
     <button class="sidebar-btn" id="btn-tab-coords" onclick="toggleTab('coords')" title="Coordinates">📍</button>
+    <button class="sidebar-btn" id="btn-tab-updates" onclick="toggleTab('updates')" title="Changelog">🧾</button>
     <button class="sidebar-btn" id="btn-tab-settings" onclick="toggleTab('settings')" title="Settings">⚙️</button>
     <button class="sidebar-btn" id="btn-screenshot" onclick="takeMapScreenshot()" title="Take Screenshot">📸</button>
     <button class="sidebar-btn" id="btn-fullscreen" onclick="toggleFullScreen()" title="Toggle Fullscreen">⛶</button>
@@ -882,6 +911,11 @@
     </div>
   </div>
 
+  <div class="sidebar-panel" id="panel-updates">
+    <h4>Changelog</h4>
+    <div id="updates-content">Loading...</div>
+  </div>
+
   <div class="sidebar-panel" id="panel-settings">
     <h4>Settings</h4>
 
@@ -912,7 +946,7 @@
       var mapElement = document.getElementById('map');
       var button = document.getElementById('btn-screenshot');
 
-      if (!mapElement || typeof html2canvas === 'undefined') {
+      if (!mapElement || typeof html2canvas === 'undefined' || typeof map === 'undefined') {
         alert('Screenshot feature is not available.');
         return;
       }
@@ -923,78 +957,58 @@
       }
 
       var hiddenElements = [];
-      var temporaryElements = [];
-
-      // Save the current map container styles.
-      var oldMapStyles = {
-        left: mapElement.style.left,
-        top: mapElement.style.top,
-        right: mapElement.style.right,
-        bottom: mapElement.style.bottom,
-        width: mapElement.style.width,
-        height: mapElement.style.height,
-        position: mapElement.style.position
-      };
+      var switchedFromGoogle = false;
+      var originalBaseLayer = currentBaseLayer;
+      var originalCenter = map.getCenter();
+      var originalZoom = map.getZoom();
 
       function hideElement(el) {
         if (!el) return;
-        hiddenElements.push({
-          element: el,
-          display: el.style.display
-        });
+        hiddenElements.push({ element: el, display: el.style.display });
         el.style.display = 'none';
       }
 
+      function wait(ms) {
+        return new Promise(function(resolve) { setTimeout(resolve, ms); });
+      }
+
       try {
-        // Hide the application's UI so only the map itself is captured.
+        // Google/Mutant tiles are not reliably readable by html2canvas because
+        // of browser canvas security. Use the CORS-friendly Esri hybrid only
+        // while capturing, then restore exactly what the user had selected.
+        if (typeof googleHybrid !== 'undefined' &&
+            googleHybrid &&
+            currentBaseLayer === googleHybrid &&
+            typeof esriHybrid !== 'undefined' &&
+            esriHybrid) {
+          map.removeLayer(googleHybrid);
+          currentBaseLayer = esriHybrid;
+          map.addLayer(esriHybrid);
+          switchedFromGoogle = true;
+          map.setView(originalCenter, originalZoom, { animate: false });
+        }
+
+        // Hide application chrome, but do NOT resize/reposition the Leaflet
+        // container. Resizing the live map was the main source of blank,
+        // clipped and shifted screenshots.
         hideElement(document.getElementById('left-sidebar'));
         hideElement(document.getElementById('app-header'));
         hideElement(document.getElementById('advance-bar'));
         hideElement(document.getElementById('map-crosshair'));
         hideElement(document.getElementById('watermark-overlay'));
-
         document.querySelectorAll('.sidebar-panel').forEach(hideElement);
         document.querySelectorAll('.leaflet-control-zoom').forEach(hideElement);
+        document.querySelectorAll('.leaflet-control-geosearch').forEach(hideElement);
         document.querySelectorAll('.leaflet-popup').forEach(hideElement);
-
-        // Make the map fill the complete browser viewport while capturing.
-        mapElement.style.left = '0';
-        mapElement.style.top = '0';
-        mapElement.style.right = '0';
-        mapElement.style.bottom = '0';
-        mapElement.style.width = '100vw';
-        mapElement.style.height = '100vh';
-        mapElement.style.position = 'absolute';
 
         map.stop();
         map.invalidateSize(true);
 
-        // Redraw every vector layer after resizing. This prevents Leaflet SVG
-        // paths and polygons from keeping their old renderer/clipping bounds.
-        function redrawLayer(layer) {
-          if (!layer) return;
-
-          if (typeof layer.redraw === 'function') {
-            try { layer.redraw(); } catch (e) {}
-          }
-
-          if (typeof layer.eachLayer === 'function') {
-            layer.eachLayer(function(child) {
-              redrawLayer(child);
-            });
-          }
-        }
-
-        map.eachLayer(function(layer) {
-          redrawLayer(layer);
-        });
-
-        // Give Leaflet two animation frames plus a short delay to finish
-        // rendering before html2canvas reads the map.
+        // Let the replacement basemap and vector layers finish painting.
         await new Promise(function(resolve) {
           requestAnimationFrame(function() {
             requestAnimationFrame(function() {
-              setTimeout(resolve, 700);
+              wait(900).then(resolve);
             });
           });
         });
@@ -1003,12 +1017,12 @@
           useCORS: true,
           allowTaint: false,
           backgroundColor: '#ffffff',
-          scale: 2,
+          scale: Math.min(2, window.devicePixelRatio || 1),
           logging: false,
           imageTimeout: 20000,
           foreignObjectRendering: false,
+          removeContainer: true,
           onclone: function(clonedDocument) {
-            // Avoid html2canvas clipping Leaflet SVG vector paths.
             clonedDocument
               .querySelectorAll('.leaflet-overlay-pane svg, .leaflet-shadow-pane svg')
               .forEach(function(svg) {
@@ -1017,23 +1031,19 @@
           }
         });
 
-        // Final exported image: white header + map.
+        // Export with a clean POLRAD MAPPING header above the map.
         var headerHeight = 76 * 2;
         var padding = 16 * 2;
         var finalWidth = mapCanvas.width + padding * 2;
         var finalHeight = mapCanvas.height + headerHeight + padding;
-
         var canvas = document.createElement('canvas');
         canvas.width = finalWidth;
         canvas.height = finalHeight;
 
         var ctx = canvas.getContext('2d');
-
-        // White background.
         ctx.fillStyle = '#ffffff';
         ctx.fillRect(0, 0, finalWidth, finalHeight);
 
-        // Header separator.
         ctx.strokeStyle = '#d9d9d9';
         ctx.lineWidth = 2;
         ctx.beginPath();
@@ -1041,14 +1051,13 @@
         ctx.lineTo(finalWidth, headerHeight);
         ctx.stroke();
 
-        // Logo.
         var logo = new Image();
         logo.crossOrigin = 'anonymous';
-
         await new Promise(function(resolve) {
           logo.onload = resolve;
           logo.onerror = resolve;
-          logo.src = document.getElementById('app-logo').src;
+          var logoEl = document.getElementById('app-logo');
+          logo.src = logoEl ? logoEl.src : '';
         });
 
         var logoSize = 54 * 2;
@@ -1070,7 +1079,6 @@
           ctx.restore();
         }
 
-        // Header title.
         ctx.fillStyle = '#171717';
         ctx.font = 'bold 28px Helvetica, Arial, sans-serif';
         ctx.textBaseline = 'middle';
@@ -1080,44 +1088,31 @@
           headerHeight / 2
         );
 
-        // Current map.
         ctx.drawImage(mapCanvas, padding, headerHeight);
 
-        // Export as PNG.
         var link = document.createElement('a');
-        var date = new Date()
-          .toISOString()
-          .slice(0, 19)
-          .replace(/:/g, '-');
-
+        var date = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
         link.download = 'polrad-mapping-' + date + '.png';
         link.href = canvas.toDataURL('image/png');
         link.click();
 
       } catch (error) {
         console.error('Screenshot failed:', error);
-        alert(
-          'Screenshot failed. If the map is blank, the basemap provider is blocking browser canvas capture (CORS).'
-        );
+        alert('Screenshot failed. Please try again after the map has finished loading.');
       } finally {
-        // Restore all hidden UI elements.
         hiddenElements.forEach(function(item) {
           item.element.style.display = item.display;
         });
 
-        mapElement.style.left = oldMapStyles.left;
-        mapElement.style.top = oldMapStyles.top;
-        mapElement.style.right = oldMapStyles.right;
-        mapElement.style.bottom = oldMapStyles.bottom;
-        mapElement.style.width = oldMapStyles.width;
-        mapElement.style.height = oldMapStyles.height;
-        mapElement.style.position = oldMapStyles.position;
+        // Restore the original basemap and view after the capture.
+        if (switchedFromGoogle && originalBaseLayer) {
+          if (map.hasLayer(currentBaseLayer)) map.removeLayer(currentBaseLayer);
+          currentBaseLayer = originalBaseLayer;
+          map.addLayer(originalBaseLayer);
+          map.setView(originalCenter, originalZoom, { animate: false });
+        }
 
         map.invalidateSize(true);
-
-        temporaryElements.forEach(function(el) {
-          if (el && el.parentNode) el.parentNode.removeChild(el);
-        });
 
         if (button) {
           button.disabled = false;
@@ -1386,6 +1381,11 @@
     // top of the yellow Russian advances and tint them red/pink.
     map.createPane('advancesPane');
     map.getPane('advancesPane').style.zIndex = 420;
+
+    // Extra/reference layers sit above the territory fills so they remain
+    // visible when enabled (region borders, corridors, fortifications, OPSEC, etc.).
+    map.createPane('extraLayersPane');
+    map.getPane('extraLayersPane').style.zIndex = 500;
 
     // User drawings get their own pane ABOVE the advances (420) but below the
     // markers (650), so drawn shapes are never tinted/dimmed by advance layers.
@@ -2516,12 +2516,18 @@
     layerFiles.forEach(function(layerInfo) {
 
       fetch(layerInfo.file)
-        .then(response => response.json())
-        .then(data => {
+        .then(function(response) {
+          if (!response.ok) {
+            throw new Error('HTTP ' + response.status + ' while loading ' + layerInfo.file);
+          }
+          return response.json();
+        })
+        .then(function(data) {
 
           var layer = L.geoJSON(data, {
 
-            pane: layerInfo.pane || 'overlayPane',
+            pane: layerInfo.pane ||
+                  (layerInfo.group === 'extra' ? 'extraLayersPane' : 'overlayPane'),
 
             style: function() {
 
@@ -2650,13 +2656,8 @@
             checkbox.addEventListener(
               'change',
               function() {
-
-                if (checkbox.checked) {
-                  map.addLayer(layers[name]);
-                } else {
-                  map.removeLayer(layers[name]);
-                }
-
+                setLayerVisibility(name, checkbox.checked);
+                checkbox.checked = map.hasLayer(layers[name]);
                 updateFrontlineInfoButtons();
               }
             );
@@ -2875,7 +2876,115 @@
 
     loadTimelineManifest();
     loadAdvances();
-var activeTool = null;
+
+    fetch('updates.json')
+      .then(response => response.json())
+      .then(updates => {
+
+        var container =
+          document.getElementById(
+            'updates-content'
+          );
+
+        container.innerHTML = '';
+
+        if (!updates.length) {
+          container.innerHTML =
+            '<em>No updates yet.</em>';
+          return;
+        }
+
+        updates.forEach(item => {
+
+          var div =
+            document.createElement('div');
+
+          div.className =
+            'update-item';
+
+          function makeLinksClickable(text) {
+
+            var hiddenLinks = [];
+
+            text = text.replace(
+              /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,
+              function(match, label, url) {
+
+                var token =
+                  '___UPDATE_LINK_' +
+                  hiddenLinks.length +
+                  '___';
+
+                hiddenLinks.push(
+                  '<a href="' +
+                  url +
+                  '" target="_blank" rel="noopener noreferrer">' +
+                  label +
+                  '</a>'
+                );
+
+                return token;
+              }
+            );
+
+            text = text.replace(
+              /(^|[\s>])(https?:\/\/[^\s<]+)/g,
+              function(match, before, url) {
+
+                var trailing = '';
+
+                while (/[.,!?;:]$/.test(url)) {
+                  trailing =
+                    url.slice(-1) +
+                    trailing;
+
+                  url =
+                    url.slice(0, -1);
+                }
+
+                return before +
+                  '<a href="' +
+                  url +
+                  '" target="_blank" rel="noopener noreferrer">' +
+                  url +
+                  '</a>' +
+                  trailing;
+              }
+            );
+
+            hiddenLinks.forEach(
+              function(link, index) {
+
+                text = text.replace(
+                  '___UPDATE_LINK_' +
+                  index +
+                  '___',
+                  link
+                );
+              }
+            );
+
+            return text;
+          }
+
+          div.innerHTML =
+            '<span class="update-date">' +
+            item.date +
+            '</span>' +
+            makeLinksClickable(item.text);
+
+          container.appendChild(div);
+        });
+
+      })
+      .catch(() =>
+        document.getElementById(
+          'updates-content'
+        ).innerHTML =
+          '<em>Could not load updates.</em>'
+      );
+
+    var activeTool = null;
     var currentColor = '#ff0000';
     var currentThickness = 3;
     var drawingPoints = [];
