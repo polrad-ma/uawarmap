@@ -1,68 +1,9 @@
 [
   {
-    "date": "17 September 2026",
-    "text": "Ukrainian Defense forces recaptured the village of Maliivka, Pokrovske direction, Dnipropetrovsk Oblast."
+    "date": "21 September 2026",
+    "text": "Version One fully released. Fixed screenshot tool and extra layer bug."
   },
-  {
-    "date": "31 August 2026",
-    "text": "Updated entire map. Added dark theme toggle and polygon border toggle, currently partially working. Some bug fixes "
-  },
-  {
-    "date": "21 August 2026",
-    "text": "Russian forces advanced captured Pavlivka and Volokhivske, and advanced in Ivanaivka, Zakharivka, Kupyansk, Lyman, near Stepove and along the line Petrivka-Dovha Balka. The contact line in Ozerne was clarified. "
-  },
-  {
-    "date": "20 August 2026 (Update 2)",
-    "text": "Russian forces advanced in Pavlivka and Mykolaipillya. They captured Okhrimivka, Rybalkyne and Petrivka"
-  },
-  {
-    "date": "20 August 2026",
-    "text": "Added major areas that were recently recaptured: Shandryholove salient counterattack, Pokrovske and Komar counteroffensive, Stepnohirsk counteroffensive, Dobropillya breakthrough counteroffensive, December 2025 Kupyansk counteroffensive"
-  },
-  {
-    "date": "19 August 2026 (Update 2)",
-    "text": "On the northern part of the Shadryholvoe salient, Ukrainian forces completely retook the village of Nove on the northern flank of Kolodyazi. This was confirmed by KAB glide bomb strikes on Sentinel imagery, indicating consolidation in the southwest of the town."
-  },
- {
-    "date": "19 August 2026",
-    "text": "The RuAF have expanded their control zone south of Stepnohirsk. After assault operations, some fields near Novodanylivka came under Russian control as well, like a part of Mala Tokmachka. Also in Mala Tokmachka, the Defense forces cleared some  positions and advanced in- and outside the town. On the Novopavlivka direction, Ukrainian forces are pushing on Filiya from three sides. On the Kostiantynivka direction, Russian forces advanced towards Oleksijevo-Druzhkivka, while capturing a part of the village Stinky. The capture of Malynivka on the Kramatorsk direction was finished."
-  },
-  {
-    "date": "18 August 2026 (Update 3)",
-    "text": "Ukrainian forces recaptured Rizdvyanka, Omelnyk direction. At the same time, Russians restored control over eastern Vozdvyzhivska, also Omelnyk direction. In Kupyansk, both sides advanced and ocuppied new poitions. In the Sumy region, the RuAF crossed the border and took positions near Volkivka"
-  },
-  {
-    "date": "18 August 2026 (Update 2)",
-    "text": "Based on Suriyak's reports, Russian troops have pushed the front away from Shevchenko and Novooleksandrivka. Also, after numerous reports by other neutral mappers, it's likely that Russians entered Hannivka and are consolidating territory near the city of Dobropillya. South of the city, the village of Krasnopodillia was fully captured. North of the town of Vilhuvatka in the Kharkiv region, the village of Vodiane. Finally, south of Orikhiv, Zapotizhzhia region, the village Novodanylivka was fully captured. Lastly, in the northern part of the Shandryholove salient, the Defense forces cleared several positions in the gray zone. Russian advances: 41.02 km². Ukrainian advances: 17.24 km²"
-  },
-  {
-    "date": "18 August 2026",
-    "text": "Added new drawing tools, including dashed modes and freehand arrows. Added thickness slider"
-  },
-  {
-    "date": "17 August 2026 (Update 4)",
-    "text": "Russian forces occupy positions in Kivsharivka and Nova Sich. Kupyne and Kudiivka were captured by the RuAF. Meanwhile the AFU cleared Ternuvate and Kosivtseve"
-  },
-  {
-    "date": "17 August 2026 (Update 3)",
-    "text": "Ukrainian forces have cleared the northern part of Rizdvyanka/Rozhdestvenske. 8.64 km² cleared"
-  },
-  {
-    "date": "17 August 2026 (Update 2)",
-    "text": "Russian army captured Novomykolaivka on the Druzhkivka direction. 14.3 km² consolidated"
-  },
-  {
-    "date": "17 August 2026",
-    "text": "Map online. Russian forces advanced in Mala Tokmachka, Novodanylivka (already reported on X), in Petrivka (south of Druzhkivka), and captured the forest north of Okhrimivka. The villages of Hirke (Omelnyk direction), Kutuzivka/Stepy and Vilne (Dobropillya direction) were fully captured by the RuAF. Overall 42.47 km² were captured."
-  },
-  {
-    "date": "16 August 2026 (Update 2)",
-    "text": "Test update. Added polygon area and more drawing tools."
-  },
-  {
-    "date": "16 August 2026 (Update 1)",
-    "text": "Test update. Added more captured city markers. Russians advanced into Mohritsya and north of Kostiantynivka (32.1km²)."
-  },
+  
   {
     "date": "15 August 2026",
     "text": "General layout. Test map."
