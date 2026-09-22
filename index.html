@@ -832,7 +832,7 @@ public map:
     <div id="app-header-top">
       <img id="app-logo" src="https://pbs.twimg.com/profile_images/2093664692505870336/xNyRmIXM_400x400.jpg" alt="Polrad Mapping">
       <span id="app-title-text">POLRAD MAPPING</span>
-      <div id="language-toggle" title="Language"><button type="button" id="lang-en" class="lang-btn active">EN</button><button type="button" id="lang-ru" class="lang-btn" disabled title="Russian labels disabled">RU</button></div><button id="search-toggle-btn" onclick="toggleHeaderSearch()" title="Search">🔍</button>
+      <div id="language-toggle" title="Language"><button type="button" id="lang-en" class="lang-btn">EN</button><button type="button" id="lang-ru" class="lang-btn">RU</button></div><button id="search-toggle-btn" onclick="toggleHeaderSearch()" title="Search">🔍</button>
     </div>
 
     <div id="app-header-search">
@@ -979,7 +979,7 @@ public map:
 
   <script>
 
-    var publicLanguage = 'ru';
+    var publicLanguage = localStorage.getItem('polrad_language') === 'ru' ? 'ru' : 'en';
 
     var PUBLIC_TRANSLATIONS = {
       en: {
@@ -1096,7 +1096,6 @@ public map:
       updateSidebarLayerControl(); updateDesignSelector(); renderAdvanceBar(); updateInstructions();
     }
     window.setPublicLanguage = function(lang) {
-  lang = 'en';
       publicLanguage = lang === 'ru' ? 'ru' : 'en';
       localStorage.setItem('polrad_language', publicLanguage);
       // Google Maps JS reads its language at load time, so reload the page
