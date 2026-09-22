@@ -1,5 +1,75 @@
 [
   {
+    "id": "adv-1790083802835",
+    "date": "2026-09-22",
+    "time": "15:30:02",
+    "text": "Russian forces entered Novohryshine",
+    "side": "ru",
+    "areaChange": 1.25,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 1.25
+      }
+    ],
+    "areaDisplay": "+1.25 km²",
+    "focus": {
+      "lat": 48.44298119773136,
+      "lng": 37.13241577148438,
+      "zoom": 12
+    },
+    "polygonFids": [
+      "advance-1790083759830-45ckzkjch3f"
+    ],
+    "snapshot": "history/advances/adv-1790083802835.json"
+  },
+  {
+    "id": "adv-1790082273679",
+    "date": "2026-09-22",
+    "time": "15:04:31",
+    "text": "Ukrainains re-entered Komar",
+    "side": "ua",
+    "areaChange": -2.49,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": -2.49
+      }
+    ],
+    "areaDisplay": "-2.49 km²",
+    "focus": {
+      "lat": 47.98288440063732,
+      "lng": 36.75999641418458,
+      "zoom": 14
+    },
+    "polygonFids": [],
+    "snapshot": "history/advances/adv-1790082273679.json"
+  },
+  {
+    "id": "adv-1790082148583",
+    "date": "2026-09-22",
+    "time": "15:02:28",
+    "text": "The AFU counterattack in Kupyansk",
+    "side": "ua",
+    "areaChange": 1.56,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 1.56
+      }
+    ],
+    "areaDisplay": "+1.56 km²",
+    "focus": {
+      "lat": 49.72220419138911,
+      "lng": 37.64259338378907,
+      "zoom": 13
+    },
+    "polygonFids": [
+      "advance-1790082106941-rloux81ik6"
+    ],
+    "snapshot": "history/advances/adv-1790082148583.json"
+  },
+  {
     "id": "adv-1790012846132",
     "date": "2026-09-21",
     "time": "19:47:26",
@@ -33,14 +103,10 @@
     "areaEffects": [
       {
         "side": "ru",
-        "value": -5.37
-      },
-      {
-        "side": "ua",
         "value": 5.18
       }
     ],
-    "areaDisplay": "-5.37 km² +5.18 km²",
+    "areaDisplay": "+5.18 km²",
     "focus": {
       "lat": 48.91962290501197,
       "lng": 37.92377471923829,
