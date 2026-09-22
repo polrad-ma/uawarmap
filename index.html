@@ -1,3 +1,5 @@
+public map:
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,7 +20,17 @@
     }
   };
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAGf_KVFEZoVl7P2BDk-NvUxsSPUoAzueU&language=en&region=US"></script>
+<script>
+  // Google Maps language is chosen when the Google Maps JS API is loaded.
+  // Read the POLRAD language preference before loading Google so the
+  // Hybrid basemap itself uses the matching language.
+  window.polradGoogleLanguage = localStorage.getItem('polrad_language') === 'ru' ? 'ru' : 'en';
+  window.polradGoogleRegion = window.polradGoogleLanguage === 'ru' ? 'RU' : 'US';
+  document.write(
+    '<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAGf_KVFEZoVl7P2BDk-NvUxsSPUoAzueU&language=' +
+    window.polradGoogleLanguage + '&region=' + window.polradGoogleRegion + '"><\/script>'
+  );
+</script>
 <script src="https://unpkg.com/leaflet.gridlayer.googlemutant@0.16.0/dist/Leaflet.GoogleMutant.js"></script>
   <script src="https://unpkg.com/leaflet-geosearch@3.11.0/dist/geosearch.umd.js"></script>
   <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
@@ -173,6 +185,31 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+
+    #language-toggle {
+      display: flex;
+      gap: 2px;
+      flex-shrink: 0;
+      background: var(--chrome-btn-bg);
+      border: 1px solid var(--chrome-border);
+      border-radius: 6px;
+      padding: 2px;
+    }
+
+    .lang-btn {
+      border: 0;
+      border-radius: 4px;
+      background: transparent;
+      color: var(--chrome-text);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 4px 5px;
+      cursor: pointer;
+    }
+
+    .lang-btn.active {
+      background: var(--btn-bg-hover);
     }
 
     #search-toggle-btn {
@@ -795,7 +832,7 @@
     <div id="app-header-top">
       <img id="app-logo" src="https://pbs.twimg.com/profile_images/2093664692505870336/xNyRmIXM_400x400.jpg" alt="Polrad Mapping">
       <span id="app-title-text">POLRAD MAPPING</span>
-      <button id="search-toggle-btn" onclick="toggleHeaderSearch()" title="Search">🔍</button>
+      <div id="language-toggle" title="Language"><button type="button" id="lang-en" class="lang-btn active">EN</button><button type="button" id="lang-ru" class="lang-btn" disabled title="Russian labels disabled">RU</button></div><button id="search-toggle-btn" onclick="toggleHeaderSearch()" title="Search">🔍</button>
     </div>
 
     <div id="app-header-search">
@@ -920,27 +957,158 @@
     <h4>Settings</h4>
 
     <div class="settings-row">
-      <label for="toggle-dark-theme">Dark theme</label>
+      <label id="toggle-dark-theme-label" for="toggle-dark-theme">Dark theme</label>
       <input type="checkbox" id="toggle-dark-theme" checked onchange="setDarkTheme(this.checked)">
     </div>
 
     <div class="settings-row">
-      <label for="toggle-polygon-borders">Polygon borders</label>
+      <label id="toggle-polygon-borders-label" for="toggle-polygon-borders">Polygon borders</label>
       <input type="checkbox" id="toggle-polygon-borders" onchange="togglePolygonBorders(this.checked)">
     </div>
 
     <div class="settings-row">
-      <label for="toggle-crosshair">Center crosshair</label>
+      <label id="toggle-crosshair-label" for="toggle-crosshair">Center crosshair</label>
       <input type="checkbox" id="toggle-crosshair" onchange="toggleCrosshairSetting(this.checked)">
     </div>
 
     <div class="settings-link-row">
-      <a href="https://x.com/polrad_mapping_" target="_blank" rel="noopener">Twitter/X</a>
-      <a href="https://polrad-ma.github.io/login/">Log In</a>
+      <a id="twitter-link" href="https://x.com/polrad_mapping_" target="_blank" rel="noopener">Twitter/X</a>
+      <a id="login-link" href="https://polrad-ma.github.io/login/">Log In</a>
     </div>
   </div>
 
   <script>
+
+    var publicLanguage = 'ru';
+
+    var PUBLIC_TRANSLATIONS = {
+      en: {
+        search: 'Search', searchPlaceholder: 'Search town, city or coordinates...',
+        previousAdvance: 'Previous advance', nextAdvance: 'Next advance', jumpDate: 'Jump to a date',
+        lockAdvance: 'Lock advance map movement', unlockAdvance: 'Unlock automatic advance map movement',
+        basemapsLayers: 'Basemaps & Layers', baseMap: 'Base Map', mapDesign: 'Map Design',
+        drawTools: 'Draw Tools', solidTools: 'Solid Tools', dashedTools: 'Dashed Tools', shapesUtilities: 'Shapes & Utilities',
+        freehand: 'Freehand', freehandArrow: 'Freehand Arrow', line: 'Line', arrow: 'Arrow',
+        dashedFreehand: 'Dashed Freehand', dashedFreehandArrow: 'Dashed Freehand Arrow', dashedLine: 'Dashed Line', dashedArrow: 'Dashed Arrow',
+        polygon: 'Polygon', rectangle: 'Rectangle', ukraineFlag: '🇺🇦 Ukraine Flag', russiaFlag: '🇷🇺 Russia Flag', eraser: 'Eraser',
+        thickness: 'Thickness', red: 'Red', blue: 'Blue', green: 'Green', yellow: 'Yellow', black: 'Black', white: 'White',
+        finishShape: 'Finish Shape', clearDrawings: 'Clear My Drawings', selectShape: 'Select a shape to draw.',
+        ruler: 'Ruler (Measure)', kilometers: 'Kilometers (km)', miles: 'Miles (mi)', finishMeasuring: 'Finish Measuring', clearLine: 'Clear Line',
+        measurePrompt: 'Click points on the map to measure distance.', coordinates: 'Coordinates',
+        preciseCoords: 'Click anywhere on the map to display its precise coordinates.', changelog: 'Changelog', settings: 'Settings',
+        loading: 'Loading...', noUpdates: 'No updates yet.', couldNotLoadUpdates: 'Could not load updates.',
+        darkTheme: 'Dark theme', polygonBorders: 'Polygon borders', centerCrosshair: 'Center crosshair', screenshot: 'Take Screenshot',
+        fullscreen: 'Toggle Fullscreen', searchFailed: 'Search failed.', searching: 'Searching...', copied: 'Copied!',
+        mainLayers: 'Main Layers', extraLayers: 'Extra Layers',
+        russianTerritory: 'Russian-controlled territory', ukrainianTerritory: 'Ukrainian-controlled territory',
+        ukrainianAdvances: 'Ukrainian advances', russianAdvances: 'Russian advances', regained: 'Territories regained in the last month',
+        deepstate: 'Claimed DeepState Frontline', ria: 'Claimed RIA Frontline',
+        mapUpdate: 'Map update', area: 'Area',
+        basemapGoogleHybrid: 'Google Hybrid (Satellite + Labels)', basemapEsriHybrid: 'Esri Hybrid (Satellite + Labels)', basemapEsriSatellite: 'Esri Satellite',
+        basemapOSM: 'OpenStreetMap', basemapTopo: 'Topographic',
+        designDefault: 'Default', amkDesign:'AMK Mapping design', playfraDesign:'Playfra design', myDrawings:'My Drawings', citiesCaptured:'Cities Captured', augustFrontline:'August 2024 Frontline', townsVillages:'Towns, villages and cities (credit to PWM)', fortifications:'Fortifications (thanks PMapping832)', grayZone:'Gray Zone',
+        twitter: 'Twitter/X', login: 'Log In'
+      },
+      ru: {
+        search: 'Поиск', searchPlaceholder: 'Поиск посёлка, города или координат...',
+        previousAdvance: 'Предыдущее продвижение', nextAdvance: 'Следующее продвижение', jumpDate: 'Перейти к дате',
+        lockAdvance: 'Заблокировать перемещение карты', unlockAdvance: 'Разблокировать перемещение карты',
+        basemapsLayers: 'Подложки и слои', baseMap: 'Карта', mapDesign: 'Оформление карты',
+        drawTools: 'Инструменты рисования', solidTools: 'Сплошные инструменты', dashedTools: 'Пунктирные инструменты', shapesUtilities: 'Фигуры и инструменты',
+        freehand: 'Свободная линия', freehandArrow: 'Свободная стрелка', line: 'Линия', arrow: 'Стрелка',
+        dashedFreehand: 'Свободная пунктирная линия', dashedFreehandArrow: 'Свободная пунктирная стрелка', dashedLine: 'Пунктирная линия', dashedArrow: 'Пунктирная стрелка',
+        polygon: 'Полигон', rectangle: 'Прямоугольник', ukraineFlag: '🇺🇦 Флаг Украины', russiaFlag: '🇷🇺 Флаг России', eraser: 'Ластик',
+        thickness: 'Толщина', red: 'Красный', blue: 'Синий', green: 'Зелёный', yellow: 'Жёлтый', black: 'Чёрный', white: 'Белый',
+        finishShape: 'Завершить фигуру', clearDrawings: 'Очистить мои рисунки', selectShape: 'Выберите фигуру для рисования.',
+        ruler: 'Линейка (измерение)', kilometers: 'Километры (км)', miles: 'Мили (mi)', finishMeasuring: 'Завершить измерение', clearLine: 'Очистить линию',
+        measurePrompt: 'Нажимайте точки на карте, чтобы измерить расстояние.', coordinates: 'Координаты',
+        preciseCoords: 'Нажмите в любом месте карты, чтобы увидеть точные координаты.', changelog: 'Журнал изменений', settings: 'Настройки',
+        loading: 'Загрузка...', noUpdates: 'Обновлений пока нет.', couldNotLoadUpdates: 'Не удалось загрузить обновления.',
+        darkTheme: 'Тёмная тема', polygonBorders: 'Границы полигонов', centerCrosshair: 'Центральный прицел', screenshot: 'Сделать скриншот',
+        fullscreen: 'Полноэкранный режим', searchFailed: 'Ошибка поиска.', searching: 'Поиск...', copied: 'Скопировано!',
+        mainLayers: 'Основные слои', extraLayers: 'Дополнительные слои',
+        russianTerritory: 'Территория под контролем России', ukrainianTerritory: 'Территория под контролем Украины',
+        ukrainianAdvances: 'Продвижения Украины', russianAdvances: 'Продвижения России', regained: 'Территории, возвращённые за последний месяц',
+        deepstate: 'Заявленная линия фронта DeepState', ria: 'Заявленная линия фронта РИА',
+        mapUpdate: 'Обновление карты', area: 'Площадь',
+        basemapGoogleHybrid: 'Google Hybrid (спутник + подписи)', basemapEsriHybrid: 'Esri Hybrid (спутник + подписи)', basemapEsriSatellite: 'Esri Satellite',
+        basemapOSM: 'OpenStreetMap', basemapTopo: 'Топографическая',
+        designDefault: 'По умолчанию', amkDesign:'Дизайн AMK Mapping', playfraDesign:'Дизайн Playfra', myDrawings:'Мои рисунки', citiesCaptured:'Захваченные города', augustFrontline:'Линия фронта августа 2024', townsVillages:'Посёлки, деревни и города (автор: PWM)', fortifications:'Укрепления (спасибо PMapping832)', grayZone:'Серая зона',
+        twitter: 'Twitter/X', login: 'Войти'
+      }
+    };
+
+    function pt(key) { return (PUBLIC_TRANSLATIONS[publicLanguage] || PUBLIC_TRANSLATIONS.en)[key] || key; }
+    function publicLayerLabel(name) {
+      var m = {
+        'Russian-controlled territory':'russianTerritory', 'Ukrainian-controlled territory':'ukrainianTerritory',
+        'Ukrainian advances':'ukrainianAdvances', 'Russian advances':'russianAdvances',
+        'Territories regained':'regained', 'Territories regained in the last month':'regained',
+        'Claimed DeepState Frontline':'deepstate', 'Claimed RIA Frontline':'ria',
+        'My Drawings':'myDrawings', 'Cities Captured':'citiesCaptured',
+        'August 2024 Frontline':'augustFrontline', 'Towns, villages and cities (credit to PWM)':'townsVillages', 'Fortifications (thanks PMapping832)':'fortifications', 'Gray Zone':'grayZone'
+      };
+      var key = m[name];
+      if (key && PUBLIC_TRANSLATIONS[publicLanguage][key]) return PUBLIC_TRANSLATIONS[publicLanguage][key];
+      return name;
+    }
+    function advanceText(item) {
+      if (!item) return pt('mapUpdate');
+      if (publicLanguage === 'ru') return item.text_ru || item.text_en || item.text || pt('mapUpdate');
+      return item.text_en || item.text || item.text_ru || pt('mapUpdate');
+    }
+    function applyPublicLanguage() {
+      document.documentElement.lang = publicLanguage;
+      var en = document.getElementById('lang-en'), ru = document.getElementById('lang-ru');
+      if (en) en.classList.toggle('active', publicLanguage === 'en');
+      if (ru) ru.classList.toggle('active', publicLanguage === 'ru');
+      var staticMap = {
+        'panel-layers h4':'basemapsLayers','basemap-selector-container strong':'baseMap','design-selector-container strong':'mapDesign',
+        'panel-draw h4':'drawTools','panel-ruler h4':'ruler','panel-coords h4':'coordinates','panel-updates h4':'changelog','panel-settings h4':'settings',
+        'btn-tab-layers':'basemapsLayers','btn-tab-draw':'drawTools','btn-tab-ruler':'ruler','btn-tab-coords':'coordinates','btn-tab-updates':'changelog','btn-tab-settings':'settings',
+        'btn-screenshot':'screenshot','btn-fullscreen':'fullscreen','search-toggle-btn':'search','advance-prev':'previousAdvance','advance-next':'nextAdvance',
+        'toggle-dark-theme-label':'darkTheme','toggle-polygon-borders-label':'polygonBorders','toggle-crosshair-label':'centerCrosshair','twitter-link':'twitter','login-link':'login',
+        'unit-km':'kilometers','unit-mi':'miles'
+      };
+      Object.keys(staticMap).forEach(function(sel){
+        var el = sel.indexOf(' ') !== -1 ? document.querySelector(sel) : document.getElementById(sel);
+        if (!el) return;
+        if (/^(btn-tab-|btn-screenshot|btn-fullscreen|search-toggle-btn|advance-prev|advance-next)$/.test(sel) || sel === 'btn-tab-layers' || sel === 'btn-tab-draw' || sel === 'btn-tab-ruler' || sel === 'btn-tab-coords' || sel === 'btn-tab-updates' || sel === 'btn-tab-settings') {
+          el.title = pt(staticMap[sel]);
+          el.setAttribute('aria-label', el.title);
+        } else {
+          el.textContent = pt(staticMap[sel]);
+        }
+      });
+      var input = document.getElementById('header-search-input'); if (input) input.placeholder = pt('searchPlaceholder');
+      var mapSearch = document.getElementById('mapSearch'); if (mapSearch) mapSearch.placeholder = '🔍 ' + pt('searchPlaceholder');
+      var date = document.getElementById('timeline-date-input'); if (date) date.title = pt('jumpDate');
+      var lock = document.getElementById('btn-advance-lock'); if (lock) { lock.title = advanceMapLocked ? pt('unlockAdvance') : pt('lockAdvance'); lock.setAttribute('aria-label', lock.title); }
+      var drawButtons = {
+        'btn-freehand':'freehand','btn-freehand-arrow':'freehandArrow','btn-line':'line','btn-arrow':'arrow','btn-dashed-freehand':'dashedFreehand','btn-dashed-freehand-arrow':'dashedFreehandArrow','btn-dashed-line':'dashedLine','btn-dashed-arrow':'dashedArrow','btn-polygon':'polygon','btn-rectangle':'rectangle','btn-flag-ua':'ukraineFlag','btn-flag-ru':'russiaFlag','btn-eraser':'eraser'
+      };
+      Object.keys(drawButtons).forEach(function(id){ var el=document.getElementById(id); if(el) el.textContent=pt(drawButtons[id]); });
+      var finishBtns=document.querySelectorAll('#panel-draw .tool-btn'); if(finishBtns[finishBtns.length-2]) finishBtns[finishBtns.length-2].textContent=pt('finishShape'); if(finishBtns[finishBtns.length-1]) finishBtns[finishBtns.length-1].textContent=pt('clearDrawings');
+      var rBtns=document.querySelectorAll('#panel-ruler .tool-btn'); if(rBtns[0]) rBtns[0].textContent=pt('finishMeasuring'); if(rBtns[1]) rBtns[1].textContent=pt('clearLine');
+      var thickness=document.querySelector('#panel-draw .thickness-row label'); if(thickness) thickness.childNodes[0].textContent=pt('thickness') + ': ';
+      var colors={red:'color-red',blue:'color-blue',green:'color-green',yellow:'color-yellow',black:'color-black',white:'color-white'}; Object.keys(colors).forEach(function(k){var e=document.getElementById(colors[k]); if(e)e.textContent=pt(k);});
+      var labels=document.querySelectorAll('#toggle-dark-theme + label');
+      updateSidebarLayerControl(); updateDesignSelector(); renderAdvanceBar(); updateInstructions();
+    }
+    window.setPublicLanguage = function(lang) {
+  lang = 'en';
+      publicLanguage = lang === 'ru' ? 'ru' : 'en';
+      localStorage.setItem('polrad_language', publicLanguage);
+      // Google Maps JS reads its language at load time, so reload the page
+      // to recreate Google Hybrid with the newly selected language.
+      window.location.reload();
+    };
+    document.addEventListener('DOMContentLoaded', function(){
+      var en=document.getElementById('lang-en'), ru=document.getElementById('lang-ru');
+      if(en) en.onclick=function(){setPublicLanguage('en');}; if(ru) ru.onclick=function(){setPublicLanguage('ru');};
+    });
+
+    window.addEventListener('load', function(){ setTimeout(applyPublicLanguage, 100); });
 
     async function takeMapScreenshot() {
       var mapElement = document.getElementById('map');
@@ -1232,7 +1400,7 @@
     // Google Hybrid is promoted to the default only after Google is confirmed usable.
     if (googleHybrid) {
       baseLayers = {
-        "Google Hybrid (Satellite + English Labels)": googleHybrid,
+        "Google Hybrid (Satellite + Labels)": googleHybrid,
         ...baseLayers
       };
     }
@@ -1498,7 +1666,7 @@
       }
 
       results.innerHTML =
-        '<div class="header-search-result">Searching...</div>';
+        '<div class="header-search-result">' + pt('searching') + '</div>';
 
       results.classList.add('show');
 
@@ -1538,7 +1706,7 @@
       }).catch(function() {
 
         results.innerHTML =
-          '<div class="header-search-result">Search failed.</div>';
+          '<div class="header-search-result">' + pt('searchFailed') + '</div>';
 
       });
     }
@@ -1638,7 +1806,7 @@
 
       label.appendChild(radio);
       label.appendChild(
-        document.createTextNode(' ' + key)
+        document.createTextNode(' ' + (key === 'Google Hybrid (Satellite + Labels)' ? pt('basemapGoogleHybrid') : key === 'Esri Hybrid (Satellite + Labels)' ? pt('basemapEsriHybrid') : key === 'Esri Satellite' ? pt('basemapEsriSatellite') : key === 'OpenStreetMap' ? pt('basemapOSM') : pt('basemapTopo')))
       );
 
       basemapContainer.appendChild(label);
@@ -1676,7 +1844,7 @@
           .setContent(
             titleText +
             nameText +
-            "<b>Area:</b> " +
+            "<b>" + pt('area') + ":</b> " +
             areaInKm2 +
             " km² (" +
             areaInMi2 +
@@ -1721,7 +1889,7 @@
       function copied() {
         if (!button) return;
         var oldText = button.textContent;
-        button.textContent = "Copied!";
+        button.textContent = pt('copied');
         setTimeout(function() {
           button.textContent = oldText;
         }, 1200);
@@ -1871,9 +2039,7 @@
       var btn = document.getElementById('btn-advance-lock');
       if (btn) {
         btn.textContent = advanceMapLocked ? '🔒' : '🔓';
-        btn.title = advanceMapLocked
-          ? 'Unlock automatic advance map movement'
-          : 'Lock automatic advance map movement';
+        btn.title = advanceMapLocked ? pt('unlockAdvance') : pt('lockAdvance');
         btn.setAttribute('aria-label', btn.title);
         btn.classList.toggle('active', advanceMapLocked);
       }
@@ -1927,14 +2093,14 @@
 
       var item = advances[advanceIndex];
       bar.classList.add('show');
-      document.getElementById('advance-text').textContent = item.text || 'Map update';
+      document.getElementById('advance-text').textContent = advanceText(item);
       document.getElementById('advance-area').innerHTML = formatAdvanceArea(item);
       var dateInput = document.getElementById('timeline-date-input');
       if (dateInput) {
         dateInput.value = item.date || '';
         dateInput.title = item.time
-          ? 'Posted ' + (item.date || '') + ' ' + item.time + ' (click to jump to a date)'
-          : 'Jump to a date';
+          ? (publicLanguage === 'ru' ? 'Опубликовано ' : 'Posted ') + (item.date || '') + ' ' + item.time + (publicLanguage === 'ru' ? ' (нажмите, чтобы перейти к дате)' : ' (click to jump to a date)')
+          : pt('jumpDate');
       }
       document.getElementById('advance-prev').disabled = advanceIndex <= 0;
       document.getElementById('advance-next').disabled = advanceIndex >= advances.length - 1;
@@ -1942,6 +2108,14 @@
 
     function focusAdvance(item) {
       if (advanceMapLocked || !item || !item.focus || !map) return;
+      if (Number.isFinite(Number(item.focus.south)) && Number.isFinite(Number(item.focus.west)) && Number.isFinite(Number(item.focus.north)) && Number.isFinite(Number(item.focus.east))) {
+        var bounds = L.latLngBounds([
+          [Number(item.focus.south), Number(item.focus.west)],
+          [Number(item.focus.north), Number(item.focus.east)]
+        ]);
+        map.fitBounds(bounds, { padding: [40, 40], maxZoom: 14, animate: true });
+        return;
+      }
       var lat = Number(item.focus.lat);
       var lng = Number(item.focus.lng);
       var zoom = Number(item.focus.zoom);
@@ -2365,7 +2539,7 @@
         });
 
         label.appendChild(radio);
-        label.appendChild(document.createTextNode(' ' + name));
+        label.appendChild(document.createTextNode(' ' + publicLayerLabel(name)));
         container.appendChild(label);
       });
     }
@@ -2678,7 +2852,7 @@
 
             label.appendChild(
               document.createTextNode(
-                ' ' + name
+                ' ' + publicLayerLabel(name)
               )
             );
 
@@ -2690,14 +2864,14 @@
 
       container.appendChild(
         addGroup(
-          'Main Layers',
+          pt('mainLayers'),
           mainLayers
         )
       );
 
       container.appendChild(
         addGroup(
-          'Extra Layers',
+          pt('extraLayers'),
           extraLayers
         )
       );
@@ -2846,7 +3020,7 @@
         })
         .catch(function(err) {
           console.error(err);
-          dateInput.title = 'Could not load ' + date;
+          dateInput.title = (publicLanguage === 'ru' ? 'Не удалось загрузить ' : 'Could not load ') + date;
         });
     }
 
@@ -2890,7 +3064,7 @@
 
         if (!updates.length) {
           container.innerHTML =
-            '<em>No updates yet.</em>';
+            '<em>' + pt('noUpdates') + '</em>';
           return;
         }
 
@@ -2981,7 +3155,7 @@
         document.getElementById(
           'updates-content'
         ).innerHTML =
-          '<em>Could not load updates.</em>'
+          '<em>' + pt('couldNotLoadUpdates') + '</em>'
       );
 
     var activeTool = null;
@@ -3064,34 +3238,25 @@
       var drawMsg = document.getElementById('draw-result');
       var rulerMsg = document.getElementById('ruler-result');
       var coordsMsg = document.getElementById('coords-result');
-
       var msgs = {
-        polygon: "Click points to trace a shape, then click 'Finish Shape'.",
-        freehand: "Click and drag on the map to draw freely.",
-        'freehand-arrow': "Click and drag to draw a line. An arrowhead will be added at the tip when you release.",
-        'dashed-freehand': "Click and drag on the map to draw a dashed line freely.",
-        'dashed-freehand-arrow': "Click and drag to draw a dashed line. An arrowhead will be added at the tip when you release.",
-        line: "Click points to draw a line, then click 'Finish Shape'.",
-        'dashed-line': "Click points to draw a dashed line, then click 'Finish Shape'.",
-        arrow: "Click start point, then click end point to place an arrow.",
-        'dashed-arrow': "Click start point, then click end point to place a dashed arrow.",
-        rectangle: "Click one corner, then click opposite corner.",
-        'flag-ua': "Click anywhere on the map to drop a Ukraine flag marker.",
-        'flag-ru': "Click anywhere on the map to drop a Russia flag marker.",
-        eraser: "Click on any drawn shape or line to erase it.",
-        ruler: "Click points on the map to measure distance.",
-        coords: "Click anywhere on the map to display its precise coordinates."
+        polygon: publicLanguage === 'ru' ? "Нажимайте точки, чтобы обвести фигуру, затем нажмите «Завершить фигуру»." : "Click points to trace a shape, then click 'Finish Shape'.",
+        freehand: publicLanguage === 'ru' ? "Зажмите кнопку мыши и рисуйте свободно." : "Click and drag on the map to draw freely.",
+        'freehand-arrow': publicLanguage === 'ru' ? "Зажмите кнопку мыши и нарисуйте линию. После отпускания на конце появится стрелка." : "Click and drag to draw a line. An arrowhead will be added at the tip when you release.",
+        'dashed-freehand': publicLanguage === 'ru' ? "Зажмите кнопку мыши и рисуйте пунктирную линию." : "Click and drag on the map to draw a dashed line freely.",
+        'dashed-freehand-arrow': publicLanguage === 'ru' ? "Зажмите кнопку мыши и нарисуйте пунктирную линию. После отпускания появится стрелка." : "Click and drag to draw a dashed line. An arrowhead will be added at the tip when you release.",
+        line: publicLanguage === 'ru' ? "Нажимайте точки, чтобы нарисовать линию, затем нажмите «Завершить фигуру»." : "Click points to draw a line, then click 'Finish Shape'.",
+        'dashed-line': publicLanguage === 'ru' ? "Нажимайте точки, чтобы нарисовать пунктирную линию, затем нажмите «Завершить фигуру»." : "Click points to draw a dashed line, then click 'Finish Shape'.",
+        arrow: publicLanguage === 'ru' ? "Нажмите начальную точку, затем конечную, чтобы поставить стрелку." : "Click start point, then click end point to place an arrow.",
+        'dashed-arrow': publicLanguage === 'ru' ? "Нажмите начальную точку, затем конечную, чтобы поставить пунктирную стрелку." : "Click start point, then click end point to place a dashed arrow.",
+        rectangle: publicLanguage === 'ru' ? "Нажмите один угол, затем противоположный угол." : "Click one corner, then click opposite corner.",
+        'flag-ua': publicLanguage === 'ru' ? "Нажмите на карте, чтобы поставить флаг Украины." : "Click anywhere on the map to drop a Ukraine flag marker.",
+        'flag-ru': publicLanguage === 'ru' ? "Нажмите на карте, чтобы поставить флаг России." : "Click anywhere on the map to drop a Russia flag marker.",
+        eraser: publicLanguage === 'ru' ? "Нажмите на нарисованную фигуру или линию, чтобы удалить её." : "Click on any drawn shape or line to erase it.",
+        ruler: pt('measurePrompt'), coords: pt('preciseCoords')
       };
-
-      if (activeTool === 'ruler') {
-        rulerMsg.innerText = msgs.ruler;
-      } else if (activeTool === 'coords') {
-        coordsMsg.innerText = msgs.coords;
-      } else {
-        drawMsg.innerText = activeTool
-          ? msgs[activeTool]
-          : "Select a shape to draw.";
-      }
+      if (activeTool === 'ruler') rulerMsg.innerText = msgs.ruler;
+      else if (activeTool === 'coords') coordsMsg.innerText = msgs.coords;
+      else drawMsg.innerText = activeTool ? msgs[activeTool] : pt('selectShape');
     }
 
     map.on('mousedown', function(e) {
@@ -3266,7 +3431,7 @@
       var copyButton =
         "<button class=\"coords-copy-btn\" type=\"button\" " +
         "onclick=\"copyCoordinates(" + latText + ", " + lngText + ", this)\">" +
-        "Copy coordinates</button>";
+        (publicLanguage === 'ru' ? 'Копировать координаты' : 'Copy coordinates') + "</button>";
 
       clearCoordMarker();
 
@@ -3610,3 +3775,5 @@
 
 </body>
 </html>
+
+heres the public map code. please update it
