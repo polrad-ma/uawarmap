@@ -1,5 +1,32 @@
 [
   {
+    "id": "adv-1790106675090",
+    "date": "2026-09-22",
+    "time": "21:51:15",
+    "text_en": "Approximate configuration of AFU successes in the Komar direction",
+    "text_ru": "Примерная конфигурация успехов ВСУ в напаравлении Комара",
+    "text": "Approximate configuration of AFU successes in the Komar direction",
+    "side": "ua",
+    "areaChange": 5.18,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 5.18
+      }
+    ],
+    "areaDisplay": "+5.18 km²",
+    "focus": {
+      "south": 47.943256741982665,
+      "west": 36.63476943969727,
+      "north": 48.01679806422947,
+      "east": 36.82634353637696
+    },
+    "polygonFids": [
+      "advance-1790106472883-jg42z1rg7vd"
+    ],
+    "snapshot": "history/advances/adv-1790106675090.json"
+  },
+  {
     "id": "adv-1790096257758",
     "date": "2026-09-22",
     "time": "18:57:37",
