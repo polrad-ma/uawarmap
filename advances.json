@@ -1,5 +1,38 @@
 [
   {
+    "id": "adv-1790182856576",
+    "date": "2026-09-23",
+    "time": "19:00:56",
+    "text_en": "On the Lyman direction Ukrainian Defense Forces recaptured the village of Kolodyazi",
+    "text_ru": "ВСУ воссстановили контроль над н.п. Колодези на Лиманском направлении",
+    "text": "On the Lyman direction Ukrainian Defense Forces recaptured the village of Kolodyazi",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 7.52,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 7.52
+      }
+    ],
+    "areaDisplay": "+7.52 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 49.05395775375159,
+      "west": 37.787303924560554,
+      "north": 49.11781552053137,
+      "east": 37.96720504760743
+    },
+    "polygonFids": [
+      "advance-1790182764529-kozgvsawh4g"
+    ],
+    "snapshot": "history/advances/adv-1790182856576.json",
+    "beforeAreas": {
+      "ru": 241131.262775641,
+      "ua": 475146.1846385777
+    }
+  },
+  {
     "id": "adv-1790179097741",
     "date": "2026-09-23",
     "time": "17:58:17",
