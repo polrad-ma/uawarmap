@@ -1,5 +1,31 @@
 [
   {
+    "id": "adv-1790170081168",
+    "date": "2026-09-23",
+    "time": "15:28:01",
+    "text_en": "Ukrainian forces recaptured the city of Lyman. The second battle lasted 330 days",
+    "text_ru": "ВСУ восстановили контроль над Лиманом. Вторая битва длилась 330 дней",
+    "text": "Ukrainian forces recaptured the city of Lyman. The second battle lasted 330 days",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 0,
+    "areaEffects": [],
+    "areaDisplay": "",
+    "areaColor": "blue",
+    "focus": {
+      "south": 48.95057735524269,
+      "west": 37.72430419921876,
+      "north": 49.01985919086641,
+      "east": 37.90660858154297
+    },
+    "polygonFids": [],
+    "snapshot": "history/advances/adv-1790170081168.json",
+    "beforeAreas": {
+      "ru": 241143.9044607981,
+      "ua": 475159.53170017555
+    }
+  },
+  {
     "id": "adv-1790164228921",
     "date": "2026-09-23",
     "time": "13:50:28",
@@ -7,6 +33,7 @@
     "text_ru": "Продвижение ВС РФ в \"Волчанском котле\" и окружениях. Было занято село Черняков, часть Ивашкино и Василевки",
     "text": "Russian advances in/around the \"Vovchansk pocket\". The village of Chernyakiv was captured, as well as parts of Ivashchyne and Vasylivka",
     "side": "ru",
+    "advanceType": "normal",
     "areaChange": 23.36,
     "areaEffects": [
       {
@@ -15,6 +42,7 @@
       }
     ],
     "areaDisplay": "+23.36 km²",
+    "areaColor": "red",
     "focus": {
       "south": 50.16150470367009,
       "west": 37.05757141113282,
@@ -26,7 +54,11 @@
       "advance-1790163907942-3p4j9ojlmgv",
       "advance-1790163986990-b3u50td3c9o"
     ],
-    "snapshot": "history/advances/adv-1790164228921.json"
+    "snapshot": "history/advances/adv-1790164228921.json",
+    "beforeAreas": {
+      "ru": 241120.547964856,
+      "ua": 475202.96284055593
+    }
   },
   {
     "id": "adv-1790106675090",
@@ -36,6 +68,7 @@
     "text_ru": "Примерная конфигурация успехов ВСУ в направлении Комара",
     "text": "Approximate configuration of AFU successes in the Komar direction",
     "side": "ua",
+    "advanceType": "normal",
     "areaChange": 5.18,
     "areaEffects": [
       {
@@ -44,6 +77,7 @@
       }
     ],
     "areaDisplay": "+5.18 km²",
+    "areaColor": "blue",
     "focus": {
       "south": 47.943256741982665,
       "west": 36.63476943969727,
@@ -53,16 +87,19 @@
     "polygonFids": [
       "advance-1790106472883-jg42z1rg7vd"
     ],
-    "snapshot": "history/advances/adv-1790106675090.json"
+    "snapshot": "history/advances/adv-1790106675090.json",
+    "beforeAreas": {
+      "ru": 241116.6775059568,
+      "ua": 475197.7838626855
+    }
   },
   {
     "id": "adv-1790096257758",
     "date": "2026-09-22",
     "time": "18:57:37",
-    "text_en": "Ukrainian forces recaptured the village of Zapadne",
-    "text_ru": "ВСУ восстановили контроль над Западным",
     "text": "Ukrainian forces recaptured the village of Zapadne",
     "side": "ua",
+    "advanceType": "normal",
     "areaChange": 3.75,
     "areaEffects": [
       {
@@ -71,6 +108,7 @@
       }
     ],
     "areaDisplay": "+3.75 km²",
+    "areaColor": "blue",
     "focus": {
       "lat": 49.809216143855764,
       "lng": 37.63658523559571,
@@ -79,16 +117,21 @@
     "polygonFids": [
       "advance-1790089547241-046x3drbw2jh"
     ],
-    "snapshot": "history/advances/adv-1790096257758.json"
+    "snapshot": "history/advances/adv-1790096257758.json",
+    "beforeAreas": {
+      "ru": 241116.6775059568,
+      "ua": 475194.03457483766
+    },
+    "text_en": "Ukrainian forces recaptured the village of Zapadne",
+    "text_ru": "ВСУ восстановили контроль над Западным"
   },
   {
     "id": "adv-1790089297905",
     "date": "2026-09-22",
     "time": "17:01:35",
-    "text_en": "Ukrainian counterattacks in Hannivka",
-    "text_ru": "Украинские контратаки в Анновке",
     "text": "Ukrainian counterattacks in Hannivka",
     "side": "ua",
+    "advanceType": "gray",
     "areaChange": -0.76,
     "areaEffects": [
       {
@@ -97,22 +140,28 @@
       }
     ],
     "areaDisplay": "-0.76 km²",
+    "areaColor": "red",
     "focus": {
       "lat": 48.4838882385349,
       "lng": 37.134089469909675,
       "zoom": 15
     },
     "polygonFids": [],
-    "snapshot": "history/advances/adv-1790089297905.json"
+    "snapshot": "history/advances/adv-1790089297905.json",
+    "beforeAreas": {
+      "ru": 241084.09627017294,
+      "ua": 475194.03457483766
+    },
+    "text_en": "Ukrainian counterattacks in Hannivka",
+    "text_ru": "Украинские контратаки в Анновке"
   },
   {
     "id": "adv-1790083802835",
     "date": "2026-09-22",
     "time": "15:30:02",
-    "text_en": "Russian forces entered Novohryshine",
-    "text_ru": "",
     "text": "Russian forces entered Novohryshine",
     "side": "ru",
+    "advanceType": "normal",
     "areaChange": 1.25,
     "areaEffects": [
       {
@@ -121,6 +170,7 @@
       }
     ],
     "areaDisplay": "+1.25 km²",
+    "areaColor": "red",
     "focus": {
       "lat": 48.44298119773136,
       "lng": 37.13241577148438,
@@ -129,16 +179,21 @@
     "polygonFids": [
       "advance-1790083759830-45ckzkjch3f"
     ],
-    "snapshot": "history/advances/adv-1790083802835.json"
+    "snapshot": "history/advances/adv-1790083802835.json",
+    "beforeAreas": {
+      "ru": 241082.84670185883,
+      "ua": 475194.29366431356
+    },
+    "text_en": "Russian forces entered Novohryshine",
+    "text_ru": ""
   },
   {
     "id": "adv-1790082273679",
     "date": "2026-09-22",
     "time": "15:04:31",
-    "text_en": "Ukrainains re-entered Komar",
-    "text_ru": "",
     "text": "Ukrainains re-entered Komar",
     "side": "ua",
+    "advanceType": "gray",
     "areaChange": -2.49,
     "areaEffects": [
       {
@@ -147,22 +202,28 @@
       }
     ],
     "areaDisplay": "-2.49 km²",
+    "areaColor": "blue",
     "focus": {
       "lat": 47.98288440063732,
       "lng": 36.75999641418458,
       "zoom": 14
     },
     "polygonFids": [],
-    "snapshot": "history/advances/adv-1790082273679.json"
+    "snapshot": "history/advances/adv-1790082273679.json",
+    "beforeAreas": {
+      "ru": 241085.3391895824,
+      "ua": 475194.29366431356
+    },
+    "text_en": "Ukrainains re-entered Komar",
+    "text_ru": ""
   },
   {
     "id": "adv-1790082148583",
     "date": "2026-09-22",
     "time": "15:02:28",
-    "text_en": "The AFU counterattack in Kupyansk",
-    "text_ru": "",
     "text": "The AFU counterattack in Kupyansk",
     "side": "ua",
+    "advanceType": "normal",
     "areaChange": 1.56,
     "areaEffects": [
       {
@@ -171,6 +232,7 @@
       }
     ],
     "areaDisplay": "+1.56 km²",
+    "areaColor": "blue",
     "focus": {
       "lat": 49.72220419138911,
       "lng": 37.64259338378907,
@@ -179,16 +241,21 @@
     "polygonFids": [
       "advance-1790082106941-rloux81ik6"
     ],
-    "snapshot": "history/advances/adv-1790082148583.json"
+    "snapshot": "history/advances/adv-1790082148583.json",
+    "beforeAreas": {
+      "ru": 241086.1314447339,
+      "ua": 475192.7369953921
+    },
+    "text_en": "The AFU counterattack in Kupyansk",
+    "text_ru": ""
   },
   {
     "id": "adv-1790012846132",
     "date": "2026-09-21",
     "time": "19:47:26",
-    "text_en": "Russian forces captured Ivanivka. Infiltration groups are present in Blahodatne",
-    "text_ru": "",
     "text": "Russian forces captured Ivanivka. Infiltration groups are present in Blahodatne",
     "side": "ru",
+    "advanceType": "normal",
     "areaChange": 3.82,
     "areaEffects": [
       {
@@ -197,6 +264,7 @@
       }
     ],
     "areaDisplay": "+3.82 km²",
+    "areaColor": "red",
     "focus": {
       "lat": 50.246628587463974,
       "lng": 37.29669570922852,
@@ -205,14 +273,18 @@
     "polygonFids": [
       "advance-1790012808487-ut1fyna4ivr"
     ],
-    "snapshot": "history/advances/adv-1790012846132.json"
+    "snapshot": "history/advances/adv-1790012846132.json",
+    "beforeAreas": {
+      "ru": 241089.1605640336,
+      "ua": 475197.91826632107
+    },
+    "text_en": "Russian forces captured Ivanivka. Infiltration groups are present in Blahodatne",
+    "text_ru": ""
   },
   {
     "id": "adv-1789995070671",
     "date": "2026-09-21",
     "time": "14:51:07",
-    "text_en": "Changes in the situation on the Lyman direction",
-    "text_ru": "",
     "text": "Changes in the situation on the Lyman direction",
     "side": "ua",
     "areaChange": 5.18,
@@ -223,6 +295,7 @@
       }
     ],
     "areaDisplay": "+5.18 km²",
+    "areaColor": "blue",
     "focus": {
       "lat": 48.91962290501197,
       "lng": 37.92377471923829,
@@ -232,14 +305,18 @@
       "advance-1789994928144-i39hdpg7ezt",
       "advance-1789995001908-y2sqxl5yivl"
     ],
-    "snapshot": "history/advances/adv-1789995070671.json"
+    "snapshot": "history/advances/adv-1789995070671.json",
+    "beforeAreas": {
+      "ru": 241094.5278631877,
+      "ua": 475221.43756408035
+    },
+    "text_en": "Changes in the situation on the Lyman direction",
+    "text_ru": ""
   },
   {
     "id": "adv-1789967435974",
     "date": "2026-09-21",
     "time": "07:10:33",
-    "text_en": "Ukrainian Defense forces regained several positions south of Stavky",
-    "text_ru": "",
     "text": "Ukrainian Defense forces regained several positions south of Stavky",
     "side": "ua",
     "areaChange": 3.65,
@@ -250,6 +327,7 @@
       }
     ],
     "areaDisplay": "+3.65 km²",
+    "areaColor": "blue",
     "focus": {
       "lat": 49.0291457688561,
       "lng": 37.83760070800782,
@@ -258,19 +336,24 @@
     "polygonFids": [
       "advance-1789967394759-djrbzqzq05q"
     ],
-    "snapshot": "history/advances/adv-1789967435974.json"
+    "snapshot": "history/advances/adv-1789967435974.json",
+    "beforeAreas": {
+      "ru": 241094.5278631877,
+      "ua": 475217.8270946395
+    },
+    "text_en": "Ukrainian Defense forces regained several positions south of Stavky",
+    "text_ru": ""
   },
   {
     "id": "adv-1789933993088",
     "date": "2026-09-20",
     "time": "21:53:10",
-    "text_en": "Russian forces captured the town of Budarky",
-    "text_ru": "",
     "text": "Russian forces captured the town of Budarky",
     "side": "ru",
     "areaChange": 0,
     "areaEffects": [],
     "areaDisplay": "",
+    "areaColor": "red",
     "focus": {
       "lat": 50.399573120916635,
       "lng": 37.428445816040046,
@@ -279,14 +362,18 @@
     "polygonFids": [
       "advance-1789933873190-gcee1q2xjef"
     ],
-    "snapshot": "history/advances/adv-1789933993088.json"
+    "snapshot": "history/advances/adv-1789933993088.json",
+    "beforeAreas": {
+      "ru": 241097.82451054093,
+      "ua": 475217.8270946395
+    },
+    "text_en": "Russian forces captured the town of Budarky",
+    "text_ru": ""
   },
   {
     "id": "adv-1789921246064",
     "date": "2026-09-20",
     "time": "18:20:43",
-    "text_en": "Russian forces completed the capture of Kucheriv Yar on the Druzhkivka direction",
-    "text_ru": "",
     "text": "Russian forces completed the capture of Kucheriv Yar on the Druzhkivka direction",
     "side": "ru",
     "areaChange": 4.62,
@@ -297,6 +384,7 @@
       }
     ],
     "areaDisplay": "+4.62 km²",
+    "areaColor": "red",
     "focus": {
       "lat": 48.5043791559714,
       "lng": 37.31300354003907,
@@ -305,14 +393,18 @@
     "polygonFids": [
       "advance-1789921204844-xcdvosdgyo"
     ],
-    "snapshot": "history/advances/adv-1789921246064.json"
+    "snapshot": "history/advances/adv-1789921246064.json",
+    "beforeAreas": {
+      "ru": 241089.5981904806,
+      "ua": 475217.873179532
+    },
+    "text_en": "Russian forces completed the capture of Kucheriv Yar on the Druzhkivka direction",
+    "text_ru": ""
   },
   {
     "id": "adv-1789921109545",
     "date": "2026-09-20",
     "time": "18:18:27",
-    "text_en": "Correction of the frontline in Novopidhorodne",
-    "text_ru": "",
     "text": "Correction of the frontline in Novopidhorodne",
     "side": "ru",
     "areaChange": 0,
@@ -323,20 +415,25 @@
       }
     ],
     "areaDisplay": "-3.26 km²",
+    "areaColor": "red",
     "focus": {
       "lat": 48.25459835019639,
       "lng": 36.914834976196296,
       "zoom": 14
     },
     "polygonFids": [],
-    "snapshot": "history/advances/adv-1789921109545.json"
+    "snapshot": "history/advances/adv-1789921109545.json",
+    "beforeAreas": {
+      "ru": 241092.8534128159,
+      "ua": 475217.873179532
+    },
+    "text_en": "Correction of the frontline in Novopidhorodne",
+    "text_ru": ""
   },
   {
     "id": "adv-1789915651617",
     "date": "2026-09-20",
     "time": "16:47:29",
-    "text_en": "Ukrainian forces are conducting clearing operations in Dobropillia and Hannivka",
-    "text_ru": "",
     "text": "Ukrainian forces are conducting clearing operations in Dobropillia and Hannivka",
     "side": "ua",
     "areaChange": 3.24,
@@ -347,6 +444,7 @@
       }
     ],
     "areaDisplay": "+3.24 km²",
+    "areaColor": "blue",
     "focus": {
       "lat": 48.47801388101845,
       "lng": 37.12417602539063,
@@ -356,14 +454,18 @@
       "advance-1789915593311-84ykowo1wso",
       "advance-1789915609909-uc4uovvhgvg"
     ],
-    "snapshot": "history/advances/adv-1789915651617.json"
+    "snapshot": "history/advances/adv-1789915651617.json",
+    "beforeAreas": {
+      "ru": 241089.61582423362,
+      "ua": 475214.63559094863
+    },
+    "text_en": "Ukrainian forces are conducting clearing operations in Dobropillia and Hannivka",
+    "text_ru": ""
   },
   {
     "id": "adv-1789896908946",
     "date": "2026-09-20",
     "time": "11:35:05",
-    "text_en": "Russian forces advanced near Novopidhorodne",
-    "text_ru": "",
     "text": "Russian forces advanced near Novopidhorodne",
     "side": "ru",
     "areaChange": 4.59,
@@ -380,6 +482,12 @@
       "zoom": 14
     },
     "polygonFids": [],
-    "snapshot": "history/advances/adv-1789896908946.json"
+    "snapshot": "history/advances/adv-1789896908946.json",
+    "beforeAreas": {
+      "ru": 241085.02289422718,
+      "ua": 475214.63559094863
+    },
+    "text_en": "Russian forces advanced near Novopidhorodne",
+    "text_ru": ""
   }
 ]
