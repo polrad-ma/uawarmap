@@ -1,5 +1,37 @@
 [
   {
+    "id": "adv-1790179097741",
+    "date": "2026-09-23",
+    "time": "17:58:17",
+    "text_en": "Russian forces entered the urban-type settlement Bylyi Kolodiaz",
+    "text_ru": "Российские войска вошли в пгт Белый Колодезь",
+    "text": "Russian forces entered the urban-type settlement Bylyi Kolodiaz",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 19.21,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 19.21
+      }
+    ],
+    "areaDisplay": "+19.21 km²",
+    "areaColor": "red",
+    "focus": {
+      "lat": 50.21299821340533,
+      "lng": 37.13378906250001,
+      "zoom": 13
+    },
+    "polygonFids": [
+      "advance-1790178999127-f3o9gs2mbum"
+    ],
+    "snapshot": "history/advances/adv-1790179097741.json",
+    "beforeAreas": {
+      "ru": 241112.05004855533,
+      "ua": 475146.1846385777
+    }
+  },
+  {
     "id": "adv-1790178812708",
     "date": "2026-09-23",
     "time": "17:53:30",
