@@ -1,5 +1,37 @@
 [
   {
+    "id": "adv-1790176960502",
+    "date": "2026-09-23",
+    "time": "17:22:40",
+    "text_en": "Ukrainian forces have restored control over the city of Lyman. The second battle lasted 330 days",
+    "text_ru": "ВСУ восстановили полный контроль над городом Лиман. Вторая битва длилась 330 дней",
+    "text": "Ukrainian forces have restored control over the city of Lyman. The second battle lasted 330 days",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 3.35,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 3.35
+      }
+    ],
+    "areaDisplay": "+3.35 km²",
+    "areaColor": "blue",
+    "focus": {
+      "lat": 48.93140928443142,
+      "lng": 37.86609649658204,
+      "zoom": 12
+    },
+    "polygonFids": [
+      "advance-1790176844657-nu1gvhff0a"
+    ],
+    "snapshot": "history/advances/adv-1790176960502.json",
+    "beforeAreas": {
+      "ru": 241130.97828312064,
+      "ua": 475159.53170017555
+    }
+  },
+  {
     "id": "adv-1790170081168",
     "date": "2026-09-23",
     "time": "15:28:01",
