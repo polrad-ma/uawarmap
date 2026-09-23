@@ -1,5 +1,34 @@
 [
   {
+    "id": "adv-1790164228921",
+    "date": "2026-09-23",
+    "time": "13:50:28",
+    "text_en": "Russian advances in/around the \"Vovchansk pocket\". The village of Chernyakiv was captured, as well as parts of Ivashchyne and Vasylivka",
+    "text_ru": "Продвижение ВС РФ в \"Волчанском котле\" и окружениях. Было занято село Черняков, часть Ивашкино и Василевки",
+    "text": "Russian advances in/around the \"Vovchansk pocket\". The village of Chernyakiv was captured, as well as parts of Ivashchyne and Vasylivka",
+    "side": "ru",
+    "areaChange": 23.36,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 23.36
+      }
+    ],
+    "areaDisplay": "+23.36 km²",
+    "focus": {
+      "south": 50.16150470367009,
+      "west": 37.05757141113282,
+      "north": 50.4373907029876,
+      "east": 37.77717590332032
+    },
+    "polygonFids": [
+      "advance-1790163858793-bf4jv64s818",
+      "advance-1790163907942-3p4j9ojlmgv",
+      "advance-1790163986990-b3u50td3c9o"
+    ],
+    "snapshot": "history/advances/adv-1790164228921.json"
+  },
+  {
     "id": "adv-1790106675090",
     "date": "2026-09-22",
     "time": "21:51:15",
@@ -57,7 +86,7 @@
     "date": "2026-09-22",
     "time": "17:01:35",
     "text_en": "Ukrainian counterattacks in Hannivka",
-    "text_ru": "",
+    "text_ru": "Украинские контратаки в Анновке",
     "text": "Ukrainian counterattacks in Hannivka",
     "side": "ua",
     "areaChange": -0.76,
