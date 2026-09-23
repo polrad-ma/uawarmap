@@ -1,5 +1,35 @@
 [
   {
+    "id": "adv-1790178812708",
+    "date": "2026-09-23",
+    "time": "17:53:30",
+    "text_en": "The RuAF are conducting attacks in Yehorivka. Exact situation under clarification",
+    "text_ru": "ВС РФ проводят атаки в Егоровке. Ситуация уточняется.",
+    "text": "The RuAF are conducting attacks in Yehorivka. Exact situation under clarification",
+    "side": "ru",
+    "advanceType": "gray",
+    "areaChange": -4.42,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": -4.42
+      }
+    ],
+    "areaDisplay": "-4.42 km²",
+    "areaColor": "blue",
+    "focus": {
+      "lat": 47.62632650961833,
+      "lng": 35.94245910644532,
+      "zoom": 14
+    },
+    "polygonFids": [],
+    "snapshot": "history/advances/adv-1790178812708.json",
+    "beforeAreas": {
+      "ru": 241130.97828312064,
+      "ua": 475162.8797819321
+    }
+  },
+  {
     "id": "adv-1790176960502",
     "date": "2026-09-23",
     "time": "17:22:40",
