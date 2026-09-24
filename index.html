@@ -3043,8 +3043,8 @@ public map:
     // before the old state is removed, then both states cross-dissolve
     // together.  This keeps the map continuously populated instead of
     // producing the blank/loading gap seen during rapid Previous/Next use.
-    var ADVANCE_TRANSITION_MS = 1250;
-    var ADVANCE_FOCUS_MS = 1250;
+    var ADVANCE_TRANSITION_MS = 2400;
+    var ADVANCE_FOCUS_MS = 1800;
     var advanceTransitionToken = 0;
     var advanceSnapshotCache = Object.create(null);
     var advanceSnapshotRequests = Object.create(null);
