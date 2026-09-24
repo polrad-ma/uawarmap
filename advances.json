@@ -1,5 +1,40 @@
 [
   {
+    "id": "adv-1790274659958",
+    "date": "2026-09-24",
+    "time": "20:30:59",
+    "text_en": "The Ukrainian counteroffensive in the Komar direction continues",
+    "text_ru": "ВСУ продолжают контрнаступление в направлении Комара",
+    "text": "The Ukrainian counteroffensive in the Komar direction continues",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 6.26,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 6.26
+      }
+    ],
+    "areaDisplay": "+6.26 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 47.960617340582715,
+      "west": 36.63854598999024,
+      "north": 48.028394233913566,
+      "east": 36.81518554687501
+    },
+    "polygonFids": [
+      "advance-1790274502451-9ftfkbkpndt",
+      "advance-1790274522359-18yyskw4noz",
+      "advance-1790274561554-hetvrds79wb"
+    ],
+    "snapshot": "history/advances/adv-1790274659958.json",
+    "beforeAreas": {
+      "ru": 241141.0156234047,
+      "ua": 475171.9244327701
+    }
+  },
+  {
     "id": "adv-1790268041349",
     "date": "2026-09-24",
     "time": "18:40:41",
