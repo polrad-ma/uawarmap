@@ -1,5 +1,39 @@
 [
   {
+    "id": "adv-1790263095928",
+    "date": "2026-09-24",
+    "time": "17:18:15",
+    "text_en": "Russian forces are continuing clearing operations in Mala Tokmachka",
+    "text_ru": "Российские войска продолжают зачистку Малой Токмачки",
+    "text": "Russian forces are continuing clearing operations in Mala Tokmachka",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 1.04,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 1.04
+      }
+    ],
+    "areaDisplay": "+1.04 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 47.49934370948607,
+      "west": 35.80186843872071,
+      "north": 47.56563904359584,
+      "east": 35.992755889892585
+    },
+    "polygonFids": [
+      "advance-1790262689935-pcwht2v9v4",
+      "advance-1790262746257-0x5utbr22zi"
+    ],
+    "snapshot": "history/advances/adv-1790263095928.json",
+    "beforeAreas": {
+      "ru": 241143.05171805443,
+      "ua": 475154.84371145326
+    }
+  },
+  {
     "id": "adv-1790226199785",
     "date": "2026-09-24",
     "time": "07:03:19",
