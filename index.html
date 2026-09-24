@@ -2112,7 +2112,7 @@ public map:
           [Number(item.focus.south), Number(item.focus.west)],
           [Number(item.focus.north), Number(item.focus.east)]
         ]);
-        map.fitBounds(bounds, { padding: [40, 40], maxZoom: 14, animate: true, duration: 1.05 });
+        map.fitBounds(bounds, { padding: [40, 40], maxZoom: 14, animate: true, duration: ADVANCE_FOCUS_MS / 1000 });
         return;
       }
       var lat = Number(item.focus.lat);
@@ -2120,7 +2120,57 @@ public map:
       var zoom = Number(item.focus.zoom);
       if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
       if (!Number.isFinite(zoom)) zoom = map.getZoom();
-      map.flyTo([lat, lng], zoom, { duration: 1.05 });
+      map.flyTo([lat, lng], zoom, { duration: ADVANCE_FOCUS_MS / 1000 });
+    }
+
+    function loadAdvanceSnapshot(item) {
+      if (!item || !item.snapshot) {
+        return Promise.reject(new Error('Advance has no snapshot'));
+      }
+
+      var url = String(item.snapshot);
+
+      if (advanceSnapshotCache[url]) {
+        return Promise.resolve(advanceSnapshotCache[url]);
+      }
+
+      if (advanceSnapshotRequests[url]) {
+        return advanceSnapshotRequests[url];
+      }
+
+      var request = fetch(url, { cache: 'force-cache' })
+        .then(function(response) {
+          if (!response.ok) throw new Error('Could not load advance snapshot');
+          return response.json();
+        })
+        .then(function(snapshot) {
+          advanceSnapshotCache[url] = snapshot;
+          delete advanceSnapshotRequests[url];
+          return snapshot;
+        })
+        .catch(function(error) {
+          delete advanceSnapshotRequests[url];
+          throw error;
+        });
+
+      advanceSnapshotRequests[url] = request;
+      return request;
+    }
+
+    function preloadAdvance(index) {
+      if (index < 0 || index >= advances.length) return;
+      var item = advances[index];
+      if (!item || !item.snapshot) return;
+      loadAdvanceSnapshot(item).catch(function() {});
+    }
+
+    function preloadNearbyAdvances(index) {
+      // Keep a small rolling window warm.  This gives instant transitions in
+      // both directions without downloading the entire history at once.
+      preloadAdvance(index - 2);
+      preloadAdvance(index - 1);
+      preloadAdvance(index + 1);
+      preloadAdvance(index + 2);
     }
 
     function showAdvance(index, options) {
@@ -2142,15 +2192,15 @@ public map:
         return;
       }
 
-      fetch(snapshotUrl)
-        .then(function(response) {
-          if (!response.ok) throw new Error('Could not load advance snapshot');
-          return response.json();
-        })
+      // Load the snapshot through the shared cache.  Adjacent advances are
+      // prefetched below, so a normal Previous/Next click can transition
+      // immediately instead of waiting on the network.
+      loadAdvanceSnapshot(item)
         .then(function(snapshot) {
           timelineMode = true;
           applyAdvanceSnapshot(snapshot);
           if (!options.skipFocus) focusAdvance(item);
+          preloadNearbyAdvances(index);
         })
         .catch(function(error) {
           console.error(error);
@@ -2185,6 +2235,7 @@ public map:
             advanceIndex = advances.length - 1;
             renderAdvanceBar();
             showAdvance(advanceIndex);
+            preloadNearbyAdvances(advanceIndex);
 
             // Make the existing calendar operate on advance dates. Selecting a
             // day jumps to the FIRST advance on that day.
@@ -2988,9 +3039,15 @@ public map:
      * vector layers. This makes Previous/Next feel like a real timeline
      * transition instead of an instant map replacement.
      */
-    var ADVANCE_TRANSITION_OUT_MS = 320;
-    var ADVANCE_TRANSITION_IN_MS = 760;
+    // Advance navigation transition.  The next snapshot is loaded/cached
+    // before the old state is removed, then both states cross-dissolve
+    // together.  This keeps the map continuously populated instead of
+    // producing the blank/loading gap seen during rapid Previous/Next use.
+    var ADVANCE_TRANSITION_MS = 1250;
+    var ADVANCE_FOCUS_MS = 1250;
     var advanceTransitionToken = 0;
+    var advanceSnapshotCache = Object.create(null);
+    var advanceSnapshotRequests = Object.create(null);
 
     function eachTimelineVectorLayer(callback) {
       var allLayers = getAllLayerObjects();
@@ -3101,34 +3158,138 @@ public map:
       });
     }
 
+    function buildAdvanceTempLayers(snapshot) {
+      var tempLayers = [];
+
+      var allLayers = getAllLayerObjects();
+      Object.keys(allLayers).forEach(function(name) {
+        if (TIMELINE_SKIP_LAYERS.indexOf(name) !== -1) return;
+        if (name === 'Gray Zone') return;
+
+        var dataKey = TIMELINE_NAME_ALIASES[name] || name;
+        var data = snapshot[dataKey];
+        if (!data) return;
+
+        var info = null;
+        for (var i = 0; i < layerFiles.length; i++) {
+          if (layerFiles[i].name === name) {
+            info = layerFiles[i];
+            break;
+          }
+        }
+        if (!info) return;
+
+        var temp = L.geoJSON(data, {
+          pane: info.pane || (info.group === 'extra' ? 'extraLayersPane' : 'overlayPane'),
+          style: function() {
+            var style = {
+              color: info.outlineColor || info.color,
+              weight: 2,
+              fillColor: info.color,
+              fillOpacity: info.fillOpacity !== undefined ? info.fillOpacity : 0.4
+            };
+            if (info.noOutline) style.stroke = false;
+            return style;
+          },
+          onEachFeature: function(feature, featureLayer) {
+            if (
+              feature.geometry &&
+              (feature.geometry.type === 'Polygon' || feature.geometry.type === 'MultiPolygon')
+            ) {
+              calculateAreaAndBindPopup(featureLayer, name);
+            }
+          }
+        });
+
+        tempLayers.push({ name: name, temp: temp });
+      });
+
+      return tempLayers;
+    }
+
+    function setTempLayerOpacity(tempLayers, factor) {
+      tempLayers.forEach(function(entry) {
+        walkTimelineVectorLayer(entry.temp, function(layer) {
+          setTimelineLayerOpacity(layer, factor);
+        });
+      });
+    }
+
+    function addTempLayersToMap(tempLayers) {
+      tempLayers.forEach(function(entry) {
+        var current = getAllLayerObjects()[entry.name];
+        if (current && map.hasLayer(current)) {
+          entry.temp.addTo(map);
+        }
+      });
+    }
+
+    function removeTempLayers(tempLayers) {
+      tempLayers.forEach(function(entry) {
+        if (map.hasLayer(entry.temp)) map.removeLayer(entry.temp);
+      });
+    }
+
+    function commitAdvanceSnapshot(snapshot) {
+      applySnapshotToLayers(snapshot);
+      setAllTimelineOpacity(1);
+      setTimeout(function() {
+        rebuildGrayZone();
+      }, 0);
+    }
+
     function applyAdvanceSnapshot(snapshot) {
       if (!snapshot) return;
 
       var token = ++advanceTransitionToken;
+      var tempLayers = buildAdvanceTempLayers(snapshot);
 
-      // Fade the current advance down first, then replace its geometry.
-      animateTimelineOpacity(
-        1,
-        0,
-        ADVANCE_TRANSITION_OUT_MS,
-        token,
-        function() {
-          if (token !== advanceTransitionToken) return;
+      // Keep the current advance visible while the next snapshot is being
+      // prepared. Once it is ready, cross-fade old -> new instead of ever
+      // showing an empty map.
+      setTempLayerOpacity(tempLayers, 0);
+      addTempLayersToMap(tempLayers);
 
-          applySnapshotToLayers(snapshot);
-          rebuildGrayZone();
+      var oldVisible = [];
+      eachTimelineVectorLayer(function(layer) {
+        oldVisible.push(layer);
+      });
 
-          // New geometry starts transparent and fades fully in.
-          setAllTimelineOpacity(0);
+      var start = performance.now();
+      var duration = ADVANCE_TRANSITION_MS;
 
-          animateTimelineOpacity(
-            0,
-            1,
-            ADVANCE_TRANSITION_IN_MS,
-            token
-          );
+      function frame(now) {
+        if (token !== advanceTransitionToken) {
+          oldVisible.forEach(function(layer) { setTimelineLayerOpacity(layer, 1); });
+          removeTempLayers(tempLayers);
+          return;
         }
-      );
+
+        var progress = Math.min(1, (now - start) / duration);
+        var eased = progress < 0.5
+          ? 2 * progress * progress
+          : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+
+        oldVisible.forEach(function(layer) {
+          setTimelineLayerOpacity(layer, 1 - eased);
+        });
+        setTempLayerOpacity(tempLayers, eased);
+
+        if (progress < 1) {
+          requestAnimationFrame(frame);
+        } else {
+          if (token !== advanceTransitionToken) {
+            oldVisible.forEach(function(layer) { setTimelineLayerOpacity(layer, 1); });
+            removeTempLayers(tempLayers);
+            return;
+          }
+
+          commitAdvanceSnapshot(snapshot);
+          removeTempLayers(tempLayers);
+        }
+      }
+
+      requestAnimationFrame(frame);
     }
 
     function showTimelineDate(date) {
