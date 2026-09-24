@@ -1335,7 +1335,9 @@ public map:
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
       {
         attribution: 'Tiles &copy; Esri',
-        maxZoom: 19
+        maxZoom: 19,
+        keepBuffer: 8,
+        updateWhenZooming: false
       }
     );
 
@@ -1345,14 +1347,18 @@ public map:
         {
           attribution: 'Tiles &copy; Esri',
           crossOrigin: true,
-          maxZoom: 19
+          maxZoom: 19,
+          keepBuffer: 8,
+          updateWhenZooming: false
         }
       ),
       L.tileLayer(
         'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
         {
           attribution: 'Labels &copy; Esri',
-          maxZoom: 19
+          maxZoom: 19,
+          keepBuffer: 8,
+          updateWhenZooming: false
         }
       )
     ]);
@@ -1365,6 +1371,8 @@ public map:
         googleHybrid = L.gridLayer.googleMutant({
           type: 'hybrid',
           maxZoom: 20,
+          keepBuffer: 8,
+          updateWhenZooming: false,
           attribution: '&copy; Google'
         });
       } catch (e) {
@@ -1376,7 +1384,9 @@ public map:
       'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
       {
         attribution: '&copy; OpenStreetMap contributors',
-        maxZoom: 19
+        maxZoom: 19,
+        keepBuffer: 8,
+        updateWhenZooming: false
       }
     );
 
@@ -1384,7 +1394,9 @@ public map:
       'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
       {
         attribution: 'Map data: &copy; OpenStreetMap contributors, SRTM | Map style: &copy; OpenTopoMap (CC-BY-SA)',
-        maxZoom: 17
+        maxZoom: 17,
+        keepBuffer: 8,
+        updateWhenZooming: false
       }
     );
 
@@ -2112,7 +2124,8 @@ public map:
           [Number(item.focus.south), Number(item.focus.west)],
           [Number(item.focus.north), Number(item.focus.east)]
         ]);
-        map.fitBounds(bounds, { padding: [40, 40], maxZoom: 14, animate: true, duration: ADVANCE_FOCUS_MS / 1000 });
+        map.fitBounds(bounds, { padding: [40, 40], maxZoom: 14, animate: true, duration: ADVANCE_FOCUS_MS / 1000,
+          easeLinearity: 0.18 });
         return;
       }
       var lat = Number(item.focus.lat);
@@ -2120,7 +2133,7 @@ public map:
       var zoom = Number(item.focus.zoom);
       if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
       if (!Number.isFinite(zoom)) zoom = map.getZoom();
-      map.flyTo([lat, lng], zoom, { duration: ADVANCE_FOCUS_MS / 1000 });
+      map.flyTo([lat, lng], zoom, { duration: ADVANCE_FOCUS_MS / 1000, easeLinearity: 0.18 });
     }
 
     function loadAdvanceSnapshot(item) {
@@ -3158,6 +3171,57 @@ public map:
       });
     }
 
+    function getFeaturesFromGeoJSON(data) {
+      if (!data) return [];
+      if (data.type === 'FeatureCollection') return data.features || [];
+      if (data.type === 'Feature') return [data];
+      if (data.type === 'Polygon' || data.type === 'MultiPolygon') {
+        return [{ type: 'Feature', properties: {}, geometry: data }];
+      }
+      return [];
+    }
+
+    function buildGrayZoneFromSnapshot(snapshot) {
+      if (!snapshot) return null;
+
+      var ruData = snapshot['Russian-controlled territory'];
+      var uaData = snapshot['Ukrainian-controlled territory'];
+      var regainedData = snapshot['Territories regained'] || snapshot['Territories regained in the last month'];
+      var ruAdvData = snapshot['Russian advances'];
+      var uaAdvData = snapshot['Ukrainian advances'];
+
+      var ruFeatures = getFeaturesFromGeoJSON(ruData)
+        .concat(getFeaturesFromGeoJSON(ruAdvData));
+      var uaFeatures = getFeaturesFromGeoJSON(uaData)
+        .concat(getFeaturesFromGeoJSON(regainedData))
+        .concat(getFeaturesFromGeoJSON(uaAdvData));
+
+      var ruUnion = unionFeatureCollection(ruFeatures);
+      var uaUnion = unionFeatureCollection(uaFeatures);
+      if (!ruUnion || !uaUnion) return null;
+
+      try {
+        var ruBuffer = turf.simplify(
+          turf.buffer(ruUnion, GRAY_ZONE_DISTANCE_KM, { units: 'kilometers', steps: 4 }),
+          { tolerance: 0.003, highQuality: false }
+        );
+        var uaBuffer = turf.simplify(
+          turf.buffer(uaUnion, GRAY_ZONE_DISTANCE_KM, { units: 'kilometers', steps: 4 }),
+          { tolerance: 0.003, highQuality: false }
+        );
+        var betweenSides = turf.intersect(ruBuffer, uaBuffer);
+        if (!betweenSides) return null;
+
+        var controlledUnion = turf.union(ruUnion, uaUnion);
+        return controlledUnion
+          ? turf.difference(betweenSides, controlledUnion)
+          : betweenSides;
+      } catch (error) {
+        console.error('Gray Zone transition generation error:', error);
+        return null;
+      }
+    }
+
     function buildAdvanceTempLayers(snapshot) {
       var tempLayers = [];
 
@@ -3204,6 +3268,25 @@ public map:
         tempLayers.push({ name: name, temp: temp });
       });
 
+      // Build the next Gray Zone from the snapshot itself.  It is treated
+      // like any other transition layer, so it never gets cleared and rebuilt
+      // halfway through the camera movement.
+      var nextGrayZone = buildGrayZoneFromSnapshot(snapshot);
+      if (nextGrayZone && grayZoneLayer && map.hasLayer(grayZoneLayer) && isLayerInCurrentDesign('Gray Zone')) {
+        var tempGray = L.geoJSON(nextGrayZone, {
+          style: function() {
+            return {
+              color: '#ffffff',
+              fillColor: '#ffffff',
+              fillOpacity: 0.35,
+              weight: 1,
+              stroke: false
+            };
+          }
+        });
+        tempLayers.push({ name: 'Gray Zone', temp: tempGray, grayData: nextGrayZone });
+      }
+
       return tempLayers;
     }
 
@@ -3230,12 +3313,27 @@ public map:
       });
     }
 
-    function commitAdvanceSnapshot(snapshot) {
+    function commitAdvanceSnapshot(snapshot, tempLayers) {
       applySnapshotToLayers(snapshot);
-      setAllTimelineOpacity(1);
-      setTimeout(function() {
+
+      // Commit the already-generated Gray Zone directly.  Do NOT clear it and
+      // call rebuildGrayZone here: doing that creates the visible on/off flash
+      // during an advance change.
+      var grayEntry = null;
+      (tempLayers || []).forEach(function(entry) {
+        if (entry.name === 'Gray Zone') grayEntry = entry;
+      });
+
+      if (grayEntry && grayEntry.grayData) {
+        grayZoneLayer.clearLayers();
+        grayZoneLayer.addData(grayEntry.grayData);
+        setLayerVisibility('Gray Zone', isLayerInCurrentDesign('Gray Zone'));
+        updateSidebarLayerControl();
+      } else {
         rebuildGrayZone();
-      }, 0);
+      }
+
+      setAllTimelineOpacity(1);
     }
 
     function applyAdvanceSnapshot(snapshot) {
@@ -3284,7 +3382,7 @@ public map:
             return;
           }
 
-          commitAdvanceSnapshot(snapshot);
+          commitAdvanceSnapshot(snapshot, tempLayers);
           removeTempLayers(tempLayers);
         }
       }
@@ -3304,6 +3402,7 @@ public map:
         .then(function(snapshot) {
           timelineMode = true;
           applySnapshotToLayers(snapshot);
+          rebuildGrayZone();
           dateInput.title = 'Jump to a date';
         })
         .catch(function(err) {
