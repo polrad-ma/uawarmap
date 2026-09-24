@@ -1336,7 +1336,7 @@ public map:
       {
         attribution: 'Tiles &copy; Esri',
         maxZoom: 19,
-        keepBuffer: 8,
+        keepBuffer: 12,
         updateWhenZooming: false
       }
     );
@@ -1348,7 +1348,7 @@ public map:
           attribution: 'Tiles &copy; Esri',
           crossOrigin: true,
           maxZoom: 19,
-          keepBuffer: 8,
+          keepBuffer: 12,
           updateWhenZooming: false
         }
       ),
@@ -1357,7 +1357,7 @@ public map:
         {
           attribution: 'Labels &copy; Esri',
           maxZoom: 19,
-          keepBuffer: 8,
+          keepBuffer: 12,
           updateWhenZooming: false
         }
       )
@@ -1371,7 +1371,7 @@ public map:
         googleHybrid = L.gridLayer.googleMutant({
           type: 'hybrid',
           maxZoom: 20,
-          keepBuffer: 8,
+          keepBuffer: 12,
           updateWhenZooming: false,
           attribution: '&copy; Google'
         });
@@ -1385,7 +1385,7 @@ public map:
       {
         attribution: '&copy; OpenStreetMap contributors',
         maxZoom: 19,
-        keepBuffer: 8,
+        keepBuffer: 12,
         updateWhenZooming: false
       }
     );
@@ -1395,7 +1395,7 @@ public map:
       {
         attribution: 'Map data: &copy; OpenStreetMap contributors, SRTM | Map style: &copy; OpenTopoMap (CC-BY-SA)',
         maxZoom: 17,
-        keepBuffer: 8,
+        keepBuffer: 12,
         updateWhenZooming: false
       }
     );
@@ -2224,6 +2224,7 @@ public map:
     }
 
     function exitAdvanceMode() {
+      cancelAdvanceDisplayTransition();
       timelineMode = false;
       advanceIndex = advances.length ? advances.length - 1 : -1;
       exitTimelineMode();
@@ -3056,8 +3057,8 @@ public map:
     // before the old state is removed, then both states cross-dissolve
     // together.  This keeps the map continuously populated instead of
     // producing the blank/loading gap seen during rapid Previous/Next use.
-    var ADVANCE_TRANSITION_MS = 2400;
-    var ADVANCE_FOCUS_MS = 1800;
+    var ADVANCE_TRANSITION_MS = 2600;
+    var ADVANCE_FOCUS_MS = 2600;
     var advanceTransitionToken = 0;
     var advanceSnapshotCache = Object.create(null);
     var advanceSnapshotRequests = Object.create(null);
@@ -3291,7 +3292,7 @@ public map:
     }
 
     function setTempLayerOpacity(tempLayers, factor) {
-      tempLayers.forEach(function(entry) {
+      (tempLayers || []).forEach(function(entry) {
         walkTimelineVectorLayer(entry.temp, function(layer) {
           setTimelineLayerOpacity(layer, factor);
         });
@@ -3299,7 +3300,7 @@ public map:
     }
 
     function addTempLayersToMap(tempLayers) {
-      tempLayers.forEach(function(entry) {
+      (tempLayers || []).forEach(function(entry) {
         var current = getAllLayerObjects()[entry.name];
         if (current && map.hasLayer(current)) {
           entry.temp.addTo(map);
@@ -3308,58 +3309,87 @@ public map:
     }
 
     function removeTempLayers(tempLayers) {
-      tempLayers.forEach(function(entry) {
+      (tempLayers || []).forEach(function(entry) {
         if (map.hasLayer(entry.temp)) map.removeLayer(entry.temp);
       });
     }
 
-    function commitAdvanceSnapshot(snapshot, tempLayers) {
-      applySnapshotToLayers(snapshot);
+    // The advance timeline uses its own persistent display layers.  The real
+    // layer groups underneath are NOT cleared/rebuilt while clicking
+    // Previous/Next.  This is important: rebuilding a Leaflet GeoJSON layer
+    // at the end of a transition produces the little "flash" of the new state
+    // that is especially noticeable on fast clicks.
+    var activeAdvanceDisplayLayers = null;
 
-      // Commit the already-generated Gray Zone directly.  Do NOT clear it and
-      // call rebuildGrayZone here: doing that creates the visible on/off flash
-      // during an advance change.
-      var grayEntry = null;
-      (tempLayers || []).forEach(function(entry) {
-        if (entry.name === 'Gray Zone') grayEntry = entry;
-      });
-
-      if (grayEntry && grayEntry.grayData) {
-        grayZoneLayer.clearLayers();
-        grayZoneLayer.addData(grayEntry.grayData);
-        setLayerVisibility('Gray Zone', isLayerInCurrentDesign('Gray Zone'));
-        updateSidebarLayerControl();
-      } else {
-        rebuildGrayZone();
+    function cancelAdvanceDisplayTransition() {
+      advanceTransitionToken++;
+      if (activeAdvanceDisplayLayers) {
+        removeTempLayers(activeAdvanceDisplayLayers);
+        activeAdvanceDisplayLayers = null;
       }
+    }
 
-      setAllTimelineOpacity(1);
+    function commitAdvanceDisplay(tempLayers) {
+      activeAdvanceDisplayLayers = tempLayers || null;
+      if (activeAdvanceDisplayLayers) {
+        setTempLayerOpacity(activeAdvanceDisplayLayers, 1);
+      }
     }
 
     function applyAdvanceSnapshot(snapshot) {
       if (!snapshot) return;
 
       var token = ++advanceTransitionToken;
-      var tempLayers = buildAdvanceTempLayers(snapshot);
+      var nextLayers = buildAdvanceTempLayers(snapshot);
 
-      // Keep the current advance visible while the next snapshot is being
-      // prepared. Once it is ready, cross-fade old -> new instead of ever
-      // showing an empty map.
-      setTempLayerOpacity(tempLayers, 0);
-      addTempLayersToMap(tempLayers);
+      // Build and mount the complete next state BEFORE changing the current
+      // state.  Both states therefore exist on the map for the whole
+      // transition; there is never a clearLayers() / addData() gap.
+      setTempLayerOpacity(nextLayers, 0);
+      addTempLayersToMap(nextLayers);
 
-      var oldVisible = [];
-      eachTimelineVectorLayer(function(layer) {
-        oldVisible.push(layer);
-      });
+      var oldLayers = activeAdvanceDisplayLayers;
+
+      // First advance: no old display exists yet, so simply reveal the
+      // complete snapshot. Subsequent advances cross-fade the two complete
+      // states without touching the underlying map layers.
+      if (!oldLayers || !oldLayers.length) {
+        var startFirst = performance.now();
+        var firstDuration = 700;
+
+        function firstFrame(now) {
+          if (token !== advanceTransitionToken) {
+            removeTempLayers(nextLayers);
+            return;
+          }
+
+          var p = Math.min(1, (now - startFirst) / firstDuration);
+          var e = p < 0.5
+            ? 2 * p * p
+            : 1 - Math.pow(-2 * p + 2, 2) / 2;
+          setTempLayerOpacity(nextLayers, e);
+
+          if (p < 1) {
+            requestAnimationFrame(firstFrame);
+          } else {
+            commitAdvanceDisplay(nextLayers);
+          }
+        }
+
+        requestAnimationFrame(firstFrame);
+        return;
+      }
 
       var start = performance.now();
       var duration = ADVANCE_TRANSITION_MS;
 
       function frame(now) {
         if (token !== advanceTransitionToken) {
-          oldVisible.forEach(function(layer) { setTimelineLayerOpacity(layer, 1); });
-          removeTempLayers(tempLayers);
+          // Do not leave a half-transparent map behind after a rapid click.
+          removeTempLayers(nextLayers);
+          if (activeAdvanceDisplayLayers === oldLayers) {
+            setTempLayerOpacity(oldLayers, 1);
+          }
           return;
         }
 
@@ -3368,22 +3398,17 @@ public map:
           ? 2 * progress * progress
           : 1 - Math.pow(-2 * progress + 2, 2) / 2;
 
-        oldVisible.forEach(function(layer) {
-          setTimelineLayerOpacity(layer, 1 - eased);
-        });
-        setTempLayerOpacity(tempLayers, eased);
+        setTempLayerOpacity(oldLayers, 1 - eased);
+        setTempLayerOpacity(nextLayers, eased);
 
         if (progress < 1) {
           requestAnimationFrame(frame);
         } else {
-          if (token !== advanceTransitionToken) {
-            oldVisible.forEach(function(layer) { setTimelineLayerOpacity(layer, 1); });
-            removeTempLayers(tempLayers);
-            return;
-          }
-
-          commitAdvanceSnapshot(snapshot, tempLayers);
-          removeTempLayers(tempLayers);
+          // The new state is already fully rendered.  Simply remove the old
+          // display layers and keep the new ones mounted.  No final rebuild,
+          // clear, or addData operation means no final flash.
+          removeTempLayers(oldLayers);
+          commitAdvanceDisplay(nextLayers);
         }
       }
 
@@ -3391,6 +3416,7 @@ public map:
     }
 
     function showTimelineDate(date) {
+      cancelAdvanceDisplayTransition();
       var dateInput = document.getElementById('timeline-date-input');
       dateInput.title = 'Loading ' + date + '...';
 
@@ -3412,6 +3438,7 @@ public map:
     }
 
     function exitTimelineMode() {
+      cancelAdvanceDisplayTransition();
       timelineMode = false;
 
       var allLayers = getAllLayerObjects();
