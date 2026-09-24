@@ -1335,9 +1335,7 @@ public map:
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
       {
         attribution: 'Tiles &copy; Esri',
-        maxZoom: 19,
-        keepBuffer: 12,
-        updateWhenZooming: false
+        maxZoom: 19
       }
     );
 
@@ -1347,18 +1345,14 @@ public map:
         {
           attribution: 'Tiles &copy; Esri',
           crossOrigin: true,
-          maxZoom: 19,
-          keepBuffer: 12,
-          updateWhenZooming: false
+          maxZoom: 19
         }
       ),
       L.tileLayer(
         'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
         {
           attribution: 'Labels &copy; Esri',
-          maxZoom: 19,
-          keepBuffer: 12,
-          updateWhenZooming: false
+          maxZoom: 19
         }
       )
     ]);
@@ -1371,8 +1365,6 @@ public map:
         googleHybrid = L.gridLayer.googleMutant({
           type: 'hybrid',
           maxZoom: 20,
-          keepBuffer: 12,
-          updateWhenZooming: false,
           attribution: '&copy; Google'
         });
       } catch (e) {
@@ -1384,9 +1376,7 @@ public map:
       'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
       {
         attribution: '&copy; OpenStreetMap contributors',
-        maxZoom: 19,
-        keepBuffer: 12,
-        updateWhenZooming: false
+        maxZoom: 19
       }
     );
 
@@ -1394,9 +1384,7 @@ public map:
       'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
       {
         attribution: 'Map data: &copy; OpenStreetMap contributors, SRTM | Map style: &copy; OpenTopoMap (CC-BY-SA)',
-        maxZoom: 17,
-        keepBuffer: 12,
-        updateWhenZooming: false
+        maxZoom: 17
       }
     );
 
@@ -1423,6 +1411,10 @@ public map:
       zoom: 7,
       scrollWheelZoom: true,
       zoomControl: false,
+      // Canvas is faster for the very large territory polygons and lets
+      // Leaflet's path simplification do its work without creating huge SVG
+      // path trees in the browser.
+      preferCanvas: true,
       layers: [currentBaseLayer]
     });
 
@@ -2124,8 +2116,7 @@ public map:
           [Number(item.focus.south), Number(item.focus.west)],
           [Number(item.focus.north), Number(item.focus.east)]
         ]);
-        map.fitBounds(bounds, { padding: [40, 40], maxZoom: 14, animate: true, duration: ADVANCE_FOCUS_MS / 1000,
-          easeLinearity: 0.18 });
+        map.fitBounds(bounds, { padding: [40, 40], maxZoom: 14, animate: true });
         return;
       }
       var lat = Number(item.focus.lat);
@@ -2133,57 +2124,13 @@ public map:
       var zoom = Number(item.focus.zoom);
       if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
       if (!Number.isFinite(zoom)) zoom = map.getZoom();
-      map.flyTo([lat, lng], zoom, { duration: ADVANCE_FOCUS_MS / 1000, easeLinearity: 0.18 });
+      map.flyTo([lat, lng], zoom, { duration: 0.7 });
     }
 
-    function loadAdvanceSnapshot(item) {
-      if (!item || !item.snapshot) {
-        return Promise.reject(new Error('Advance has no snapshot'));
-      }
-
-      var url = String(item.snapshot);
-
-      if (advanceSnapshotCache[url]) {
-        return Promise.resolve(advanceSnapshotCache[url]);
-      }
-
-      if (advanceSnapshotRequests[url]) {
-        return advanceSnapshotRequests[url];
-      }
-
-      var request = fetch(url, { cache: 'force-cache' })
-        .then(function(response) {
-          if (!response.ok) throw new Error('Could not load advance snapshot');
-          return response.json();
-        })
-        .then(function(snapshot) {
-          advanceSnapshotCache[url] = snapshot;
-          delete advanceSnapshotRequests[url];
-          return snapshot;
-        })
-        .catch(function(error) {
-          delete advanceSnapshotRequests[url];
-          throw error;
-        });
-
-      advanceSnapshotRequests[url] = request;
-      return request;
-    }
-
-    function preloadAdvance(index) {
-      if (index < 0 || index >= advances.length) return;
-      var item = advances[index];
-      if (!item || !item.snapshot) return;
-      loadAdvanceSnapshot(item).catch(function() {});
-    }
-
-    function preloadNearbyAdvances(index) {
-      // Keep a small rolling window warm.  This gives instant transitions in
-      // both directions without downloading the entire history at once.
-      preloadAdvance(index - 2);
-      preloadAdvance(index - 1);
-      preloadAdvance(index + 1);
-      preloadAdvance(index + 2);
+    function applyAdvanceSnapshot(snapshot) {
+      if (!snapshot) return;
+      applySnapshotToLayers(snapshot);
+      rebuildGrayZone();
     }
 
     function showAdvance(index, options) {
@@ -2205,15 +2152,15 @@ public map:
         return;
       }
 
-      // Load the snapshot through the shared cache.  Adjacent advances are
-      // prefetched below, so a normal Previous/Next click can transition
-      // immediately instead of waiting on the network.
-      loadAdvanceSnapshot(item)
+      fetch(snapshotUrl)
+        .then(function(response) {
+          if (!response.ok) throw new Error('Could not load advance snapshot');
+          return response.json();
+        })
         .then(function(snapshot) {
           timelineMode = true;
           applyAdvanceSnapshot(snapshot);
           if (!options.skipFocus) focusAdvance(item);
-          preloadNearbyAdvances(index);
         })
         .catch(function(error) {
           console.error(error);
@@ -2224,7 +2171,6 @@ public map:
     }
 
     function exitAdvanceMode() {
-      cancelAdvanceDisplayTransition();
       timelineMode = false;
       advanceIndex = advances.length ? advances.length - 1 : -1;
       exitTimelineMode();
@@ -2249,7 +2195,6 @@ public map:
             advanceIndex = advances.length - 1;
             renderAdvanceBar();
             showAdvance(advanceIndex);
-            preloadNearbyAdvances(advanceIndex);
 
             // Make the existing calendar operate on advance dates. Selecting a
             // day jumps to the FIRST advance on that day.
@@ -2374,13 +2319,35 @@ public map:
     extraLayers["My Drawings"] =
       userDrawings;
 
+    /*
+     * ---------------------------------------------------------
+     * ZOOM-BASED VECTOR DETAIL
+     * ---------------------------------------------------------
+     * Leaflet's smoothFactor is render-time simplification: the actual
+     * GeoJSON is NOT changed. At lower zoom levels Leaflet draws fewer
+     * vertices, and as the user zooms in it restores more detail.
+     *
+     * These values are deliberately moderate so distant territory edges
+     * stop causing rendering glitches without becoming blocky.
+     */
+    var VECTOR_SMOOTH = {
+      territory: 2.0,
+      advances: 1.7,
+      regained: 2.0,
+      towns: 2.2,
+      borders: 1.8,
+      corridor: 1.8,
+      fortifications: 1.3
+    };
+
     var layerFiles = [
       {
         file: "Russian-controlled%20territory.geojson",
         name: "Russian-controlled territory",
         color: "#a52714",
         group: "main",
-        noOutline: true
+        noOutline: true,
+        smoothFactor: VECTOR_SMOOTH.territory
       },
       {
         file: "neatogeo_Frontline%20towns%20%28from%20PWM%29.geojson",
@@ -2388,7 +2355,8 @@ public map:
         color: "#ffffff",
         outlineColor: "#ffffff",
         fillOpacity: 0,
-        group: "extra"
+        group: "extra",
+        smoothFactor: VECTOR_SMOOTH.towns
       },
       {
         file: "Region%20borders.geojson",
@@ -2396,20 +2364,23 @@ public map:
         color: "#F0001B",
         outlineColor: "#F0001B",
         fillOpacity: 0,
-        group: "extra"
+        group: "extra",
+        smoothFactor: VECTOR_SMOOTH.borders
       },
       {
         file: "Land%20corridor%20to%20Crimea.geojson",
         name: "Land corridor to Crimea",
         color: "#FF901A",
-        group: "extra"
+        group: "extra",
+        smoothFactor: VECTOR_SMOOTH.corridor
       },
       {
         file: "Ukrainian-controlled%20territory.geojson",
         name: "Ukrainian-controlled territory",
         color: "#1a237e",
         group: "main",
-        noOutline: true
+        noOutline: true,
+        smoothFactor: VECTOR_SMOOTH.territory
       },
       {
         file: "Ukrainian%20advances.geojson",
@@ -2761,6 +2732,12 @@ public map:
             pane: layerInfo.pane ||
                   (layerInfo.group === 'extra' ? 'extraLayersPane' : 'overlayPane'),
 
+            // Render-only simplification. Leaflet automatically applies this
+            // more strongly when zoomed out and restores detail when zooming in.
+            smoothFactor: layerInfo.smoothFactor !== undefined
+              ? layerInfo.smoothFactor
+              : 1.0,
+
             style: function() {
 
               var style = {
@@ -3043,116 +3020,6 @@ public map:
         goToTimelineIndex(nearestIdx !== -1 ? nearestIdx : 0);
       });
 
-    /*
-     * Smooth advance transitions
-     * ---------------------------
-     * Advance snapshots used to be swapped in one operation:
-     * clear the old geometry -> add the new geometry.
-     *
-     * Keep the same snapshot system, but cross-fade only the timeline
-     * vector layers. This makes Previous/Next feel like a real timeline
-     * transition instead of an instant map replacement.
-     */
-    // Advance navigation transition.  The next snapshot is loaded/cached
-    // before the old state is removed, then both states cross-dissolve
-    // together.  This keeps the map continuously populated instead of
-    // producing the blank/loading gap seen during rapid Previous/Next use.
-    var ADVANCE_TRANSITION_MS = 2600;
-    var ADVANCE_FOCUS_MS = 2600;
-    var advanceTransitionToken = 0;
-    var advanceSnapshotCache = Object.create(null);
-    var advanceSnapshotRequests = Object.create(null);
-
-    function eachTimelineVectorLayer(callback) {
-      var allLayers = getAllLayerObjects();
-
-      Object.keys(allLayers).forEach(function(name) {
-        if (TIMELINE_SKIP_LAYERS.indexOf(name) !== -1) return;
-
-        var group = allLayers[name];
-        if (!group || !group.eachLayer) return;
-
-        group.eachLayer(function(layer) {
-          walkTimelineVectorLayer(layer, callback);
-        });
-      });
-    }
-
-    function walkTimelineVectorLayer(layer, callback) {
-      if (!layer) return;
-
-      if (layer.setStyle) {
-        callback(layer);
-      }
-
-      if (layer.eachLayer) {
-        layer.eachLayer(function(child) {
-          walkTimelineVectorLayer(child, callback);
-        });
-      }
-    }
-
-    function setTimelineLayerOpacity(layer, factor) {
-      if (!layer || !layer.setStyle) return;
-
-      if (typeof layer._polradBaseOpacity !== 'number') {
-        layer._polradBaseOpacity =
-          typeof layer.options.opacity === 'number'
-            ? layer.options.opacity
-            : 1;
-      }
-
-      if (typeof layer._polradBaseFillOpacity !== 'number') {
-        layer._polradBaseFillOpacity =
-          typeof layer.options.fillOpacity === 'number'
-            ? layer.options.fillOpacity
-            : null;
-      }
-
-      var style = {
-        opacity: layer._polradBaseOpacity * factor
-      };
-
-      if (layer._polradBaseFillOpacity !== null) {
-        style.fillOpacity = layer._polradBaseFillOpacity * factor;
-      }
-
-      layer.setStyle(style);
-    }
-
-    function setAllTimelineOpacity(factor) {
-      eachTimelineVectorLayer(function(layer) {
-        setTimelineLayerOpacity(layer, factor);
-      });
-    }
-
-    function animateTimelineOpacity(from, to, duration, token, done) {
-      var start = performance.now();
-
-      function frame(now) {
-        if (token !== advanceTransitionToken) return;
-
-        var progress = Math.min(1, (now - start) / duration);
-
-        // Smooth ease-in-out: no sudden start or stop.
-        var eased =
-          progress < 0.5
-            ? 2 * progress * progress
-            : 1 - Math.pow(-2 * progress + 2, 2) / 2;
-
-        var factor = from + (to - from) * eased;
-        setAllTimelineOpacity(factor);
-
-        if (progress < 1) {
-          requestAnimationFrame(frame);
-        } else if (done) {
-          done();
-        }
-      }
-
-      requestAnimationFrame(frame);
-    }
-
     function applySnapshotToLayers(snapshot) {
       var allLayers = getAllLayerObjects();
 
@@ -3172,251 +3039,7 @@ public map:
       });
     }
 
-    function getFeaturesFromGeoJSON(data) {
-      if (!data) return [];
-      if (data.type === 'FeatureCollection') return data.features || [];
-      if (data.type === 'Feature') return [data];
-      if (data.type === 'Polygon' || data.type === 'MultiPolygon') {
-        return [{ type: 'Feature', properties: {}, geometry: data }];
-      }
-      return [];
-    }
-
-    function buildGrayZoneFromSnapshot(snapshot) {
-      if (!snapshot) return null;
-
-      var ruData = snapshot['Russian-controlled territory'];
-      var uaData = snapshot['Ukrainian-controlled territory'];
-      var regainedData = snapshot['Territories regained'] || snapshot['Territories regained in the last month'];
-      var ruAdvData = snapshot['Russian advances'];
-      var uaAdvData = snapshot['Ukrainian advances'];
-
-      var ruFeatures = getFeaturesFromGeoJSON(ruData)
-        .concat(getFeaturesFromGeoJSON(ruAdvData));
-      var uaFeatures = getFeaturesFromGeoJSON(uaData)
-        .concat(getFeaturesFromGeoJSON(regainedData))
-        .concat(getFeaturesFromGeoJSON(uaAdvData));
-
-      var ruUnion = unionFeatureCollection(ruFeatures);
-      var uaUnion = unionFeatureCollection(uaFeatures);
-      if (!ruUnion || !uaUnion) return null;
-
-      try {
-        var ruBuffer = turf.simplify(
-          turf.buffer(ruUnion, GRAY_ZONE_DISTANCE_KM, { units: 'kilometers', steps: 4 }),
-          { tolerance: 0.003, highQuality: false }
-        );
-        var uaBuffer = turf.simplify(
-          turf.buffer(uaUnion, GRAY_ZONE_DISTANCE_KM, { units: 'kilometers', steps: 4 }),
-          { tolerance: 0.003, highQuality: false }
-        );
-        var betweenSides = turf.intersect(ruBuffer, uaBuffer);
-        if (!betweenSides) return null;
-
-        var controlledUnion = turf.union(ruUnion, uaUnion);
-        return controlledUnion
-          ? turf.difference(betweenSides, controlledUnion)
-          : betweenSides;
-      } catch (error) {
-        console.error('Gray Zone transition generation error:', error);
-        return null;
-      }
-    }
-
-    function buildAdvanceTempLayers(snapshot) {
-      var tempLayers = [];
-
-      var allLayers = getAllLayerObjects();
-      Object.keys(allLayers).forEach(function(name) {
-        if (TIMELINE_SKIP_LAYERS.indexOf(name) !== -1) return;
-        if (name === 'Gray Zone') return;
-
-        var dataKey = TIMELINE_NAME_ALIASES[name] || name;
-        var data = snapshot[dataKey];
-        if (!data) return;
-
-        var info = null;
-        for (var i = 0; i < layerFiles.length; i++) {
-          if (layerFiles[i].name === name) {
-            info = layerFiles[i];
-            break;
-          }
-        }
-        if (!info) return;
-
-        var temp = L.geoJSON(data, {
-          pane: info.pane || (info.group === 'extra' ? 'extraLayersPane' : 'overlayPane'),
-          style: function() {
-            var style = {
-              color: info.outlineColor || info.color,
-              weight: 2,
-              fillColor: info.color,
-              fillOpacity: info.fillOpacity !== undefined ? info.fillOpacity : 0.4
-            };
-            if (info.noOutline) style.stroke = false;
-            return style;
-          },
-          onEachFeature: function(feature, featureLayer) {
-            if (
-              feature.geometry &&
-              (feature.geometry.type === 'Polygon' || feature.geometry.type === 'MultiPolygon')
-            ) {
-              calculateAreaAndBindPopup(featureLayer, name);
-            }
-          }
-        });
-
-        tempLayers.push({ name: name, temp: temp });
-      });
-
-      // Build the next Gray Zone from the snapshot itself.  It is treated
-      // like any other transition layer, so it never gets cleared and rebuilt
-      // halfway through the camera movement.
-      var nextGrayZone = buildGrayZoneFromSnapshot(snapshot);
-      if (nextGrayZone && grayZoneLayer && map.hasLayer(grayZoneLayer) && isLayerInCurrentDesign('Gray Zone')) {
-        var tempGray = L.geoJSON(nextGrayZone, {
-          style: function() {
-            return {
-              color: '#ffffff',
-              fillColor: '#ffffff',
-              fillOpacity: 0.35,
-              weight: 1,
-              stroke: false
-            };
-          }
-        });
-        tempLayers.push({ name: 'Gray Zone', temp: tempGray, grayData: nextGrayZone });
-      }
-
-      return tempLayers;
-    }
-
-    function setTempLayerOpacity(tempLayers, factor) {
-      (tempLayers || []).forEach(function(entry) {
-        walkTimelineVectorLayer(entry.temp, function(layer) {
-          setTimelineLayerOpacity(layer, factor);
-        });
-      });
-    }
-
-    function addTempLayersToMap(tempLayers) {
-      (tempLayers || []).forEach(function(entry) {
-        var current = getAllLayerObjects()[entry.name];
-        if (current && map.hasLayer(current)) {
-          entry.temp.addTo(map);
-        }
-      });
-    }
-
-    function removeTempLayers(tempLayers) {
-      (tempLayers || []).forEach(function(entry) {
-        if (map.hasLayer(entry.temp)) map.removeLayer(entry.temp);
-      });
-    }
-
-    // The advance timeline uses its own persistent display layers.  The real
-    // layer groups underneath are NOT cleared/rebuilt while clicking
-    // Previous/Next.  This is important: rebuilding a Leaflet GeoJSON layer
-    // at the end of a transition produces the little "flash" of the new state
-    // that is especially noticeable on fast clicks.
-    var activeAdvanceDisplayLayers = null;
-
-    function cancelAdvanceDisplayTransition() {
-      advanceTransitionToken++;
-      if (activeAdvanceDisplayLayers) {
-        removeTempLayers(activeAdvanceDisplayLayers);
-        activeAdvanceDisplayLayers = null;
-      }
-    }
-
-    function commitAdvanceDisplay(tempLayers) {
-      activeAdvanceDisplayLayers = tempLayers || null;
-      if (activeAdvanceDisplayLayers) {
-        setTempLayerOpacity(activeAdvanceDisplayLayers, 1);
-      }
-    }
-
-    function applyAdvanceSnapshot(snapshot) {
-      if (!snapshot) return;
-
-      var token = ++advanceTransitionToken;
-      var nextLayers = buildAdvanceTempLayers(snapshot);
-
-      // Build and mount the complete next state BEFORE changing the current
-      // state.  Both states therefore exist on the map for the whole
-      // transition; there is never a clearLayers() / addData() gap.
-      setTempLayerOpacity(nextLayers, 0);
-      addTempLayersToMap(nextLayers);
-
-      var oldLayers = activeAdvanceDisplayLayers;
-
-      // First advance: no old display exists yet, so simply reveal the
-      // complete snapshot. Subsequent advances cross-fade the two complete
-      // states without touching the underlying map layers.
-      if (!oldLayers || !oldLayers.length) {
-        var startFirst = performance.now();
-        var firstDuration = 700;
-
-        function firstFrame(now) {
-          if (token !== advanceTransitionToken) {
-            removeTempLayers(nextLayers);
-            return;
-          }
-
-          var p = Math.min(1, (now - startFirst) / firstDuration);
-          var e = p < 0.5
-            ? 2 * p * p
-            : 1 - Math.pow(-2 * p + 2, 2) / 2;
-          setTempLayerOpacity(nextLayers, e);
-
-          if (p < 1) {
-            requestAnimationFrame(firstFrame);
-          } else {
-            commitAdvanceDisplay(nextLayers);
-          }
-        }
-
-        requestAnimationFrame(firstFrame);
-        return;
-      }
-
-      var start = performance.now();
-      var duration = ADVANCE_TRANSITION_MS;
-
-      function frame(now) {
-        if (token !== advanceTransitionToken) {
-          // Do not leave a half-transparent map behind after a rapid click.
-          removeTempLayers(nextLayers);
-          if (activeAdvanceDisplayLayers === oldLayers) {
-            setTempLayerOpacity(oldLayers, 1);
-          }
-          return;
-        }
-
-        var progress = Math.min(1, (now - start) / duration);
-        var eased = progress < 0.5
-          ? 2 * progress * progress
-          : 1 - Math.pow(-2 * progress + 2, 2) / 2;
-
-        setTempLayerOpacity(oldLayers, 1 - eased);
-        setTempLayerOpacity(nextLayers, eased);
-
-        if (progress < 1) {
-          requestAnimationFrame(frame);
-        } else {
-          // The new state is already fully rendered.  Simply remove the old
-          // display layers and keep the new ones mounted.  No final rebuild,
-          // clear, or addData operation means no final flash.
-          removeTempLayers(oldLayers);
-          commitAdvanceDisplay(nextLayers);
-        }
-      }
-
-      requestAnimationFrame(frame);
-    }
-
     function showTimelineDate(date) {
-      cancelAdvanceDisplayTransition();
       var dateInput = document.getElementById('timeline-date-input');
       dateInput.title = 'Loading ' + date + '...';
 
@@ -3428,7 +3051,6 @@ public map:
         .then(function(snapshot) {
           timelineMode = true;
           applySnapshotToLayers(snapshot);
-          rebuildGrayZone();
           dateInput.title = 'Jump to a date';
         })
         .catch(function(err) {
@@ -3438,7 +3060,6 @@ public map:
     }
 
     function exitTimelineMode() {
-      cancelAdvanceDisplayTransition();
       timelineMode = false;
 
       var allLayers = getAllLayerObjects();
