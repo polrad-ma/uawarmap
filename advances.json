@@ -1,5 +1,38 @@
 [
   {
+    "id": "adv-1790354321802",
+    "date": "2026-09-25",
+    "time": "18:38:41",
+    "text_en": "Russian forces restored control over some positions near Pyskunivka",
+    "text_ru": "ВС РФ восстановили контроль над рядом позиций в районе Пискуновки",
+    "text": "Russian forces restored control over some positions near Pyskunivka",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 4.5,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 4.5
+      }
+    ],
+    "areaDisplay": "+4.50 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 48.84336727537835,
+      "west": 37.77168273925782,
+      "north": 48.89858097042389,
+      "east": 37.934074401855476
+    },
+    "polygonFids": [
+      "advance-1790354217710-0s941xbmias"
+    ],
+    "snapshot": "history/advances/adv-1790354321802.json",
+    "beforeAreas": {
+      "ru": 241100.46848525852,
+      "ua": 475285.31214776024
+    }
+  },
+  {
     "id": "adv-1790334122034",
     "date": "2026-09-25",
     "time": "13:02:02",
