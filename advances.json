@@ -1,5 +1,40 @@
 [
   {
+    "id": "adv-1790334122034",
+    "date": "2026-09-25",
+    "time": "13:02:02",
+    "text_en": "Ukrainian Defense forces counterattack on thr Lyman and Slovyansk directions",
+    "text_ru": "ВСУ наступают на Лиманском и Славянском направлениях",
+    "text": "Ukrainian Defense forces counterattack on thr Lyman and Slovyansk directions",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 107.11,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 107.11
+      }
+    ],
+    "areaDisplay": "+107.11 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 48.747587086042216,
+      "west": 37.54096984863282,
+      "north": 48.99778958319881,
+      "east": 38.168563842773445
+    },
+    "polygonFids": [
+      "advance-1790333610658-5wfvcsj55vl",
+      "advance-1790333692762-huwddyzrqdc",
+      "advance-1790333940687-7tqy6bbw07"
+    ],
+    "snapshot": "history/advances/adv-1790334122034.json",
+    "beforeAreas": {
+      "ru": 241124.8966523518,
+      "ua": 475178.20207277057
+    }
+  },
+  {
     "id": "adv-1790310317043",
     "date": "2026-09-25",
     "time": "06:25:17",
