@@ -1,5 +1,38 @@
 [
   {
+    "id": "adv-1790310317043",
+    "date": "2026-09-25",
+    "time": "06:25:17",
+    "text_en": "Russians are advancing in Novoselivka microraion of Kostiantinivka",
+    "text_ru": "ВС РФ продвигаются в мкр. Новоселовка в Константиновке",
+    "text": "Russians are advancing in Novoselivka microraion of Kostiantinivka",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 2.3,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 2.3
+      }
+    ],
+    "areaDisplay": "+2.30 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 48.51251065925536,
+      "west": 37.57221221923829,
+      "north": 48.55740943670997,
+      "east": 37.70954132080079
+    },
+    "polygonFids": [
+      "advance-1790310196097-94ade8svnp"
+    ],
+    "snapshot": "history/advances/adv-1790310317043.json",
+    "beforeAreas": {
+      "ru": 241137.35488100522,
+      "ua": 475178.1868438164
+    }
+  },
+  {
     "id": "adv-1790274659958",
     "date": "2026-09-24",
     "time": "20:30:59",
