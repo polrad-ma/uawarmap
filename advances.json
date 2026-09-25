@@ -1,5 +1,40 @@
 [
   {
+    "id": "adv-1790355130106",
+    "date": "2026-09-25",
+    "time": "18:52:10",
+    "text_en": "Russian advances in the Orikhiv direction",
+    "text_ru": "Российские продвижения на Ореховском направлении",
+    "text": "Russian advances in the Orikhiv direction",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 41.61,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 41.61
+      }
+    ],
+    "areaDisplay": "+41.61 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 47.455022875083706,
+      "west": 35.52429199218751,
+      "north": 47.6737103919566,
+      "east": 36.067428588867195
+    },
+    "polygonFids": [
+      "advance-1790354830525-7rn1qt3qzf5",
+      "advance-1790354874102-8qqdh6e5fft",
+      "advance-1790354973984-lcf1teagba8"
+    ],
+    "snapshot": "history/advances/adv-1790355130106.json",
+    "beforeAreas": {
+      "ru": 241104.96992362986,
+      "ua": 475275.10761803767
+    }
+  },
+  {
     "id": "adv-1790354321802",
     "date": "2026-09-25",
     "time": "18:38:41",
