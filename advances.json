@@ -1,5 +1,38 @@
 [
   {
+    "id": "adv-1790433218284",
+    "date": "2026-09-26",
+    "time": "16:33:38",
+    "text_en": "The RuAF captured Anyshchyne and Vodiane and entered Dovzhanka and Vilkhuvatka",
+    "text_ru": "ВСРФ заняли Анискино и Водяное и также зашли в Должанку и Ольховатку",
+    "text": "The RuAF captured Anyshchyne and Vodiane and entered Dovzhanka and Vilkhuvatka",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 14.9,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 14.9
+      }
+    ],
+    "areaDisplay": "+14.90 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 50.15446606093671,
+      "west": 37.3861312866211,
+      "north": 50.265862728873266,
+      "east": 37.70576477050782
+    },
+    "polygonFids": [
+      "advance-1790432906230-z14l085t0oq"
+    ],
+    "snapshot": "history/advances/adv-1790433218284.json",
+    "beforeAreas": {
+      "ru": 241151.34713387623,
+      "ua": 475219.9714381698
+    }
+  },
+  {
     "id": "adv-1790424853580",
     "date": "2026-09-26",
     "time": "14:14:13",
