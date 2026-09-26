@@ -2591,13 +2591,31 @@
     mainLayers['Gray Zone'] = grayZoneLayer;
 
     function unionFeatureCollection(features) {
-      if (!features.length) return null;
+      // Filter out anything that is not a clean Polygon/MultiPolygon BEFORE
+      // it reaches turf.union. Feeding turf.union a stray LineString/Point
+      // (e.g. a leftover curved-frontline or advance-drawing artifact) is
+      // what previously caused the repeating "Gray Zone union error: Input
+      // geometry is not a valid Polygon or MultiPolygon" console spam.
+      var clean = features
+        .filter(function(f) {
+          return f && f.geometry &&
+            (f.geometry.type === 'Polygon' || f.geometry.type === 'MultiPolygon');
+        })
+        .map(function(f) {
+          try {
+            return turf.cleanCoords(f);
+          } catch (e) {
+            return f;
+          }
+        });
 
-      var result = features[0];
+      if (!clean.length) return null;
 
-      for (var i = 1; i < features.length; i++) {
+      var result = clean[0];
+
+      for (var i = 1; i < clean.length; i++) {
         try {
-          result = turf.union(result, features[i]);
+          result = turf.union(result, clean[i]);
         } catch (error) {
           console.warn('Gray Zone union error:', error);
         }
