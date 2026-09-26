@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html>
 <head>
   <title>Russo-Ukrainian War Map (Polrad Mapping)</title>
@@ -9,6 +10,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet-geosearch@3.11.0/dist/geosearch.css" />
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
 <script>
   window.polradGoogleAuthFailed = false;
   window.gm_authFailure = function() {
@@ -18,6 +20,7 @@
     }
   };
 </script>
+
 <script>
   // Google Maps language is chosen when the Google Maps JS API is loaded.
   // Read the POLRAD language preference before loading Google so the
@@ -29,9 +32,13 @@
     window.polradGoogleLanguage + '&region=' + window.polradGoogleRegion + '"><\/script>'
   );
 </script>
+
 <script src="https://unpkg.com/leaflet.gridlayer.googlemutant@0.16.0/dist/Leaflet.GoogleMutant.js"></script>
+
   <script src="https://unpkg.com/leaflet-geosearch@3.11.0/dist/geosearch.umd.js"></script>
+
   <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
   <style>
@@ -810,6 +817,7 @@
       background-repeat: repeat;
     }
   </style>
+
 </head>
 
 <body>
@@ -833,13 +841,14 @@
       <div id="language-toggle" title="Language"><button type="button" id="lang-en" class="lang-btn">EN</button><button type="button" id="lang-ru" class="lang-btn">RU</button></div><button id="search-toggle-btn" onclick="toggleHeaderSearch()" title="Search">🔍</button>
     </div>
 
-    <div id="app-header-search">
-      <div id="header-search-row">
-        <input id="header-search-input" type="text" placeholder="Search town, city or coordinates..." autocomplete="off">
-        <button id="header-search-go" type="button">↵</button>
-      </div>
-      <div id="header-search-results"></div>
-    </div>
+<div id="app-header-search">
+  <div id="header-search-row">
+    <input id="header-search-input" type="text" placeholder="Search town, city or coordinates..." autocomplete="off">
+    <button id="header-search-go" type="button">↵</button>
+  </div>
+  <div id="header-search-results"></div>
+</div>
+
   </div>
 
   <div id="advance-bar" aria-live="polite">
@@ -864,86 +873,90 @@
   <div class="sidebar-panel" id="panel-layers">
     <h4>Basemaps & Layers</h4>
 
-    <div id="basemap-selector-container">
-      <strong>Base Map</strong>
-      <div id="basemap-options" style="margin-top: 6px; margin-bottom: 10px; font-size: 13px;"></div>
-    </div>
+<div id="basemap-selector-container">
+  <strong>Base Map</strong>
+  <div id="basemap-options" style="margin-top: 6px; margin-bottom: 10px; font-size: 13px;"></div>
+</div>
 
-    <div id="design-selector-container" style="margin-bottom: 10px;">
-      <strong>Map Design</strong>
-      <div id="design-options" style="margin-top: 6px; margin-bottom: 10px; font-size: 13px;"></div>
-    </div>
+<div id="design-selector-container" style="margin-bottom: 10px;">
+  <strong>Map Design</strong>
+  <div id="design-options" style="margin-top: 6px; margin-bottom: 10px; font-size: 13px;"></div>
+</div>
 
-    <div id="grouped-layer-container"></div>
+<div id="grouped-layer-container"></div>
+
   </div>
 
   <div class="sidebar-panel" id="panel-draw">
     <h4>Draw Tools</h4>
 
-    <div class="tool-group-header">Solid Tools</div>
+<div class="tool-group-header">Solid Tools</div>
 
-    <button class="tool-btn" id="btn-freehand" onclick="setActiveTool('freehand')">Freehand</button>
-    <button class="tool-btn" id="btn-freehand-arrow" onclick="setActiveTool('freehand-arrow')">Freehand Arrow</button>
-    <button class="tool-btn" id="btn-line" onclick="setActiveTool('line')">Line</button>
-    <button class="tool-btn" id="btn-arrow" onclick="setActiveTool('arrow')">Arrow</button>
+<button class="tool-btn" id="btn-freehand" onclick="setActiveTool('freehand')">Freehand</button>
+<button class="tool-btn" id="btn-freehand-arrow" onclick="setActiveTool('freehand-arrow')">Freehand Arrow</button>
+<button class="tool-btn" id="btn-line" onclick="setActiveTool('line')">Line</button>
+<button class="tool-btn" id="btn-arrow" onclick="setActiveTool('arrow')">Arrow</button>
 
-    <div class="tool-group-header">Dashed Tools</div>
+<div class="tool-group-header">Dashed Tools</div>
 
-    <button class="tool-btn" id="btn-dashed-freehand" onclick="setActiveTool('dashed-freehand')">Dashed Freehand</button>
-    <button class="tool-btn" id="btn-dashed-freehand-arrow" onclick="setActiveTool('dashed-freehand-arrow')">Dashed Freehand Arrow</button>
-    <button class="tool-btn" id="btn-dashed-line" onclick="setActiveTool('dashed-line')">Dashed Line</button>
-    <button class="tool-btn" id="btn-dashed-arrow" onclick="setActiveTool('dashed-arrow')">Dashed Arrow</button>
+<button class="tool-btn" id="btn-dashed-freehand" onclick="setActiveTool('dashed-freehand')">Dashed Freehand</button>
+<button class="tool-btn" id="btn-dashed-freehand-arrow" onclick="setActiveTool('dashed-freehand-arrow')">Dashed Freehand Arrow</button>
+<button class="tool-btn" id="btn-dashed-line" onclick="setActiveTool('dashed-line')">Dashed Line</button>
+<button class="tool-btn" id="btn-dashed-arrow" onclick="setActiveTool('dashed-arrow')">Dashed Arrow</button>
 
-    <div class="tool-group-header">Shapes & Utilities</div>
+<div class="tool-group-header">Shapes & Utilities</div>
 
-    <button class="tool-btn" id="btn-polygon" onclick="setActiveTool('polygon')">Polygon</button>
-    <button class="tool-btn" id="btn-rectangle" onclick="setActiveTool('rectangle')">Rectangle</button>
-    <button class="tool-btn" id="btn-flag-ua" onclick="setActiveTool('flag-ua')">🇺🇦 Ukraine Flag</button>
-    <button class="tool-btn" id="btn-flag-ru" onclick="setActiveTool('flag-ru')">🇷🇺 Russia Flag</button>
-    <button class="tool-btn" id="btn-eraser" onclick="setActiveTool('eraser')">Eraser</button>
+<button class="tool-btn" id="btn-polygon" onclick="setActiveTool('polygon')">Polygon</button>
+<button class="tool-btn" id="btn-rectangle" onclick="setActiveTool('rectangle')">Rectangle</button>
+<button class="tool-btn" id="btn-flag-ua" onclick="setActiveTool('flag-ua')">🇺🇦 Ukraine Flag</button>
+<button class="tool-btn" id="btn-flag-ru" onclick="setActiveTool('flag-ru')">🇷🇺 Russia Flag</button>
+<button class="tool-btn" id="btn-eraser" onclick="setActiveTool('eraser')">Eraser</button>
 
-    <div class="thickness-row" style="margin-top: 10px;">
-      <label>Thickness: <span id="thickness-val">3px</span></label>
-      <input type="range" id="thickness-slider" min="1" max="15" value="3" oninput="setThickness(this.value)">
-    </div>
+<div class="thickness-row" style="margin-top: 10px;">
+  <label>Thickness: <span id="thickness-val">3px</span></label>
+  <input type="range" id="thickness-slider" min="1" max="15" value="3" oninput="setThickness(this.value)">
+</div>
 
-    <div id="color-row">
-      <span class="color-btn selected" id="color-red" style="background:#ff0000; color:white;" onclick="setColor('#ff0000')">Red</span>
-      <span class="color-btn" id="color-blue" style="background:#0000ff; color:white;" onclick="setColor('#0000ff')">Blue</span>
-      <span class="color-btn" id="color-green" style="background:#2ecc71; color:white;" onclick="setColor('#2ecc71')">Green</span>
-      <span class="color-btn" id="color-yellow" style="background:#f1c40f; color:black;" onclick="setColor('#f1c40f')">Yellow</span>
-      <span class="color-btn" id="color-black" style="background:#171717; color:white;" onclick="setColor('#171717')">Black</span>
-      <span class="color-btn" id="color-white" style="background:#ffffff; color:black;" onclick="setColor('#ffffff')">White</span>
-    </div>
+<div id="color-row">
+  <span class="color-btn selected" id="color-red" style="background:#ff0000; color:white;" onclick="setColor('#ff0000')">Red</span>
+  <span class="color-btn" id="color-blue" style="background:#0000ff; color:white;" onclick="setColor('#0000ff')">Blue</span>
+  <span class="color-btn" id="color-green" style="background:#2ecc71; color:white;" onclick="setColor('#2ecc71')">Green</span>
+  <span class="color-btn" id="color-yellow" style="background:#f1c40f; color:black;" onclick="setColor('#f1c40f')">Yellow</span>
+  <span class="color-btn" id="color-black" style="background:#171717; color:white;" onclick="setColor('#171717')">Black</span>
+  <span class="color-btn" id="color-white" style="background:#ffffff; color:black;" onclick="setColor('#ffffff')">White</span>
+</div>
 
-    <button class="tool-btn" onclick="finishShape()">Finish Shape</button>
-    <button class="tool-btn" onclick="clearDrawings()">Clear My Drawings</button>
+<button class="tool-btn" onclick="finishShape()">Finish Shape</button>
+<button class="tool-btn" onclick="clearDrawings()">Clear My Drawings</button>
 
-    <div class="panel-result" id="draw-result">Select a shape to draw.</div>
+<div class="panel-result" id="draw-result">Select a shape to draw.</div>
+
   </div>
 
   <div class="sidebar-panel" id="panel-ruler">
     <h4>Ruler (Measure)</h4>
 
-    <div class="unit-row">
-      <span class="unit-btn selected" id="unit-km" onclick="setMeasurementUnit('km')">Kilometers (km)</span>
-      <span class="unit-btn" id="unit-mi" onclick="setMeasurementUnit('mi')">Miles (mi)</span>
-    </div>
+<div class="unit-row">
+  <span class="unit-btn selected" id="unit-km" onclick="setMeasurementUnit('km')">Kilometers (km)</span>
+  <span class="unit-btn" id="unit-mi" onclick="setMeasurementUnit('mi')">Miles (mi)</span>
+</div>
 
-    <button class="tool-btn" onclick="finishShape()">Finish Measuring</button>
-    <button class="tool-btn" onclick="clearDrawings()">Clear Line</button>
+<button class="tool-btn" onclick="finishShape()">Finish Measuring</button>
+<button class="tool-btn" onclick="clearDrawings()">Clear Line</button>
 
-    <div class="panel-result" id="ruler-result">
-      Click points on the map to measure distance.
-    </div>
+<div class="panel-result" id="ruler-result">
+  Click points on the map to measure distance.
+</div>
+
   </div>
 
   <div class="sidebar-panel" id="panel-coords">
     <h4>Coordinates</h4>
 
-    <div class="panel-result" id="coords-result">
-      Click anywhere on the map to display its precise coordinates.
-    </div>
+<div class="panel-result" id="coords-result">
+  Click anywhere on the map to display its precise coordinates.
+</div>
+
   </div>
 
   <div class="sidebar-panel" id="panel-updates">
@@ -954,25 +967,26 @@
   <div class="sidebar-panel" id="panel-settings">
     <h4>Settings</h4>
 
-    <div class="settings-row">
-      <label id="toggle-dark-theme-label" for="toggle-dark-theme">Dark theme</label>
-      <input type="checkbox" id="toggle-dark-theme" checked onchange="setDarkTheme(this.checked)">
-    </div>
+<div class="settings-row">
+  <label id="toggle-dark-theme-label" for="toggle-dark-theme">Dark theme</label>
+  <input type="checkbox" id="toggle-dark-theme" checked onchange="setDarkTheme(this.checked)">
+</div>
 
-    <div class="settings-row">
-      <label id="toggle-polygon-borders-label" for="toggle-polygon-borders">Polygon borders</label>
-      <input type="checkbox" id="toggle-polygon-borders" onchange="togglePolygonBorders(this.checked)">
-    </div>
+<div class="settings-row">
+  <label id="toggle-polygon-borders-label" for="toggle-polygon-borders">Polygon borders</label>
+  <input type="checkbox" id="toggle-polygon-borders" onchange="togglePolygonBorders(this.checked)">
+</div>
 
-    <div class="settings-row">
-      <label id="toggle-crosshair-label" for="toggle-crosshair">Center crosshair</label>
-      <input type="checkbox" id="toggle-crosshair" onchange="toggleCrosshairSetting(this.checked)">
-    </div>
+<div class="settings-row">
+  <label id="toggle-crosshair-label" for="toggle-crosshair">Center crosshair</label>
+  <input type="checkbox" id="toggle-crosshair" onchange="toggleCrosshairSetting(this.checked)">
+</div>
 
-    <div class="settings-link-row">
-      <a id="twitter-link" href="https://x.com/polrad_mapping_" target="_blank" rel="noopener">Twitter/X</a>
-      <a id="login-link" href="https://polrad-ma.github.io/login/">Log In</a>
-    </div>
+<div class="settings-link-row">
+  <a id="twitter-link" href="https://x.com/polrad_mapping_" target="_blank" rel="noopener">Twitter/X</a>
+  <a id="login-link" href="https://polrad-ma.github.io/login/">Log In</a>
+</div>
+
   </div>
 
   <script>
@@ -999,7 +1013,7 @@
         fullscreen: 'Toggle Fullscreen', searchFailed: 'Search failed.', searching: 'Searching...', copied: 'Copied!',
         mainLayers: 'Main Layers', extraLayers: 'Extra Layers',
         russianTerritory: 'Russian-controlled territory', ukrainianTerritory: 'Ukrainian-controlled territory',
-        ukrainianAdvances: 'Ukrainian advances', russianAdvances: 'Russian advances', regained: 'Territories Regained',
+        ukrainianAdvances: 'Ukrainian advances', russianAdvances: 'Russian advances', regained: 'Territories regained in the last month',
         deepstate: 'Claimed DeepState Frontline', ria: 'Claimed RIA Frontline',
         mapUpdate: 'Map update', area: 'Area',
         basemapGoogleHybrid: 'Google Hybrid (Satellite + Labels)', basemapEsriHybrid: 'Esri Hybrid (Satellite + Labels)', basemapEsriSatellite: 'Esri Satellite',
@@ -1041,7 +1055,7 @@
       var m = {
         'Russian-controlled territory':'russianTerritory', 'Ukrainian-controlled territory':'ukrainianTerritory',
         'Ukrainian advances':'ukrainianAdvances', 'Russian advances':'russianAdvances',
-        'Territories regained':'regained', 'Territories Regained':'regained',
+        'Territories regained':'regained', 'Territories regained in the last month':'regained',
         'Claimed DeepState Frontline':'deepstate', 'Claimed RIA Frontline':'ria',
         'My Drawings':'myDrawings', 'Cities Captured':'citiesCaptured',
         'August 2024 Frontline':'augustFrontline', 'Towns, villages and cities (credit to PWM)':'townsVillages', 'Fortifications (thanks PMapping832)':'fortifications', 'Gray Zone':'grayZone'
@@ -2397,10 +2411,6 @@
         noOutline: true
       },
       {
-        /* FIXED: filename now matches the actual file in the repo
-           ("Territories regained in the last month.geojson"). The old
-           "Territories%20Regained.geojson" 404'd, so this layer (and
-           therefore rebuildGrayZone(), which requires it) never ran. */
         file: "Territories%20regained%20in%20the%20last%20month.geojson",
         name: "Territories regained",
         color: "#0f9d58",
@@ -2591,31 +2601,13 @@
     mainLayers['Gray Zone'] = grayZoneLayer;
 
     function unionFeatureCollection(features) {
-      // Filter out anything that is not a clean Polygon/MultiPolygon BEFORE
-      // it reaches turf.union. Feeding turf.union a stray LineString/Point
-      // (e.g. a leftover curved-frontline or advance-drawing artifact) is
-      // what previously caused the repeating "Gray Zone union error: Input
-      // geometry is not a valid Polygon or MultiPolygon" console spam.
-      var clean = features
-        .filter(function(f) {
-          return f && f.geometry &&
-            (f.geometry.type === 'Polygon' || f.geometry.type === 'MultiPolygon');
-        })
-        .map(function(f) {
-          try {
-            return turf.cleanCoords(f);
-          } catch (e) {
-            return f;
-          }
-        });
+      if (!features.length) return null;
 
-      if (!clean.length) return null;
+      var result = features[0];
 
-      var result = clean[0];
-
-      for (var i = 1; i < clean.length; i++) {
+      for (var i = 1; i < features.length; i++) {
         try {
-          result = turf.union(result, clean[i]);
+          result = turf.union(result, features[i]);
         } catch (error) {
           console.warn('Gray Zone union error:', error);
         }
@@ -2946,7 +2938,7 @@
     ];
 
     var TIMELINE_NAME_ALIASES = {
-      'Territories regained': 'Territories Regained'
+      'Territories regained': 'Territories regained in the last month'
     };
 
     var timelineSequence = [];
@@ -3040,22 +3032,31 @@
         goToTimelineIndex(nearestIdx !== -1 ? nearestIdx : 0);
       });
 
-    function applySnapshotToLayers(snapshot) {
-      var allLayers = getAllLayerObjects();
+   function applySnapshotToLayers(snapshot) {
+  var allLayers = getAllLayerObjects();
 
-      Object.keys(allLayers).forEach(function(name) {
-        if (TIMELINE_SKIP_LAYERS.indexOf(name) !== -1) return;
+  Object.keys(allLayers).forEach(function(name) {
+    if (TIMELINE_SKIP_LAYERS.indexOf(name) !== -1) return;
 
-        var layer = allLayers[name];
-        if (!layer || !layer.clearLayers) return;
+    var layer = allLayers[name];
+    if (!layer || !layer.clearLayers) return;
 
-        var snapshotKey = TIMELINE_NAME_ALIASES[name] || name;
+    var snapshotKey = TIMELINE_NAME_ALIASES[name] || name;
 
-        layer.clearLayers();
+    layer.clearLayers();
 
-        if (snapshot[snapshotKey]) {
-          layer.addData(snapshot[snapshotKey]);
-        }
+    if (snapshot[snapshotKey]) {
+      layer.addData(snapshot[snapshotKey]);
+    } else if (
+      name === 'Territories regained' &&
+      liveLayerData[name]
+    ) {
+      layer.addData(liveLayerData[name]);
+    }
+  });
+
+  rebuildGrayZone();
+}
       });
     }
 
