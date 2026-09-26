@@ -1001,7 +1001,7 @@ public map:
         fullscreen: 'Toggle Fullscreen', searchFailed: 'Search failed.', searching: 'Searching...', copied: 'Copied!',
         mainLayers: 'Main Layers', extraLayers: 'Extra Layers',
         russianTerritory: 'Russian-controlled territory', ukrainianTerritory: 'Ukrainian-controlled territory',
-        ukrainianAdvances: 'Ukrainian advances', russianAdvances: 'Russian advances', regained: 'Territories regained in the last month',
+        ukrainianAdvances: 'Ukrainian advances', russianAdvances: 'Russian advances', regained: 'Territories Regained',
         deepstate: 'Claimed DeepState Frontline', ria: 'Claimed RIA Frontline',
         mapUpdate: 'Map update', area: 'Area',
         basemapGoogleHybrid: 'Google Hybrid (Satellite + Labels)', basemapEsriHybrid: 'Esri Hybrid (Satellite + Labels)', basemapEsriSatellite: 'Esri Satellite',
@@ -1043,7 +1043,7 @@ public map:
       var m = {
         'Russian-controlled territory':'russianTerritory', 'Ukrainian-controlled territory':'ukrainianTerritory',
         'Ukrainian advances':'ukrainianAdvances', 'Russian advances':'russianAdvances',
-        'Territories regained':'regained', 'Territories regained in the last month':'regained',
+        'Territories regained':'regained', 'Territories Regained':'regained',
         'Claimed DeepState Frontline':'deepstate', 'Claimed RIA Frontline':'ria',
         'My Drawings':'myDrawings', 'Cities Captured':'citiesCaptured',
         'August 2024 Frontline':'augustFrontline', 'Towns, villages and cities (credit to PWM)':'townsVillages', 'Fortifications (thanks PMapping832)':'fortifications', 'Gray Zone':'grayZone'
@@ -2399,7 +2399,7 @@ public map:
         noOutline: true
       },
       {
-        file: "Territories%20regained%20in%20the%20last%20month.geojson",
+        file: "Territories%20Regained.geojson",
         name: "Territories regained",
         color: "#0f9d58",
         group: "main",
@@ -2926,7 +2926,7 @@ public map:
     ];
 
     var TIMELINE_NAME_ALIASES = {
-      'Territories regained': 'Territories regained in the last month'
+      'Territories regained': 'Territories Regained'
     };
 
     var timelineSequence = [];
@@ -3811,4 +3811,3 @@ public map:
 </body>
 </html>
 
-heres the public map code. please update it
