@@ -1,5 +1,3 @@
-public map:
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -2399,7 +2397,11 @@ public map:
         noOutline: true
       },
       {
-        file: "Territories%20Regained.geojson",
+        /* FIXED: filename now matches the actual file in the repo
+           ("Territories regained in the last month.geojson"). The old
+           "Territories%20Regained.geojson" 404'd, so this layer (and
+           therefore rebuildGrayZone(), which requires it) never ran. */
+        file: "Territories%20regained%20in%20the%20last%20month.geojson",
         name: "Territories regained",
         color: "#0f9d58",
         group: "main",
@@ -3810,4 +3812,3 @@ public map:
 
 </body>
 </html>
-
