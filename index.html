@@ -2490,18 +2490,24 @@
       );
     }
 
+    // Manual checkbox choices take precedence over design presets. This is
+    // important for extra layers: a design may start them hidden, but turning
+    // one on must keep it on until the user changes it again.
+    var layerVisibilityOverrides = {};
+
     function isLayerInCurrentDesign(name) {
+      if (Object.prototype.hasOwnProperty.call(layerVisibilityOverrides, name)) {
+        return layerVisibilityOverrides[name];
+      }
+
+      var layerInfo = layerFiles.find(function(info) {
+        return info.name === name;
+      });
+
       if (currentDesign === 'Default') {
-        return (
-          name !== 'Fortifications (thanks PMapping832)' &&
-          name !== 'August 2024 Frontline' &&
-          name !== 'Region borders' &&
-          name !== 'Land corridor to Crimea' &&
-          name !== 'Claimed DeepState Frontline' &&
-          name !== 'Claimed RIA Frontline' &&
-          name !== 'Cities Captured' &&
-          name !== 'Heavy Ukrainian OPSEC area'
-        );
+        // In the default design, only layers explicitly marked defaultOff are
+        // hidden. Other extra layers remain available to the user.
+        return !(layerInfo && layerInfo.defaultOff);
       }
 
       var selectedLayers = mapDesigns[currentDesign];
@@ -2510,11 +2516,15 @@
              selectedLayers.indexOf(name) !== -1;
     }
 
-    function setLayerVisibility(name, visible) {
+    function setLayerVisibility(name, visible, rememberChoice) {
       var layers = getAllLayerObjects();
       var layer = layers[name];
 
       if (!layer) return;
+
+      if (rememberChoice) {
+        layerVisibilityOverrides[name] = !!visible;
+      }
 
       if (visible) {
         if (!map.hasLayer(layer)) {
@@ -2877,7 +2887,7 @@
             checkbox.addEventListener(
               'change',
               function() {
-                setLayerVisibility(name, checkbox.checked);
+                setLayerVisibility(name, checkbox.checked, true);
                 checkbox.checked = map.hasLayer(layers[name]);
                 updateFrontlineInfoButtons();
               }
