@@ -22,9 +22,6 @@
 </script>
 
 <script>
-  // Google Maps language is chosen when the Google Maps JS API is loaded.
-  // Read the POLRAD language preference before loading Google so the
-  // Hybrid basemap itself uses the matching language.
   window.polradGoogleLanguage = localStorage.getItem('polrad_language') === 'ru' ? 'ru' : 'en';
   window.polradGoogleRegion = window.polradGoogleLanguage === 'ru' ? 'RU' : 'US';
   document.write(
@@ -716,7 +713,6 @@
       100% { opacity: 0; }
     }
 
-    /* Advance history */
     #advance-bar {
       position: absolute;
       bottom: 18px;
@@ -1110,8 +1106,6 @@
     window.setPublicLanguage = function(lang) {
       publicLanguage = lang === 'ru' ? 'ru' : 'en';
       localStorage.setItem('polrad_language', publicLanguage);
-      // Google Maps JS reads its language at load time, so reload the page
-      // to recreate Google Hybrid with the newly selected language.
       window.location.reload();
     };
     document.addEventListener('DOMContentLoaded', function(){
@@ -1152,9 +1146,6 @@
       }
 
       try {
-        // Google/Mutant tiles are not reliably readable by html2canvas because
-        // of browser canvas security. Use the CORS-friendly Esri hybrid only
-        // while capturing, then restore exactly what the user had selected.
         if (typeof googleHybrid !== 'undefined' &&
             googleHybrid &&
             currentBaseLayer === googleHybrid &&
@@ -1166,10 +1157,6 @@
           switchedFromGoogle = true;
           map.setView(originalCenter, originalZoom, { animate: false });
         }
-
-        // Hide application chrome, but do NOT resize/reposition the Leaflet
-        // container. Resizing the live map was the main source of blank,
-        // clipped and shifted screenshots.
         hideElement(document.getElementById('left-sidebar'));
         hideElement(document.getElementById('app-header'));
         hideElement(document.getElementById('advance-bar'));
@@ -1182,8 +1169,6 @@
 
         map.stop();
         map.invalidateSize(true);
-
-        // Let the replacement basemap and vector layers finish painting.
         await new Promise(function(resolve) {
           requestAnimationFrame(function() {
             requestAnimationFrame(function() {
@@ -1209,8 +1194,6 @@
               });
           }
         });
-
-        // Export with a clean POLRAD MAPPING header above the map.
         var headerHeight = 76 * 2;
         var padding = 16 * 2;
         var finalWidth = mapCanvas.width + padding * 2;
@@ -1282,8 +1265,6 @@
         hiddenElements.forEach(function(item) {
           item.element.style.display = item.display;
         });
-
-        // Restore the original basemap and view after the capture.
         if (switchedFromGoogle && originalBaseLayer) {
           if (map.hasLayer(currentBaseLayer)) map.removeLayer(currentBaseLayer);
           currentBaseLayer = originalBaseLayer;
@@ -1331,18 +1312,6 @@
       }
     }
 
-    /*
-     * BASEMAPS
-     *
-     * Default: Google Hybrid (Satellite + English Labels)
-     * Automatic fallback: Esri Hybrid (Satellite + Esri Labels)
-     * Alternatives: Esri Satellite, OpenStreetMap, Topographic
-     *
-     * Google Hybrid is supplied through Google Maps JS + Leaflet.GoogleMutant.
-     * If Google reports an API authentication/billing/key failure, the map
-     * automatically switches to Esri Hybrid.
-     */
-
     var satellite = L.tileLayer(
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
       {
@@ -1368,9 +1337,6 @@
         }
       )
     ]);
-
-    // Google is optional: the map must still work if the API key is invalid,
-    // restricted, expired, billing is disabled, or the Google script/plugin fails.
     var googleHybrid = null;
     if (window.google && window.google.maps && L.gridLayer && L.gridLayer.googleMutant) {
       try {
@@ -1406,9 +1372,6 @@
       "OpenStreetMap": osmStandard,
       "Topographic": topo
     };
-
-    // Start with Esri so the map is NEVER blank while Google loads or fails.
-    // Google Hybrid is promoted to the default only after Google is confirmed usable.
     if (googleHybrid) {
       baseLayers = {
         "Google Hybrid (Satellite + Labels)": googleHybrid,
@@ -1423,17 +1386,10 @@
       zoom: 7,
       scrollWheelZoom: true,
       zoomControl: false,
-      // Canvas is faster for the very large territory polygons and lets
-      // Leaflet's path simplification do its work without creating huge SVG
-      // path trees in the browser.
       preferCanvas: true,
       layers: [currentBaseLayer]
     });
 
-    /*
-     * Google Maps can report an invalid/expired/restricted API key through
-     * gm_authFailure. Keep the user's current view and switch to Esri Hybrid.
-     */
     window.polradUseEsriFallback = function() {
       if (!map || !esriHybrid) return;
 
@@ -1456,14 +1412,9 @@
         });
       }
     };
-
-    // If Google failed while its API script was loading, stay on Esri.
     if (window.polradGoogleAuthFailed) {
       window.polradUseEsriFallback();
     }
-
-    // Give Google a moment to finish loading. If it is genuinely available,
-    // switch to it; otherwise Esri remains the working fallback.
     if (googleHybrid) {
       window.setTimeout(function() {
         if (window.polradGoogleAuthFailed) return;
@@ -1558,26 +1509,12 @@
 
     map.createPane('markersPane');
     map.getPane('markersPane').style.zIndex = 650;
-
-    // Advance layers get their own pane ABOVE the territory layers (overlayPane
-    // is z-index 400). Without this, translucent red territory can be drawn on
-    // top of the yellow Russian advances and tint them red/pink.
     map.createPane('advancesPane');
     map.getPane('advancesPane').style.zIndex = 420;
-
-    // Extra/reference layers sit above the territory fills so they remain
-    // visible when enabled (region borders, corridors, fortifications, OPSEC, etc.).
     map.createPane('extraLayersPane');
     map.getPane('extraLayersPane').style.zIndex = 500;
-
-    // User drawings get their own pane ABOVE the advances (420) but below the
-    // markers (650), so drawn shapes are never tinted/dimmed by advance layers.
     map.createPane('drawingsPane');
     map.getPane('drawingsPane').style.zIndex = 430;
-
-    // Every drawing shape (and its live preview) is created through these
-    // factories, so default them all to the drawings pane. GeoJSON layers do
-    // not use these factories and are therefore unaffected.
     ['polyline', 'polygon', 'rectangle'].forEach(function(name) {
       var original = L[name];
       L[name] = function(shape, options) {
@@ -1648,8 +1585,6 @@
         .addTo(map)
         .bindPopup(content, { closeOnClick: false, autoClose: false })
         .openPopup();
-
-      // Closing the popup with its X also removes the pin.
       searchResultMarker.on('popupclose', clearSearchMarker);
     }
 
@@ -1875,8 +1810,6 @@
 
     var mainLayers = {};
     var extraLayers = {};
-
-    // Clickable information points for the two claimed frontline layers.
     var frontlineInfoData = {
       "Claimed DeepState Frontline": [
         { lat: 50.28584079082061, lng: 36.93602332341913, text: "VOVCHANSK HOLDS!" },
@@ -1997,8 +1930,6 @@
         var layer = extraLayers[layerName];
         return layer && map.hasLayer(layer);
       });
-
-      // Remove information points belonging to layers that are no longer active.
       Object.keys(frontlineInfoData).forEach(function(layerName) {
         if (activeLayerNames.indexOf(layerName) === -1) {
           if (frontlineInfoMarkerGroups[layerName] &&
@@ -2009,8 +1940,6 @@
       });
 
       button.style.display = activeLayerNames.length ? 'flex' : 'none';
-
-      // If no claimed frontline layer is active, there is nothing to show.
       if (!activeLayerNames.length) {
         button.classList.remove('active');
         return;
@@ -2041,10 +1970,6 @@
 
     var timelineMode = false;
     var timelineDates = [];
-
-    // Advance history. The editor/Cloudflare Worker publishes this as
-    // advances.json. Each advance points to the corresponding historical
-    // snapshot and stores the map focus that should be used when browsing it.
     var advances = [];
     var advanceIndex = -1;
     var advanceMapLocked = false;
@@ -2062,8 +1987,6 @@
 
     function formatAdvanceArea(item) {
       if (!item) return '';
-
-      // Preferred format: an explicit display string generated by the editor.
       if (item.areaDisplay) {
         var chosen = String(item.areaColor || '').toLowerCase();
         var col;
@@ -2072,8 +1995,6 @@
         else col = String(item.side || '').toLowerCase() === 'ua' ? '#42a5f5' : '#ef5350';
         return '<span style="color:' + col + '">' + escapeSearchText(item.areaDisplay) + '</span>';
       }
-
-      // Flexible structured format for future worker/editor versions.
       if (Array.isArray(item.areaEffects)) {
         return item.areaEffects.map(function(effect) {
           var value = Number(effect.value);
@@ -2176,8 +2097,6 @@
         })
         .catch(function(error) {
           console.error(error);
-          // Even if an old snapshot is unavailable, the navigation bar remains
-          // usable and the stored focus can still take the user to the update.
           if (!options.skipFocus) focusAdvance(item);
         });
     }
@@ -2207,9 +2126,6 @@
             advanceIndex = advances.length - 1;
             renderAdvanceBar();
             showAdvance(advanceIndex);
-
-            // Make the existing calendar operate on advance dates. Selecting a
-            // day jumps to the FIRST advance on that day.
             timelineDates = Array.from(new Set(advances.map(function(a) { return a.date; })))
               .filter(Boolean)
               .sort();
@@ -2331,17 +2247,6 @@
     extraLayers["My Drawings"] =
       userDrawings;
 
-    /*
-     * ---------------------------------------------------------
-     * ZOOM-BASED VECTOR DETAIL
-     * ---------------------------------------------------------
-     * Leaflet's smoothFactor is render-time simplification: the actual
-     * GeoJSON is NOT changed. At lower zoom levels Leaflet draws fewer
-     * vertices, and as the user zooms in it restores more detail.
-     *
-     * These values are deliberately moderate so distant territory edges
-     * stop causing rendering glitches without becoming blocky.
-     */
     var VECTOR_SMOOTH = {
       territory: 2.0,
       advances: 1.7,
@@ -2489,10 +2394,6 @@
         extraLayers
       );
     }
-
-    // Manual checkbox choices take precedence over design presets. This is
-    // important for extra layers: a design may start them hidden, but turning
-    // one on must keep it on until the user changes it again.
     var layerVisibilityOverrides = {};
 
     function isLayerInCurrentDesign(name) {
@@ -2505,8 +2406,6 @@
       });
 
       if (currentDesign === 'Default') {
-        // In the default design, only layers explicitly marked defaultOff are
-        // hidden. Other extra layers remain available to the user.
         return !(layerInfo && layerInfo.defaultOff);
       }
 
@@ -2522,24 +2421,19 @@
 
       if (!layer) return;
 
+      visible = !!visible;
+
       if (rememberChoice) {
-        layerVisibilityOverrides[name] = !!visible;
+        layerVisibilityOverrides[name] = visible;
       }
 
       if (visible) {
-        if (!map.hasLayer(layer)) {
-          map.addLayer(layer);
-        }
+        if (!map.hasLayer(layer)) map.addLayer(layer);
       } else {
-        if (map.hasLayer(layer)) {
-          map.removeLayer(layer);
-        }
+        if (map.hasLayer(layer)) map.removeLayer(layer);
       }
 
-      if (
-        name === 'Claimed DeepState Frontline' ||
-        name === 'Claimed RIA Frontline'
-      ) {
+      if (name === 'Claimed DeepState Frontline' || name === 'Claimed RIA Frontline') {
         updateFrontlineInfoButtons();
       }
     }
@@ -2554,10 +2448,13 @@
       var layers = getAllLayerObjects();
 
       Object.keys(layers).forEach(function(name) {
-        setLayerVisibility(
-          name,
-          isLayerInCurrentDesign(name)
-        );
+        var visible;
+        if (Object.prototype.hasOwnProperty.call(layerVisibilityOverrides, name)) {
+          visible = layerVisibilityOverrides[name];
+        } else {
+          visible = isLayerInCurrentDesign(name);
+        }
+        setLayerVisibility(name, visible, false);
       });
 
       updateSidebarLayerControl();
@@ -2679,9 +2576,6 @@
       }
 
       try {
-        // Fewer arc steps + simplification keeps the buffer curves light
-        // (few points instead of thousands) without touching the exact
-        // territory edges, which are subtracted afterwards.
         var ruBuffer = turf.simplify(
           turf.buffer(
             ruUnion,
@@ -2753,9 +2647,6 @@
 
             pane: layerInfo.pane ||
                   (layerInfo.group === 'extra' ? 'extraLayersPane' : 'overlayPane'),
-
-            // Render-only simplification. Leaflet automatically applies this
-            // more strongly when zoomed out and restores detail when zooming in.
             smoothFactor: layerInfo.smoothFactor !== undefined
               ? layerInfo.smoothFactor
               : 1.0,
@@ -2811,10 +2702,11 @@
 
           liveLayerData[layerInfo.name] = data;
 
-          setLayerVisibility(
-            layerInfo.name,
-            isLayerInCurrentDesign(layerInfo.name)
-          );
+          var shouldShow = Object.prototype.hasOwnProperty.call(layerVisibilityOverrides, layerInfo.name)
+            ? layerVisibilityOverrides[layerInfo.name]
+            : !layerInfo.defaultOff && (currentDesign === 'Default' || isLayerInCurrentDesign(layerInfo.name));
+
+          setLayerVisibility(layerInfo.name, shouldShow, false);
 
           if (
             layerInfo.name === 'Russian-controlled territory' ||
@@ -2995,9 +2887,6 @@
       idx = Math.max(0, Math.min(idx, timelineSequence.length - 1));
       timelineIndex = idx;
       var chosenDate = timelineSequence[idx];
-
-      // If advance history exists, the calendar is a date navigator and always
-      // opens on the FIRST advance recorded for the selected day.
       if (advances.length && chosenDate) {
         var first = -1;
         for (var i = 0; i < advances.length; i++) {
@@ -3475,10 +3364,6 @@
 
       drawingPoints = [];
     });
-
-    // ---- Coordinates tool -------------------------------------------------
-    // A visible marker is placed on the picked point, and both the popup and
-    // the sidebar panel show a "Copy coordinates" button.
     var coordMarker = null;
 
     function clearCoordMarker() {
@@ -3515,24 +3400,14 @@
       document.getElementById('coords-result').innerHTML =
         "Lat: " + latText + ", Lng: " + lngText + "<br>" + copyButton;
     }
-
-    // Coordinate mode gets first priority even when the click lands on a
-    // GeoJSON feature or another map layer. This prevents layer click handlers
-    // from blocking coordinate selection.
     map.getContainer().addEventListener('click', function(ev) {
       if (activeTool !== 'coords') return;
-
-      // Clicks on popups/controls (e.g. the Copy button) must NOT be treated
-      // as a new coordinate pick, otherwise the popup is replaced before the
-      // button's click handler can run.
       if (ev.target.closest('.leaflet-popup, .leaflet-control')) return;
 
       var rect = map.getContainer().getBoundingClientRect();
       var latlng = map.containerPointToLatLng(
         L.point(ev.clientX - rect.left, ev.clientY - rect.top)
       );
-
-      // Store the result so the Leaflet click handler does not duplicate it.
       map._coordinateClickHandled = true;
 
       selectCoordinate(latlng);
