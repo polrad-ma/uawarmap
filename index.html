@@ -2627,7 +2627,7 @@
 
     layerFiles.forEach(function(layerInfo) {
 
-      fetch(layerInfo.file + (layerInfo.file.indexOf('?') === -1 ? '?' : '&') + 'v=' + Date.now(), { cache: 'no-store' })
+      fetch(layerInfo.file)
         .then(function(response) {
           if (!response.ok) {
             throw new Error('HTTP ' + response.status + ' while loading ' + layerInfo.file);
