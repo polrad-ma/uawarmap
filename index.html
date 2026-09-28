@@ -2276,6 +2276,15 @@
         smoothFactor: VECTOR_SMOOTH.towns
       },
       {
+        file: "Suriyak%20town%20markers.geojson",
+        name: "Suriyak town markers",
+        color: "#ff0000",
+        group: "extra",
+        defaultOff: true,
+        pointRadius: 5,
+        markerColorFromProperties: true
+      },
+      {
         file: "Ukrainian-controlled%20territory.geojson",
         name: "Ukrainian-controlled territory",
         color: "#1a237e",
@@ -2644,6 +2653,28 @@
               ? layerInfo.smoothFactor
               : 1.0,
 
+            pointToLayer: function(feature, latlng) {
+              if (layerInfo.markerColorFromProperties) {
+                var markerColor =
+                  feature && feature.properties && feature.properties.color
+                    ? feature.properties.color
+                    : layerInfo.color;
+                var markerRadius =
+                  feature && feature.properties && Number(feature.properties.radius)
+                    ? Number(feature.properties.radius)
+                    : (layerInfo.pointRadius || 5);
+                return L.circleMarker(latlng, {
+                  radius: markerRadius,
+                  color: markerColor,
+                  fillColor: markerColor,
+                  fillOpacity: 1,
+                  weight: 1.2,
+                  pane: layerInfo.pane || 'extraLayersPane'
+                });
+              }
+              return L.marker(latlng);
+            },
+
             style: function() {
 
               var style = {
@@ -2838,6 +2869,7 @@
       'Cities Captured',
       'August 2024 Frontline',
       'Towns, villages and cities (credit to PWM)',
+      'Suriyak town markers',
       'Fortifications (thanks PMapping832)',
       'Heavy Ukrainian OPSEC area'
     ];
