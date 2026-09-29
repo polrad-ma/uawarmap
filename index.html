@@ -2656,8 +2656,13 @@
             pointToLayer: function(feature, latlng) {
               if (layerInfo.markerColorFromProperties) {
                 var markerColor =
-                  feature && feature.properties && feature.properties.color
-                    ? feature.properties.color
+                  feature && feature.properties &&
+                  (feature.properties.color ||
+                   feature.properties.markerColor ||
+                   feature.properties.fillColor)
+                    ? (feature.properties.color ||
+                       feature.properties.markerColor ||
+                       feature.properties.fillColor)
                     : layerInfo.color;
                 var markerRadius =
                   feature && feature.properties && Number(feature.properties.radius)
@@ -2665,7 +2670,7 @@
                     : (layerInfo.pointRadius || 5);
                 return L.circleMarker(latlng, {
                   radius: markerRadius,
-                  color: markerColor,
+                  color: "#ffffff",
                   fillColor: markerColor,
                   fillOpacity: 1,
                   weight: 1.2,
@@ -2675,22 +2680,38 @@
               return L.marker(latlng);
             },
 
-            style: function() {
+            style: function(feature) {
+
+              var featureMarkerColor =
+                layerInfo.markerColorFromProperties &&
+                feature &&
+                feature.properties &&
+                (feature.properties.color ||
+                 feature.properties.markerColor ||
+                 feature.properties.fillColor);
+
+              var markerStyleColor =
+                featureMarkerColor || layerInfo.color;
 
               var style = {
                 color:
-                  layerInfo.outlineColor ||
-                  layerInfo.color,
+                  layerInfo.markerColorFromProperties
+                    ? markerStyleColor
+                    : (layerInfo.outlineColor || layerInfo.color),
 
-                weight: 2,
+                weight: layerInfo.markerColorFromProperties ? 1.2 : 2,
 
                 fillColor:
-                  layerInfo.color,
+                  layerInfo.markerColorFromProperties
+                    ? markerStyleColor
+                    : layerInfo.color,
 
                 fillOpacity:
-                  layerInfo.fillOpacity !== undefined
-                    ? layerInfo.fillOpacity
-                    : 0.4
+                  layerInfo.markerColorFromProperties
+                    ? 1
+                    : (layerInfo.fillOpacity !== undefined
+                      ? layerInfo.fillOpacity
+                      : 0.4)
               };
 
               if (layerInfo.noOutline) {
