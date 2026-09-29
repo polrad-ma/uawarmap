@@ -1125,5 +1125,41 @@
       "ru": 241172.62570857187,
       "ua": 475196.09353223274
     }
+  },
+  {
+    "id": "adv-1790703425942",
+    "date": "2026-09-29",
+    "time": "19:37:05",
+    "text_en": "Russian forces continue advancing in the Prykolotne pocket. Loshakove was captured",
+    "text_ru": "ВС РФ продвигаются в \"Волчанском котле\". Село Лошаково было захвачено",
+    "text": "Russian forces continue advancing in the Prykolotne pocket. Loshakove was captured",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 41.19,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 41.19
+      }
+    ],
+    "areaDisplay": "+41.19 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 50.161064818858684,
+      "west": 37.02804565429688,
+      "north": 50.469742723755154,
+      "east": 37.725677490234375
+    },
+    "polygonFids": [
+      "advance-1790703060503-w5h1a5vyya",
+      "advance-1790703186988-9oxc691n15k",
+      "advance-1790703250108-jm5zq8r6y2i",
+      "advance-1790703282577-l4m58al6eam"
+    ],
+    "snapshot": "history/advances/adv-1790703425942.json",
+    "beforeAreas": {
+      "ru": 241172.62951272482,
+      "ua": 475196.9865025661
+    }
   }
 ]
