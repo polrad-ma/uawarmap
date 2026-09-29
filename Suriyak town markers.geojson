@@ -1,0 +1,6980 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 1",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.36808,
+          47.539919
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 2",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.826073,
+          47.523345
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 3",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.998077,
+          47.52349
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 4",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.036701,
+          47.525431
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 5",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.036873,
+          47.580926
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 6",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.061249,
+          47.612875
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 7",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.101246,
+          47.665156
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 8",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.083565,
+          47.695321
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 9",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.189651,
+          47.785711
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 10",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.178837,
+          47.751213
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 11",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.192226,
+          47.736899
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 12",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.125793,
+          47.69844
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 13",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.493492,
+          47.847266
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 14",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.591511,
+          47.887572
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 15",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.68232,
+          47.876519
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 16",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.710644,
+          47.870877
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 17",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.744118,
+          47.890795
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 18",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.766262,
+          47.933597
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 19",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.756134,
+          47.953375
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 20",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.799564,
+          47.921749
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 21",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.798019,
+          47.909208
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 22",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.857071,
+          47.974754
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 23",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.827202,
+          48.04412
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 24",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.719398,
+          48.035167
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 25",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.749783,
+          48.045152
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 26",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.693134,
+          48.009334
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 27",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.706696,
+          47.984177
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 28",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.604042,
+          47.975214
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 29",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.586704,
+          48.047677
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 30",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.653652,
+          48.068444
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 31",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.686954,
+          48.063741
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 32",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.685581,
+          48.036659
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 33",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.635284,
+          48.099063
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 34",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.750641,
+          48.084845
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 35",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.535549,
+          47.956824
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 36",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.545162,
+          47.927501
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 37",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.502934,
+          47.931066
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 38",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.394444,
+          47.919908
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 39",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.323719,
+          47.915307
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 40",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.247158,
+          47.906677
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 41",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.238918,
+          47.878131
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 42",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.313334,
+          47.877038
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 43",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.204758,
+          47.882276
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 44",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.209736,
+          47.857057
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 45",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.201324,
+          47.83586
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 46",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.17403,
+          47.878016
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 47",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.196346,
+          47.897355
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 48",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.169052,
+          47.894823
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 49",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.13884,
+          47.810503
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 50",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.128883,
+          47.829637
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 51",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.056442,
+          47.801049
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 52",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.36293,
+          47.584631
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 53",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.331688,
+          47.559384
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 54",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.287056,
+          47.607552
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 55",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.712433,
+          47.600376
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 56",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.696468,
+          47.558921
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 57",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.783157,
+          47.571314
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 58",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.800152,
+          47.580926
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 59",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.889759,
+          47.53679
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 60",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.889072,
+          47.603154
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 61",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.996017,
+          47.616116
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 62",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.937653,
+          47.625141
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 63",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.079445,
+          47.751559
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 64",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.207848,
+          47.8218
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 65",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.323719,
+          47.830559
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 66",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.303291,
+          47.862701
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 67",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.326981,
+          47.784442
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 68",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.46328,
+          47.858209
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 69",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.533318,
+          47.854178
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 70",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.498299,
+          47.874677
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 71",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.531944,
+          47.885269
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 72",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.621895,
+          47.921979
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 73",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.587391,
+          47.944752
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 74",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.644897,
+          47.95441
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 75",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.676655,
+          47.901844
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 76",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.752357,
+          47.978202
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 77",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.739483,
+          47.991185
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 78",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.763687,
+          48.033675
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 79",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.549011,
+          47.547741
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 80",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.582743,
+          47.548436
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 81",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.917152,
+          48.098604
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 82",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.943417,
+          48.105826
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 83",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.93552,
+          48.14112
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 84",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.899815,
+          48.17616
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 85",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.926937,
+          48.188521
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 86",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.990452,
+          48.188865
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 87",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.963329,
+          48.199392
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 88",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.984959,
+          48.238966
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 89",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.937065,
+          48.241253
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 90",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.898613,
+          48.246168
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 91",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.060661,
+          48.410517
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 92",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.106152,
+          48.410745
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 93",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.088642,
+          48.419176
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 94",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.128639,
+          48.42134
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 95",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.116623,
+          48.404705
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 96",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.111473,
+          48.381566
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 97",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.178249,
+          48.407212
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 98",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.177906,
+          48.450952
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 99",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.027874,
+          48.415188
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 100",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.048302,
+          48.421227
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 101",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.971054,
+          48.371646
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 102",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.072678,
+          48.330577
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 103",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.069073,
+          48.354424
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 104",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.04195,
+          48.357276
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 105",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.010708,
+          48.366058
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 106",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.085552,
+          48.469166
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 107",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.115765,
+          48.484187
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 108",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.19593,
+          48.511146
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 109",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.234898,
+          48.529111
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 110",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.223396,
+          48.471442
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 111",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.187862,
+          48.489193
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 112",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.234726,
+          48.451179
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 113",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.278843,
+          48.509895
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 114",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.362785,
+          48.494768
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 115",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.367249,
+          48.562976
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 116",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.406559,
+          48.557296
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 117",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.42115,
+          48.549342
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 118",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.377548,
+          48.492947
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 119",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.503891,
+          48.448333
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 120",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.617016,
+          48.465296
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 121",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.604828,
+          48.490217
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 122",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.58749,
+          48.498863
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 123",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.558994,
+          48.525928
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 124",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.272148,
+          48.543092
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 125",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.295151,
+          48.549115
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 126",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.41909,
+          48.574336
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 127",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.454281,
+          48.572745
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 128",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.696152,
+          48.528201
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 129",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.673321,
+          48.585352
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 130",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.712631,
+          48.557523
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 131",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.738724,
+          48.57956
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 132",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.717953,
+          48.611916
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 133",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.665081,
+          48.49363
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 134",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.695637,
+          48.477246
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 135",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.762756,
+          48.472921
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 136",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.729797,
+          48.547751
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 137",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.795372,
+          48.578538
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 138",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.769623,
+          48.572859
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 139",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.786274,
+          48.56309
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 140",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.837257,
+          48.586828
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 141",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.774429,
+          48.625534
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 142",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.78533,
+          48.653438
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 143",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.824039,
+          48.671693
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 144",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.786274,
+          48.718715
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 145",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.777004,
+          48.737739
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 146",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.729969,
+          48.712486
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 147",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.852535,
+          48.810029
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 148",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.852192,
+          48.761281
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 149",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.895451,
+          48.770446
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 150",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.91708,
+          48.844045
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 151",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.970467,
+          48.839074
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 152",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.867126,
+          48.875442
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 153",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.833481,
+          48.887633
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 154",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.903175,
+          48.872619
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 155",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.960854,
+          48.939641
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 156",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.914333,
+          48.89734
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 157",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.947121,
+          48.900612
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 158",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.85717,
+          48.917649
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 159",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.806358,
+          48.981907
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 160",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.833652,
+          49.048558
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 161",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.881203,
+          49.083311
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 162",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.808762,
+          49.129387
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 163",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.823524,
+          49.160604
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 164",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.861204,
+          49.182377
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 165",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.802238,
+          49.180806
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 166",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.871933,
+          49.201224
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 167",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.947121,
+          49.109838
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 168",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.9636,
+          49.095902
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 169",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.95536,
+          49.072292
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 170",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.927208,
+          49.022111
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 171",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.972527,
+          49.158639
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 172",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.856483,
+          49.267132
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 173",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.917252,
+          49.246293
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 174",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.987289,
+          49.227463
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 175",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          38.019905,
+          49.272509
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 176",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          38.019562,
+          49.309008
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 177",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          38.003769,
+          49.336085
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 178",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.95742,
+          49.380138
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 179",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.916737,
+          49.32887
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 180",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.945147,
+          49.329877
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 181",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.85511,
+          49.312142
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 182",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.85408,
+          49.337651
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 183",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.836914,
+          49.287291
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 184",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.837601,
+          49.300949
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 185",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.769966,
+          49.348835
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 186",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.623367,
+          49.379914
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 187",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.726021,
+          49.408516
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 188",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.792969,
+          49.407846
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 189",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.801208,
+          49.468793
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 190",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.852364,
+          49.370973
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 191",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.85614,
+          49.38282
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 192",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.683792,
+          49.470355
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 193",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.724304,
+          49.474817
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 194",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.715034,
+          49.504032
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 195",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.717438,
+          49.518745
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 196",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.715034,
+          49.568646
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 197",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.709885,
+          49.587345
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 198",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.702675,
+          49.619608
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 199",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.686539,
+          49.628949
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 200",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.641907,
+          49.662072
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 201",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.697525,
+          49.660517
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 202",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.666798,
+          49.691287
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 203",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.719154,
+          49.717265
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 204",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.666454,
+          49.711716
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 205",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.611008,
+          49.712937
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 206",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.563457,
+          49.705832
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 207",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.565689,
+          49.728252
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 208",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.58955,
+          49.749053
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 209",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.58234,
+          49.765744
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 210",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.615643,
+          49.820044
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 211",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.680531,
+          49.85182
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 212",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.633324,
+          49.889658
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 213",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.697868,
+          49.900274
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 214",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.693405,
+          49.926582
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 215",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.697182,
+          49.959835
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 216",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.753315,
+          49.944592
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 217",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.769451,
+          50.024285
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 218",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.722759,
+          50.06342
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 219",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.638817,
+          50.10913
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 220",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.65976,
+          50.156776
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 221",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.604313,
+          50.181955
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 222",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.522774,
+          50.200638
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 223",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.524319,
+          50.209428
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 224",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.527409,
+          50.249839
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 225",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.52243,
+          50.237873
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 226",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.457027,
+          50.185033
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 227",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.516937,
+          50.183054
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 228",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.552128,
+          50.164694
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 229",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.539082,
+          50.162934
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 230",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.469559,
+          50.250937
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 231",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.572556,
+          50.272501
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 232",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.591095,
+          50.266686
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 233",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.500801,
+          50.288023
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 234",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.542,
+          50.293068
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 235",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.574272,
+          50.287584
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 236",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.41806,
+          50.316531
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 237",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.42012,
+          50.328368
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 238",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.406387,
+          50.340421
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 239",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.385445,
+          50.416831
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 240",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.31781,
+          50.423831
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 241",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.340469,
+          50.382692
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 242",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.333603,
+          50.373277
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 243",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.303734,
+          50.354223
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 244",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.266312,
+          50.348966
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 245",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.386131,
+          50.27464
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 246",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.395401,
+          50.256644
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 247",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.437286,
+          50.265863
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 248",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.456856,
+          50.273104
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 249",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.435226,
+          50.221731
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 250",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.407417,
+          50.217337
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 251",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.551613,
+          50.317627
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 252",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.466469,
+          50.326834
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 253",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.462349,
+          50.333409
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 254",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.234726,
+          50.261034
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 255",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.265282,
+          50.24479
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 256",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.294121,
+          50.240398
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 257",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.11216,
+          50.205033
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 258",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.09465,
+          50.186132
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 259",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.89312,
+          50.20767
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 260",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.852951,
+          50.222005
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 261",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.938782,
+          50.245009
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 262",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.90136,
+          50.244351
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 263",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.898613,
+          50.257083
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 264",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.937752,
+          50.287804
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 265",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.030792,
+          50.300306
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 266",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.069931,
+          50.29899
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 267",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.079544,
+          50.307542
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 268",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.123489,
+          50.302718
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 269",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.074394,
+          50.214042
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 270",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.137222,
+          50.308419
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 271",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.145119,
+          50.323984
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 272",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.169495,
+          50.323108
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 273",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.214813,
+          50.331436
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 274",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.356949,
+          50.225026
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 275",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.41188,
+          50.424269
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 276",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.41703,
+          50.39101
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 277",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.444839,
+          50.39867
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 278",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.451019,
+          50.440671
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 279",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.357635,
+          50.429081
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 280",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.796989,
+          50.243253
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 281",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.823769,
+          50.253352
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 282",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.845741,
+          50.252913
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 283",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.842995,
+          50.300306
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 284",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.864967,
+          50.301183
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 285",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.932602,
+          50.335819
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 286",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.581039,
+          50.220193
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 287",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.570053,
+          50.206352
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 288",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.546879,
+          50.20366
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 289",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.505852,
+          50.246985
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 290",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.471348,
+          50.272446
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 291",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.456242,
+          50.282319
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 292",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.518726,
+          50.287365
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 293",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.558208,
+          50.279467
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 294",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.424999,
+          50.25401
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 295",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.264153,
+          50.290902
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 296",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.270633,
+          50.285638
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 297",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.188278,
+          50.332532
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 298",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.212525,
+          50.364436
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 299",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.224585,
+          50.362163
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 300",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.188622,
+          50.392214
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 301",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.919843,
+          50.432361
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 302",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.452881,
+          50.696893
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 303",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.396061,
+          50.691347
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 304",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.377007,
+          50.729719
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 305",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.378551,
+          50.758396
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 306",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.378895,
+          50.802897
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 307",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.393486,
+          50.849957
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 308",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.349884,
+          50.892964
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 309",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.379066,
+          50.920242
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 310",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.343704,
+          50.921649
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 311",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.314178,
+          50.941772
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 312",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.248947,
+          51.028008
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 313",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.214787,
+          51.026497
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 314",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.103378,
+          51.034162
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 315",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.036087,
+          51.123135
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 316",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.916353,
+          51.085086
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 317",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.893265,
+          51.090478
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 318",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.87009,
+          51.098024
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 319",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.834728,
+          51.080989
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 320",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.988365,
+          51.075488
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 321",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.956436,
+          51.080665
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 322",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.909916,
+          51.068262
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 323",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.871464,
+          51.068262
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 324",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.775505,
+          51.076675
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 325",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.771385,
+          51.14231
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 326",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.767265,
+          51.172025
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 327",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.831123,
+          51.125075
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 328",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.870605,
+          51.136924
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 329",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.922791,
+          51.141448
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 330",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.975319,
+          51.141879
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 331",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.058918,
+          51.147156
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 332",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.295025,
+          51.718149
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 333",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.342661,
+          51.73277
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 334",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.359226,
+          51.848823
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 335",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.274769,
+          51.845747
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 336",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.24902,
+          51.847338
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 337",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.30069,
+          51.75679
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 338",
+        "color": "#ff0000",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.393044,
+          51.2646
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 339",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.443954,
+          47.61195
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 340",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.513992,
+          47.600839
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 341",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.506783,
+          47.625372
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 342",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.452194,
+          47.645962
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 343",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.522919,
+          47.647581
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 344",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.675354,
+          47.644111
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 345",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.692863,
+          47.654982
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 346",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.821266,
+          47.664462
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 347",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.880661,
+          47.642955
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 348",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.022797,
+          47.688273
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 349",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.014557,
+          47.708144
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 350",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.02829,
+          47.719232
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 351",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.983658,
+          47.751097
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 352",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.917053,
+          47.683188
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 353",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.231537,
+          47.984177
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 354",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.239433,
+          47.968778
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 355",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.287155,
+          47.969698
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 356",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.338997,
+          47.963261
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 357",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.371613,
+          47.967859
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 358",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.469803,
+          47.967629
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 359",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.453323,
+          47.959583
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 360",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.518898,
+          48.073262
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 361",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.536751,
+          48.059496
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 362",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.78154,
+          48.132184
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 363",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.787033,
+          48.21049
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 364",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.829948,
+          48.244339
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 365",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.836472,
+          48.261256
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 366",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.733818,
+          48.252798
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 367",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.927452,
+          48.311286
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 368",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.946335,
+          48.379058
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 369",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.997833,
+          48.423847
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 370",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.977062,
+          48.432731
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 371",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.920414,
+          48.441956
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 372",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.060318,
+          48.535022
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 373",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.080574,
+          48.542751
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 374",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.104263,
+          48.539568
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 375",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.143402,
+          48.545251
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 376",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.171898,
+          48.565021
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 377",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.226143,
+          48.577061
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 378",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.285881,
+          48.61952
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 379",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.348709,
+          48.599771
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 380",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.528267,
+          48.618385
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 381",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.489471,
+          48.595684
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 382",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.603798,
+          48.578651
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 383",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.622337,
+          48.565476
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 384",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.677612,
+          48.652418
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 385",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.624741,
+          48.612711
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 386",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.575645,
+          48.737399
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 387",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.602768,
+          48.85184
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 388",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.742157,
+          48.768862
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 389",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.698212,
+          48.760036
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 390",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.778206,
+          48.805959
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 391",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.764816,
+          48.860423
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 392",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.780952,
+          48.922048
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 393",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.780609,
+          48.909413
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 394",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.735291,
+          49.042369
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 395",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.692719,
+          49.071842
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 396",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.719498,
+          49.099948
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 397",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.639503,
+          49.057895
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 398",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.703362,
+          49.117703
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 399",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.564316,
+          49.036968
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 400",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.568779,
+          49.17901
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 401",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.594185,
+          49.21356
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 402",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.621651,
+          49.15993
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 403",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.818375,
+          49.26646
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 404",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.841721,
+          49.244276
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 405",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.808762,
+          49.242035
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 406",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.718468,
+          49.242931
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 407",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.607231,
+          49.265116
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 408",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.646027,
+          49.310127
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 409",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.603111,
+          49.33519
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 410",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.604828,
+          49.352414
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 411",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.659073,
+          49.338546
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 412",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.729454,
+          49.280348
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 413",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.637615,
+          49.590461
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 414",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.605686,
+          49.642512
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 415",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.542515,
+          49.678626
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 416",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.552299,
+          49.766963
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 417",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.554188,
+          49.785698
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 418",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.564144,
+          49.830121
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 419",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.595387,
+          49.874061
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 420",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.629375,
+          49.905802
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 421",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.681217,
+          49.947796
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 422",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.689629,
+          50.006967
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 423",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.619247,
+          50.05262
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 424",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.636757,
+          50.043691
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 425",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.640362,
+          50.028034
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 426",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.568779,
+          50.118377
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 427",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.477112,
+          50.138405
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 428",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.349052,
+          50.158645
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 429",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.382355,
+          50.169642
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 430",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.422523,
+          50.177558
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 431",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.289314,
+          50.178877
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 432",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.21241,
+          50.205473
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 433",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.202454,
+          50.194485
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 434",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.040062,
+          50.163924
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 435",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.00058,
+          50.160185
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 436",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.972084,
+          50.167223
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 437",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.90136,
+          50.178657
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 438",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.904449,
+          50.170521
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 439",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.911659,
+          50.185912
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 440",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.839561,
+          50.18789
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 441",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.744461,
+          50.205033
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 442",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.675453,
+          50.184813
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 443",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.721802,
+          50.189649
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 444",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.823769,
+          50.164804
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 445",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.421394,
+          50.206791
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 446",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.424141,
+          50.188989
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 447",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.422081,
+          50.160405
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 448",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.535721,
+          50.167223
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 449",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.543617,
+          50.145446
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 450",
+        "color": "#ff7a00",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.316767,
+          50.272885
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 451",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.29694,
+          50.269593
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 452",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.236172,
+          50.284294
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 453",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.237373,
+          50.265424
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 454",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.258659,
+          50.260815
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 455",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.171455,
+          50.270691
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 456",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.189308,
+          50.272885
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 457",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.189308,
+          50.268825
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 458",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.211281,
+          50.267838
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 459",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.170254,
+          50.30195
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 460",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.153259,
+          50.309625
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 461",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.156864,
+          50.294713
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 462",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.144676,
+          50.417925
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 463",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.129913,
+          50.408299
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 464",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.965805,
+          50.419238
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 465",
+        "color": "#0066ff",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.059875,
+          50.384443
+        ]
+      }
+    }
+  ]
+}

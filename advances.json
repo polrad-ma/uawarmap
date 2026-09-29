@@ -1092,5 +1092,38 @@
       "ru": 241164.7845286842,
       "ua": 475196.09353223274
     }
+  },
+  {
+    "id": "adv-1790690705575",
+    "date": "2026-09-29",
+    "time": "16:05:05",
+    "text_en": "Ukrainian forces restored control over most of Voskresenka and entered Shevchenko",
+    "text_ru": "ВСУ восстановили контроль над большей частью Воскресенки и вошли в Шевченко",
+    "text": "Ukrainian forces restored control over most of Voskresenka and entered Shevchenko",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 9.94,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 9.94
+      }
+    ],
+    "areaDisplay": "+9.94 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 47.88803199345081,
+      "west": 36.56696319580079,
+      "north": 47.97475444514465,
+      "east": 36.75613403320313
+    },
+    "polygonFids": [
+      "advance-1790690528501-vp9zqww66cb"
+    ],
+    "snapshot": "history/advances/adv-1790690705575.json",
+    "beforeAreas": {
+      "ru": 241172.62570857187,
+      "ua": 475196.09353223274
+    }
   }
 ]
