@@ -1507,28 +1507,14 @@
       polygonBordersEnabled = checked;
     }
 
-    // ------------------------------------------------------------
-    // INTERACTIVE MAP PANES
-    // Keep interactive objects above reference layers so clicks
-    // reliably reach the object being clicked.
-    // ------------------------------------------------------------
-
+    map.createPane('markersPane');
+    map.getPane('markersPane').style.zIndex = 650;
     map.createPane('advancesPane');
     map.getPane('advancesPane').style.zIndex = 420;
-
     map.createPane('extraLayersPane');
     map.getPane('extraLayersPane').style.zIndex = 500;
-
     map.createPane('drawingsPane');
-    map.getPane('drawingsPane').style.zIndex = 650;
-
-    map.createPane('markersPane');
-    map.getPane('markersPane').style.zIndex = 700;
-
-    map.getPane('drawingsPane').style.pointerEvents = 'auto';
-    map.getPane('markersPane').style.pointerEvents = 'auto';
-    map.getPane('extraLayersPane').style.pointerEvents = 'auto';
-    map.getPane('advancesPane').style.pointerEvents = 'auto';
+    map.getPane('drawingsPane').style.zIndex = 430;
     ['polyline', 'polygon', 'rectangle'].forEach(function(name) {
       var original = L[name];
       L[name] = function(shape, options) {
@@ -1778,47 +1764,72 @@
 
     function calculateAreaAndBindPopup(layer, title) {
 
-      layer.options.interactive = true;
-
       layer.on('click', function(e) {
-
-        L.DomEvent.stopPropagation(e);
 
         if (activeTool) return;
 
         var geojson = layer.toGeoJSON();
+
         var areaInMeters = turf.area(geojson);
-        var areaInKm2 = (areaInMeters / 1000000).toFixed(2);
-        var areaInMi2 = (areaInMeters / 2589988.11).toFixed(2);
+
+        var areaInKm2 =
+          (areaInMeters / 1000000).toFixed(2);
+
+        var areaInMi2 =
+          (areaInMeters / 2589988.11).toFixed(2);
 
         var nameText =
-          (geojson.properties && geojson.properties.name)
-            ? '<b>' + geojson.properties.name + '</b><br>'
-            : '';
+          (geojson.properties &&
+           geojson.properties.name)
+            ? "<b>" + geojson.properties.name + "</b><br>"
+            : "";
 
         var titleText =
           title
-            ? '<b>' + title + '</b><br>'
-            : '';
+            ? "<b>" + title + "</b><br>"
+            : "";
 
-        L.popup({
-          closeButton: true,
-          autoClose: true,
-          closeOnClick: true
-        })
+        L.popup()
           .setLatLng(e.latlng)
           .setContent(
             titleText +
             nameText +
-            '<b>' + pt('area') + ':</b> ' +
+            "<b>" + pt('area') + ":</b> " +
             areaInKm2 +
-            ' km² (' +
+            " km² (" +
             areaInMi2 +
-            ' sq mi)'
+            " sq mi)"
           )
           .openOn(map);
+
+        if (!activeTool) {
+          L.DomEvent.stopPropagation(e);
+        }
       });
     }
+
+    var mainLayers = {};
+    var extraLayers = {};
+    var frontlineInfoData = {
+      "Claimed DeepState Frontline": [
+        { lat: 50.28584079082061, lng: 36.93602332341913, text: "VOVCHANSK HOLDS!" },
+        { lat: 48.32279114308003, lng: 37.08038893069955, text: "HRYSHINE HOLDS!" },
+        { lat: 48.52083359061743, lng: 37.70201981156817, text: "KOSTIANTYNIVKA FULLY HOLDS!" },
+        { lat: 49.710807534944095, lng: 37.61305904011934, text: "KUPYANSK FULLY HOLDS!" }
+      ],
+      "Claimed RIA Frontline": [
+        { lat: 50.20332906521358, lng: 37.103753888142904, text: "BYLYI KOLODIAZ IS CAPTURED!" },
+        { lat: 50.31220069410365, lng: 37.41262019393645, text: "THE AFU ARE ENCIRCLED!" },
+        { lat: 49.85044063302137, lng: 37.676797052822295, text: "DVORICHNA HOLDS!" },
+        { lat: 49.38072697356903, lng: 37.61628005640067, text: "BOROVA IS CAPTURED!" },
+        { lat: 49.04556179007582, lng: 37.568307652934584, text: "SVIATOHIRSK IS CAPTURED!" },
+        { lat: 49.10268354710333, lng: 37.81243888267511, text: "THE SALIENT HOLDS!" },
+        { lat: 47.89747, lng: 36.18141, text: "FLAG RAISES ARE FIRM CONTROL!" },
+        { lat: 47.58973, lng: 35.36362, text: "STEPNOHIRSK HOLDS!" }
+      ]
+    };
+
+    var frontlineInfoMarkerGroups = {};
 
     function copyCoordinates(lat, lng, button) {
       var coords = lat.toFixed(5) + ", " + lng.toFixed(5);
@@ -2216,29 +2227,20 @@
 
     capturedCities.forEach(function(city) {
 
-      var marker = L.marker(
+      L.marker(
         [city.lat, city.lng],
         {
           pane: 'markersPane',
-          icon: cityIcon,
-          interactive: true,
-          bubblingMouseEvents: false
+          icon: cityIcon
         }
-      );
-
-      marker.bindPopup(
+      )
+      .bindPopup(
         "<b>" +
         city.name +
         "</b><br>Captured " +
         city.date
-      );
-
-      marker.on('click', function(e) {
-        L.DomEvent.stopPropagation(e);
-        marker.openPopup();
-      });
-
-      cityMarkers.addLayer(marker);
+      )
+      .addTo(cityMarkers);
     });
 
     extraLayers["Cities Captured"] = cityMarkers;
@@ -2636,20 +2638,42 @@
       }
     }
 
+    function fetchGeoJSONWithFallbacks(file) {
+      var cleanFile = String(file).replace(/^\.\//, '');
+      var candidates = [
+        cleanFile,
+        'data/' + cleanFile,
+        'https://raw.githubusercontent.com/polrad-ma/uawarmap/main/' + cleanFile
+      ];
+
+      var tryCandidate = function(index) {
+        if (index >= candidates.length) {
+          return Promise.reject(
+            new Error('Could not load GeoJSON from any source: ' + cleanFile)
+          );
+        }
+
+        return fetch(candidates[index], { cache: 'no-store' })
+          .then(function(response) {
+            if (!response.ok) {
+              throw new Error('HTTP ' + response.status);
+            }
+            return response.json();
+          })
+          .catch(function(error) {
+            return tryCandidate(index + 1);
+          });
+      };
+
+      return tryCandidate(0);
+    }
+
     layerFiles.forEach(function(layerInfo) {
 
-      fetch(layerInfo.file)
-        .then(function(response) {
-          if (!response.ok) {
-            throw new Error('HTTP ' + response.status + ' while loading ' + layerInfo.file);
-          }
-          return response.json();
-        })
+      fetchGeoJSONWithFallbacks(layerInfo.file)
         .then(function(data) {
 
           var layer = L.geoJSON(data, {
-
-            interactive: true,
 
             pane: layerInfo.pane ||
                   (layerInfo.group === 'extra' ? 'extraLayersPane' : 'overlayPane'),
@@ -2678,9 +2702,7 @@
                   fillColor: markerColor,
                   fillOpacity: 1,
                   weight: 1.2,
-                  pane: layerInfo.pane || 'markersPane',
-                  interactive: true,
-                  bubblingMouseEvents: false
+                  pane: layerInfo.pane || 'extraLayersPane'
                 });
               }
               return L.marker(latlng);
