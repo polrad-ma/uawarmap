@@ -2066,6 +2066,55 @@
       rebuildGrayZone();
     }
 
+    function loadJSONWithFallbacks(path) {
+      var cleanPath = String(path || '').replace(/^\.\//, '');
+      var cacheBust = 'v=' + Date.now();
+      var candidates = [
+        cleanPath,
+        'https://raw.githubusercontent.com/polrad-ma/uawarmap/main/' + cleanPath
+      ];
+
+      function tryCandidate(index) {
+        if (index >= candidates.length) {
+          return Promise.reject(
+            new Error('Could not load JSON from any source: ' + cleanPath)
+          );
+        }
+
+        var separator = candidates[index].indexOf('?') === -1 ? '?' : '&';
+
+        return fetch(candidates[index] + separator + cacheBust, {
+          cache: 'no-store'
+        })
+          .then(function(response) {
+            if (!response.ok) {
+              throw new Error('HTTP ' + response.status + ' while loading ' + cleanPath);
+            }
+            return response.json();
+          })
+          .catch(function(error) {
+            if (index === candidates.length - 1) throw error;
+            return tryCandidate(index + 1);
+          });
+      }
+
+      return tryCandidate(0);
+    }
+
+    function getAdvanceSnapshotPath(item) {
+      if (!item) return null;
+
+      if (item.snapshot) {
+        return String(item.snapshot).replace(/^\.\//, '');
+      }
+
+      if (item.id) {
+        return 'history/advances/' + encodeURIComponent(item.id) + '.json';
+      }
+
+      return null;
+    }
+
     function showAdvance(index, options) {
       options = options || {};
       if (!advances.length) return;
@@ -2079,24 +2128,21 @@
       renderAdvanceBar();
       updateTimelineBarUI();
 
-      var snapshotUrl = item.snapshot;
+      var snapshotUrl = getAdvanceSnapshotPath(item);
       if (!snapshotUrl) {
+        console.error('Advance has no snapshot path:', item);
         focusAdvance(item);
         return;
       }
 
-      fetch(snapshotUrl)
-        .then(function(response) {
-          if (!response.ok) throw new Error('Could not load advance snapshot');
-          return response.json();
-        })
+      loadJSONWithFallbacks(snapshotUrl)
         .then(function(snapshot) {
           timelineMode = true;
           applyAdvanceSnapshot(snapshot);
           if (!options.skipFocus) focusAdvance(item);
         })
         .catch(function(error) {
-          console.error(error);
+          console.error('Could not load advance snapshot:', snapshotUrl, error);
           if (!options.skipFocus) focusAdvance(item);
         });
     }
@@ -2109,11 +2155,7 @@
     }
 
     function loadAdvances() {
-      return fetch('advances.json', { cache: 'no-store' })
-        .then(function(response) {
-          if (!response.ok) throw new Error('No advance data');
-          return response.json();
-        })
+      return loadJSONWithFallbacks('advances.json')
         .then(function(data) {
           advances = Array.isArray(data) ? data.slice() : [];
           advances.sort(function(a, b) {
@@ -2123,18 +2165,24 @@
           });
 
           if (advances.length) {
-            advanceIndex = advances.length - 1;
-            renderAdvanceBar();
-            showAdvance(advanceIndex);
             timelineDates = Array.from(new Set(advances.map(function(a) { return a.date; })))
               .filter(Boolean)
               .sort();
             buildTimelineSequence();
             timelineIndex = timelineDates.length - 1;
+
+            // Always start on the newest published advance.
+            advanceIndex = advances.length - 1;
+            renderAdvanceBar();
             updateTimelineBarUI();
+            showAdvance(advanceIndex);
+          } else {
+            advanceIndex = -1;
+            renderAdvanceBar();
           }
         })
-        .catch(function() {
+        .catch(function(error) {
+          console.error('Could not load advances.json:', error);
           advances = [];
           advanceIndex = -1;
           renderAdvanceBar();
@@ -2204,7 +2252,6 @@
       { name: "Vuhledar", date: "1 October 2024", lat: 47.78064, lng: 37.24726 },
       { name: "Selydove", date: "30 October 2024", lat: 48.14868, lng: 37.30614 },
       { name: "Oleshky", date: "24 February 2022", lat: 46.61767, lng:  32.72003 },
-      { name: "Pryvillia", date: "1 July 2022", lat: 49.00320, lng: 38.29594 },
       { name: "Vovchansk", date: "2 December 2025", lat: 50.28737, lng: 36.94050 },
       { name: "Kamianka-Dniprovska", date: "2 March 2022", lat: 47.49888, lng: 34.38171 },
       { name: "Kakhovka", date: "24 February 2022", lat: 46.80758, lng: 33.48976 },
