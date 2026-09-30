@@ -1161,5 +1161,39 @@
       "ru": 241172.62951272482,
       "ua": 475196.9865025661
     }
+  },
+  {
+    "id": "adv-1790778286085",
+    "date": "2026-09-30",
+    "time": "16:24:46",
+    "text_en": "The RuAF expand the eastern flank of Orikhiv. Novoselivka was captured",
+    "text_ru": "ВС РФ расширяют восточный фланг Орехова. Новоселовка была занята",
+    "text": "The RuAF expand the eastern flank of Orikhiv. Novoselivka was captured",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 9.93,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 9.93
+      }
+    ],
+    "areaDisplay": "+9.93 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 47.541309583656854,
+      "west": 35.816459655761726,
+      "north": 47.65220650201415,
+      "east": 36.09901428222657
+    },
+    "polygonFids": [
+      "advance-1790778132478-h68w0ecbj3",
+      "advance-1790778177804-ijj1gb7dax"
+    ],
+    "snapshot": "history/advances/adv-1790778286085.json",
+    "beforeAreas": {
+      "ru": 241213.79593862695,
+      "ua": 475174.5680261131
+    }
   }
 ]
