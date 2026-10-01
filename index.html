@@ -2098,7 +2098,7 @@
       // the public map identical to the editor's current published state.
       if (isLatestAdvance) {
         timelineMode = false;
-        exitTimelineMode();
+        exitTimelineMode(true);
         renderAdvanceBar();
         updateTimelineBarUI();
         if (!options.skipFocus) focusAdvance(item);
@@ -2777,10 +2777,11 @@
 
     function fetchGeoJSONWithFallbacks(file) {
       var cleanFile = String(file).replace(/^\.\//, '');
+      var cacheBust = 'polradLive=' + Date.now() + '_' + Math.random().toString(36).slice(2);
       var candidates = [
-        cleanFile,
-        'data/' + cleanFile,
-        'https://raw.githubusercontent.com/polrad-ma/uawarmap/main/' + cleanFile
+        cleanFile + (cleanFile.indexOf('?') === -1 ? '?' : '&') + cacheBust,
+        'data/' + cleanFile + (cleanFile.indexOf('?') === -1 ? '?' : '&') + cacheBust,
+        'https://raw.githubusercontent.com/polrad-ma/uawarmap/main/' + cleanFile + (cleanFile.indexOf('?') === -1 ? '?' : '&') + cacheBust
       ];
 
       var tryCandidate = function(index) {
@@ -2805,9 +2806,11 @@
       return tryCandidate(0);
     }
 
+    var initialLayerLoadPromises = [];
+
     layerFiles.forEach(function(layerInfo) {
 
-      fetchGeoJSONWithFallbacks(layerInfo.file)
+      initialLayerLoadPromises.push(fetchGeoJSONWithFallbacks(layerInfo.file)
         .then(function(data) {
 
           var layer = L.geoJSON(data, {
@@ -2957,8 +2960,10 @@
             "Layer load error:",
             err
           )
-        );
+        ));
     });
+
+    var initialLayerLoadPromise = Promise.all(initialLayerLoadPromises);
 
     function updateSidebarLayerControl() {
 
@@ -3139,7 +3144,7 @@
       }
 
       if (idx === timelineSequence.length - 1) {
-        exitTimelineMode();
+        exitTimelineMode(true);
       } else {
         showTimelineDate(chosenDate);
       }
@@ -3213,32 +3218,77 @@
         });
     }
 
-    function exitTimelineMode() {
-      timelineMode = false;
+    function reloadLiveLayers() {
+      var loadableNames = {};
 
-      var allLayers = getAllLayerObjects();
-
-      Object.keys(allLayers).forEach(function(name) {
-        if (TIMELINE_SKIP_LAYERS.indexOf(name) !== -1) return;
-        if (name === 'Gray Zone') return;
-
-        var layer = allLayers[name];
-        if (!layer || !layer.clearLayers) return;
-
-        layer.clearLayers();
-
-        if (liveLayerData[name]) {
-          layer.addData(liveLayerData[name]);
-        }
+      layerFiles.forEach(function(layerInfo) {
+        loadableNames[layerInfo.name] = true;
       });
 
-      rebuildGrayZone();
+      var requests = layerFiles.map(function(layerInfo) {
+        return fetchGeoJSONWithFallbacks(layerInfo.file)
+          .then(function(data) {
+            var layer = mainLayers[layerInfo.name] || extraLayers[layerInfo.name];
+            if (!layer || !layer.clearLayers) return;
+
+            layer.clearLayers();
+            layer.addData(data);
+            liveLayerData[layerInfo.name] = data;
+
+            if (
+              layerInfo.name === 'Russian-controlled territory' ||
+              layerInfo.name === 'Ukrainian-controlled territory' ||
+              layerInfo.name === 'Russian advances' ||
+              layerInfo.name === 'Ukrainian advances'
+            ) {
+              layer._polradOriginalData = data;
+            }
+          })
+          .catch(function(error) {
+            console.error('Live layer reload error:', layerInfo.name, error);
+          });
+      });
+
+      return Promise.all(requests).then(function() {
+        rebuildControlledTerritories();
+        rebuildControlledTerritories();
+        rebuildGrayZone();
+        updateSidebarLayerControl();
+      });
+    }
+
+    function exitTimelineMode(reloadCurrent) {
+      timelineMode = false;
+
+      if (reloadCurrent !== false) {
+        reloadLiveLayers();
+      } else {
+        var allLayers = getAllLayerObjects();
+
+        Object.keys(allLayers).forEach(function(name) {
+          if (TIMELINE_SKIP_LAYERS.indexOf(name) !== -1) return;
+          if (name === 'Gray Zone') return;
+
+          var layer = allLayers[name];
+          if (!layer || !layer.clearLayers) return;
+
+          layer.clearLayers();
+
+          if (liveLayerData[name]) {
+            layer.addData(liveLayerData[name]);
+          }
+        });
+
+        rebuildGrayZone();
+      }
 
       document.getElementById('timeline-date-input').title = 'Jump to a date';
     }
 
     loadTimelineManifest();
-    loadAdvances();
+    initialLayerLoadPromise.then(function() {
+      return loadAdvances();
+    });
 
     fetch('updates.json')
       .then(response => response.json())
