@@ -2578,9 +2578,14 @@
       if (!feature || !cutter) return feature;
 
       try {
-        var result = turf.difference(
-          turf.featureCollection([feature, cutter])
-        );
+        /*
+         * This page loads Turf 6.x.
+         * Turf 6 expects the two polygons as separate arguments here.
+         * Passing a FeatureCollection caused the operation to fail and
+         * returned the original advance unchanged, which is why it kept
+         * overlapping the controlled territory.
+         */
+        var result = turf.difference(feature, cutter);
         return result || null;
       } catch (error) {
         console.warn('Advance overlap removal error:', error);
@@ -3250,8 +3255,6 @@
       });
 
       return Promise.all(requests).then(function() {
-        rebuildControlledTerritories();
-        rebuildControlledTerritories();
         rebuildGrayZone();
         updateSidebarLayerControl();
       });
