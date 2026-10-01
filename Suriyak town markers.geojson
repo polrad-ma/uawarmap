@@ -4699,51 +4699,6 @@
     {
       "type": "Feature",
       "properties": {
-        "Name": "Suriyak town marker 316",
-        "color": "#ff0000",
-        "radius": 5
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          34.916353,
-          51.085086
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "Name": "Suriyak town marker 317",
-        "color": "#ff0000",
-        "radius": 5
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          34.893265,
-          51.090478
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "Name": "Suriyak town marker 318",
-        "color": "#ff0000",
-        "radius": 5
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          34.87009,
-          51.098024
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
         "Name": "Suriyak town marker 319",
         "color": "#ff7a00",
         "radius": 5
@@ -6973,6 +6928,51 @@
         "coordinates": [
           37.064266,
           48.410403
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 463",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.872322,
+          51.098671
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 464",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.896441,
+          51.091125
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 465",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.92382,
+          51.08762
         ]
       }
     }
