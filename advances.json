@@ -1197,39 +1197,6 @@
     }
   },
   {
-    "id": "adv-1790871861178",
-    "date": "2026-10-01",
-    "time": "18:24:21",
-    "text_en": "Russian advances in Hannivka",
-    "text_ru": "Продвижение ВС РФ в Анновке",
-    "text": "Russian advances in Hannivka",
-    "side": "ru",
-    "advanceType": "normal",
-    "areaChange": 0.99,
-    "areaEffects": [
-      {
-        "side": "ru",
-        "value": 0.99
-      }
-    ],
-    "areaDisplay": "+0.99 km²",
-    "areaColor": "red",
-    "focus": {
-      "south": 48.4639297213796,
-      "west": 37.074136734008796,
-      "north": 48.49431248122277,
-      "east": 37.16374397277833
-    },
-    "polygonFids": [
-      "advance-1790871744155-1msyd2tuo6a"
-    ],
-    "snapshot": "history/advances/adv-1790871861178.json",
-    "beforeAreas": {
-      "ru": 241190.040843381,
-      "ua": 475173.75778929464
-    }
-  },
-  {
     "id": "adv-1790876107102",
     "date": "2026-10-01",
     "time": "19:35:07",
