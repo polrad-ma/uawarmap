@@ -1197,67 +1197,36 @@
     }
   },
   {
-    "id": "adv-1790859124632",
+    "id": "adv-1790865160112",
     "date": "2026-10-01",
-    "time": "14:52:04",
+    "time": "16:32:40",
     "text_en": "Ukrainian forces recaptured Nova Sich, Korchakivka and Mala Korchakivka/Radianske",
     "text_ru": "ВСУ восстановили контроль над населенными пунктами Новая Сечь, Корчаковка и Малая Корчаковка/Радянское",
     "text": "Ukrainian forces recaptured Nova Sich, Korchakivka and Mala Korchakivka/Radianske",
     "side": "ua",
     "advanceType": "normal",
-    "areaChange": 16.09,
+    "areaChange": 18.51,
     "areaEffects": [
       {
         "side": "ua",
-        "value": 16.09
+        "value": 18.51
       }
     ],
-    "areaDisplay": "+16.09 km²",
+    "areaDisplay": "+18.51 km²",
     "areaColor": "blue",
     "focus": {
-      "south": 51.056717933705386,
-      "west": 34.81842041015626,
-      "north": 51.1234585679068,
-      "east": 35.011711120605476
+      "south": 51.04851696781624,
+      "west": 34.779281616210945,
+      "north": 51.1356318430504,
+      "east": 35.008964538574226
     },
     "polygonFids": [
-      "advance-1790858946557-v4sgc6uswzm"
+      "advance-1790865126369-av09a2t53pd"
     ],
-    "snapshot": "history/advances/adv-1790859124632.json",
-    "beforeAreas": {
-      "ru": 241217.895165746,
-      "ua": 475181.4346066554
-    }
-  },
-  {
-    "id": "adv-1790859911974",
-    "date": "2026-10-01",
-    "time": "15:05:09",
-    "text_en": "Redrew the green zones in Dobropillia because the RuAF never truly consolidated territory there",
-    "text_ru": "Зеленая зона в Доброполье перекрашена поскольку ВС РФ никогда по настоящему не занимали эти территории",
-    "text": "Redrew the green zones in Dobropillia because the RuAF never truly consolidated territory there",
-    "side": "ua",
-    "advanceType": "gray",
-    "areaChange": 0,
-    "areaEffects": [
-      {
-        "side": "ua",
-        "value": 0
-      }
-    ],
-    "areaDisplay": "0.00 km²",
-    "areaColor": "blue",
-    "focus": {
-      "south": 48.44446154022288,
-      "west": 37.0206642150879,
-      "north": 48.49499503081809,
-      "east": 37.148551940917976
-    },
-    "polygonFids": [],
-    "snapshot": "history/advances/adv-1790859911974.json",
+    "snapshot": "history/advances/adv-1790865160112.json",
     "beforeAreas": {
       "ru": 241191.0522906215,
-      "ua": 475197.5233252922
+      "ua": 475173.75778929464
     }
   }
 ]
