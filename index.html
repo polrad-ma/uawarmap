@@ -2079,30 +2079,47 @@
     function showAdvance(index, options) {
       options = options || {};
       if (!advances.length) return;
+
       index = Math.max(0, Math.min(index, advances.length - 1));
       advanceIndex = index;
+
       var item = advances[index];
+      var isLatestAdvance = index === advances.length - 1;
+
       if (item && item.date && timelineSequence.length) {
         var dateIdx = timelineSequence.indexOf(item.date);
         if (dateIdx !== -1) timelineIndex = dateIdx;
       }
+
       renderAdvanceBar();
       updateTimelineBarUI();
 
-      var snapshotUrl = item.snapshot;
-      if (!snapshotUrl) {
-        focusAdvance(item);
+      // The latest advance uses the current published map files. This keeps
+      // the public map identical to the editor's current published state.
+      if (isLatestAdvance) {
+        timelineMode = false;
+        exitTimelineMode();
+        renderAdvanceBar();
+        updateTimelineBarUI();
+        if (!options.skipFocus) focusAdvance(item);
         return;
       }
 
-      fetch(snapshotUrl)
+      var snapshotUrl = item.snapshot;
+      if (!snapshotUrl) {
+        if (!options.skipFocus) focusAdvance(item);
+        return;
+      }
+
+      fetch(snapshotUrl, { cache: 'no-store' })
         .then(function(response) {
           if (!response.ok) throw new Error('Could not load advance snapshot');
           return response.json();
         })
         .then(function(snapshot) {
           timelineMode = true;
-          applyAdvanceSnapshot(snapshot);
+          applySnapshotToLayers(snapshot);
+          rebuildGrayZone();
           if (!options.skipFocus) focusAdvance(item);
         })
         .catch(function(error) {
@@ -2929,8 +2946,7 @@
             layerInfo.name === 'Russian advances' ||
             layerInfo.name === 'Ukrainian advances'
           ) {
-            rebuildControlledTerritories();
-            rebuildGrayZone();
+                    rebuildGrayZone();
           }
 
           updateSidebarLayerControl();
