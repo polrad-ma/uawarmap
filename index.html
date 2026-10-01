@@ -161,7 +161,8 @@
       border-radius: 10px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.35);
       overflow: visible;
-      width: 240px;
+      width: 390px;
+      max-width: calc(100vw - 90px);
     }
 
     #app-header-top {
@@ -169,6 +170,7 @@
       align-items: center;
       gap: 8px;
       padding: 8px 10px;
+      min-width: 0;
     }
 
     #app-logo {
@@ -183,10 +185,11 @@
       font-weight: bold;
       font-size: 14px;
       letter-spacing: 0.3px;
-      flex: 1;
+      flex: 1 1 auto;
+      min-width: 0;
       white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      overflow: visible;
+      text-overflow: clip;
     }
 
     #language-toggle {
@@ -238,7 +241,8 @@
       position: absolute;
       top: calc(100% + 5px);
       left: 0;
-      width: 240px;
+      width: 350px;
+      max-width: calc(100vw - 90px);
       box-sizing: border-box;
       background: var(--chrome-bg);
       border: 1px solid var(--chrome-border);
@@ -1507,14 +1511,20 @@
       polygonBordersEnabled = checked;
     }
 
-    map.createPane('markersPane');
-    map.getPane('markersPane').style.zIndex = 650;
+    map.createPane('territoryPane');
+    map.getPane('territoryPane').style.zIndex = 400;
+
     map.createPane('advancesPane');
     map.getPane('advancesPane').style.zIndex = 420;
+
     map.createPane('extraLayersPane');
     map.getPane('extraLayersPane').style.zIndex = 500;
+
     map.createPane('drawingsPane');
-    map.getPane('drawingsPane').style.zIndex = 430;
+    map.getPane('drawingsPane').style.zIndex = 650;
+
+    map.createPane('markersPane');
+    map.getPane('markersPane').style.zIndex = 700;
     ['polyline', 'polygon', 'rectangle'].forEach(function(name) {
       var original = L[name];
       L[name] = function(shape, options) {
@@ -2066,55 +2076,6 @@
       rebuildGrayZone();
     }
 
-    function loadJSONWithFallbacks(path) {
-      var cleanPath = String(path || '').replace(/^\.\//, '');
-      var cacheBust = 'v=' + Date.now();
-      var candidates = [
-        cleanPath,
-        'https://raw.githubusercontent.com/polrad-ma/uawarmap/main/' + cleanPath
-      ];
-
-      function tryCandidate(index) {
-        if (index >= candidates.length) {
-          return Promise.reject(
-            new Error('Could not load JSON from any source: ' + cleanPath)
-          );
-        }
-
-        var separator = candidates[index].indexOf('?') === -1 ? '?' : '&';
-
-        return fetch(candidates[index] + separator + cacheBust, {
-          cache: 'no-store'
-        })
-          .then(function(response) {
-            if (!response.ok) {
-              throw new Error('HTTP ' + response.status + ' while loading ' + cleanPath);
-            }
-            return response.json();
-          })
-          .catch(function(error) {
-            if (index === candidates.length - 1) throw error;
-            return tryCandidate(index + 1);
-          });
-      }
-
-      return tryCandidate(0);
-    }
-
-    function getAdvanceSnapshotPath(item) {
-      if (!item) return null;
-
-      if (item.snapshot) {
-        return String(item.snapshot).replace(/^\.\//, '');
-      }
-
-      if (item.id) {
-        return 'history/advances/' + encodeURIComponent(item.id) + '.json';
-      }
-
-      return null;
-    }
-
     function showAdvance(index, options) {
       options = options || {};
       if (!advances.length) return;
@@ -2128,21 +2089,24 @@
       renderAdvanceBar();
       updateTimelineBarUI();
 
-      var snapshotUrl = getAdvanceSnapshotPath(item);
+      var snapshotUrl = item.snapshot;
       if (!snapshotUrl) {
-        console.error('Advance has no snapshot path:', item);
         focusAdvance(item);
         return;
       }
 
-      loadJSONWithFallbacks(snapshotUrl)
+      fetch(snapshotUrl)
+        .then(function(response) {
+          if (!response.ok) throw new Error('Could not load advance snapshot');
+          return response.json();
+        })
         .then(function(snapshot) {
           timelineMode = true;
           applyAdvanceSnapshot(snapshot);
           if (!options.skipFocus) focusAdvance(item);
         })
         .catch(function(error) {
-          console.error('Could not load advance snapshot:', snapshotUrl, error);
+          console.error(error);
           if (!options.skipFocus) focusAdvance(item);
         });
     }
@@ -2155,7 +2119,11 @@
     }
 
     function loadAdvances() {
-      return loadJSONWithFallbacks('advances.json')
+      return fetch('advances.json', { cache: 'no-store' })
+        .then(function(response) {
+          if (!response.ok) throw new Error('No advance data');
+          return response.json();
+        })
         .then(function(data) {
           advances = Array.isArray(data) ? data.slice() : [];
           advances.sort(function(a, b) {
@@ -2165,24 +2133,18 @@
           });
 
           if (advances.length) {
+            advanceIndex = advances.length - 1;
+            renderAdvanceBar();
+            showAdvance(advanceIndex);
             timelineDates = Array.from(new Set(advances.map(function(a) { return a.date; })))
               .filter(Boolean)
               .sort();
             buildTimelineSequence();
             timelineIndex = timelineDates.length - 1;
-
-            // Always start on the newest published advance.
-            advanceIndex = advances.length - 1;
-            renderAdvanceBar();
             updateTimelineBarUI();
-            showAdvance(advanceIndex);
-          } else {
-            advanceIndex = -1;
-            renderAdvanceBar();
           }
         })
-        .catch(function(error) {
-          console.error('Could not load advances.json:', error);
+        .catch(function() {
           advances = [];
           advanceIndex = -1;
           renderAdvanceBar();
@@ -2595,6 +2557,116 @@
       return [];
     }
 
+    function differenceFeature(feature, cutter) {
+      if (!feature || !cutter) return feature;
+
+      try {
+        var result = turf.difference(
+          turf.featureCollection([feature, cutter])
+        );
+        return result || null;
+      } catch (error) {
+        console.warn('Advance overlap removal error:', error);
+        return feature;
+      }
+    }
+
+    function unionLayerFeatures(layer) {
+      var features = getFeaturesFromLayer(layer);
+      return unionFeatureCollection(features);
+    }
+
+    function rebuildAdvanceLayerAgainstTerritory(layer, territoryLayers) {
+      if (!layer || !layer._polradOriginalData) return;
+
+      var source = layer._polradOriginalData;
+      var sourceFeatures = source.type === 'FeatureCollection'
+        ? source.features || []
+        : source.type === 'Feature'
+          ? [source]
+          : [];
+
+      var territoryFeatures = [];
+
+      territoryLayers.forEach(function(territoryLayer) {
+        getFeaturesFromLayer(territoryLayer).forEach(function(feature) {
+          if (
+            feature &&
+            feature.geometry &&
+            (
+              feature.geometry.type === 'Polygon' ||
+              feature.geometry.type === 'MultiPolygon'
+            )
+          ) {
+            territoryFeatures.push(feature);
+          }
+        });
+      });
+
+      var territory = unionFeatureCollection(territoryFeatures);
+      var rebuilt = [];
+
+      sourceFeatures.forEach(function(feature) {
+        var result = feature;
+
+        if (territory) {
+          result = differenceFeature(result, territory);
+        }
+
+        if (!result) return;
+
+        if (result.type === 'FeatureCollection') {
+          (result.features || []).forEach(function(part) {
+            if (part && part.geometry) rebuilt.push(part);
+          });
+        } else if (result.geometry) {
+          rebuilt.push(result);
+        }
+      });
+
+      layer.clearLayers();
+      layer.addData({
+        type: 'FeatureCollection',
+        features: rebuilt
+      });
+    }
+
+    function rebuildControlledTerritories() {
+      var ruLayer = mainLayers['Russian-controlled territory'];
+      var uaLayer = mainLayers['Ukrainian-controlled territory'];
+      var regainedLayer = mainLayers['Territories regained'];
+      var ruAdvancesLayer = mainLayers['Russian advances'];
+      var uaAdvancesLayer = mainLayers['Ukrainian advances'];
+
+      if (!ruLayer || !uaLayer) return;
+
+      /*
+       * Keep the controlled-territory polygons exactly as published.
+       * Instead of cutting holes into them, trim each advance against the
+       * territory it is already inside. This matches the editor behaviour
+       * and avoids a visible seam around the controlled-territory polygon.
+       */
+      if (ruAdvancesLayer && ruAdvancesLayer._polradOriginalData) {
+        rebuildAdvanceLayerAgainstTerritory(
+          ruAdvancesLayer,
+          [ruLayer]
+        );
+      }
+
+      if (uaAdvancesLayer && uaAdvancesLayer._polradOriginalData) {
+        var uaTerritories = [uaLayer];
+
+        if (regainedLayer) {
+          uaTerritories.push(regainedLayer);
+        }
+
+        rebuildAdvanceLayerAgainstTerritory(
+          uaAdvancesLayer,
+          uaTerritories
+        );
+      }
+    }
+
     function rebuildGrayZone() {
       var ruLayer = mainLayers['Russian-controlled territory'];
       var uaLayer = mainLayers['Ukrainian-controlled territory'];
@@ -2724,7 +2796,13 @@
           var layer = L.geoJSON(data, {
 
             pane: layerInfo.pane ||
-                  (layerInfo.group === 'extra' ? 'extraLayersPane' : 'overlayPane'),
+                  (layerInfo.group === 'extra' ? 'extraLayersPane' :
+                   (
+                     layerInfo.name === 'Russian-controlled territory' ||
+                     layerInfo.name === 'Ukrainian-controlled territory'
+                       ? 'territoryPane'
+                       : 'overlayPane'
+                   )),
             smoothFactor: layerInfo.smoothFactor !== undefined
               ? layerInfo.smoothFactor
               : 1.0,
@@ -2823,6 +2901,15 @@
 
           liveLayerData[layerInfo.name] = data;
 
+          if (
+            layerInfo.name === 'Russian-controlled territory' ||
+            layerInfo.name === 'Ukrainian-controlled territory' ||
+            layerInfo.name === 'Russian advances' ||
+            layerInfo.name === 'Ukrainian advances'
+          ) {
+            layer._polradOriginalData = data;
+          }
+
           var shouldShow;
 
           if (Object.prototype.hasOwnProperty.call(layerVisibilityOverrides, layerInfo.name)) {
@@ -2842,6 +2929,7 @@
             layerInfo.name === 'Russian advances' ||
             layerInfo.name === 'Ukrainian advances'
           ) {
+            rebuildControlledTerritories();
             rebuildGrayZone();
           }
 
