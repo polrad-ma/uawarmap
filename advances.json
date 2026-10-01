@@ -1197,36 +1197,67 @@
     }
   },
   {
-    "id": "adv-1790831191890",
+    "id": "adv-1790859124632",
     "date": "2026-10-01",
-    "time": "07:06:31",
-    "text_en": "The AFU recaptured some positions south of Dobropillia",
-    "text_ru": "ВСУ восстановили контроль над рядом позиций южнее Доброполья",
-    "text": "The AFU recaptured some positions south of Dobropillia",
+    "time": "14:52:04",
+    "text_en": "Ukrainian forces recaptured Nova Sich, Korchakivka and Mala Korchakivka/Radianske",
+    "text_ru": "ВСУ восстановили контроль над населенными пунктами Новая Сечь, Корчаковка и Малая Корчаковка/Радянское",
+    "text": "Ukrainian forces recaptured Nova Sich, Korchakivka and Mala Korchakivka/Radianske",
     "side": "ua",
     "advanceType": "normal",
-    "areaChange": 6.87,
+    "areaChange": 16.09,
     "areaEffects": [
       {
         "side": "ua",
-        "value": 6.87
+        "value": 16.09
       }
     ],
-    "areaDisplay": "+6.87 km²",
+    "areaDisplay": "+16.09 km²",
     "areaColor": "blue",
     "focus": {
-      "south": 48.387608203965385,
-      "west": 36.96521759033204,
-      "north": 48.438881562580626,
-      "east": 37.1030616760254
+      "south": 51.056717933705386,
+      "west": 34.81842041015626,
+      "north": 51.1234585679068,
+      "east": 35.011711120605476
     },
     "polygonFids": [
-      "advance-1790831131232-xekmz1f9l7g"
+      "advance-1790858946557-v4sgc6uswzm"
     ],
-    "snapshot": "history/advances/adv-1790831191890.json",
+    "snapshot": "history/advances/adv-1790859124632.json",
     "beforeAreas": {
       "ru": 241217.895165746,
-      "ua": 475174.5680261131
+      "ua": 475181.4346066554
+    }
+  },
+  {
+    "id": "adv-1790859911974",
+    "date": "2026-10-01",
+    "time": "15:05:09",
+    "text_en": "Redrew the green zones in Dobropillia because the RuAF never truly consolidated territory there",
+    "text_ru": "Зеленая зона в Доброполье перекрашена поскольку ВС РФ никогда по настоящему не занимали эти территории",
+    "text": "Redrew the green zones in Dobropillia because the RuAF never truly consolidated territory there",
+    "side": "ua",
+    "advanceType": "gray",
+    "areaChange": 0,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 0
+      }
+    ],
+    "areaDisplay": "0.00 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 48.44446154022288,
+      "west": 37.0206642150879,
+      "north": 48.49499503081809,
+      "east": 37.148551940917976
+    },
+    "polygonFids": [],
+    "snapshot": "history/advances/adv-1790859911974.json",
+    "beforeAreas": {
+      "ru": 241191.0522906215,
+      "ua": 475197.5233252922
     }
   }
 ]
