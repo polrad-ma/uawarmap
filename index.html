@@ -2084,6 +2084,7 @@
       advanceIndex = index;
 
       var item = advances[index];
+      var isLatestAdvance = index === advances.length - 1;
 
       if (item && item.date && timelineSequence.length) {
         var dateIdx = timelineSequence.indexOf(item.date);
@@ -2093,10 +2094,17 @@
       renderAdvanceBar();
       updateTimelineBarUI();
 
-      // Every advance must display its own snapshot. The description in
-      // advances.json belongs to that exact snapshot, including the latest
-      // advance. Using the current live map here would make the polygon and
-      // the description refer to different map states.
+      // The latest advance uses the current published map files. This keeps
+      // the public map identical to the editor's current published state.
+      if (isLatestAdvance) {
+        timelineMode = false;
+        exitTimelineMode(true);
+        renderAdvanceBar();
+        updateTimelineBarUI();
+        if (!options.skipFocus) focusAdvance(item);
+        return;
+      }
+
       var snapshotUrl = item.snapshot;
       if (!snapshotUrl) {
         if (!options.skipFocus) focusAdvance(item);
