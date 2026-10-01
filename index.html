@@ -2574,121 +2574,6 @@
       return [];
     }
 
-    function differenceFeature(feature, cutter) {
-      if (!feature || !cutter) return feature;
-
-      try {
-        /*
-         * This page loads Turf 6.x.
-         * Turf 6 expects the two polygons as separate arguments here.
-         * Passing a FeatureCollection caused the operation to fail and
-         * returned the original advance unchanged, which is why it kept
-         * overlapping the controlled territory.
-         */
-        var result = turf.difference(feature, cutter);
-        return result || null;
-      } catch (error) {
-        console.warn('Advance overlap removal error:', error);
-        return feature;
-      }
-    }
-
-    function unionLayerFeatures(layer) {
-      var features = getFeaturesFromLayer(layer);
-      return unionFeatureCollection(features);
-    }
-
-    function rebuildAdvanceLayerAgainstTerritory(layer, territoryLayers) {
-      if (!layer || !layer._polradOriginalData) return;
-
-      var source = layer._polradOriginalData;
-      var sourceFeatures = source.type === 'FeatureCollection'
-        ? source.features || []
-        : source.type === 'Feature'
-          ? [source]
-          : [];
-
-      var territoryFeatures = [];
-
-      territoryLayers.forEach(function(territoryLayer) {
-        getFeaturesFromLayer(territoryLayer).forEach(function(feature) {
-          if (
-            feature &&
-            feature.geometry &&
-            (
-              feature.geometry.type === 'Polygon' ||
-              feature.geometry.type === 'MultiPolygon'
-            )
-          ) {
-            territoryFeatures.push(feature);
-          }
-        });
-      });
-
-      var territory = unionFeatureCollection(territoryFeatures);
-      var rebuilt = [];
-
-      sourceFeatures.forEach(function(feature) {
-        var result = feature;
-
-        if (territory) {
-          result = differenceFeature(result, territory);
-        }
-
-        if (!result) return;
-
-        if (result.type === 'FeatureCollection') {
-          (result.features || []).forEach(function(part) {
-            if (part && part.geometry) rebuilt.push(part);
-          });
-        } else if (result.geometry) {
-          rebuilt.push(result);
-        }
-      });
-
-      layer.clearLayers();
-      layer.addData({
-        type: 'FeatureCollection',
-        features: rebuilt
-      });
-    }
-
-    function rebuildControlledTerritories() {
-      var ruLayer = mainLayers['Russian-controlled territory'];
-      var uaLayer = mainLayers['Ukrainian-controlled territory'];
-      var regainedLayer = mainLayers['Territories regained'];
-      var ruAdvancesLayer = mainLayers['Russian advances'];
-      var uaAdvancesLayer = mainLayers['Ukrainian advances'];
-
-      if (!ruLayer || !uaLayer) return;
-
-      /*
-       * Keep the controlled-territory polygons exactly as published.
-       * Instead of cutting holes into them, trim each advance against the
-       * territory it is already inside. This matches the editor behaviour
-       * and avoids a visible seam around the controlled-territory polygon.
-       */
-      if (ruAdvancesLayer && ruAdvancesLayer._polradOriginalData) {
-        rebuildAdvanceLayerAgainstTerritory(
-          ruAdvancesLayer,
-          [ruLayer]
-        );
-      }
-
-      if (uaAdvancesLayer && uaAdvancesLayer._polradOriginalData) {
-        var uaTerritories = [uaLayer];
-
-        if (regainedLayer) {
-          uaTerritories.push(regainedLayer);
-        }
-
-        rebuildAdvanceLayerAgainstTerritory(
-          uaAdvancesLayer,
-          uaTerritories
-        );
-      }
-    }
-
     function rebuildGrayZone() {
       var ruLayer = mainLayers['Russian-controlled territory'];
       var uaLayer = mainLayers['Ukrainian-controlled territory'];
@@ -2784,23 +2669,18 @@
       var cleanFile = String(file).replace(/^\.\//, '');
       var cacheBust = 'polradLive=' + Date.now() + '_' + Math.random().toString(36).slice(2);
       var candidates = [
-        cleanFile + (cleanFile.indexOf('?') === -1 ? '?' : '&') + cacheBust,
-        'data/' + cleanFile + (cleanFile.indexOf('?') === -1 ? '?' : '&') + cacheBust,
-        'https://raw.githubusercontent.com/polrad-ma/uawarmap/main/' + cleanFile + (cleanFile.indexOf('?') === -1 ? '?' : '&') + cacheBust
+        'https://raw.githubusercontent.com/polrad-ma/uawarmap/main/' + cleanFile + (cleanFile.indexOf('?') === -1 ? '?' : '&') + cacheBust,
+        cleanFile + (cleanFile.indexOf('?') === -1 ? '?' : '&') + cacheBust
       ];
 
       var tryCandidate = function(index) {
         if (index >= candidates.length) {
-          return Promise.reject(
-            new Error('Could not load GeoJSON from any source: ' + cleanFile)
-          );
+          return Promise.reject(new Error('Could not load published GeoJSON: ' + cleanFile));
         }
 
         return fetch(candidates[index], { cache: 'no-store' })
           .then(function(response) {
-            if (!response.ok) {
-              throw new Error('HTTP ' + response.status);
-            }
+            if (!response.ok) throw new Error('HTTP ' + response.status);
             return response.json();
           })
           .catch(function(error) {
