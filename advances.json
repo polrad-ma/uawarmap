@@ -1259,5 +1259,38 @@
       "ru": 148247.7911123068,
       "ua": 22723.44787889476
     }
+  },
+  {
+    "id": "adv-1790881780638",
+    "date": "2026-10-01",
+    "time": "21:09:40",
+    "text_en": "The AFU liberated Nova Sich, Korchakivka and Mala Korchakivka/Radianske",
+    "text_ru": "ВСУ освободили Новою Сечь, Корчаковку и Малую Корчаковку (Радянское)",
+    "text": "The AFU liberated Nova Sich, Korchakivka and Mala Korchakivka/Radianske",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 19.26,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 19.26
+      }
+    ],
+    "areaDisplay": "+19.26 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 51.05736531652844,
+      "west": 34.80485916137696,
+      "north": 51.12076493195686,
+      "east": 34.995746612548835
+    },
+    "polygonFids": [
+      "advance-1790881689612-mqh8kai3ybn"
+    ],
+    "snapshot": "history/advances/adv-1790881780638.json",
+    "beforeAreas": {
+      "ru": 148247.7911123068,
+      "ua": 22723.44787889476
+    }
   }
 ]
