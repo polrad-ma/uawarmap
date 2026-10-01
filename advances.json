@@ -1195,5 +1195,38 @@
       "ru": 241213.79593862695,
       "ua": 475174.5680261131
     }
+  },
+  {
+    "id": "adv-1790831191890",
+    "date": "2026-10-01",
+    "time": "07:06:31",
+    "text_en": "The AFU recaptured some positions south of Dobropillia",
+    "text_ru": "ВСУ восстановили контроль над рядом позиций южнее Доброполья",
+    "text": "The AFU recaptured some positions south of Dobropillia",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 6.87,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 6.87
+      }
+    ],
+    "areaDisplay": "+6.87 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 48.387608203965385,
+      "west": 36.96521759033204,
+      "north": 48.438881562580626,
+      "east": 37.1030616760254
+    },
+    "polygonFids": [
+      "advance-1790831131232-xekmz1f9l7g"
+    ],
+    "snapshot": "history/advances/adv-1790831191890.json",
+    "beforeAreas": {
+      "ru": 241217.895165746,
+      "ua": 475174.5680261131
+    }
   }
 ]
