@@ -1984,6 +1984,31 @@
 
     var liveLayerData = {};
 
+    var initialLayerLoadPromises = [];
+
+    var RAW_ROOT = "https://raw.githubusercontent.com/polrad-ma/uawarmap/main/";
+
+    function fetchGeoJSONWithFallbacks(file) {
+      var bust = (file.indexOf('?') === -1 ? '?' : '&') + 'v=' + Date.now();
+      var urls = [file + bust, RAW_ROOT + file + bust];
+      var i = 0;
+
+      function tryNext() {
+        if (i >= urls.length) {
+          return Promise.reject(new Error('Could not load ' + file));
+        }
+        var url = urls[i++];
+        return fetch(url, { cache: 'no-store' })
+          .then(function(response) {
+            if (!response.ok) throw new Error('HTTP ' + response.status);
+            return response.json();
+          })
+          .catch(tryNext);
+      }
+
+      return tryNext();
+    }
+
     var timelineMode = false;
     var timelineDates = [];
     var advances = [];
