@@ -1511,11 +1511,17 @@
       polygonBordersEnabled = checked;
     }
 
+    map.createPane('grayZonePane');
+    map.getPane('grayZonePane').style.zIndex = 300;
+
+    map.createPane('regainedPane');
+    map.getPane('regainedPane').style.zIndex = 380;
+
     map.createPane('territoryPane');
-    map.getPane('territoryPane').style.zIndex = 400;
+    map.getPane('territoryPane').style.zIndex = 420;
 
     map.createPane('advancesPane');
-    map.getPane('advancesPane').style.zIndex = 420;
+    map.getPane('advancesPane').style.zIndex = 440;
 
     map.createPane('extraLayersPane');
     map.getPane('extraLayersPane').style.zIndex = 500;
@@ -1983,6 +1989,9 @@
     var advances = [];
     var advanceIndex = -1;
     var advanceMapLocked = false;
+    var mapStateRequestId = 0;
+    var activeMapState = 'live';
+    var activeSnapshotId = null;
 
     function setAdvanceLock(locked) {
       advanceMapLocked = !!locked;
@@ -2084,7 +2093,10 @@
       advanceIndex = index;
 
       var item = advances[index];
-      var isLatestAdvance = index === advances.length - 1;
+      var requestId = ++mapStateRequestId;
+      activeMapState = 'advance';
+      activeSnapshotId = item && item.id ? String(item.id) : null;
+      timelineMode = true;
 
       if (item && item.date && timelineSequence.length) {
         var dateIdx = timelineSequence.indexOf(item.date);
@@ -2094,36 +2106,73 @@
       renderAdvanceBar();
       updateTimelineBarUI();
 
-      // The latest advance uses the current published map files. This keeps
-      // the public map identical to the editor's current published state.
-      if (isLatestAdvance) {
+      clearTimelineManagedLayers();
+      grayZoneLayer.clearLayers();
+
+      if (index === advances.length - 1) {
         timelineMode = false;
-        exitTimelineMode(true);
-        renderAdvanceBar();
-        updateTimelineBarUI();
-        if (!options.skipFocus) focusAdvance(item);
+        activeMapState = 'live';
+        activeSnapshotId = null;
+
+        reloadLiveLayers(requestId).then(function() {
+          if (requestId !== mapStateRequestId) return;
+          if (activeMapState !== 'live') return;
+          if (!options.skipFocus) focusAdvance(item);
+          renderAdvanceBar();
+          updateTimelineBarUI();
+        });
+
         return;
       }
 
-      var snapshotUrl = item.snapshot;
-      if (!snapshotUrl) {
-        if (!options.skipFocus) focusAdvance(item);
-        return;
+      var snapshotPromise;
+
+      if (item && item.snapshotData) {
+        snapshotPromise = Promise.resolve(item.snapshotData);
+      } else {
+        var snapshotUrl = item && item.snapshot ? String(item.snapshot) : '';
+
+        if (!snapshotUrl) {
+          console.error('Advance has no snapshot path:', item);
+          if (!options.skipFocus) focusAdvance(item);
+          return;
+        }
+
+        var separator = snapshotUrl.indexOf('?') === -1 ? '?' : '&';
+        snapshotUrl += separator +
+          'polradAdvance=' + Date.now() + '_' + Math.random().toString(36).slice(2);
+
+        snapshotPromise = fetch(snapshotUrl, { cache: 'no-store' })
+          .then(function(response) {
+            if (!response.ok) {
+              throw new Error(
+                'Could not load advance snapshot ' +
+                (item.id || '') + ' (HTTP ' + response.status + ')'
+              );
+            }
+            return response.json();
+          });
       }
 
-      fetch(snapshotUrl, { cache: 'no-store' })
-        .then(function(response) {
-          if (!response.ok) throw new Error('Could not load advance snapshot');
-          return response.json();
-        })
+      snapshotPromise
         .then(function(snapshot) {
-          timelineMode = true;
-          applySnapshotToLayers(snapshot);
-          rebuildGrayZone();
+          if (requestId !== mapStateRequestId) return;
+          if (activeMapState !== 'advance') return;
+          if (advanceIndex !== index) return;
+          if (!item || activeSnapshotId !== String(item.id)) return;
+
+          if (!applySnapshotToLayers(snapshot, requestId)) return;
+
+          renderAdvanceBar();
+          updateTimelineBarUI();
           if (!options.skipFocus) focusAdvance(item);
         })
         .catch(function(error) {
-          console.error(error);
+          if (requestId !== mapStateRequestId) return;
+          if (activeMapState !== 'advance') return;
+          if (advanceIndex !== index) return;
+
+          console.error('Advance snapshot load error:', error);
           if (!options.skipFocus) focusAdvance(item);
         });
     }
@@ -2343,6 +2392,7 @@
         file: "Territories%20regained%20in%20the%20last%20month.geojson",
         name: "Territories regained",
         color: "#0f9d58",
+        pane: 'regainedPane',
         group: "main",
         noOutline: true
       },
@@ -2527,6 +2577,7 @@
 
     var GRAY_ZONE_DISTANCE_KM = 15;
     var grayZoneLayer = L.geoJSON(null, {
+      pane: 'grayZonePane',
       style: function() {
         return {
           color: '#ffffff',
@@ -2554,6 +2605,101 @@
       }
 
       return result;
+    }
+
+    function featureCollectionFromFeatures(features) {
+      return {
+        type: 'FeatureCollection',
+        features: (features || []).filter(function(feature) {
+          return feature && feature.geometry &&
+            (feature.geometry.type === 'Polygon' ||
+             feature.geometry.type === 'MultiPolygon');
+        })
+      };
+    }
+
+    function cleanFeatureGeometry(feature) {
+      if (!feature || !feature.geometry) return feature;
+      try {
+        return turf.cleanCoords(feature);
+      } catch (error) {
+        return feature;
+      }
+    }
+
+    function clipLayerAgainstUnion(layer, cutter) {
+      if (!layer || !layer.clearLayers || !cutter) return false;
+
+      var originalFeatures = getFeaturesFromLayer(layer)
+        .map(cleanFeatureGeometry);
+      var rebuilt = [];
+      var changed = false;
+
+      originalFeatures.forEach(function(feature) {
+        if (!feature || !feature.geometry) return;
+
+        var result = feature;
+
+        try {
+          result = turf.difference(feature, cutter);
+        } catch (error) {
+          console.warn('Control overlap cleanup failed:', error);
+          result = feature;
+        }
+
+        if (!result) {
+          changed = true;
+          return;
+        }
+
+        if (result.type === 'FeatureCollection') {
+          (result.features || []).forEach(function(part) {
+            if (part && part.geometry) rebuilt.push(part);
+          });
+        } else if (result.geometry) {
+          rebuilt.push(result);
+        }
+
+        try {
+          if (JSON.stringify(result.geometry) !== JSON.stringify(feature.geometry)) {
+            changed = true;
+          }
+        } catch (error) {}
+      });
+
+      if (!changed) return false;
+
+      layer.clearLayers();
+      layer.addData(featureCollectionFromFeatures(rebuilt));
+      return true;
+    }
+
+    function normalizeControlTerritoryOverlaps() {
+      var ruLayer = mainLayers['Russian-controlled territory'];
+      var uaLayer = mainLayers['Ukrainian-controlled territory'];
+      var regainedLayer = mainLayers['Territories regained'];
+
+      if (!ruLayer || !uaLayer) return false;
+
+      var uaFeatures = getFeaturesFromLayer(uaLayer).map(cleanFeatureGeometry);
+      var regainedFeatures = regainedLayer
+        ? getFeaturesFromLayer(regainedLayer).map(cleanFeatureGeometry)
+        : [];
+
+      var uaAndRegained = uaFeatures.concat(regainedFeatures);
+      var uaSideUnion = unionFeatureCollection(uaAndRegained);
+      var changed = false;
+
+      if (uaSideUnion) {
+        changed = clipLayerAgainstUnion(ruLayer, uaSideUnion) || changed;
+      }
+
+      var uaOnlyUnion = unionFeatureCollection(uaFeatures);
+      if (uaOnlyUnion && regainedLayer) {
+        changed = clipLayerAgainstUnion(regainedLayer, uaOnlyUnion) || changed;
+      }
+
+      return changed;
     }
 
     function getFeaturesFromLayer(layer) {
@@ -2703,10 +2849,14 @@
             pane: layerInfo.pane ||
                   (layerInfo.group === 'extra' ? 'extraLayersPane' :
                    (
-                     layerInfo.name === 'Russian-controlled territory' ||
-                     layerInfo.name === 'Ukrainian-controlled territory'
-                       ? 'territoryPane'
-                       : 'overlayPane'
+                     layerInfo.name === 'Territories regained'
+                       ? 'regainedPane'
+                       : (
+                         layerInfo.name === 'Russian-controlled territory' ||
+                         layerInfo.name === 'Ukrainian-controlled territory'
+                           ? 'territoryPane'
+                           : 'overlayPane'
+                       )
                    )),
             smoothFactor: layerInfo.smoothFactor !== undefined
               ? layerInfo.smoothFactor
@@ -3057,62 +3207,139 @@
         goToTimelineIndex(nearestIdx !== -1 ? nearestIdx : 0);
       });
 
-   function applySnapshotToLayers(snapshot) {
-  var allLayers = getAllLayerObjects();
+    function resolveSnapshotData(snapshot, name) {
+      if (!snapshot || typeof snapshot !== 'object') return undefined;
 
-  Object.keys(allLayers).forEach(function(name) {
-    if (TIMELINE_SKIP_LAYERS.indexOf(name) !== -1) return;
+      var keys = [];
+      var alias = TIMELINE_NAME_ALIASES[name];
 
-    var layer = allLayers[name];
-    if (!layer || !layer.clearLayers) return;
+      if (alias) keys.push(alias);
+      keys.push(name);
 
-    var snapshotKey = TIMELINE_NAME_ALIASES[name] || name;
+      if (name === 'Territories regained') {
+        keys.push('Territories regained in the last month');
+        keys.push('regained');
+      }
 
-    layer.clearLayers();
+      if (name === 'Ukrainian-controlled territory') {
+        keys.push('Ukrainian-controlled territory');
+        keys.push('ua_territory');
+      }
 
-    if (snapshot[snapshotKey]) {
-      layer.addData(snapshot[snapshotKey]);
-    } else if (
-      name === 'Territories regained' &&
-      liveLayerData[name]
-    ) {
-      layer.addData(liveLayerData[name]);
+      if (name === 'Russian-controlled territory') {
+        keys.push('Russian-controlled territory');
+        keys.push('ru_territory');
+      }
+
+      if (name === 'Ukrainian advances') {
+        keys.push('Ukrainian advances');
+        keys.push('ua_advances');
+      }
+
+      if (name === 'Russian advances') {
+        keys.push('Russian advances');
+        keys.push('ru_advances');
+      }
+
+      for (var i = 0; i < keys.length; i++) {
+        if (Object.prototype.hasOwnProperty.call(snapshot, keys[i])) {
+          return snapshot[keys[i]];
+        }
+      }
+
+      return undefined;
     }
-  });
 
-  rebuildGrayZone();
-}
+    function clearTimelineManagedLayers() {
+      var allLayers = getAllLayerObjects();
+
+      Object.keys(allLayers).forEach(function(name) {
+        if (TIMELINE_SKIP_LAYERS.indexOf(name) !== -1) return;
+
+        var layer = allLayers[name];
+        if (!layer || !layer.clearLayers) return;
+        layer.clearLayers();
+      });
+    }
+
+    function applySnapshotToLayers(snapshot, requestId) {
+      if (requestId !== undefined && requestId !== null && requestId !== mapStateRequestId) {
+        return false;
+      }
+
+      clearTimelineManagedLayers();
+
+      var allLayers = getAllLayerObjects();
+
+      Object.keys(allLayers).forEach(function(name) {
+        if (TIMELINE_SKIP_LAYERS.indexOf(name) !== -1) return;
+
+        var layer = allLayers[name];
+        if (!layer || !layer.clearLayers) return;
+
+        var snapshotData = resolveSnapshotData(snapshot, name);
+
+        if (snapshotData !== undefined && snapshotData !== null) {
+          layer.addData(snapshotData);
+        }
+      });
+
+      if (requestId !== undefined && requestId !== null && requestId !== mapStateRequestId) {
+        return false;
+      }
+
+      normalizeControlTerritoryOverlaps();
+      rebuildGrayZone();
+      updateSidebarLayerControl();
+      return true;
+    }
 
     function showTimelineDate(date) {
       var dateInput = document.getElementById('timeline-date-input');
-      dateInput.title = 'Loading ' + date + '...';
+      var requestId = ++mapStateRequestId;
+      activeMapState = 'date';
+      activeSnapshotId = null;
+      timelineMode = true;
 
-      fetch('history/' + date + '.json')
+      dateInput.title = 'Loading ' + date + '...';
+      clearTimelineManagedLayers();
+      grayZoneLayer.clearLayers();
+
+      var url = 'history/' + date + '.json';
+      url += (url.indexOf('?') === -1 ? '?' : '&') +
+        'polradHistory=' + Date.now() + '_' + Math.random().toString(36).slice(2);
+
+      fetch(url, { cache: 'no-store' })
         .then(function(response) {
           if (!response.ok) throw new Error('Could not load ' + date);
           return response.json();
         })
         .then(function(snapshot) {
-          timelineMode = true;
-          applySnapshotToLayers(snapshot);
-          dateInput.title = 'Jump to a date';
+          if (requestId !== mapStateRequestId || activeMapState !== 'date') return;
+          if (applySnapshotToLayers(snapshot, requestId)) {
+            dateInput.title = 'Jump to a date';
+          }
         })
         .catch(function(err) {
+          if (requestId !== mapStateRequestId || activeMapState !== 'date') return;
           console.error(err);
           dateInput.title = (publicLanguage === 'ru' ? 'Не удалось загрузить ' : 'Could not load ') + date;
         });
     }
 
-    function reloadLiveLayers() {
-      var loadableNames = {};
+    function reloadLiveLayers(requestId) {
+      if (requestId === undefined || requestId === null) {
+        requestId = ++mapStateRequestId;
+      }
 
-      layerFiles.forEach(function(layerInfo) {
-        loadableNames[layerInfo.name] = true;
-      });
+      activeMapState = 'live';
+      activeSnapshotId = null;
 
       var requests = layerFiles.map(function(layerInfo) {
         return fetchGeoJSONWithFallbacks(layerInfo.file)
           .then(function(data) {
+            if (requestId !== mapStateRequestId || activeMapState !== 'live') return;
+
             var layer = mainLayers[layerInfo.name] || extraLayers[layerInfo.name];
             if (!layer || !layer.clearLayers) return;
 
@@ -3130,21 +3357,27 @@
             }
           })
           .catch(function(error) {
+            if (requestId !== mapStateRequestId || activeMapState !== 'live') return;
             console.error('Live layer reload error:', layerInfo.name, error);
           });
       });
 
       return Promise.all(requests).then(function() {
+        if (requestId !== mapStateRequestId || activeMapState !== 'live') return;
+        normalizeControlTerritoryOverlaps();
         rebuildGrayZone();
         updateSidebarLayerControl();
       });
     }
 
     function exitTimelineMode(reloadCurrent) {
+      var requestId = ++mapStateRequestId;
       timelineMode = false;
+      activeMapState = 'live';
+      activeSnapshotId = null;
 
       if (reloadCurrent !== false) {
-        reloadLiveLayers();
+        reloadLiveLayers(requestId);
       } else {
         var allLayers = getAllLayerObjects();
 
@@ -3162,7 +3395,9 @@
           }
         });
 
+        normalizeControlTerritoryOverlaps();
         rebuildGrayZone();
+        updateSidebarLayerControl();
       }
 
       document.getElementById('timeline-date-input').title = 'Jump to a date';
@@ -3170,6 +3405,9 @@
 
     loadTimelineManifest();
     initialLayerLoadPromise.then(function() {
+      normalizeControlTerritoryOverlaps();
+      rebuildGrayZone();
+      updateSidebarLayerControl();
       return loadAdvances();
     });
 
