@@ -2808,86 +2808,44 @@
 
       var grayPieces = [];
 
-      ruFeatures.forEach(function(ruFeature) {
-        var ruBuffer;
-
-        try {
-          ruBuffer = turf.buffer(
-            ruFeature,
-            GRAY_ZONE_DISTANCE_KM,
-            {
-              units: 'kilometers',
-              steps: 8
-            }
-          );
-        } catch (error) {
-          return;
-        }
-
-        if (!ruBuffer) return;
-
-        uaFeatures.forEach(function(uaFeature) {
-          var uaBuffer;
-
+      function uniteAll(list) {
+        var result = null;
+        list.forEach(function(f) {
           try {
-            uaBuffer = turf.buffer(
-              uaFeature,
-              GRAY_ZONE_DISTANCE_KM,
-              {
-                units: 'kilometers',
-                steps: 8
-              }
-            );
+            result = result ? turf.union(result, f) : f;
           } catch (error) {
-            return;
-          }
-
-          if (!uaBuffer) return;
-
-          var between;
-
-          try {
-            between = turf.intersect(
-              ruBuffer,
-              uaBuffer
-            );
-          } catch (error) {
-            return;
-          }
-
-          if (!between) return;
-
-          var piece = between;
-
-          try {
-            piece = turf.difference(
-              piece,
-              ruFeature
-            );
-          } catch (error) {}
-
-          if (!piece) return;
-
-          try {
-            piece = turf.difference(
-              piece,
-              uaFeature
-            );
-          } catch (error) {}
-
-          if (!piece) return;
-
-          if (piece.type === 'FeatureCollection') {
-            (piece.features || []).forEach(function(feature) {
-              if (feature && feature.geometry) {
-                grayPieces.push(feature);
-              }
-            });
-          } else if (piece.geometry) {
-            grayPieces.push(piece);
+            console.warn('Gray Zone union error:', error);
           }
         });
-      });
+        return result;
+      }
+
+      var ruAll = uniteAll(ruFeatures);
+      var uaAll = uniteAll(uaFeatures);
+
+      if (ruAll && uaAll) {
+        try {
+          var ruBuffer = turf.buffer(ruAll, GRAY_ZONE_DISTANCE_KM, { units: 'kilometers', steps: 8 });
+          var uaBuffer = turf.buffer(uaAll, GRAY_ZONE_DISTANCE_KM, { units: 'kilometers', steps: 8 });
+          var between = turf.intersect(ruBuffer, uaBuffer);
+          var piece = between;
+
+          if (piece) piece = turf.difference(piece, ruAll);
+          if (piece) piece = turf.difference(piece, uaAll);
+
+          if (piece) {
+            if (piece.type === 'FeatureCollection') {
+              (piece.features || []).forEach(function(feature) {
+                if (feature && feature.geometry) grayPieces.push(feature);
+              });
+            } else if (piece.geometry) {
+              grayPieces.push(piece);
+            }
+          }
+        } catch (error) {
+          console.warn('Gray Zone generation error:', error);
+        }
+      }
 
       if (!grayPieces.length) {
         setLayerVisibility(
