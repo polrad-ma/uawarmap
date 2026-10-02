@@ -1512,7 +1512,7 @@
     }
 
     map.createPane('grayZonePane');
-    map.getPane('grayZonePane').style.zIndex = 300;
+    map.getPane('grayZonePane').style.zIndex = 460;
 
     map.createPane('regainedPane');
     map.getPane('regainedPane').style.zIndex = 380;
@@ -2733,43 +2733,45 @@
         return;
       }
 
-      var ruFeatures = getFeaturesFromLayer(ruLayer)
-        .concat(
-          ruAdvancesLayer
-            ? getFeaturesFromLayer(ruAdvancesLayer)
-            : []
-        );
+      var ruFeatures = getFeaturesFromLayer(ruLayer);
+      var uaFeatures = getFeaturesFromLayer(uaLayer);
 
-      var uaFeatures = getFeaturesFromLayer(uaLayer)
-        .concat(
-          uaAdvancesLayer
-            ? getFeaturesFromLayer(uaAdvancesLayer)
-            : []
-        )
-        .concat(
-          regainedLayer
-            ? getFeaturesFromLayer(regainedLayer)
-            : []
+      if (ruAdvancesLayer) {
+        ruFeatures = ruFeatures.concat(
+          getFeaturesFromLayer(ruAdvancesLayer)
         );
+      }
+
+      if (uaAdvancesLayer) {
+        uaFeatures = uaFeatures.concat(
+          getFeaturesFromLayer(uaAdvancesLayer)
+        );
+      }
+
+      if (regainedLayer) {
+        uaFeatures = uaFeatures.concat(
+          getFeaturesFromLayer(regainedLayer)
+        );
+      }
 
       function polygonOnly(features) {
         return features
           .map(function(feature) {
             if (!feature || !feature.geometry) return null;
+            if (
+              feature.geometry.type !== 'Polygon' &&
+              feature.geometry.type !== 'MultiPolygon'
+            ) {
+              return null;
+            }
+
             try {
               return turf.cleanCoords(feature);
             } catch (error) {
               return feature;
             }
           })
-          .filter(function(feature) {
-            return feature &&
-              feature.geometry &&
-              (
-                feature.geometry.type === 'Polygon' ||
-                feature.geometry.type === 'MultiPolygon'
-              );
-          });
+          .filter(Boolean);
       }
 
       ruFeatures = polygonOnly(ruFeatures);
@@ -2779,72 +2781,109 @@
         return;
       }
 
-      var ruUnion = unionFeatureCollection(ruFeatures);
-      var uaUnion = unionFeatureCollection(uaFeatures);
+      var grayPieces = [];
 
-      if (!ruUnion || !uaUnion) {
-        return;
-      }
+      ruFeatures.forEach(function(ruFeature) {
+        var ruBuffer;
 
-      try {
-        var ruBuffer = turf.buffer(
-          ruUnion,
-          GRAY_ZONE_DISTANCE_KM,
-          {
-            units: 'kilometers',
-            steps: 8
-          }
-        );
-
-        var uaBuffer = turf.buffer(
-          uaUnion,
-          GRAY_ZONE_DISTANCE_KM,
-          {
-            units: 'kilometers',
-            steps: 8
-          }
-        );
-
-        if (!ruBuffer || !uaBuffer) {
+        try {
+          ruBuffer = turf.buffer(
+            ruFeature,
+            GRAY_ZONE_DISTANCE_KM,
+            {
+              units: 'kilometers',
+              steps: 8
+            }
+          );
+        } catch (error) {
           return;
         }
 
-        var betweenSides = turf.intersect(
-          ruBuffer,
-          uaBuffer
-        );
+        if (!ruBuffer) return;
 
-        if (!betweenSides) {
-          return;
-        }
+        uaFeatures.forEach(function(uaFeature) {
+          var uaBuffer;
 
-        var occupiedFeatures = ruFeatures.concat(uaFeatures);
-        var occupiedUnion = unionFeatureCollection(
-          occupiedFeatures
-        );
+          try {
+            uaBuffer = turf.buffer(
+              uaFeature,
+              GRAY_ZONE_DISTANCE_KM,
+              {
+                units: 'kilometers',
+                steps: 8
+              }
+            );
+          } catch (error) {
+            return;
+          }
 
-        var grayZone = occupiedUnion
-          ? turf.difference(
-              betweenSides,
-              occupiedUnion
-            )
-          : betweenSides;
+          if (!uaBuffer) return;
 
-        if (grayZone) {
-          grayZoneLayer.addData(grayZone);
-        }
+          var between;
 
+          try {
+            between = turf.intersect(
+              ruBuffer,
+              uaBuffer
+            );
+          } catch (error) {
+            return;
+          }
+
+          if (!between) return;
+
+          var piece = between;
+
+          try {
+            piece = turf.difference(
+              piece,
+              ruFeature
+            );
+          } catch (error) {}
+
+          if (!piece) return;
+
+          try {
+            piece = turf.difference(
+              piece,
+              uaFeature
+            );
+          } catch (error) {}
+
+          if (!piece) return;
+
+          if (piece.type === 'FeatureCollection') {
+            (piece.features || []).forEach(function(feature) {
+              if (feature && feature.geometry) {
+                grayPieces.push(feature);
+              }
+            });
+          } else if (piece.geometry) {
+            grayPieces.push(piece);
+          }
+        });
+      });
+
+      if (!grayPieces.length) {
         setLayerVisibility(
           'Gray Zone',
           isLayerInCurrentDesign('Gray Zone')
         );
-
         updateSidebarLayerControl();
-
-      } catch (error) {
-        console.error('Gray Zone generation error:', error);
-        grayZoneLayer.clearLayers();
+        return;
       }
+
+      grayZoneLayer.addData({
+        type: 'FeatureCollection',
+        features: grayPieces
+      });
+
+      setLayerVisibility(
+        'Gray Zone',
+        isLayerInCurrentDesign('Gray Zone')
+      );
+
+      updateSidebarLayerControl();
     }
 
     layerFiles.forEach(function(layerInfo) {
