@@ -1197,39 +1197,6 @@
     }
   },
   {
-    "id": "adv-1790876107102",
-    "date": "2026-10-01",
-    "time": "19:35:07",
-    "text_en": "Gray zone bug fix in Dobropillia, area clarified",
-    "text_ru": "Починка бага серой зоны в Доброполье, коррекция ЛБС",
-    "text": "Gray zone bug fix in Dobropillia, area clarified",
-    "side": "ua",
-    "advanceType": "normal",
-    "areaChange": 9.46,
-    "areaEffects": [
-      {
-        "side": "ua",
-        "value": 9.46
-      }
-    ],
-    "areaDisplay": "+9.46 km²",
-    "areaColor": "blue",
-    "focus": {
-      "south": 48.43990650238739,
-      "west": 37.011737823486335,
-      "north": 48.50682443050764,
-      "east": 37.163829803466804
-    },
-    "polygonFids": [
-      "advance-1790876003649-9ytwwpc8m6o"
-    ],
-    "snapshot": "history/advances/adv-1790876107102.json",
-    "beforeAreas": {
-      "ru": 148247.7911123068,
-      "ua": 22723.44787889476
-    }
-  },
-  {
     "id": "adv-1790878971850",
     "date": "2026-10-01",
     "time": "20:22:51",
@@ -1288,6 +1255,39 @@
       "advance-1790881689612-mqh8kai3ybn"
     ],
     "snapshot": "history/advances/adv-1790881780638.json",
+    "beforeAreas": {
+      "ru": 148247.7911123068,
+      "ua": 22723.44787889476
+    }
+  },
+  {
+    "id": "adv-1791027557060",
+    "date": "2026-10-03",
+    "time": "13:39:17",
+    "text_en": "Correction of the contact line in Vozdvyzhivska",
+    "text_ru": "Коррекция ЛБС в Воздвижевке",
+    "text": "Correction of the contact line in Vozdvyzhivska",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 35.55,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 35.55
+      }
+    ],
+    "areaDisplay": "+35.55 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 47.71830847974353,
+      "west": 35.994987487792976,
+      "north": 47.80116408820393,
+      "east": 36.165275573730476
+    },
+    "polygonFids": [
+      "advance-1791027515687-0cko8j16empu"
+    ],
+    "snapshot": "history/advances/adv-1791027557060.json",
     "beforeAreas": {
       "ru": 148247.7911123068,
       "ua": 22723.44787889476
