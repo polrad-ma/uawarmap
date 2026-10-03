@@ -1325,5 +1325,38 @@
       "ru": 148247.7911123068,
       "ua": 22723.44787889476
     }
+  },
+  {
+    "id": "adv-1791029987687",
+    "date": "2026-10-03",
+    "time": "14:19:47",
+    "text_en": "Ukrainian advances near Myropillya",
+    "text_ru": "Продвижения ВСУ в районе Мирополья",
+    "text": "Ukrainian advances near Myropillya",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 18.88,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 18.88
+      }
+    ],
+    "areaDisplay": "+18.88 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 50.95885922844512,
+      "west": 35.11848449707032,
+      "north": 51.07333122768277,
+      "east": 35.419235229492195
+    },
+    "polygonFids": [
+      "advance-1791029905766-fkhfist7h38"
+    ],
+    "snapshot": "history/advances/adv-1791029987687.json",
+    "beforeAreas": {
+      "ru": 148247.7911123068,
+      "ua": 22723.076841892085
+    }
   }
 ]
