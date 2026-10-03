@@ -1292,5 +1292,38 @@
       "ru": 148247.7911123068,
       "ua": 22723.44787889476
     }
+  },
+  {
+    "id": "adv-1791029336005",
+    "date": "2026-10-03",
+    "time": "14:08:56",
+    "text_en": "Ukrainian forces cleared the village of Sadky and entered the town of Yunakivka",
+    "text_ru": "ВСУ зачистили деревню Садки и вошли в Юнаковку",
+    "text": "Ukrainian forces cleared the village of Sadky and entered the town of Yunakivka",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 14.96,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 14.96
+      }
+    ],
+    "areaDisplay": "+14.96 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 51.0359969039887,
+      "west": 34.9142074584961,
+      "north": 51.13972478986592,
+      "east": 35.21186828613282
+    },
+    "polygonFids": [
+      "advance-1791029268761-xkq59gmwcz"
+    ],
+    "snapshot": "history/advances/adv-1791029336005.json",
+    "beforeAreas": {
+      "ru": 148247.7911123068,
+      "ua": 22723.44787889476
+    }
   }
 ]
