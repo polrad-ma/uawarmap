@@ -1358,5 +1358,39 @@
       "ru": 148247.7911123068,
       "ua": 22723.076841892085
     }
+  },
+  {
+    "id": "adv-1791041686591",
+    "date": "2026-10-03",
+    "time": "17:34:46",
+    "text_en": "The AFU are counterattacking in Orikhiv and Mala Tokmachka",
+    "text_ru": "ВСУ контратакуют в Орехове и Малой Токмачке",
+    "text": "The AFU are counterattacking in Orikhiv and Mala Tokmachka",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 10.19,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 10.19
+      }
+    ],
+    "areaDisplay": "+10.19 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 47.504446326088754,
+      "west": 35.668144226074226,
+      "north": 47.62444645776712,
+      "east": 36.017990112304695
+    },
+    "polygonFids": [
+      "advance-1791041586545-ocxxls6353p",
+      "advance-1791041625902-79upc7rot"
+    ],
+    "snapshot": "history/advances/adv-1791041686591.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22723.475475549545
+    }
   }
 ]
