@@ -1392,5 +1392,38 @@
       "ru": 148250.01284066943,
       "ua": 22723.475475549545
     }
+  },
+  {
+    "id": "adv-1791042107406",
+    "date": "2026-10-03",
+    "time": "17:41:47",
+    "text_en": "Russian forces captured the village of Stinky on the Kostiantinivka direction",
+    "text_ru": "ВС РФ заняли деревню Стенки на Константиновском направлении",
+    "text": "Russian forces captured the village of Stinky on the Kostiantinivka direction",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 7.69,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 7.69
+      }
+    ],
+    "areaDisplay": "+7.69 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 48.54991013313083,
+      "west": 37.66714096069337,
+      "north": 48.61259735567946,
+      "east": 37.82403945922852
+    },
+    "polygonFids": [
+      "advance-1791042030179-ag7jij4t5yr"
+    ],
+    "snapshot": "history/advances/adv-1791042107406.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22723.475475549545
+    }
   }
 ]
