@@ -1205,14 +1205,14 @@
     "text": "Russians have again infiltrated Lyman",
     "side": "ru",
     "advanceType": "gray",
-    "areaChange": 2.35,
+    "areaChange": -2.35,
     "areaEffects": [
       {
         "side": "ru",
-        "value": 2.35
+        "value": -2.35
       }
     ],
-    "areaDisplay": "+2.35 km²",
+    "areaDisplay": "-2.35 km²",
     "areaColor": "blue",
     "focus": {
       "south": 48.981343619861,
