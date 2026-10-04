@@ -6975,6 +6975,21 @@
           50.802816
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Suriyak town marker 466",
+        "color": "#00a83b",
+        "radius": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.187519,
+          50.236226
+        ]
+      }
     }
   ]
 }
