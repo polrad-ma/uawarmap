@@ -1458,5 +1458,38 @@
       "ru": 148250.01284066943,
       "ua": 22723.475475549545
     }
+  },
+  {
+    "id": "adv-1791102376416",
+    "date": "2026-10-04",
+    "time": "10:26:16",
+    "text_en": "The AFU recaptured the village of Volokhivske",
+    "text_ru": "ВСУ восстановили контроль над Волоховским",
+    "text": "The AFU recaptured the village of Volokhivske",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 6.17,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 6.17
+      }
+    ],
+    "areaDisplay": "+6.17 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 50.199759188312086,
+      "west": 37.10323333740235,
+      "north": 50.263887540074116,
+      "east": 37.29377746582032
+    },
+    "polygonFids": [
+      "advance-1791102306446-b1gsold52qn"
+    ],
+    "snapshot": "history/advances/adv-1791102376416.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22723.475475549545
+    }
   }
 ]
