@@ -1425,5 +1425,38 @@
       "ru": 148250.01284066943,
       "ua": 22723.475475549545
     }
+  },
+  {
+    "id": "adv-1791101149892",
+    "date": "2026-10-04",
+    "time": "10:05:49",
+    "text_en": "Russian forces have captured the village of Pokrovka on the Uhroidy direction",
+    "text_ru": "ВС РФ заняли Покровку в направлении Угроедов",
+    "text": "Russian forces have captured the village of Pokrovka on the Uhroidy direction",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 2.9,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 2.9
+      }
+    ],
+    "areaDisplay": "+2.90 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 50.791070432845814,
+      "west": 35.31074523925782,
+      "north": 50.84562199133437,
+      "east": 35.45185089111329
+    },
+    "polygonFids": [
+      "advance-1791100985876-bf141xlhjxj"
+    ],
+    "snapshot": "history/advances/adv-1791101149892.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22723.475475549545
+    }
   }
 ]
