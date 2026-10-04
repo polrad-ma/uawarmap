@@ -1524,5 +1524,38 @@
       "ru": 148250.01284066943,
       "ua": 22723.475475549545
     }
+  },
+  {
+    "id": "adv-1791122626169",
+    "date": "2026-10-04",
+    "time": "16:03:46",
+    "text_en": "Russian forces completed the capture of Riasne",
+    "text_ru": "ВС РФ заняли Рясное",
+    "text": "Russian forces completed the capture of Riasne",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 2.63,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 2.63
+      }
+    ],
+    "areaDisplay": "+2.63 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 50.670517108301866,
+      "west": 35.33898353576661,
+      "north": 50.70879746106402,
+      "east": 35.441207885742195
+    },
+    "polygonFids": [
+      "advance-1791120964660-4gqd46ylg0v"
+    ],
+    "snapshot": "history/advances/adv-1791122626169.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22723.475475549545
+    }
   }
 ]
