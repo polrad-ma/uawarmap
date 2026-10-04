@@ -1493,39 +1493,6 @@
     }
   },
   {
-    "id": "adv-1791109332599",
-    "date": "2026-10-04",
-    "time": "12:22:12",
-    "text_en": "Russian forces completed the capture of Kozacha Lopan",
-    "text_ru": "Российские войска захватили Казачью Лопань",
-    "text": "Russian forces completed the capture of Kozacha Lopan",
-    "side": "ru",
-    "advanceType": "normal",
-    "areaChange": 7.27,
-    "areaEffects": [
-      {
-        "side": "ru",
-        "value": 7.27
-      }
-    ],
-    "areaDisplay": "+7.27 km²",
-    "areaColor": "red",
-    "focus": {
-      "south": 50.29877048341426,
-      "west": 36.09746932983399,
-      "north": 50.36134205785377,
-      "east": 36.272907257080085
-    },
-    "polygonFids": [
-      "advance-1791109254006-jqww87v6oo"
-    ],
-    "snapshot": "history/advances/adv-1791109332599.json",
-    "beforeAreas": {
-      "ru": 148250.01284066943,
-      "ua": 22723.475475549545
-    }
-  },
-  {
     "id": "adv-1791122626169",
     "date": "2026-10-04",
     "time": "16:03:46",
@@ -1556,6 +1523,40 @@
     "beforeAreas": {
       "ru": 148250.01284066943,
       "ua": 22723.475475549545
+    }
+  },
+  {
+    "id": "adv-1791139697276",
+    "date": "2026-10-04",
+    "time": "20:48:17",
+    "text_en": "Russian forces completed the captured of Kozacha Lopan",
+    "text_ru": "ВС РФ захватили Казачью Лопань",
+    "text": "Russian forces completed the captured of Kozacha Lopan",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 12.98,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 12.98
+      }
+    ],
+    "areaDisplay": "+12.98 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 50.30008632038291,
+      "west": 36.081161499023445,
+      "north": 50.404578916050745,
+      "east": 36.32423400878907
+    },
+    "polygonFids": [
+      "advance-1791139550476-qoxjqzwrlo",
+      "advance-1791139626679-45k1a4czijy"
+    ],
+    "snapshot": "history/advances/adv-1791139697276.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.540950451905
     }
   }
 ]
