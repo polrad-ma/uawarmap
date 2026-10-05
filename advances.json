@@ -1558,5 +1558,38 @@
       "ru": 148250.01284066943,
       "ua": 22718.540950451905
     }
+  },
+  {
+    "id": "adv-1791220193178",
+    "date": "2026-10-05",
+    "time": "19:09:53",
+    "text_en": "The AFU cleared Rubizhne and Zolotyi Kolodiaz",
+    "text_ru": "ВСУ зачистили Рубежное и Золотой Колодезь",
+    "text": "The AFU cleared Rubizhne and Zolotyi Kolodiaz",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 8.72,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 8.72
+      }
+    ],
+    "areaDisplay": "+8.72 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 48.499545126631894,
+      "west": 37.14752197265626,
+      "north": 48.54695555682849,
+      "east": 37.29223251342774
+    },
+    "polygonFids": [
+      "advance-1791220155294-aoj1vg9tvvh"
+    ],
+    "snapshot": "history/advances/adv-1791220193178.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.540950451905
+    }
   }
 ]
