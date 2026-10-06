@@ -31,5 +31,38 @@
       "ru": 148250.01284066943,
       "ua": 22718.540950451905
     }
+  },
+  {
+    "id": "adv-1791308956994",
+    "date": "2026-10-06",
+    "time": "19:49:16",
+    "text_en": "Almost all of Hannivka was recaptured by Russian forces",
+    "text_ru": "ВС РФ практически полностью восстановили контроль над Анновкой",
+    "text": "Almost all of Hannivka was recaptured by Russian forces",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 8.02,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 8.02
+      }
+    ],
+    "areaDisplay": "+8.02 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 48.43660384452751,
+      "west": 37.01087951660157,
+      "north": 48.50762054094397,
+      "east": 37.20417022705079
+    },
+    "polygonFids": [
+      "advance-1791308772985-3atd5025v6d"
+    ],
+    "snapshot": "history/advances/adv-1791308956994.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.540950451905
+    }
   }
 ]
