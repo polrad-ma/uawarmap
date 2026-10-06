@@ -1626,5 +1626,36 @@
       "ru": 148250.01284066943,
       "ua": 22718.540950451905
     }
+  },
+  {
+    "id": "adv-1791283509015",
+    "date": "2026-10-06",
+    "time": "12:45:09",
+    "text_en": "Correction of the contact line in Kupyansk-Vuzlovyi",
+    "text_ru": "Коррекция ЛБС в Купянске-Узловом",
+    "text": "Correction of the contact line in Kupyansk-Vuzlovyi",
+    "side": "ua",
+    "advanceType": "gray",
+    "areaChange": -3.98,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": -3.98
+      }
+    ],
+    "areaDisplay": "-3.98 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 49.6325066751941,
+      "west": 37.56912231445313,
+      "north": 49.6965059683765,
+      "east": 37.73700714111328
+    },
+    "polygonFids": [],
+    "snapshot": "history/advances/adv-1791283509015.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.540950451905
+    }
   }
 ]
