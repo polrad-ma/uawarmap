@@ -36,8 +36,6 @@
 
   <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
   <style>
     :root {
       --panel-bg: #1b1b1b;
@@ -760,7 +758,6 @@
     <button class="sidebar-btn" id="btn-tab-coords" onclick="toggleTab('coords')" title="Coordinates">📍</button>
     <button class="sidebar-btn" id="btn-tab-updates" onclick="toggleTab('updates')" title="Changelog">🧾</button>
     <button class="sidebar-btn" id="btn-tab-settings" onclick="toggleTab('settings')" title="Settings">⚙️</button>
-    <button class="sidebar-btn" id="btn-screenshot" onclick="takeMapScreenshot()" title="Take Screenshot">📸</button>
     <button class="sidebar-btn" id="btn-fullscreen" onclick="toggleFullScreen()" title="Toggle Fullscreen">⛶</button>
   </div>
 
@@ -1001,14 +998,14 @@
         'panel-layers h4':'basemapsLayers','basemap-selector-container strong':'baseMap','design-selector-container strong':'mapDesign',
         'panel-draw h4':'drawTools','panel-ruler h4':'ruler','panel-coords h4':'coordinates','panel-updates h4':'changelog','panel-settings h4':'settings',
         'btn-tab-layers':'basemapsLayers','btn-tab-draw':'drawTools','btn-tab-ruler':'ruler','btn-tab-coords':'coordinates','btn-tab-updates':'changelog','btn-tab-settings':'settings',
-        'btn-screenshot':'screenshot','btn-fullscreen':'fullscreen','search-toggle-btn':'search','advance-prev':'previousAdvance','advance-next':'nextAdvance',
+        'btn-fullscreen':'fullscreen','search-toggle-btn':'search','advance-prev':'previousAdvance','advance-next':'nextAdvance',
         'toggle-dark-theme-label':'darkTheme','toggle-polygon-borders-label':'polygonBorders','toggle-crosshair-label':'centerCrosshair','twitter-link':'twitter','login-link':'login',
         'unit-km':'kilometers','unit-mi':'miles'
       };
       Object.keys(staticMap).forEach(function(sel){
         var el = sel.indexOf(' ') !== -1 ? document.querySelector(sel) : document.getElementById(sel);
         if (!el) return;
-        if (/^(btn-tab-|btn-screenshot|btn-fullscreen|search-toggle-btn|advance-prev|advance-next)$/.test(sel) || sel === 'btn-tab-layers' || sel === 'btn-tab-draw' || sel === 'btn-tab-ruler' || sel === 'btn-tab-coords' || sel === 'btn-tab-updates' || sel === 'btn-tab-settings') {
+        if (/^(btn-tab-|btn-fullscreen|search-toggle-btn|advance-prev|advance-next)$/.test(sel) || sel === 'btn-tab-layers' || sel === 'btn-tab-draw' || sel === 'btn-tab-ruler' || sel === 'btn-tab-coords' || sel === 'btn-tab-updates' || sel === 'btn-tab-settings') {
           el.title = pt(staticMap[sel]);
           el.setAttribute('aria-label', el.title);
         } else {
@@ -1040,172 +1037,6 @@
     });
 
     window.addEventListener('load', function(){ setTimeout(applyPublicLanguage, 100); });
-
-    async function takeMapScreenshot() {
-      var mapElement = document.getElementById('map');
-      var button = document.getElementById('btn-screenshot');
-
-      if (!mapElement || typeof html2canvas === 'undefined' || typeof map === 'undefined') {
-        alert('Screenshot feature is not available.');
-        return;
-      }
-
-      if (button) {
-        button.disabled = true;
-        button.innerText = '…';
-      }
-
-      var hiddenElements = [];
-      var switchedFromGoogle = false;
-      var originalBaseLayer = currentBaseLayer;
-      var originalCenter = map.getCenter();
-      var originalZoom = map.getZoom();
-
-      function hideElement(el) {
-        if (!el) return;
-        hiddenElements.push({ element: el, display: el.style.display });
-        el.style.display = 'none';
-      }
-
-      function wait(ms) {
-        return new Promise(function(resolve) { setTimeout(resolve, ms); });
-      }
-
-      try {
-        if (typeof googleHybrid !== 'undefined' &&
-            googleHybrid &&
-            currentBaseLayer === googleHybrid &&
-            typeof esriHybrid !== 'undefined' &&
-            esriHybrid) {
-          map.removeLayer(googleHybrid);
-          currentBaseLayer = esriHybrid;
-          map.addLayer(esriHybrid);
-          switchedFromGoogle = true;
-          map.setView(originalCenter, originalZoom, { animate: false });
-        }
-        hideElement(document.getElementById('left-sidebar'));
-        hideElement(document.getElementById('app-header'));
-        hideElement(document.getElementById('advance-bar'));
-        hideElement(document.getElementById('map-crosshair'));
-        hideElement(document.getElementById('watermark-overlay'));
-        document.querySelectorAll('.sidebar-panel').forEach(hideElement);
-        document.querySelectorAll('.leaflet-control-zoom').forEach(hideElement);
-        document.querySelectorAll('.leaflet-control-geosearch').forEach(hideElement);
-        document.querySelectorAll('.leaflet-popup').forEach(hideElement);
-
-        map.stop();
-        map.invalidateSize(true);
-        await new Promise(function(resolve) {
-          requestAnimationFrame(function() {
-            requestAnimationFrame(function() {
-              wait(900).then(resolve);
-            });
-          });
-        });
-
-        var mapCanvas = await html2canvas(mapElement, {
-          useCORS: true,
-          allowTaint: false,
-          backgroundColor: '#ffffff',
-          scale: Math.min(2, window.devicePixelRatio || 1),
-          logging: false,
-          imageTimeout: 20000,
-          foreignObjectRendering: false,
-          removeContainer: true,
-          onclone: function(clonedDocument) {
-            clonedDocument
-              .querySelectorAll('.leaflet-overlay-pane svg, .leaflet-shadow-pane svg')
-              .forEach(function(svg) {
-                svg.style.overflow = 'visible';
-              });
-          }
-        });
-        var headerHeight = 76 * 2;
-        var padding = 16 * 2;
-        var finalWidth = mapCanvas.width + padding * 2;
-        var finalHeight = mapCanvas.height + headerHeight + padding;
-        var canvas = document.createElement('canvas');
-        canvas.width = finalWidth;
-        canvas.height = finalHeight;
-
-        var ctx = canvas.getContext('2d');
-        ctx.fillStyle = '#ffffff';
-        ctx.fillRect(0, 0, finalWidth, finalHeight);
-
-        ctx.strokeStyle = '#d9d9d9';
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(0, headerHeight);
-        ctx.lineTo(finalWidth, headerHeight);
-        ctx.stroke();
-
-        var logo = new Image();
-        logo.crossOrigin = 'anonymous';
-        await new Promise(function(resolve) {
-          logo.onload = resolve;
-          logo.onerror = resolve;
-          var logoEl = document.getElementById('app-logo');
-          logo.src = logoEl ? logoEl.src : '';
-        });
-
-        var logoSize = 54 * 2;
-        var logoX = padding;
-        var logoY = (headerHeight - logoSize) / 2;
-
-        if (logo.complete && logo.naturalWidth > 0) {
-          ctx.save();
-          ctx.beginPath();
-          ctx.arc(
-            logoX + logoSize / 2,
-            logoY + logoSize / 2,
-            logoSize / 2,
-            0,
-            Math.PI * 2
-          );
-          ctx.clip();
-          ctx.drawImage(logo, logoX, logoY, logoSize, logoSize);
-          ctx.restore();
-        }
-
-        ctx.fillStyle = '#171717';
-        ctx.font = 'bold 28px Helvetica, Arial, sans-serif';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(
-          'POLRAD MAPPING',
-          logoX + logoSize + 18,
-          headerHeight / 2
-        );
-
-        ctx.drawImage(mapCanvas, padding, headerHeight);
-
-        var link = document.createElement('a');
-        var date = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
-        link.download = 'polrad-mapping-' + date + '.png';
-        link.href = canvas.toDataURL('image/png');
-        link.click();
-
-      } catch (error) {
-        console.error('Screenshot failed:', error);
-        alert('Screenshot failed. Please try again after the map has finished loading.');
-      } finally {
-        hiddenElements.forEach(function(item) {
-          item.element.style.display = item.display;
-        });
-        if (switchedFromGoogle && originalBaseLayer) {
-          if (map.hasLayer(currentBaseLayer)) map.removeLayer(currentBaseLayer);
-          currentBaseLayer = originalBaseLayer;
-          map.addLayer(originalBaseLayer);
-          map.setView(originalCenter, originalZoom, { animate: false });
-        }
-
-        map.invalidateSize(true);
-
-        if (button) {
-          button.disabled = false;
-          button.innerText = '📸';
-        }
-      }
-    }
 
     function toggleFullScreen() {
       var btn = document.getElementById('btn-fullscreen');
@@ -1853,22 +1684,97 @@
       document.getElementById('advance-next').disabled = advanceIndex >= advances.length - 1;
     }
 
+    var SNAPSHOT_FLY_DURATION = 1.5;
+    var activeFlyAnimation = null;
+
+    function cancelSnapshotFly() {
+      if (activeFlyAnimation) {
+        cancelAnimationFrame(activeFlyAnimation);
+        activeFlyAnimation = null;
+      }
+    }
+
+    function animateMapTo(targetLat, targetLng, targetZoom) {
+      cancelSnapshotFly();
+
+      var startCenter = map.getCenter();
+      var startZoom = map.getZoom();
+      var startLat = startCenter.lat;
+      var startLng = startCenter.lng;
+
+      if (targetZoom === undefined || targetZoom === null || !Number.isFinite(targetZoom)) {
+        targetZoom = startZoom;
+      }
+      targetZoom = Math.max(map.getMinZoom(), Math.min(map.getMaxZoom(), targetZoom));
+
+      var latDelta = targetLat - startLat;
+      var lngDelta = targetLng - startLng;
+      var zoomDelta = targetZoom - startZoom;
+
+      if (Math.abs(latDelta) < 0.00001 &&
+          Math.abs(lngDelta) < 0.00001 &&
+          Math.abs(zoomDelta) < 0.001) {
+        return;
+      }
+
+      var durationMs = SNAPSHOT_FLY_DURATION * 1000;
+      var startTime = null;
+
+      function ease(t) {
+        return t < 0.5
+          ? 4 * t * t * t
+          : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      }
+
+      function step(timestamp) {
+        if (startTime === null) startTime = timestamp;
+        var elapsed = timestamp - startTime;
+        var t = Math.min(1, elapsed / durationMs);
+        var k = ease(t);
+
+        map.setView(
+          [startLat + latDelta * k, startLng + lngDelta * k],
+          startZoom + zoomDelta * k,
+          { animate: false }
+        );
+
+        if (t < 1) {
+          activeFlyAnimation = requestAnimationFrame(step);
+        } else {
+          activeFlyAnimation = null;
+        }
+      }
+
+      activeFlyAnimation = requestAnimationFrame(step);
+    }
+
     function focusAdvance(item) {
       if (advanceMapLocked || !item || !item.focus || !map) return;
-      if (Number.isFinite(Number(item.focus.south)) && Number.isFinite(Number(item.focus.west)) && Number.isFinite(Number(item.focus.north)) && Number.isFinite(Number(item.focus.east))) {
+
+      if (Number.isFinite(Number(item.focus.south)) &&
+          Number.isFinite(Number(item.focus.west)) &&
+          Number.isFinite(Number(item.focus.north)) &&
+          Number.isFinite(Number(item.focus.east))) {
         var bounds = L.latLngBounds([
           [Number(item.focus.south), Number(item.focus.west)],
           [Number(item.focus.north), Number(item.focus.east)]
         ]);
-        map.fitBounds(bounds, { padding: [40, 40], maxZoom: 14, animate: true });
+        var center = bounds.getCenter();
+
+        var targetZoom = map.getBoundsZoom(bounds, false, [40, 40]);
+        if (!Number.isFinite(targetZoom)) targetZoom = map.getZoom();
+        if (targetZoom > 14) targetZoom = 14;
+
+        animateMapTo(center.lat, center.lng, targetZoom);
         return;
       }
+
       var lat = Number(item.focus.lat);
       var lng = Number(item.focus.lng);
       var zoom = Number(item.focus.zoom);
       if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
       if (!Number.isFinite(zoom)) zoom = map.getZoom();
-      map.flyTo([lat, lng], zoom, { duration: 0.7 });
+      animateMapTo(lat, lng, zoom);
     }
 
     function applyAdvanceSnapshot(snapshot) {
@@ -1909,7 +1815,7 @@
         reloadLiveLayers(requestId).then(function() {
           if (requestId !== mapStateRequestId) return;
           if (activeMapState !== 'live') return;
-          if (!options.skipFocus) focusAdvance(item);
+          if (!options.skipFocus) setTimeout(function() { focusAdvance(item); }, 0);
           renderAdvanceBar();
           updateTimelineBarUI();
         });
@@ -1957,7 +1863,7 @@
 
           renderAdvanceBar();
           updateTimelineBarUI();
-          if (!options.skipFocus) focusAdvance(item);
+          if (!options.skipFocus) setTimeout(function() { focusAdvance(item); }, 0);
         })
         .catch(function(error) {
           if (requestId !== mapStateRequestId) return;
@@ -1965,7 +1871,7 @@
           if (advanceIndex !== index) return;
 
           console.error('Advance snapshot load error:', error);
-          if (!options.skipFocus) focusAdvance(item);
+          if (!options.skipFocus) setTimeout(function() { focusAdvance(item); }, 0);
         });
     }
 
