@@ -1591,5 +1591,40 @@
       "ru": 148250.01284066943,
       "ua": 22718.540950451905
     }
+  },
+  {
+    "id": "adv-1791283241604",
+    "date": "2026-10-06",
+    "time": "12:40:41",
+    "text_en": "Correction of the contact line north of Lyman",
+    "text_ru": "Коррекция ЛБС севернее Лимана",
+    "text": "Correction of the contact line north of Lyman",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 11.36,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 11.36
+      }
+    ],
+    "areaDisplay": "+11.36 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 49.02278605700956,
+      "west": 37.7541732788086,
+      "north": 49.165991694310556,
+      "east": 38.1390380859375
+    },
+    "polygonFids": [
+      "advance-1791283093449-dy7fyesauld",
+      "advance-1791283137408-4x5ybiv8w5g",
+      "advance-1791283163961-u00vjw0nbwd"
+    ],
+    "snapshot": "history/advances/adv-1791283241604.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.540950451905
+    }
   }
 ]
