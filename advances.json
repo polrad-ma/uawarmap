@@ -1718,5 +1718,41 @@
       "ru": 148250.01284066943,
       "ua": 22718.540950451905
     }
+  },
+  {
+    "id": "adv-1791373512514",
+    "date": "2026-10-07",
+    "time": "13:45:12",
+    "text_en": "Russian forces advance in the Prykolotne pocket",
+    "text_ru": "ВС РФ продвигаются в кармане севернее Приколотного",
+    "text": "Russian forces advance in the Prykolotne pocket",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 34.24,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 34.24
+      }
+    ],
+    "areaDisplay": "+34.24 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 50.15050636899788,
+      "west": 36.99096679687501,
+      "north": 50.49027914167513,
+      "east": 37.83691406250001
+    },
+    "polygonFids": [
+      "advance-1791373308027-2hwl5jp4k0o",
+      "advance-1791373358504-8r7xuj77h2h",
+      "advance-1791373398827-uxrjyjqjsm",
+      "advance-1791373457833-rso1fj95ln"
+    ],
+    "snapshot": "history/advances/adv-1791373512514.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.540950451905
+    }
   }
 ]
