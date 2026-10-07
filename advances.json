@@ -1787,5 +1787,38 @@
       "ru": 148250.01284066943,
       "ua": 22718.540950451905
     }
+  },
+  {
+    "id": "adv-1791377103054",
+    "date": "2026-10-07",
+    "time": "14:45:03",
+    "text_en": "Russian advances in the southern part of Dobropillia",
+    "text_ru": "Продвижение ВС РФ в южной части Доброполья",
+    "text": "Russian advances in the southern part of Dobropillia",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 7.4,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 7.4
+      }
+    ],
+    "areaDisplay": "+7.40 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 48.41177009440407,
+      "west": 37.011222839355476,
+      "north": 48.48532472122937,
+      "east": 37.16365814208985
+    },
+    "polygonFids": [
+      "advance-1791376879720-up6wjmswc"
+    ],
+    "snapshot": "history/advances/adv-1791377103054.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.540950451905
+    }
   }
 ]
