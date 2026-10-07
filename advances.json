@@ -1754,5 +1754,38 @@
       "ru": 148250.01284066943,
       "ua": 22718.540950451905
     }
+  },
+  {
+    "id": "adv-1791373772485",
+    "date": "2026-10-07",
+    "time": "13:49:32",
+    "text_en": "Ukrainian Defense forces have restored control over Novohryshine and Matiasheve",
+    "text_ru": "ВСУ восстановили контроль над Новогришиным и Матяшевым",
+    "text": "Ukrainian Defense forces have restored control over Novohryshine and Matiasheve",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 5.42,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 5.42
+      }
+    ],
+    "areaDisplay": "+5.42 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 48.38282005230837,
+      "west": 36.95028305053712,
+      "north": 48.44104530014126,
+      "east": 37.12881088256837
+    },
+    "polygonFids": [
+      "advance-1791373716107-rxgylog50ua"
+    ],
+    "snapshot": "history/advances/adv-1791373772485.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.540950451905
+    }
   }
 ]
