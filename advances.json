@@ -1626,5 +1626,97 @@
       "ru": 148250.01284066943,
       "ua": 22718.540950451905
     }
+  },
+  {
+    "id": "adv-1791303172326",
+    "date": "2026-10-06",
+    "time": "18:12:52",
+    "text_en": "Army group North captured Vysoka Yaruha",
+    "text_ru": "ГРВ Север заняла Високую Яругу",
+    "text": "Army group North captured Vysoka Yaruha",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 3.83,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 3.83
+      }
+    ],
+    "areaDisplay": "+3.83 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 50.25543719660268,
+      "west": 36.26226425170899,
+      "north": 50.297673924802645,
+      "east": 36.39358520507813
+    },
+    "polygonFids": [
+      "advance-1791303111011-wjx5c5g6bnf"
+    ],
+    "snapshot": "history/advances/adv-1791303172326.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.540950451905
+    }
+  },
+  {
+    "id": "adv-1791308956994",
+    "date": "2026-10-06",
+    "time": "19:49:16",
+    "text_en": "Almost all of Hannivka was recaptured by Russian forces",
+    "text_ru": "ВС РФ практически полностью восстановили контроль над Анновкой",
+    "text": "Almost all of Hannivka was recaptured by Russian forces",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 8.02,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 8.02
+      }
+    ],
+    "areaDisplay": "+8.02 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 48.43660384452751,
+      "west": 37.01087951660157,
+      "north": 48.50762054094397,
+      "east": 37.20417022705079
+    },
+    "polygonFids": [
+      "advance-1791308772985-3atd5025v6d"
+    ],
+    "snapshot": "history/advances/adv-1791308956994.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.540950451905
+    }
+  },
+  {
+    "id": "adv-1791309634375",
+    "date": "2026-10-06",
+    "time": "20:00:34",
+    "text_en": "Russian forces are advancing in the Prykolotne pocket",
+    "text_ru": "ВС РФ продвигаются в кармане севернее Приколотного",
+    "text": "Russian forces are advancing in the Prykolotne pocket",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 0,
+    "areaEffects": [],
+    "areaDisplay": "",
+    "areaColor": "red",
+    "focus": {
+      "south": 50.15666574810977,
+      "west": 37.00881958007813,
+      "north": 50.48197825997291,
+      "east": 37.799835205078125
+    },
+    "polygonFids": [],
+    "snapshot": "history/advances/adv-1791309634375.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.540950451905
+    }
   }
 ]
