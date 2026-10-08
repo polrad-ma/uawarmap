@@ -1886,5 +1886,38 @@
       "ru": 148250.01284066943,
       "ua": 22718.540950451905
     }
+  },
+  {
+    "id": "adv-1791470897017",
+    "date": "2026-10-08",
+    "time": "16:48:17",
+    "text_en": "Russian forces have captured Bylyi Kolodiaz",
+    "text_ru": "ВС РФ заняли Белый Колодезь",
+    "text": "Russian forces have captured Bylyi Kolodiaz",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 8.64,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 8.64
+      }
+    ],
+    "areaDisplay": "+8.64 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 50.17480930602309,
+      "west": 37.041435241699226,
+      "north": 50.22941828963789,
+      "east": 37.20142364501954
+    },
+    "polygonFids": [
+      "advance-1791470804540-g10aebl7kqs"
+    ],
+    "snapshot": "history/advances/adv-1791470897017.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.540950451905
+    }
   }
 ]
