@@ -1853,5 +1853,38 @@
       "ru": 148250.01284066943,
       "ua": 22718.540950451905
     }
+  },
+  {
+    "id": "adv-1791470644772",
+    "date": "2026-10-08",
+    "time": "16:44:04",
+    "text_en": "The AFU reentered Fedorivka",
+    "text_ru": "ВСУ вошли в Федоровку",
+    "text": "The AFU reentered Fedorivka",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 7.3,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 7.3
+      }
+    ],
+    "areaDisplay": "+7.30 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 47.93083631243995,
+      "west": 36.65983200073243,
+      "north": 47.99118540144915,
+      "east": 36.82136535644532
+    },
+    "polygonFids": [
+      "advance-1791470615103-btn02qq29w"
+    ],
+    "snapshot": "history/advances/adv-1791470644772.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.540950451905
+    }
   }
 ]
