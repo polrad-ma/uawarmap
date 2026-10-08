@@ -1919,5 +1919,71 @@
       "ru": 148250.01284066943,
       "ua": 22718.540950451905
     }
+  },
+  {
+    "id": "adv-1791477059516",
+    "date": "2026-10-08",
+    "time": "18:30:59",
+    "text_en": "Frontline correction in Komar and Perebudova",
+    "text_ru": "Коррекция ЛБС в Комаре и Перебудовой",
+    "text": "Frontline correction in Komar and Perebudova",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 0.58,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 0.58
+      }
+    ],
+    "areaDisplay": "+0.58 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 47.969180520475184,
+      "west": 36.71896934509278,
+      "north": 47.99526360474325,
+      "east": 36.784286499023445
+    },
+    "polygonFids": [
+      "advance-1791477007673-etdxny41ab4"
+    ],
+    "snapshot": "history/advances/adv-1791477059516.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.540950451905
+    }
+  },
+  {
+    "id": "adv-1791477233058",
+    "date": "2026-10-08",
+    "time": "18:33:53",
+    "text_en": "Russian advance in Dobropillia",
+    "text_ru": "Российское продвижение в Доброполье",
+    "text": "Russian advance in Dobropillia",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 1.45,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 1.45
+      }
+    ],
+    "areaDisplay": "+1.45 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 48.43290233488329,
+      "west": 37.02735900878907,
+      "north": 48.46620621404278,
+      "east": 37.11224555969239
+    },
+    "polygonFids": [
+      "advance-1791477166368-hgnqoshv8nf"
+    ],
+    "snapshot": "history/advances/adv-1791477233058.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.540950451905
+    }
   }
 ]
