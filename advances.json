@@ -1664,7 +1664,7 @@
     "id": "adv-1791308956994",
     "date": "2026-10-06",
     "time": "19:49:16",
-    "text_en": "All of Hannivka was recaptured by Russian forces",
+    "text_en": "Almost all of Hannivka was recaptured by Russian forces",
     "text_ru": "ВС РФ практически полностью восстановили контроль над Анновкой",
     "text": "Almost all of Hannivka was recaptured by Russian forces",
     "side": "ru",
@@ -1693,7 +1693,32 @@
       "ua": 22718.540950451905
     }
   },
-
+  {
+    "id": "adv-1791309634375",
+    "date": "2026-10-06",
+    "time": "20:00:34",
+    "text_en": "Russian forces are advancing in the Prykolotne pocket",
+    "text_ru": "ВС РФ продвигаются в кармане севернее Приколотного",
+    "text": "Russian forces are advancing in the Prykolotne pocket",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 0,
+    "areaEffects": [],
+    "areaDisplay": "",
+    "areaColor": "red",
+    "focus": {
+      "south": 50.15666574810977,
+      "west": 37.00881958007813,
+      "north": 50.48197825997291,
+      "east": 37.799835205078125
+    },
+    "polygonFids": [],
+    "snapshot": "history/advances/adv-1791309634375.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.540950451905
+    }
+  },
   {
     "id": "adv-1791373512514",
     "date": "2026-10-07",
@@ -1791,6 +1816,39 @@
       "advance-1791376879720-up6wjmswc"
     ],
     "snapshot": "history/advances/adv-1791377103054.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.540950451905
+    }
+  },
+  {
+    "id": "adv-1791465396251",
+    "date": "2026-10-08",
+    "time": "15:16:36",
+    "text_en": "Russian forces took Hoptivka in Kharkiv Oblast",
+    "text_ru": "ВС РФ заняли Гоптовку в Харьковской Области",
+    "text": "Russian forces took Hoptivka in Kharkiv Oblast",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 1.73,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 1.73
+      }
+    ],
+    "areaDisplay": "+1.73 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 50.272336384547536,
+      "west": 36.22664451599122,
+      "north": 50.3036498627264,
+      "east": 36.30672454833985
+    },
+    "polygonFids": [
+      "advance-1791465321338-bpely9b40f8"
+    ],
+    "snapshot": "history/advances/adv-1791465396251.json",
     "beforeAreas": {
       "ru": 148250.01284066943,
       "ua": 22718.540950451905
