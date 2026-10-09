@@ -2044,5 +2044,38 @@
       "ru": 148250.01284066943,
       "ua": 22718.540950451905
     }
+  },
+  {
+    "id": "adv-1791556555749",
+    "date": "2026-10-09",
+    "time": "16:35:55",
+    "text_en": "The AFU recaptured Belyakivka",
+    "text_ru": "ВСУ заняли Беляковку",
+    "text": "The AFU recaptured Belyakivka",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 0.76,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 0.76
+      }
+    ],
+    "areaDisplay": "+0.76 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 48.177132862301086,
+      "west": 36.854925155639656,
+      "north": 48.19830524392353,
+      "east": 36.90642356872559
+    },
+    "polygonFids": [
+      "advance-1791556514934-opiu7cpo5bb"
+    ],
+    "snapshot": "history/advances/adv-1791556555749.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.540950451905
+    }
   }
 ]
