@@ -2018,5 +2018,31 @@
       "ru": 148250.01284066943,
       "ua": 22718.540950451905
     }
+  },
+  {
+    "id": "adv-1791555371303",
+    "date": "2026-10-09",
+    "time": "16:16:11",
+    "text_en": "Russian KAB strike on Yampolivka suggests a possible Ukrainian position",
+    "text_ru": "Российский удар КАБом по Ямполовке намекает на возможную позицую ВСУ",
+    "text": "Russian KAB strike on Yampolivka suggests a possible Ukrainian position",
+    "side": "ua",
+    "advanceType": "gray",
+    "areaChange": 0,
+    "areaEffects": [],
+    "areaDisplay": "",
+    "areaColor": "red",
+    "focus": {
+      "south": 49.05828873575181,
+      "west": 37.92901039123536,
+      "north": 49.08702114604206,
+      "east": 37.99467086791993
+    },
+    "polygonFids": [],
+    "snapshot": "history/advances/adv-1791555371303.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.540950451905
+    }
   }
 ]
