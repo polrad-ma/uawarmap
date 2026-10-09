@@ -1985,5 +1985,38 @@
       "ru": 148250.01284066943,
       "ua": 22718.540950451905
     }
+  },
+  {
+    "id": "adv-1791554782507",
+    "date": "2026-10-09",
+    "time": "16:06:22",
+    "text_en": "Russian forces entered Prymorske",
+    "text_ru": "ВС РФ вошли в Приморское",
+    "text": "Russian forces entered Prymorske",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 1.83,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 1.83
+      }
+    ],
+    "areaDisplay": "+1.83 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 47.54524940543124,
+      "west": 35.259933471679695,
+      "north": 47.59088339146615,
+      "east": 35.390739440917976
+    },
+    "polygonFids": [
+      "advance-1791554726212-lq0amquunyb"
+    ],
+    "snapshot": "history/advances/adv-1791554782507.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.540950451905
+    }
   }
 ]
