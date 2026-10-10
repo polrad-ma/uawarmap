@@ -2243,5 +2243,38 @@
       "ru": 148250.01284066943,
       "ua": 22718.540950451905
     }
+  },
+  {
+    "id": "adv-1791646610321",
+    "date": "2026-10-10",
+    "time": "17:36:50",
+    "text_en": "Russian forces captured the village of Chervona Krynytsia",
+    "text_ru": "ВС РФ заняли Червоную Криницу",
+    "text": "Russian forces captured the village of Chervona Krynytsia",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 0.51,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 0.51
+      }
+    ],
+    "areaDisplay": "+0.51 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 47.59030452904013,
+      "west": 35.83808898925782,
+      "north": 47.62444645776712,
+      "east": 35.93018531799317
+    },
+    "polygonFids": [
+      "advance-1791646568783-sboflv3055"
+    ],
+    "snapshot": "history/advances/adv-1791646610321.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.540950451905
+    }
   }
 ]
