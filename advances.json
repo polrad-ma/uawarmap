@@ -2087,15 +2087,15 @@
     "text": "Ukrainian defense forces regained a part of of Symynivka",
     "side": "ua",
     "advanceType": "normal",
-    "areaChange": 3.25,
+    "areaChange": -3.25,
     "areaEffects": [
       {
         "side": "ua",
-        "value": 3.25
+        "value": -3.25
       }
     ],
-    "areaDisplay": "+3.25 km²",
-    "areaColor": "blue",
+    "areaDisplay": "-3.25 km²",
+    "areaColor": "red",
     "focus": {
       "south": 50.19382515553367,
       "west": 36.85827255249024,
@@ -2106,6 +2106,39 @@
       "advance-1791561854961-2uo62539ug5"
     ],
     "snapshot": "history/advances/adv-1791561918935.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.540950451905
+    }
+  },
+  {
+    "id": "adv-1791575891903",
+    "date": "2026-10-09",
+    "time": "21:58:11",
+    "text_en": "Komissarove came under Russian control",
+    "text_ru": "Комиссарово перешло под контроль России",
+    "text": "Komissarove came under Russian control",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 5.3,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 5.3
+      }
+    ],
+    "areaDisplay": "+5.30 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 50.26158304960997,
+      "west": 37.44449615478516,
+      "north": 50.303923970309896,
+      "east": 37.560539245605476
+    },
+    "polygonFids": [
+      "advance-1791575844889-m4l0ghehtv9"
+    ],
+    "snapshot": "history/advances/adv-1791575891903.json",
     "beforeAreas": {
       "ru": 148250.01284066943,
       "ua": 22718.540950451905
