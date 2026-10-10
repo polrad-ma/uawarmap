@@ -2210,5 +2210,38 @@
       "ru": 148250.01284066943,
       "ua": 22718.540950451905
     }
+  },
+  {
+    "id": "adv-1791632973189",
+    "date": "2026-10-10",
+    "time": "13:49:33",
+    "text_en": "Ukrainian forces counterattack on the Druzhkivka direction",
+    "text_ru": "ВСУ наступают на Дружковском направлении",
+    "text": "Ukrainian forces counterattack on the Druzhkivka direction",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 20.28,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 20.28
+      }
+    ],
+    "areaDisplay": "+20.28 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 48.52183469314155,
+      "west": 37.308883666992195,
+      "north": 48.59454868157923,
+      "east": 37.498397827148445
+    },
+    "polygonFids": [
+      "advance-1791632912793-cbgmq9xjnbm"
+    ],
+    "snapshot": "history/advances/adv-1791632973189.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.540950451905
+    }
   }
 ]
