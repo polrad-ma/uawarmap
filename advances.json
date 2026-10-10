@@ -2143,5 +2143,39 @@
       "ru": 148250.01284066943,
       "ua": 22718.540950451905
     }
+  },
+  {
+    "id": "adv-1791631551521",
+    "date": "2026-10-10",
+    "time": "13:25:51",
+    "text_en": "Russian forces captured Mala Vovcha",
+    "text_ru": "ВС РФ заняли Малую Волчью",
+    "text": "Russian forces captured Mala Vovcha",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 2.4,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 2.4
+      }
+    ],
+    "areaDisplay": "+2.40 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 50.32738172446921,
+      "west": 37.19060897827149,
+      "north": 50.375466783916025,
+      "east": 37.33274459838868
+    },
+    "polygonFids": [
+      "advance-1791631494702-ja3hhfeos1",
+      "advance-1791631519355-dux6m4szuui"
+    ],
+    "snapshot": "history/advances/adv-1791631551521.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.540950451905
+    }
   }
 ]
