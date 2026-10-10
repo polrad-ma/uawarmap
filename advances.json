@@ -2276,5 +2276,38 @@
       "ru": 148250.01284066943,
       "ua": 22718.540950451905
     }
+  },
+  {
+    "id": "adv-1791662153219",
+    "date": "2026-10-10",
+    "time": "21:55:53",
+    "text_en": "Ukrainian forces regained control over the village of Mala Slobidka",
+    "text_ru": "ВСУ восстановили контроль над Малой Слободкой",
+    "text": "Ukrainian forces regained control over the village of Mala Slobidka",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 4.25,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 4.25
+      }
+    ],
+    "areaDisplay": "+4.25 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 51.80596126007606,
+      "west": 34.18258666992188,
+      "north": 51.8526399021861,
+      "east": 34.31219100952149
+    },
+    "polygonFids": [
+      "advance-1791662060414-oekgtm207ys"
+    ],
+    "snapshot": "history/advances/adv-1791662153219.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.540950451905
+    }
   }
 ]
