@@ -2177,5 +2177,38 @@
       "ru": 148250.01284066943,
       "ua": 22718.540950451905
     }
+  },
+  {
+    "id": "adv-1791632197404",
+    "date": "2026-10-10",
+    "time": "13:36:37",
+    "text_en": "Approximate configuration of Ukrainian advances near Nevske",
+    "text_ru": "Примерная конфигурация Украинского продвижения в районе Невского",
+    "text": "Approximate configuration of Ukrainian advances near Nevske",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 50.3,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 50.3
+      }
+    ],
+    "areaDisplay": "+50.30 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 49.05114522570259,
+      "west": 37.747650146484375,
+      "north": 49.20526157803394,
+      "east": 38.12393188476563
+    },
+    "polygonFids": [
+      "advance-1791632132967-d4sg8r0by14"
+    ],
+    "snapshot": "history/advances/adv-1791632197404.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.540950451905
+    }
   }
 ]
