@@ -2375,5 +2375,38 @@
       "ru": 148250.01284066943,
       "ua": 22718.54087419022
     }
+  },
+  {
+    "id": "adv-1791737995907",
+    "date": "2026-10-11",
+    "time": "18:59:55",
+    "text_en": "Russian forces are clearing Kostiantinivka",
+    "text_ru": "ВС РФ проводят зачистку Константиновки",
+    "text": "Russian forces are clearing Kostiantinivka",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 0.41,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 0.41
+      }
+    ],
+    "areaDisplay": "+0.41 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 48.52388120259336,
+      "west": 37.641992568969734,
+      "north": 48.54240971797981,
+      "east": 37.68911361694337
+    },
+    "polygonFids": [
+      "advance-1791737930971-hrkrw4bzwwv"
+    ],
+    "snapshot": "history/advances/adv-1791737995907.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.54087419022
+    }
   }
 ]
