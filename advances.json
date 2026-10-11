@@ -2309,5 +2309,38 @@
       "ru": 148250.01284066943,
       "ua": 22718.540950451905
     }
+  },
+  {
+    "id": "adv-1791709178434",
+    "date": "2026-10-11",
+    "time": "10:59:38",
+    "text_en": "Russian forces secured positions in Tyshchenkivka",
+    "text_ru": "ВС РФ закрепились в Тищенковке",
+    "text": "Russian forces secured positions in Tyshchenkivka",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 0.45,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 0.45
+      }
+    ],
+    "areaDisplay": "+0.45 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 49.759644847020716,
+      "west": 37.540111541748054,
+      "north": 49.77699641380293,
+      "east": 37.58843421936036
+    },
+    "polygonFids": [
+      "advance-1791709130672-rjp5dqzxw3k"
+    ],
+    "snapshot": "history/advances/adv-1791709178434.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.54087419022
+    }
   }
 ]
