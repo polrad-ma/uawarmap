@@ -2342,5 +2342,38 @@
       "ru": 148250.01284066943,
       "ua": 22718.54087419022
     }
+  },
+  {
+    "id": "adv-1791730921005",
+    "date": "2026-10-11",
+    "time": "17:02:01",
+    "text_en": "The AFU cleared Chervona Krynytsia and Yehorivka",
+    "text_ru": "ВСУ зачистили Червоную Криницу и Егоровку",
+    "text": "The AFU cleared Chervona Krynytsia and Yehorivka",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 21.61,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 21.61
+      }
+    ],
+    "areaDisplay": "+21.61 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 47.56274327161863,
+      "west": 35.81903457641602,
+      "north": 47.65209086576228,
+      "east": 36.02588653564454
+    },
+    "polygonFids": [
+      "advance-1791730873005-e4ottctdz6l"
+    ],
+    "snapshot": "history/advances/adv-1791730921005.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.54087419022
+    }
   }
 ]
