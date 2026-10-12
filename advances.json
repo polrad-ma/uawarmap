@@ -2441,5 +2441,38 @@
       "ru": 148250.01284066943,
       "ua": 22718.54087419022
     }
+  },
+  {
+    "id": "adv-1791829123200",
+    "date": "2026-10-12",
+    "time": "20:18:43",
+    "text_en": "Ukrainian forces are clearing the vicinity of Nykonorivka",
+    "text_ru": "ВСУ зачищают окрестности Никоноровки",
+    "text": "Ukrainian forces are clearing the vicinity of Nykonorivka",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 3.81,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 3.81
+      }
+    ],
+    "areaDisplay": "+3.81 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 48.74181408254147,
+      "west": 37.72653579711914,
+      "north": 48.7941995829296,
+      "east": 37.854423522949226
+    },
+    "polygonFids": [
+      "advance-1791829016590-43txmvfbp8u"
+    ],
+    "snapshot": "history/advances/adv-1791829123200.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.54087419022
+    }
   }
 ]
