@@ -2474,5 +2474,38 @@
       "ru": 148250.01284066943,
       "ua": 22718.54087419022
     }
+  },
+  {
+    "id": "adv-1791829416549",
+    "date": "2026-10-12",
+    "time": "20:23:36",
+    "text_en": "The AFU cleared Vasyutinske",
+    "text_ru": "ВСУ зачистили Васютинское",
+    "text": "The AFU cleared Vasyutinske",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 15.76,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 15.76
+      }
+    ],
+    "areaDisplay": "+15.76 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 48.685634203656015,
+      "west": 37.65083312988282,
+      "north": 48.76218642901086,
+      "east": 37.814769744873054
+    },
+    "polygonFids": [
+      "advance-1791829355330-dxlf87ekcg"
+    ],
+    "snapshot": "history/advances/adv-1791829416549.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.54087419022
+    }
   }
 ]
