@@ -2408,5 +2408,38 @@
       "ru": 148250.01284066943,
       "ua": 22718.54087419022
     }
+  },
+  {
+    "id": "adv-1791813799388",
+    "date": "2026-10-12",
+    "time": "16:03:19",
+    "text_en": "Russian forces entered Dobropillia (village)",
+    "text_ru": "ВС РФ вошли в Доброполье (село)",
+    "text": "Russian forces entered Dobropillia (village)",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 3.19,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 3.19
+      }
+    ],
+    "areaDisplay": "+3.19 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 48.40715514833271,
+      "west": 37.01714515686036,
+      "north": 48.44269651153659,
+      "east": 37.10005760192872
+    },
+    "polygonFids": [
+      "advance-1791813713262-vt8cc2tdvsm"
+    ],
+    "snapshot": "history/advances/adv-1791813799388.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.54087419022
+    }
   }
 ]
