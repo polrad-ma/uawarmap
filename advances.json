@@ -2574,5 +2574,38 @@
       "ru": 148250.01284066943,
       "ua": 22718.54087419022
     }
+  },
+  {
+    "id": "adv-1791918392241",
+    "date": "2026-10-13",
+    "time": "21:06:32",
+    "text_en": "Bachivsk was recaptured",
+    "text_ru": "Бачевск за ВСУ",
+    "text": "Bachivsk was recaptured",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 10.34,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 10.34
+      }
+    ],
+    "areaDisplay": "+10.34 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 51.687030937462666,
+      "west": 34.001998901367195,
+      "north": 51.91208502557545,
+      "east": 34.633712768554695
+    },
+    "polygonFids": [
+      "advance-1791918356260-y7n79mqc7q"
+    ],
+    "snapshot": "history/advances/adv-1791918392241.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.54087419022
+    }
   }
 ]
