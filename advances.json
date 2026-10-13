@@ -2507,5 +2507,39 @@
       "ru": 148250.01284066943,
       "ua": 22718.54087419022
     }
+  },
+  {
+    "id": "adv-1791895050296",
+    "date": "2026-10-13",
+    "time": "14:37:30",
+    "text_en": "Russian forces secured Ozerne and advanced towards Rublene",
+    "text_ru": "ВС РФ заняли Озерное и подошли к Рубленому",
+    "text": "Russian forces secured Ozerne and advanced towards Rublene",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 22.13,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 22.13
+      }
+    ],
+    "areaDisplay": "+22.13 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 50.23666548810372,
+      "west": 37.43591308593751,
+      "north": 50.3423929953727,
+      "east": 37.690658569335945
+    },
+    "polygonFids": [
+      "advance-1791894922313-x1foblcmc3",
+      "advance-1791894989261-r0dulfumfqd"
+    ],
+    "snapshot": "history/advances/adv-1791895050296.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.54087419022
+    }
   }
 ]
