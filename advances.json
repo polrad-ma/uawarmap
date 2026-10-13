@@ -2541,5 +2541,38 @@
       "ru": 148250.01284066943,
       "ua": 22718.54087419022
     }
+  },
+  {
+    "id": "adv-1791898523173",
+    "date": "2026-10-13",
+    "time": "15:35:23",
+    "text_en": "The AFU captured Lypivka",
+    "text_ru": "Липовка за ВСУ",
+    "text": "The AFU captured Lypivka",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 9.36,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 9.36
+      }
+    ],
+    "areaDisplay": "+9.36 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 48.74498365675653,
+      "west": 37.76275634765626,
+      "north": 48.81070722003127,
+      "east": 37.935104370117195
+    },
+    "polygonFids": [
+      "advance-1791898444388-8w0iike0oi"
+    ],
+    "snapshot": "history/advances/adv-1791898523173.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.54087419022
+    }
   }
 ]
