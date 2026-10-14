@@ -2640,5 +2640,38 @@
       "ru": 148250.01284066943,
       "ua": 22718.54087419022
     }
+  },
+  {
+    "id": "adv-1791995561586",
+    "date": "2026-10-14",
+    "time": "18:32:41",
+    "text_en": "The AFU cleared the villages of Dovhenke and Zarubynka",
+    "text_ru": "ВСУ зачистили Долгенькое и Зарубинку",
+    "text": "The AFU cleared the villages of Dovhenke and Zarubynka",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 3.89,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 3.89
+      }
+    ],
+    "areaDisplay": "+3.89 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 50.11617530264245,
+      "west": 37.33291625976563,
+      "north": 50.25861996946578,
+      "east": 37.731857299804695
+    },
+    "polygonFids": [
+      "advance-1791995403774-6r0f8trqlu8"
+    ],
+    "snapshot": "history/advances/adv-1791995561586.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.54087419022
+    }
   }
 ]
