@@ -2706,5 +2706,39 @@
       "ru": 148250.01284066943,
       "ua": 22718.54087419022
     }
+  },
+  {
+    "id": "adv-1791998892392",
+    "date": "2026-10-14",
+    "time": "19:28:12",
+    "text_en": "The AFU attack on the Vovchansk and Bylyi Kolodiaz directions",
+    "text_ru": "ВС наступают на Волчанском и Белоколодезьном направлении",
+    "text": "The AFU attack on the Vovchansk and Bylyi Kolodiaz directions",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 50.74,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 50.74
+      }
+    ],
+    "areaDisplay": "+50.74 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 50.14258600141398,
+      "west": 36.86737060546876,
+      "north": 50.27661509754731,
+      "east": 37.22579956054688
+    },
+    "polygonFids": [
+      "advance-1791998710571-cbgdikstt4r",
+      "advance-1791998844168-dyrfq19uv4o"
+    ],
+    "snapshot": "history/advances/adv-1791998892392.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.54087419022
+    }
   }
 ]
