@@ -2607,5 +2607,38 @@
       "ru": 148250.01284066943,
       "ua": 22718.54087419022
     }
+  },
+  {
+    "id": "adv-1791981477105",
+    "date": "2026-10-14",
+    "time": "14:37:57",
+    "text_en": "Russian forces have captured the village of Shabelne",
+    "text_ru": "ВС РФ заняли деревню Шабельное",
+    "text": "Russian forces have captured the village of Shabelne",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 9.85,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 9.85
+      }
+    ],
+    "areaDisplay": "+9.85 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 50.349184858337516,
+      "west": 37.16125488281251,
+      "north": 50.46253101400106,
+      "east": 37.45307922363282
+    },
+    "polygonFids": [
+      "advance-1791981427124-h1zln9dta9"
+    ],
+    "snapshot": "history/advances/adv-1791981477105.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.54087419022
+    }
   }
 ]
