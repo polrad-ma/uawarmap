@@ -2673,5 +2673,38 @@
       "ru": 148250.01284066943,
       "ua": 22718.54087419022
     }
+  },
+  {
+    "id": "adv-1791998482738",
+    "date": "2026-10-14",
+    "time": "19:21:22",
+    "text_en": "Ukrainian Defense forces recaptured Petrvika and advanced towards Priyut",
+    "text_ru": "ВСУ восстановили контроль над Петровкой и подошли к н.п. Приют",
+    "text": "Ukrainian Defense forces recaptured Petrvika and advanced towards Priyut",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 15.61,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 15.61
+      }
+    ],
+    "areaDisplay": "+15.61 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 48.49089959541447,
+      "west": 37.321586608886726,
+      "north": 48.61316481944892,
+      "east": 37.58491516113282
+    },
+    "polygonFids": [
+      "advance-1791998412345-b3r258oji9o"
+    ],
+    "snapshot": "history/advances/adv-1791998482738.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.54087419022
+    }
   }
 ]
