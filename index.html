@@ -1804,8 +1804,12 @@
       renderAdvanceBar();
       updateTimelineBarUI();
 
-      clearTimelineManagedLayers();
-      grayZoneLayer.clearLayers();
+      // IMPORTANT: We intentionally do NOT clear the layers here.
+      // The old snapshot stays visible while the new one loads, and
+      // applySnapshotToLayers() swaps them atomically (clear + add in one
+      // synchronous pass) so there is no visible "empty map" flash during
+      // snapshot navigation. The zoom/fly still fires right after, exactly
+      // as before.
 
       if (index === advances.length - 1) {
         timelineMode = false;
@@ -2959,8 +2963,14 @@
       timelineMode = true;
 
       dateInput.title = 'Loading ' + date + '...';
-      clearTimelineManagedLayers();
-      grayZoneLayer.clearLayers();
+
+      // NOTE: We intentionally do NOT clear the layers here.
+      // The old snapshot stays visible while the new one loads, and
+      // applySnapshotToLayers() swaps them atomically (clear + add in
+      // one synchronous pass) so there is no visible "empty map" flash
+      // during date navigation.
+      // clearTimelineManagedLayers();
+      // grayZoneLayer.clearLayers();
 
       var url = 'history/' + date + '.json';
       url += (url.indexOf('?') === -1 ? '?' : '&') +
