@@ -2773,5 +2773,38 @@
       "ru": 148250.01284066943,
       "ua": 22718.54087419022
     }
+  },
+  {
+    "id": "adv-1792084563012",
+    "date": "2026-10-15",
+    "time": "19:16:03",
+    "text_en": "Krasny Kut, Torske, Toretske are under AFU control",
+    "text_ru": "Красный Кут, Торское и Торецкое за ВСУ",
+    "text": "Krasny Kut, Torske, Toretske are under AFU control",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 9.7,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 9.7
+      }
+    ],
+    "areaDisplay": "+9.70 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 48.52354012342698,
+      "west": 37.36021041870118,
+      "north": 48.583080450696784,
+      "east": 37.49822616577149
+    },
+    "polygonFids": [
+      "advance-1792084466433-hya5exb5xms"
+    ],
+    "snapshot": "history/advances/adv-1792084563012.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.54087419022
+    }
   }
 ]
