@@ -2740,5 +2740,38 @@
       "ru": 148250.01284066943,
       "ua": 22718.54087419022
     }
+  },
+  {
+    "id": "adv-1792083731976",
+    "date": "2026-10-15",
+    "time": "19:02:11",
+    "text_en": "Russian forces are pushing towards Zolotyi Kolodiaz",
+    "text_ru": "ВС РФ продвигаются к Золотому Колодезю",
+    "text": "Russian forces are pushing towards Zolotyi Kolodiaz",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 19.17,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 19.17
+      }
+    ],
+    "areaDisplay": "+19.17 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 48.46927931716719,
+      "west": 37.12898254394532,
+      "north": 48.54320526925254,
+      "east": 37.32072830200196
+    },
+    "polygonFids": [
+      "advance-1792083690820-dj4oellxlga"
+    ],
+    "snapshot": "history/advances/adv-1792083731976.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.54087419022
+    }
   }
 ]
