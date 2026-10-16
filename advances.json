@@ -2873,5 +2873,38 @@
       "ru": 148250.01284066943,
       "ua": 22718.54087419022
     }
+  },
+  {
+    "id": "adv-1792169732154",
+    "date": "2026-10-16",
+    "time": "18:55:32",
+    "text_en": "Russian forces have captured a part of Rublene",
+    "text_ru": "ВС РФ заняли часть Рубленого",
+    "text": "Russian forces have captured a part of Rublene",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 5.47,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 5.47
+      }
+    ],
+    "areaDisplay": "+5.47 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 50.24632670595806,
+      "west": 37.44140625000001,
+      "north": 50.33822976053448,
+      "east": 37.694091796875
+    },
+    "polygonFids": [
+      "advance-1792169659571-2bj38pps04f"
+    ],
+    "snapshot": "history/advances/adv-1792169732154.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.54087419022
+    }
   }
 ]
