@@ -2839,5 +2839,39 @@
       "ru": 148250.01284066943,
       "ua": 22718.54087419022
     }
+  },
+  {
+    "id": "adv-1792168989797",
+    "date": "2026-10-16",
+    "time": "18:43:09",
+    "text_en": "Russian forces advance in Dobropillia",
+    "text_ru": "ВС РФ продвигаются в Доброполье",
+    "text": "Russian forces advance in Dobropillia",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 6.97,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 6.97
+      }
+    ],
+    "areaDisplay": "+6.97 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 48.43683162092832,
+      "west": 36.995773315429695,
+      "north": 48.514330117696105,
+      "east": 37.19472885131837
+    },
+    "polygonFids": [
+      "advance-1792168897815-172srsze85h",
+      "advance-1792168925333-4z2xawr2o4v"
+    ],
+    "snapshot": "history/advances/adv-1792168989797.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.54087419022
+    }
   }
 ]
