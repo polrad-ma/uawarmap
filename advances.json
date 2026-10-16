@@ -2806,5 +2806,38 @@
       "ru": 148250.01284066943,
       "ua": 22718.54087419022
     }
+  },
+  {
+    "id": "adv-1792168422905",
+    "date": "2026-10-16",
+    "time": "18:33:42",
+    "text_en": "Based on new information, Russian forces restored control over some areas",
+    "text_ru": "По данным новой информации, ВС РФ восстановили контроль над рядом позиция",
+    "text": "Based on new information, Russian forces restored control over some areas",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 18.82,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 18.82
+      }
+    ],
+    "areaDisplay": "+18.82 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 48.49271982976634,
+      "west": 37.32639312744141,
+      "north": 48.59954392867905,
+      "east": 37.56259918212891
+    },
+    "polygonFids": [
+      "advance-1792168282487-jqunjyj8b7"
+    ],
+    "snapshot": "history/advances/adv-1792168422905.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.54087419022
+    }
   }
 ]
