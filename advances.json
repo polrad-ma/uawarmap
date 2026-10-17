@@ -2906,5 +2906,38 @@
       "ru": 148250.01284066943,
       "ua": 22718.54087419022
     }
+  },
+  {
+    "id": "adv-1792265944418",
+    "date": "2026-10-17",
+    "time": "21:39:04",
+    "text_en": "Ukrainian forces recaptured Dovzhanka",
+    "text_ru": "ВСУ вернули Должанку",
+    "text": "Ukrainian forces recaptured Dovzhanka",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 12.61,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 12.61
+      }
+    ],
+    "areaDisplay": "+12.61 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 50.148306398458594,
+      "west": 37.390251159667976,
+      "north": 50.21228416882744,
+      "east": 37.5454330444336
+    },
+    "polygonFids": [
+      "advance-1792265899369-c2q7moop64q"
+    ],
+    "snapshot": "history/advances/adv-1792265944418.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.54087419022
+    }
   }
 ]
