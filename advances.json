@@ -3005,5 +3005,38 @@
       "ru": 148250.01284066943,
       "ua": 22718.54087419022
     }
+  },
+  {
+    "id": "adv-1792337276509",
+    "date": "2026-10-18",
+    "time": "17:27:56",
+    "text_en": "Russian army group \"Center\" has captured Matiasheve and Dobropillia",
+    "text_ru": "ГРВ \"Центр\" захватила Матяшево и Доброполье",
+    "text": "Russian army group \"Center\" has captured Matiasheve and Dobropillia",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 8.17,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 8.17
+      }
+    ],
+    "areaDisplay": "+8.17 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 48.38692420987894,
+      "west": 37.00341224670411,
+      "north": 48.4306243487573,
+      "east": 37.1114730834961
+    },
+    "polygonFids": [
+      "advance-1792337206982-5ixezxbxfyx"
+    ],
+    "snapshot": "history/advances/adv-1792337276509.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.54087419022
+    }
   }
 ]
