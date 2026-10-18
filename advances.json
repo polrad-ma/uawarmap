@@ -3038,5 +3038,38 @@
       "ru": 148250.01284066943,
       "ua": 22718.54087419022
     }
+  },
+  {
+    "id": "adv-1792342407944",
+    "date": "2026-10-18",
+    "time": "18:53:27",
+    "text_en": "The 27th brigade has taken control of Tyshchenkivka in the Kupyansk direction. Fighting goes in Moskovka",
+    "text_ru": "27-я бригада взяла под контроль Тищенковку на Купянском направлении. Продолжаются бои в Московке",
+    "text": "The 27th brigade has taken control of Tyshchenkivka in the Kupyansk direction. Fighting goes in Moskovka",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 1.49,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 1.49
+      }
+    ],
+    "areaDisplay": "+1.49 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 49.75055081135224,
+      "west": 37.523374557495124,
+      "north": 49.778326628993064,
+      "east": 37.603540420532234
+    },
+    "polygonFids": [
+      "advance-1792342269815-a3ddaotyihp"
+    ],
+    "snapshot": "history/advances/adv-1792342407944.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.54087419022
+    }
   }
 ]
