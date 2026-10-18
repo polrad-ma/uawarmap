@@ -2972,5 +2972,38 @@
       "ru": 148250.01284066943,
       "ua": 22718.54087419022
     }
+  },
+  {
+    "id": "adv-1792336564327",
+    "date": "2026-10-18",
+    "time": "17:16:04",
+    "text_en": "Correction in Borivska Andriivka",
+    "text_ru": "Коррекция в Боровской Андреевке",
+    "text": "Correction in Borivska Andriivka",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 16.57,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 16.57
+      }
+    ],
+    "areaDisplay": "+16.57 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 49.37991416188827,
+      "west": 37.63126373291016,
+      "north": 49.45942179010528,
+      "east": 37.83262252807617
+    },
+    "polygonFids": [
+      "advance-1792336507476-8v4q3v131w"
+    ],
+    "snapshot": "history/advances/adv-1792336564327.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.54087419022
+    }
   }
 ]
