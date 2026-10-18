@@ -2939,5 +2939,38 @@
       "ru": 148250.01284066943,
       "ua": 22718.54087419022
     }
+  },
+  {
+    "id": "adv-1792336205649",
+    "date": "2026-10-18",
+    "time": "17:10:05",
+    "text_en": "Ukrainian forces hace recaptured the village of Fedorivka",
+    "text_ru": "ВСУ восстановили контроль над Федоровкой",
+    "text": "Ukrainian forces hace recaptured the village of Fedorivka",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 1.97,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 1.97
+      }
+    ],
+    "areaDisplay": "+1.97 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 47.930951330102765,
+      "west": 36.71390533447266,
+      "north": 47.963720938923785,
+      "east": 36.79441452026368
+    },
+    "polygonFids": [
+      "advance-1792336148890-jteei5cdygh"
+    ],
+    "snapshot": "history/advances/adv-1792336205649.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.54087419022
+    }
   }
 ]
