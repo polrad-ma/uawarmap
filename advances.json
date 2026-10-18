@@ -3071,5 +3071,38 @@
       "ru": 148250.01284066943,
       "ua": 22718.54087419022
     }
+  },
+  {
+    "id": "adv-1792350471212",
+    "date": "2026-10-18",
+    "time": "21:07:51",
+    "text_en": "Russian forces slowly restored control over previously lost areas on the Orikhiv & Omelnyk directions",
+    "text_ru": "ВС РФ постепенно вернули ряд утерянных позиций на Ореховском и Омельниковском направлении",
+    "text": "Russian forces slowly restored control over previously lost areas on the Orikhiv & Omelnyk directions",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 15.27,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 15.27
+      }
+    ],
+    "areaDisplay": "+15.27 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 47.57119847706585,
+      "west": 35.842723846435554,
+      "north": 47.645152222071474,
+      "east": 36.04528427124024
+    },
+    "polygonFids": [
+      "advance-1792350370964-olmtsgioj1"
+    ],
+    "snapshot": "history/advances/adv-1792350471212.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.54087419022
+    }
   }
 ]
