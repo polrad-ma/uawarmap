@@ -3104,5 +3104,31 @@
       "ru": 148250.01284066943,
       "ua": 22718.54087419022
     }
+  },
+  {
+    "id": "adv-1792422880952",
+    "date": "2026-10-19",
+    "time": "17:14:40",
+    "text_en": "General correction of the recaptured (green) zones",
+    "text_ru": "Генеральная коррекция зеленых зон",
+    "text": "General correction of the recaptured (green) zones",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 0,
+    "areaEffects": [],
+    "areaDisplay": "",
+    "areaColor": "red",
+    "focus": {
+      "south": 47.12247581664114,
+      "west": 31.651611328125004,
+      "north": 51.536085601784755,
+      "east": 41.83593750000001
+    },
+    "polygonFids": [],
+    "snapshot": "history/advances/adv-1792422880952.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.54087419022
+    }
   }
 ]
