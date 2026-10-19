@@ -3130,5 +3130,38 @@
       "ru": 148250.01284066943,
       "ua": 22718.54087419022
     }
+  },
+  {
+    "id": "adv-1792424352941",
+    "date": "2026-10-19",
+    "time": "17:39:12",
+    "text_en": "Russian forces continue their clearing operations in Kupyansk-Vuzlovyi",
+    "text_ru": "ВС РФ продолжают зачистку Купянска-Узлового",
+    "text": "Russian forces continue their clearing operations in Kupyansk-Vuzlovyi",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 1.34,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 1.34
+      }
+    ],
+    "areaDisplay": "+1.34 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 49.662683497811706,
+      "west": 37.6098918914795,
+      "north": 49.69012093251587,
+      "east": 37.67623901367188
+    },
+    "polygonFids": [
+      "advance-1792424306155-k6qz9r1n72"
+    ],
+    "snapshot": "history/advances/adv-1792424352941.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.54087419022
+    }
   }
 ]
