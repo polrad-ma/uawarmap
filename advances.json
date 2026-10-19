@@ -3163,5 +3163,38 @@
       "ru": 148250.01284066943,
       "ua": 22718.54087419022
     }
+  },
+  {
+    "id": "adv-1792424613258",
+    "date": "2026-10-19",
+    "time": "17:43:33",
+    "text_en": "Correction of the frontline on the Dvorichna direction",
+    "text_ru": "Коррекция ЛБС на Двуречанском направлении",
+    "text": "Correction of the frontline on the Dvorichna direction",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 8.77,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 8.77
+      }
+    ],
+    "areaDisplay": "+8.77 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 49.7919038200459,
+      "west": 37.52294540405274,
+      "north": 49.86974670578886,
+      "east": 37.759323120117195
+    },
+    "polygonFids": [
+      "advance-1792424560255-7uofqxl9uk9"
+    ],
+    "snapshot": "history/advances/adv-1792424613258.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.54087419022
+    }
   }
 ]
