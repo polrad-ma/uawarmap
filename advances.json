@@ -3196,5 +3196,38 @@
       "ru": 148250.01284066943,
       "ua": 22718.54087419022
     }
+  },
+  {
+    "id": "adv-1792599186335",
+    "date": "2026-10-21",
+    "time": "18:13:06",
+    "text_en": "Ukrainian forces cleared Mykolaipillia",
+    "text_ru": "ВСУ зачистили Николайполье",
+    "text": "Ukrainian forces cleared Mykolaipillia",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 9.2,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 9.2
+      }
+    ],
+    "areaDisplay": "+9.20 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 48.481114716248484,
+      "west": 37.46732711791993,
+      "north": 48.54400080802103,
+      "east": 37.634696960449226
+    },
+    "polygonFids": [
+      "advance-1792599130288-qnvndarjqii"
+    ],
+    "snapshot": "history/advances/adv-1792599186335.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.54087419022
+    }
   }
 ]
