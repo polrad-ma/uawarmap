@@ -3229,5 +3229,38 @@
       "ru": 148250.01284066943,
       "ua": 22718.54087419022
     }
+  },
+  {
+    "id": "adv-1792603570699",
+    "date": "2026-10-21",
+    "time": "19:26:10",
+    "text_en": "Russian forces continue clearing the Prykolotne pocket",
+    "text_ru": "ВС РФ продолжают зачистку кармана у Приколотного",
+    "text": "Russian forces continue clearing the Prykolotne pocket",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 41.31,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 41.31
+      }
+    ],
+    "areaDisplay": "+41.31 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 50.24588760217225,
+      "west": 37.37960815429688,
+      "north": 50.359918402645654,
+      "east": 37.682762145996094
+    },
+    "polygonFids": [
+      "advance-1792603510292-czuobyd1mfa"
+    ],
+    "snapshot": "history/advances/adv-1792603570699.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.54087419022
+    }
   }
 ]
