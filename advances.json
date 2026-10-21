@@ -3262,5 +3262,38 @@
       "ru": 148250.01284066943,
       "ua": 22718.54087419022
     }
+  },
+  {
+    "id": "adv-1792603981252",
+    "date": "2026-10-21",
+    "time": "19:33:01",
+    "text_en": "Russian forces recaptured Nevske and Novoliubivka",
+    "text_ru": "ВС РФ восстановили контроль над Невским и Новолюбовкой",
+    "text": "Russian forces recaptured Nevske and Novoliubivka",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 20.68,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 20.68
+      }
+    ],
+    "areaDisplay": "+20.68 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 49.11725375055241,
+      "west": 37.89562225341797,
+      "north": 49.19292297279707,
+      "east": 38.06350708007813
+    },
+    "polygonFids": [
+      "advance-1792603918560-blo5uszc1b"
+    ],
+    "snapshot": "history/advances/adv-1792603981252.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22718.54087419022
+    }
   }
 ]
