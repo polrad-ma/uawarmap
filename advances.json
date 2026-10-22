@@ -3387,5 +3387,38 @@
       "ru": 148250.01284066943,
       "ua": 22772.003207098212
     }
+  },
+  {
+    "id": "adv-1792675186315",
+    "date": "2026-10-22",
+    "time": "15:19:46",
+    "text_en": "Vasylivka came under Russian control",
+    "text_ru": "Василевка перешла под контроль ВС РФ",
+    "text": "Vasylivka came under Russian control",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 2.58,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 2.58
+      }
+    ],
+    "areaDisplay": "+2.58 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 50.20865885459753,
+      "west": 37.25652694702149,
+      "north": 50.25620547158976,
+      "east": 37.37857818603516
+    },
+    "polygonFids": [
+      "advance-1792675124920-g5fscvx4kvg"
+    ],
+    "snapshot": "history/advances/adv-1792675186315.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22772.003207098212
+    }
   }
 ]
