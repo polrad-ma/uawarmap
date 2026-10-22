@@ -3354,5 +3354,38 @@
       "ru": 148250.01284066943,
       "ua": 22772.003207098212
     }
+  },
+  {
+    "id": "adv-1792674843143",
+    "date": "2026-10-22",
+    "time": "15:14:03",
+    "text_en": "Clarification of Ukrainian control on the Orikhiv direction",
+    "text_ru": "Коррекция зоны контроля ВСУ на Ореховском направлении",
+    "text": "Clarification of Ukrainian control on the Orikhiv direction",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 18.35,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 18.35
+      }
+    ],
+    "areaDisplay": "+18.35 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 47.473359062708376,
+      "west": 35.6667709350586,
+      "north": 47.557993859037765,
+      "east": 35.869674682617195
+    },
+    "polygonFids": [
+      "advance-1792674795430-rz95ie0gwf"
+    ],
+    "snapshot": "history/advances/adv-1792674843143.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22772.003207098212
+    }
   }
 ]
