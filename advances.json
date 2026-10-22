@@ -3321,5 +3321,38 @@
       "ru": 148250.01284066943,
       "ua": 22718.54087419022
     }
+  },
+  {
+    "id": "adv-1792674670799",
+    "date": "2026-10-22",
+    "time": "15:11:10",
+    "text_en": "Russian forces captured the forests north of Kupyansk",
+    "text_ru": "ВС РФ заняли леса севернее Купянска",
+    "text": "Russian forces captured the forests north of Kupyansk",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 3.04,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 3.04
+      }
+    ],
+    "areaDisplay": "+3.04 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 49.71682145619483,
+      "west": 37.54903793334962,
+      "north": 49.75687245587369,
+      "east": 37.6523780822754
+    },
+    "polygonFids": [
+      "advance-1792674604092-68q99cv2hol"
+    ],
+    "snapshot": "history/advances/adv-1792674670799.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22772.003207098212
+    }
   }
 ]
