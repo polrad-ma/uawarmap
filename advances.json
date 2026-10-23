@@ -3420,5 +3420,39 @@
       "ru": 148250.01284066943,
       "ua": 22772.003207098212
     }
+  },
+  {
+    "id": "adv-1792786698332",
+    "date": "2026-10-23",
+    "time": "22:18:18",
+    "text_en": "Army group \"North\" continues clearing the Prykolotne pocket",
+    "text_ru": "Группировка войск \"Север\" продолжает зачистку кармана у Приколотного",
+    "text": "Army group \"North\" continues clearing the Prykolotne pocket",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 11.8,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 11.8
+      }
+    ],
+    "areaDisplay": "+11.80 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 50.28846183451485,
+      "west": 37.113876342773445,
+      "north": 50.467994531475725,
+      "east": 37.62062072753907
+    },
+    "polygonFids": [
+      "advance-1792786604133-gku390dkbub",
+      "advance-1792786639593-hkw21fhhkg4"
+    ],
+    "snapshot": "history/advances/adv-1792786698332.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22772.003207098212
+    }
   }
 ]
