@@ -745,6 +745,54 @@
       background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='160'><text x='10' y='90' font-family='Helvetica, Arial, sans-serif' font-size='22' font-weight='bold' fill='%23ffffff' fill-opacity='0.18' stroke='%23000000' stroke-opacity='0.10' stroke-width='0.5' transform='rotate(-25 160 80)'>POLRAD MAPPING</text></svg>");
       background-repeat: repeat;
     }
+
+    /* ===== DATE COMPARE TOOL (NEW) ===== */
+    #panel-compare .compare-row {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 10px;
+      font-size: 12px;
+    }
+    #panel-compare label {
+      font-weight: bold;
+      font-size: 12px;
+    }
+    #panel-compare input[type=date] {
+      height: 30px;
+      box-sizing: border-box;
+      border: 1px solid var(--chrome-border);
+      border-radius: 5px;
+      background: var(--btn-bg);
+      color: var(--btn-text);
+      padding: 0 8px;
+      font-size: 12px;
+      color-scheme: dark;
+      width: 100%;
+    }
+    body.light-mode #panel-compare input[type=date] {
+      color-scheme: light;
+    }
+    #panel-compare .compare-btn-row {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+    #panel-compare .compare-btn-row .tool-btn {
+      flex: 1;
+      margin-bottom: 0;
+      text-align: center;
+    }
+    #compare-result {
+      font-size: 12px;
+      line-height: 1.5;
+      color: var(--result-text);
+      white-space: pre-wrap;
+      min-height: 24px;
+    }
+    #compare-result .cmp-red { color: #ef5350; font-weight: 700; }
+    #compare-result .cmp-blue { color: #42a5f5; font-weight: 700; }
+    /* ===== END DATE COMPARE TOOL ===== */
   </style>
 
 </head>
@@ -758,6 +806,7 @@
     <button class="sidebar-btn" id="btn-tab-coords" onclick="toggleTab('coords')" title="Coordinates">📍</button>
     <button class="sidebar-btn" id="btn-tab-updates" onclick="toggleTab('updates')" title="Changelog">🧾</button>
     <button class="sidebar-btn" id="btn-tab-settings" onclick="toggleTab('settings')" title="Settings">⚙️</button>
+    <button class="sidebar-btn" id="btn-tab-compare" onclick="toggleTab('compare')" title="Compare dates">🕐</button>
     <button class="sidebar-btn" id="btn-fullscreen" onclick="toggleFullScreen()" title="Toggle Fullscreen">⛶</button>
   </div>
 
@@ -792,6 +841,29 @@
   <div id="map"></div>
   <div id="map-crosshair"></div>
   <div id="watermark-overlay"></div>
+
+  <!-- ===== DATE COMPARE PANEL (NEW) ===== -->
+  <div class="sidebar-panel" id="panel-compare">
+    <h4>Compare Dates</h4>
+    <div class="compare-row">
+      <label for="compare-date-a">Date A (before)</label>
+      <input type="date" id="compare-date-a">
+    </div>
+    <div class="compare-row">
+      <label for="compare-date-b">Date B (after)</label>
+      <input type="date" id="compare-date-b">
+    </div>
+    <div class="compare-btn-row">
+      <button class="tool-btn" onclick="runDateComparison()">Compare</button>
+      <button class="tool-btn" onclick="clearDateComparison()">Clear</button>
+    </div>
+    <div id="compare-result">Pick two dates to see territorial gains between them.</div>
+    <div style="margin-top:10px; font-size:11px; line-height:1.5; color:var(--muted-text);">
+      <span style="display:inline-block;width:10px;height:10px;background:#ef5350;border-radius:2px;margin-right:4px;vertical-align:middle;"></span>Russian gains<br>
+      <span style="display:inline-block;width:10px;height:10px;background:#42a5f5;border-radius:2px;margin-right:4px;vertical-align:middle;"></span>Ukrainian gains
+    </div>
+  </div>
+  <!-- ===== END DATE COMPARE PANEL ===== -->
 
   <div class="sidebar-panel" id="panel-layers">
     <h4>Basemaps & Layers</h4>
@@ -941,7 +1013,8 @@
         basemapGoogleHybrid: 'Google Hybrid (Satellite + Labels)', basemapEsriHybrid: 'Esri Hybrid (Satellite + Labels)', basemapEsriSatellite: 'Esri Satellite',
         basemapOSM: 'OpenStreetMap', basemapTopo: 'Topographic',
         designDefault: 'Default', amkDesign:'AMK Mapping design', playfraDesign:'Playfra design', myDrawings:'My Drawings', citiesCaptured:'Cities Captured', augustFrontline:'August 2024 Frontline', townsVillages:'Towns, villages and cities (credit to PWM)', fortifications:'Fortifications (thanks PMapping832)', grayZone:'Gray Zone',
-        twitter: 'Twitter/X', login: 'Log In'
+        twitter: 'Twitter/X', login: 'Log In',
+        compareDates: 'Compare Dates'
       },
       ru: {
         search: 'Поиск', searchPlaceholder: 'Поиск посёлка, города или координат...',
@@ -967,7 +1040,8 @@
         basemapGoogleHybrid: 'Google Hybrid (спутник + подписи)', basemapEsriHybrid: 'Esri Hybrid (спутник + подписи)', basemapEsriSatellite: 'Esri Satellite',
         basemapOSM: 'OpenStreetMap', basemapTopo: 'Топографическая',
         designDefault: 'По умолчанию', amkDesign:'Дизайн AMK Mapping', playfraDesign:'Дизайн Playfra', myDrawings:'Мои рисунки', citiesCaptured:'Захваченные города', augustFrontline:'Линия фронта августа 2024', townsVillages:'Посёлки, деревни и города (автор: PWM)', fortifications:'Укрепления (спасибо PMapping832)', grayZone:'Серая зона',
-        twitter: 'Twitter/X', login: 'Войти'
+        twitter: 'Twitter/X', login: 'Войти',
+        compareDates: 'Сравнить даты'
       }
     };
 
@@ -1024,6 +1098,7 @@
       var rBtns=document.querySelectorAll('#panel-ruler .tool-btn'); if(rBtns[0]) rBtns[0].textContent=pt('finishMeasuring'); if(rBtns[1]) rBtns[1].textContent=pt('clearLine');
       var thickness=document.querySelector('#panel-draw .thickness-row label'); if(thickness) thickness.childNodes[0].textContent=pt('thickness') + ': ';
       var colors={red:'color-red',blue:'color-blue',green:'color-green',yellow:'color-yellow',black:'color-black',white:'color-white'}; Object.keys(colors).forEach(function(k){var e=document.getElementById(colors[k]); if(e)e.textContent=pt(k);});
+      var cmpHeading = document.querySelector('#panel-compare h4'); if (cmpHeading) cmpHeading.textContent = pt('compareDates');
       updateSidebarLayerControl(); updateDesignSelector(); renderAdvanceBar(); updateInstructions();
     }
     window.setPublicLanguage = function(lang) {
@@ -1264,6 +1339,9 @@
       polygonBordersEnabled = checked;
     }
 
+    map.createPane('comparePane');
+    map.getPane('comparePane').style.zIndex = 465;
+
     map.createPane('grayZonePane');
     map.getPane('grayZonePane').style.zIndex = 460;
 
@@ -1480,6 +1558,9 @@
           setActiveTool('ruler');
         } else if (tabName === 'coords') {
           setActiveTool('coords');
+        } else if (tabName === 'compare') {
+          setActiveTool(null);
+          populateCompareDates();
         } else if (
           tabName !== 'draw' &&
           (activeTool === 'ruler' || activeTool === 'coords')
@@ -1910,6 +1991,7 @@
             buildTimelineSequence();
             timelineIndex = timelineDates.length - 1;
             updateTimelineBarUI();
+            populateCompareDates();
           }
         })
         .catch(function() {
@@ -1940,21 +2022,34 @@
       popupAnchor: [0, -14]
     });
 
+    /* ===== Standard inline SVG flags (matches second code) ===== */
     var ukraineFlagIcon = L.icon({
-      iconUrl:
-        'https://pics.clipartpng.com/midle/Ukraine_Flag_PNG_Clip_Art-1811.png',
+      iconUrl: 'data:image/svg+xml;utf8,' + encodeURIComponent(
+        '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="21" viewBox="0 0 32 21">' +
+          '<rect x="0" y="0" width="32" height="10.5" fill="#0057b7"/>' +
+          '<rect x="0" y="10.5" width="32" height="10.5" fill="#ffd700"/>' +
+          '<rect x="0.5" y="0.5" width="31" height="20" fill="none" stroke="#00000080" stroke-width="1"/>' +
+        '</svg>'
+      ),
       iconSize: [32, 21],
       iconAnchor: [16, 21],
       popupAnchor: [0, -21]
     });
 
     var russiaFlagIcon = L.icon({
-      iconUrl:
-        'https://pics.clipartpng.com/midle/Russia_Flag_PNG_Clip_Art-1857.png',
+      iconUrl: 'data:image/svg+xml;utf8,' + encodeURIComponent(
+        '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="21" viewBox="0 0 32 21">' +
+          '<rect x="0" y="0" width="32" height="7" fill="#ffffff"/>' +
+          '<rect x="0" y="7" width="32" height="7" fill="#0039a6"/>' +
+          '<rect x="0" y="14" width="32" height="7" fill="#d52b1e"/>' +
+          '<rect x="0.5" y="0.5" width="31" height="20" fill="none" stroke="#00000080" stroke-width="1"/>' +
+        '</svg>'
+      ),
       iconSize: [32, 21],
       iconAnchor: [16, 21],
       popupAnchor: [0, -21]
     });
+    /* ===== End standard flags ===== */
 
     var capturedCities = [
       { name: "Popasna", date: "7 May 2022", lat: 48.6480, lng: 38.3540 },
@@ -3785,6 +3880,241 @@
       document.getElementById('draw-result').innerText =
         "Select a shape to draw.";
     }
+
+    /* =========================================================
+       DATE COMPARE TOOL (NEW)
+       ========================================================= */
+
+    // Group used to hold the diff outlines so it can be cleared easily.
+    var compareLayerGroup = L.layerGroup().addTo(map);
+
+    // Resolve a snapshot key for the two side layers used for comparison.
+    // Both "live" and snapshot data use the same canonical names.
+    function compareGetFeatureCollection(snapshot, kind) {
+      // kind: 'ru_territory' | 'ua_territory'
+      var keys;
+      if (kind === 'ru_territory') {
+        keys = ['Russian-controlled territory', 'ru_territory', 'russia'];
+      } else {
+        keys = ['Ukrainian-controlled territory', 'ua_territory', 'ukraine'];
+      }
+      for (var i = 0; i < keys.length; i++) {
+        var d = snapshot[keys[i]];
+        if (d) {
+          if (d.type === 'FeatureCollection') return d;
+          if (d.type === 'Feature') return { type: 'FeatureCollection', features: [d] };
+          if (d.geometry) return { type: 'FeatureCollection', features: [{ type: 'Feature', geometry: d, properties: {} }] };
+        }
+      }
+      return null;
+    }
+
+    function unionFeatures(features) {
+      if (!features || !features.length) return null;
+      var cleaned = features
+        .map(function(f) {
+          try { return turf.cleanCoords(f); }
+          catch (e) { return f; }
+        })
+        .filter(function(f) {
+          return f && f.geometry && (
+            f.geometry.type === 'Polygon' ||
+            f.geometry.type === 'MultiPolygon'
+          );
+        });
+      if (!cleaned.length) return null;
+      var result = cleaned[0];
+      for (var i = 1; i < cleaned.length; i++) {
+        try { result = turf.union(result, cleaned[i]); }
+        catch (e) {}
+      }
+      return result;
+    }
+
+    function featureCollectionToLeafletDiff(fc, strokeColor) {
+      // Outline-only rendering: dashed stroke, very light fill.
+      return L.geoJSON(fc, {
+        pane: 'comparePane',
+        style: function() {
+          return {
+            color: strokeColor,
+            weight: 2,
+            opacity: 0.95,
+            dashArray: '5,4',
+            fillColor: strokeColor,
+            fillOpacity: 0.10,
+            stroke: true
+          };
+        }
+      });
+    }
+
+    function populateCompareDates() {
+      var a = document.getElementById('compare-date-a');
+      var b = document.getElementById('compare-date-b');
+      if (!a || !b) return;
+
+      if (!advances.length) return;
+
+      var dates = advances
+        .map(function(x) { return x.date; })
+        .filter(Boolean)
+        .filter(function(v, i, arr) { return arr.indexOf(v) === i; })
+        .sort();
+
+      function fill(el, sel) {
+        el.innerHTML = '';
+        var placeholder = document.createElement('option');
+        placeholder.value = '';
+        placeholder.textContent = 'YYYY-MM-DD';
+        el.appendChild(placeholder);
+        dates.forEach(function(d) {
+          var opt = document.createElement('option');
+          opt.value = d;
+          opt.textContent = d;
+          el.appendChild(opt);
+        });
+        if (sel && dates.indexOf(sel) !== -1) el.value = sel;
+        else if (dates.length) el.value = dates[dates.length - 1];
+      }
+
+      fill(a, a.value);
+      fill(b, b.value || (dates.length ? dates[dates.length - 1] : null));
+    }
+
+    function clearDateComparison() {
+      compareLayerGroup.clearLayers();
+      var out = document.getElementById('compare-result');
+      if (out) out.textContent = 'Pick two dates to see territorial gains between them.';
+    }
+
+    function findAdvanceForDate(dateStr) {
+      if (!dateStr) return null;
+      for (var i = advances.length - 1; i >= 0; i--) {
+        if (advances[i].date === dateStr) return advances[i];
+      }
+      return null;
+    }
+
+    function runDateComparison() {
+      var out = document.getElementById('compare-result');
+      if (!out) return;
+      out.textContent = 'Loading snapshots...';
+      compareLayerGroup.clearLayers();
+
+      var dateA = document.getElementById('compare-date-a').value;
+      var dateB = document.getElementById('compare-date-b').value;
+
+      if (!dateA || !dateB) {
+        out.textContent = 'Please pick two dates.';
+        return;
+      }
+      if (dateA === dateB) {
+        out.textContent = 'Please pick two different dates.';
+        return;
+      }
+
+      var aAdv = findAdvanceForDate(dateA);
+      var bAdv = findAdvanceForDate(dateB);
+      if (!aAdv || !bAdv) {
+        out.textContent = 'Could not find advance records for those dates.';
+        return;
+      }
+
+      function loadSnapshot(adv) {
+        if (!adv) return Promise.reject(new Error('Missing advance'));
+        if (adv.snapshotData) return Promise.resolve(adv.snapshotData);
+        if (!adv.snapshot) return Promise.reject(new Error('No snapshot path'));
+        var sep = adv.snapshot.indexOf('?') === -1 ? '?' : '&';
+        var url = adv.snapshot + sep + 'cmp=' + Date.now();
+        return fetch(url, { cache: 'no-store' })
+          .then(function(r) {
+            if (!r.ok) throw new Error('HTTP ' + r.status + ' for ' + adv.snapshot);
+            return r.json();
+          });
+      }
+
+      Promise.all([loadSnapshot(aAdv), loadSnapshot(bAdv)])
+        .then(function(arr) {
+          var snapA = arr[0];
+          var snapB = arr[1];
+
+          // Russian gains: russia in B, minus russia in A.
+          // Ukrainian gains: ua in B, minus ua in A.
+          var ruA = compareGetFeatureCollection(snapA, 'ru_territory');
+          var ruB = compareGetFeatureCollection(snapB, 'ru_territory');
+          var uaA = compareGetFeatureCollection(snapA, 'ua_territory');
+          var uaB = compareGetFeatureCollection(snapB, 'ua_territory');
+
+          var ruUnionA = ruA ? unionFeatures(ruA.features || []) : null;
+          var ruUnionB = ruB ? unionFeatures(ruB.features || []) : null;
+          var uaUnionA = uaA ? unionFeatures(uaA.features || []) : null;
+          var uaUnionB = uaB ? unionFeatures(uaB.features || []) : null;
+
+          var ruGained = null;
+          var uaGained = null;
+
+          if (ruUnionB && ruUnionA) {
+            try { ruGained = turf.difference(ruUnionB, ruUnionA); }
+            catch (e) { ruGained = null; }
+          } else if (ruUnionB && !ruUnionA) {
+            ruGained = ruUnionB;
+          }
+
+          if (uaUnionB && uaUnionA) {
+            try { uaGained = turf.difference(uaUnionB, uaUnionA); }
+            catch (e) { uaGained = null; }
+          } else if (uaUnionB && !uaUnionA) {
+            uaGained = uaUnionB;
+          }
+
+          // Clip each side out of the other's "after" territory so that
+          // a single pixel is counted only once (no red+blue stack).
+          if (ruGained && uaUnionB) {
+            try { ruGained = turf.difference(ruGained, uaUnionB); }
+            catch (e) {}
+          }
+          if (uaGained && ruUnionB) {
+            try { uaGained = turf.difference(uaGained, ruUnionB); }
+            catch (e) {}
+          }
+
+          var ruArea = ruGained ? turf.area(ruGained) / 1e6 : 0;
+          var uaArea = uaGained ? turf.area(uaGained) / 1e6 : 0;
+
+          if (ruGained) {
+            featureCollectionToLeafletDiff(ruGained, '#ef5350').addTo(compareLayerGroup);
+          }
+          if (uaGained) {
+            featureCollectionToLeafletDiff(uaGained, '#42a5f5').addTo(compareLayerGroup);
+          }
+
+          // Fit the map to the diff extents if any.
+          try {
+            var diffFc = { type: 'FeatureCollection', features: [] };
+            if (ruGained) diffFc.features.push(ruGained);
+            if (uaGained) diffFc.features.push(uaGained);
+            if (diffFc.features.length) {
+              var b = L.geoJSON(diffFc).getBounds();
+              if (b.isValid()) map.fitBounds(b, { padding: [40, 40] });
+            }
+          } catch (e) {}
+
+          var total = ruArea + uaArea;
+
+          out.innerHTML =
+            '<b>Gains ' + dateA + ' → ' + dateB + '</b><br>' +
+            '<span class="cmp-red">Russian gains:</span> +' + ruArea.toFixed(2) + ' km²<br>' +
+            '<span class="cmp-blue">Ukrainian gains:</span> +' + uaArea.toFixed(2) + ' km²<br>' +
+            '<b>Total changed:</b> ' + total.toFixed(2) + ' km²';
+        })
+        .catch(function(err) {
+          console.error('Compare error:', err);
+          out.textContent = 'Could not load comparison data. ' + err.message;
+        });
+    }
+
+    /* ===== END DATE COMPARE TOOL ===== */
 
   </script>
 
