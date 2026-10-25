@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html>
 <head>
   <title>Russo-Ukrainian War Map (Polrad Mapping)</title>
@@ -859,8 +858,8 @@
     </div>
     <div id="compare-result">Pick two dates to see territorial gains between them.</div>
     <div style="margin-top:10px; font-size:11px; line-height:1.5; color:var(--muted-text);">
-      <span style="display:inline-block;width:10px;height:10px;background:#ef5350;border-radius:2px;margin-right:4px;vertical-align:middle;"></span>Russian gains<br>
-      <span style="display:inline-block;width:10px;height:10px;background:#42a5f5;border-radius:2px;margin-right:4px;vertical-align:middle;"></span>Ukrainian gains
+      <span style="display:inline-block;width:10px;height:10px;background:#ef5350;border-radius:2px;margin-right:4px;vertical-align:middle;"></span>Russian gains (territory + advances)<br>
+      <span style="display:inline-block;width:10px;height:10px;background:#42a5f5;border-radius:2px;margin-right:4px;vertical-align:middle;"></span>Ukrainian gains (territory + advances)
     </div>
   </div>
   <!-- ===== END DATE COMPARE PANEL ===== -->
@@ -3888,16 +3887,31 @@
     // Group used to hold the diff outlines so it can be cleared easily.
     var compareLayerGroup = L.layerGroup().addTo(map);
 
-    // Resolve a snapshot key for the two side layers used for comparison.
-    // Both "live" and snapshot data use the same canonical names.
-    function compareGetFeatureCollection(snapshot, kind) {
-      // kind: 'ru_territory' | 'ua_territory'
+    // Look up a FeatureCollection for a given snapshot + role.
+    // Roles:
+    //   'ru_territory'    -> Russian-controlled territory
+    //   'ua_territory'    -> Ukrainian-controlled territory
+    //   'ru_advances'     -> Russian advances (yellow)
+    //   'ua_advances'     -> Ukrainian advances (light blue)
+    //   'regained'        -> Territories regained (green, excluded)
+    function compareGetFC(snapshot, role) {
+      if (!snapshot) return null;
+
       var keys;
-      if (kind === 'ru_territory') {
+      if (role === 'ru_territory') {
         keys = ['Russian-controlled territory', 'ru_territory', 'russia'];
-      } else {
+      } else if (role === 'ua_territory') {
         keys = ['Ukrainian-controlled territory', 'ua_territory', 'ukraine'];
+      } else if (role === 'ru_advances') {
+        keys = ['Russian advances', 'ru_advances'];
+      } else if (role === 'ua_advances') {
+        keys = ['Ukrainian advances', 'ua_advances'];
+      } else if (role === 'regained') {
+        keys = ['Territories regained in the last month', 'Territories regained', 'regained'];
+      } else {
+        return null;
       }
+
       for (var i = 0; i < keys.length; i++) {
         var d = snapshot[keys[i]];
         if (d) {
@@ -3929,6 +3943,42 @@
         catch (e) {}
       }
       return result;
+    }
+
+    // Merge a list of FCs (each may be null) into one union feature.
+    function unionFCList(fcs) {
+      var allFeatures = [];
+      fcs.forEach(function(fc) {
+        if (fc && Array.isArray(fc.features)) {
+          allFeatures = allFeatures.concat(fc.features);
+        }
+      });
+      return unionFeatures(allFeatures);
+    }
+
+    // Compose the "effective territory" for one side at a given snapshot:
+    //   territory ∪ advances  −  regained
+    // where regained (green) is subtracted from BOTH sides per your spec.
+    function effectiveSide(snapshot, side) {
+      var terrFC, advFC;
+      if (side === 'ru') {
+        terrFC = compareGetFC(snapshot, 'ru_territory');
+        advFC  = compareGetFC(snapshot, 'ru_advances');
+      } else {
+        terrFC = compareGetFC(snapshot, 'ua_territory');
+        advFC  = compareGetFC(snapshot, 'ua_advances');
+      }
+      var regainedFC = compareGetFC(snapshot, 'regained');
+
+      var united = unionFCList([terrFC, advFC]);
+      if (!united) return null;
+
+      var regainedUnion = unionFCList([regainedFC]);
+      if (regainedUnion) {
+        try { united = turf.difference(united, regainedUnion); }
+        catch (e) {}
+      }
+      return united;
     }
 
     function featureCollectionToLeafletDiff(fc, strokeColor) {
@@ -4039,43 +4089,41 @@
           var snapA = arr[0];
           var snapB = arr[1];
 
-          // Russian gains: russia in B, minus russia in A.
-          // Ukrainian gains: ua in B, minus ua in A.
-          var ruA = compareGetFeatureCollection(snapA, 'ru_territory');
-          var ruB = compareGetFeatureCollection(snapB, 'ru_territory');
-          var uaA = compareGetFeatureCollection(snapA, 'ua_territory');
-          var uaB = compareGetFeatureCollection(snapB, 'ua_territory');
-
-          var ruUnionA = ruA ? unionFeatures(ruA.features || []) : null;
-          var ruUnionB = ruB ? unionFeatures(ruB.features || []) : null;
-          var uaUnionA = uaA ? unionFeatures(uaA.features || []) : null;
-          var uaUnionB = uaB ? unionFeatures(uaB.features || []) : null;
+          // Effective side territories:
+          //   RU_eff = RU_terr ∪ RU_advances (yellow) − regained (green)
+          //   UA_eff = UA_terr ∪ UA_advances (light blue) − regained (green)
+          var ruA = effectiveSide(snapA, 'ru');
+          var ruB = effectiveSide(snapB, 'ru');
+          var uaA = effectiveSide(snapA, 'ua');
+          var uaB = effectiveSide(snapB, 'ua');
 
           var ruGained = null;
           var uaGained = null;
 
-          if (ruUnionB && ruUnionA) {
-            try { ruGained = turf.difference(ruUnionB, ruUnionA); }
+          // Russian gains = RU_eff(B) \ RU_eff(A)
+          if (ruB && ruA) {
+            try { ruGained = turf.difference(ruB, ruA); }
             catch (e) { ruGained = null; }
-          } else if (ruUnionB && !ruUnionA) {
-            ruGained = ruUnionB;
+          } else if (ruB) {
+            ruGained = ruB;
           }
 
-          if (uaUnionB && uaUnionA) {
-            try { uaGained = turf.difference(uaUnionB, uaUnionA); }
+          // Ukrainian gains = UA_eff(B) \ UA_eff(A)
+          if (uaB && uaA) {
+            try { uaGained = turf.difference(uaB, uaA); }
             catch (e) { uaGained = null; }
-          } else if (uaUnionB && !uaUnionA) {
-            uaGained = uaUnionB;
+          } else if (uaB) {
+            uaGained = uaB;
           }
 
-          // Clip each side out of the other's "after" territory so that
-          // a single pixel is counted only once (no red+blue stack).
-          if (ruGained && uaUnionB) {
-            try { ruGained = turf.difference(ruGained, uaUnionB); }
+          // Non-overlap: a pixel that is UA_eff(B) cannot be counted as RU gain,
+          // and vice versa. This keeps yellow/blue advances from double-counting.
+          if (ruGained && uaB) {
+            try { ruGained = turf.difference(ruGained, uaB); }
             catch (e) {}
           }
-          if (uaGained && ruUnionB) {
-            try { uaGained = turf.difference(uaGained, ruUnionB); }
+          if (uaGained && ruB) {
+            try { uaGained = turf.difference(uaGained, ruB); }
             catch (e) {}
           }
 
@@ -4106,7 +4154,8 @@
             '<b>Gains ' + dateA + ' → ' + dateB + '</b><br>' +
             '<span class="cmp-red">Russian gains:</span> +' + ruArea.toFixed(2) + ' km²<br>' +
             '<span class="cmp-blue">Ukrainian gains:</span> +' + uaArea.toFixed(2) + ' km²<br>' +
-            '<b>Total changed:</b> ' + total.toFixed(2) + ' km²';
+            '<b>Total changed:</b> ' + total.toFixed(2) + ' km²<br>' +
+            '<span style="font-size:11px;color:var(--muted-text);">Green regained zones are excluded; yellow advances count as Russian gains, light-blue advances as Ukrainian gains.</span>';
         })
         .catch(function(err) {
           console.error('Compare error:', err);
