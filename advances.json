@@ -3454,5 +3454,38 @@
       "ru": 148250.01284066943,
       "ua": 22772.003207098212
     }
+  },
+  {
+    "id": "adv-1792961541562",
+    "date": "2026-10-25",
+    "time": "21:52:21",
+    "text_en": "Army group \"Center\" recaptured Krasnyy Kut, Torske, Toretske and Priyut",
+    "text_ru": "ГВ \"Центр\" заняла населенные пункты Торское, Торецкое, Приют и Красный Кут",
+    "text": "Army group \"Center\" recaptured Krasnyy Kut, Torske, Toretske and Priyut",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 11.92,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 11.92
+      }
+    ],
+    "areaDisplay": "+11.92 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 48.506596968085894,
+      "west": 37.31678009033204,
+      "north": 48.57717500003708,
+      "east": 37.520370483398445
+    },
+    "polygonFids": [
+      "advance-1792961465423-dfl25cf9j"
+    ],
+    "snapshot": "history/advances/adv-1792961541562.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22772.003207098212
+    }
   }
 ]
