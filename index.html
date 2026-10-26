@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html>
 <head>
   <title>Russo-Ukrainian War Map (Polrad Mapping)</title>
@@ -856,10 +857,10 @@
       <button class="tool-btn" onclick="runDateComparison()">Compare</button>
       <button class="tool-btn" onclick="clearDateComparison()">Clear</button>
     </div>
-    <div id="compare-result">Pick two dates to see territorial gains between them.</div>
+    <div id="compare-result">Pick two dates to see cumulative territorial totals.</div>
     <div style="margin-top:10px; font-size:11px; line-height:1.5; color:var(--muted-text);">
-      <span style="display:inline-block;width:10px;height:10px;background:#ef5350;border-radius:2px;margin-right:4px;vertical-align:middle;"></span>Russian gains (territory + advances)<br>
-      <span style="display:inline-block;width:10px;height:10px;background:#42a5f5;border-radius:2px;margin-right:4px;vertical-align:middle;"></span>Ukrainian gains (territory + advances)
+      <span style="display:inline-block;width:10px;height:10px;background:#ef5350;border-radius:2px;margin-right:4px;vertical-align:middle;"></span>Russian side (territory + advances)<br>
+      <span style="display:inline-block;width:10px;height:10px;background:#42a5f5;border-radius:2px;margin-right:4px;vertical-align:middle;"></span>Ukrainian side (territory + advances)
     </div>
   </div>
   <!-- ===== END DATE COMPARE PANEL ===== -->
@@ -3884,16 +3885,8 @@
        DATE COMPARE TOOL (NEW)
        ========================================================= */
 
-    // Group used to hold the diff outlines so it can be cleared easily.
     var compareLayerGroup = L.layerGroup().addTo(map);
 
-    // Look up a FeatureCollection for a given snapshot + role.
-    // Roles:
-    //   'ru_territory'    -> Russian-controlled territory
-    //   'ua_territory'    -> Ukrainian-controlled territory
-    //   'ru_advances'     -> Russian advances (yellow)
-    //   'ua_advances'     -> Ukrainian advances (light blue)
-    //   'regained'        -> Territories regained (green, excluded)
     function compareGetFC(snapshot, role) {
       if (!snapshot) return null;
 
@@ -3906,8 +3899,6 @@
         keys = ['Russian advances', 'ru_advances'];
       } else if (role === 'ua_advances') {
         keys = ['Ukrainian advances', 'ua_advances'];
-      } else if (role === 'regained') {
-        keys = ['Territories regained in the last month', 'Territories regained', 'regained'];
       } else {
         return null;
       }
@@ -3945,7 +3936,6 @@
       return result;
     }
 
-    // Merge a list of FCs (each may be null) into one union feature.
     function unionFCList(fcs) {
       var allFeatures = [];
       fcs.forEach(function(fc) {
@@ -3956,9 +3946,8 @@
       return unionFeatures(allFeatures);
     }
 
-    // Compose the "effective territory" for one side at a given snapshot:
-    //   territory ∪ advances  −  regained
-    // where regained (green) is subtracted from BOTH sides per your spec.
+    // Effective side territory = territory ∪ advances (yellow for RU,
+    // light-blue for UA). No subtraction, no comparison.
     function effectiveSide(snapshot, side) {
       var terrFC, advFC;
       if (side === 'ru') {
@@ -3968,31 +3957,21 @@
         terrFC = compareGetFC(snapshot, 'ua_territory');
         advFC  = compareGetFC(snapshot, 'ua_advances');
       }
-      var regainedFC = compareGetFC(snapshot, 'regained');
-
-      var united = unionFCList([terrFC, advFC]);
-      if (!united) return null;
-
-      var regainedUnion = unionFCList([regainedFC]);
-      if (regainedUnion) {
-        try { united = turf.difference(united, regainedUnion); }
-        catch (e) {}
-      }
-      return united;
+      return unionFCList([terrFC, advFC]);
     }
 
-    function featureCollectionToLeafletDiff(fc, strokeColor) {
-      // Outline-only rendering: dashed stroke, very light fill.
+    // More prominent dashed outline, outline-only.
+    function featureCollectionToLeafletOutline(fc, strokeColor) {
       return L.geoJSON(fc, {
         pane: 'comparePane',
         style: function() {
           return {
             color: strokeColor,
-            weight: 2,
-            opacity: 0.95,
-            dashArray: '5,4',
+            weight: 3,
+            opacity: 1,
+            dashArray: '8,5',
             fillColor: strokeColor,
-            fillOpacity: 0.10,
+            fillOpacity: 0.18,
             stroke: true
           };
         }
@@ -4003,7 +3982,6 @@
       var a = document.getElementById('compare-date-a');
       var b = document.getElementById('compare-date-b');
       if (!a || !b) return;
-
       if (!advances.length) return;
 
       var dates = advances
@@ -4035,10 +4013,11 @@
     function clearDateComparison() {
       compareLayerGroup.clearLayers();
       var out = document.getElementById('compare-result');
-      if (out) out.textContent = 'Pick two dates to see territorial gains between them.';
+      if (out) out.textContent = 'Pick two dates to see cumulative territorial totals.';
     }
 
-    function findAdvanceForDate(dateStr) {
+    // Last advance for a date (the "latest snapshot of that date").
+    function lastAdvanceForDate(dateStr) {
       if (!dateStr) return null;
       for (var i = advances.length - 1; i >= 0; i--) {
         if (advances[i].date === dateStr) return advances[i];
@@ -4064,11 +4043,24 @@
         return;
       }
 
-      var aAdv = findAdvanceForDate(dateA);
-      var bAdv = findAdvanceForDate(dateB);
+      var aAdv = lastAdvanceForDate(dateA);
+      var bAdv = lastAdvanceForDate(dateB);
       if (!aAdv || !bAdv) {
         out.textContent = 'Could not find advance records for those dates.';
         return;
+      }
+
+      // Automatically load the LATEST snapshot of date B onto the map
+      // without moving the camera.
+      if (typeof showAdvance === 'function') {
+        var bIdx = advances.indexOf(bAdv);
+        if (bIdx >= 0) {
+          try {
+            showAdvance(bIdx, { skipFocus: true });
+          } catch (e) {
+            console.warn('Could not auto-load snapshot for date B:', e);
+          }
+        }
       }
 
       function loadSnapshot(adv) {
@@ -4089,73 +4081,75 @@
           var snapA = arr[0];
           var snapB = arr[1];
 
-          // Effective side territories:
-          //   RU_eff = RU_terr ∪ RU_advances (yellow) − regained (green)
-          //   UA_eff = UA_terr ∪ UA_advances (light blue) − regained (green)
+          // Absolute (cumulative) territory per side, per snapshot.
           var ruA = effectiveSide(snapA, 'ru');
           var ruB = effectiveSide(snapB, 'ru');
           var uaA = effectiveSide(snapA, 'ua');
           var uaB = effectiveSide(snapB, 'ua');
 
-          var ruGained = null;
-          var uaGained = null;
+          var ruAreaA = ruA ? turf.area(ruA) / 1e6 : 0;
+          var ruAreaB = ruB ? turf.area(ruB) / 1e6 : 0;
+          var uaAreaA = uaA ? turf.area(uaA) / 1e6 : 0;
+          var uaAreaB = uaB ? turf.area(uaB) / 1e6 : 0;
 
-          // Russian gains = RU_eff(B) \ RU_eff(A)
-          if (ruB && ruA) {
-            try { ruGained = turf.difference(ruB, ruA); }
-            catch (e) { ruGained = null; }
-          } else if (ruB) {
-            ruGained = ruB;
+          // Draw outlines: A fainter, B stronger.
+          if (ruA) {
+            L.geoJSON(ruA, {
+              pane: 'comparePane',
+              style: function() {
+                return {
+                  color: '#ef5350',
+                  weight: 2,
+                  opacity: 0.55,
+                  dashArray: '3,4',
+                  fillColor: '#ef5350',
+                  fillOpacity: 0.06,
+                  stroke: true
+                };
+              }
+            }).addTo(compareLayerGroup);
+          }
+          if (ruB) {
+            featureCollectionToLeafletOutline(ruB, '#ef5350').addTo(compareLayerGroup);
+          }
+          if (uaA) {
+            L.geoJSON(uaA, {
+              pane: 'comparePane',
+              style: function() {
+                return {
+                  color: '#42a5f5',
+                  weight: 2,
+                  opacity: 0.55,
+                  dashArray: '3,4',
+                  fillColor: '#42a5f5',
+                  fillOpacity: 0.06,
+                  stroke: true
+                };
+              }
+            }).addTo(compareLayerGroup);
+          }
+          if (uaB) {
+            featureCollectionToLeafletOutline(uaB, '#42a5f5').addTo(compareLayerGroup);
           }
 
-          // Ukrainian gains = UA_eff(B) \ UA_eff(A)
-          if (uaB && uaA) {
-            try { uaGained = turf.difference(uaB, uaA); }
-            catch (e) { uaGained = null; }
-          } else if (uaB) {
-            uaGained = uaB;
-          }
+          // NO fitBounds here — keeps the camera where it was,
+          // fixing the "map zooms out" bug.
 
-          // Non-overlap: a pixel that is UA_eff(B) cannot be counted as RU gain,
-          // and vice versa. This keeps yellow/blue advances from double-counting.
-          if (ruGained && uaB) {
-            try { ruGained = turf.difference(ruGained, uaB); }
-            catch (e) {}
-          }
-          if (uaGained && ruB) {
-            try { uaGained = turf.difference(uaGained, ruB); }
-            catch (e) {}
-          }
-
-          var ruArea = ruGained ? turf.area(ruGained) / 1e6 : 0;
-          var uaArea = uaGained ? turf.area(uaGained) / 1e6 : 0;
-
-          if (ruGained) {
-            featureCollectionToLeafletDiff(ruGained, '#ef5350').addTo(compareLayerGroup);
-          }
-          if (uaGained) {
-            featureCollectionToLeafletDiff(uaGained, '#42a5f5').addTo(compareLayerGroup);
-          }
-
-          // Fit the map to the diff extents if any.
-          try {
-            var diffFc = { type: 'FeatureCollection', features: [] };
-            if (ruGained) diffFc.features.push(ruGained);
-            if (uaGained) diffFc.features.push(uaGained);
-            if (diffFc.features.length) {
-              var b = L.geoJSON(diffFc).getBounds();
-              if (b.isValid()) map.fitBounds(b, { padding: [40, 40] });
-            }
-          } catch (e) {}
-
-          var total = ruArea + uaArea;
+          var ruTotal = ruAreaA + ruAreaB;
+          var uaTotal = uaAreaA + uaAreaB;
+          var grandTotal = ruTotal + uaTotal;
 
           out.innerHTML =
-            '<b>Gains ' + dateA + ' → ' + dateB + '</b><br>' +
-            '<span class="cmp-red">Russian gains:</span> +' + ruArea.toFixed(2) + ' km²<br>' +
-            '<span class="cmp-blue">Ukrainian gains:</span> +' + uaArea.toFixed(2) + ' km²<br>' +
-            '<b>Total changed:</b> ' + total.toFixed(2) + ' km²<br>' +
-            '<span style="font-size:11px;color:var(--muted-text);">Green regained zones are excluded; yellow advances count as Russian gains, light-blue advances as Ukrainian gains.</span>';
+            '<b>Snapshot totals ' + dateA + ' + ' + dateB + '</b><br>' +
+            '<span class="cmp-red">Russian side</span><br>' +
+            '&nbsp;&nbsp;' + dateA + ': ' + ruAreaA.toFixed(2) + ' km²<br>' +
+            '&nbsp;&nbsp;' + dateB + ': ' + ruAreaB.toFixed(2) + ' km²<br>' +
+            '&nbsp;&nbsp;<b>Sum:</b> ' + ruTotal.toFixed(2) + ' km²<br>' +
+            '<span class="cmp-blue">Ukrainian side</span><br>' +
+            '&nbsp;&nbsp;' + dateA + ': ' + uaAreaA.toFixed(2) + ' km²<br>' +
+            '&nbsp;&nbsp;' + dateB + ': ' + uaAreaB.toFixed(2) + ' km²<br>' +
+            '&nbsp;&nbsp;<b>Sum:</b> ' + uaTotal.toFixed(2) + ' km²<br>' +
+            '<b>Grand total:</b> ' + grandTotal.toFixed(2) + ' km²';
         })
         .catch(function(err) {
           console.error('Compare error:', err);
