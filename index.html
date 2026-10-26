@@ -857,10 +857,10 @@
       <button class="tool-btn" onclick="runDateComparison()">Compare</button>
       <button class="tool-btn" onclick="clearDateComparison()">Clear</button>
     </div>
-    <div id="compare-result">Pick two dates to see cumulative territorial totals.</div>
+    <div id="compare-result">Pick two dates to see gains between them.</div>
     <div style="margin-top:10px; font-size:11px; line-height:1.5; color:var(--muted-text);">
-      <span style="display:inline-block;width:10px;height:10px;background:#ef5350;border-radius:2px;margin-right:4px;vertical-align:middle;"></span>Russian side (territory + advances)<br>
-      <span style="display:inline-block;width:10px;height:10px;background:#42a5f5;border-radius:2px;margin-right:4px;vertical-align:middle;"></span>Ukrainian side (territory + advances)
+      <span style="display:inline-block;width:10px;height:10px;background:#ef5350;border-radius:2px;margin-right:4px;vertical-align:middle;"></span>Russian gains (territory + yellow advances)<br>
+      <span style="display:inline-block;width:10px;height:10px;background:#42a5f5;border-radius:2px;margin-right:4px;vertical-align:middle;"></span>Ukrainian gains (territory + light-blue advances)
     </div>
   </div>
   <!-- ===== END DATE COMPARE PANEL ===== -->
@@ -3958,7 +3958,7 @@
       return unionFCList([terrFC, advFC]);
     }
 
-    // Outline-only rendering, no fill at all, thicker & more prominent dashes.
+    // Outline-only, no fill, thicker & more prominent dashes.
     function featureCollectionToLeafletOutline(fc, strokeColor) {
       return L.geoJSON(fc, {
         pane: 'comparePane',
@@ -4011,7 +4011,7 @@
     function clearDateComparison() {
       compareLayerGroup.clearLayers();
       var out = document.getElementById('compare-result');
-      if (out) out.textContent = 'Pick two dates to see cumulative territorial totals.';
+      if (out) out.textContent = 'Pick two dates to see gains between them.';
     }
 
     function lastAdvanceForDate(dateStr) {
@@ -4047,7 +4047,7 @@
         return;
       }
 
-      // Auto-load latest snapshot of date B without changing the camera.
+      // Auto-load latest snapshot of date B without moving the camera.
       if (typeof showAdvance === 'function') {
         var bIdx = advances.indexOf(bAdv);
         if (bIdx >= 0) {
@@ -4077,73 +4077,85 @@
           var snapA = arr[0];
           var snapB = arr[1];
 
+          // Effective side territories (territory + advances, no comparison).
           var ruA = effectiveSide(snapA, 'ru');
           var ruB = effectiveSide(snapB, 'ru');
           var uaA = effectiveSide(snapA, 'ua');
           var uaB = effectiveSide(snapB, 'ua');
 
+          // Gains = B \ A per side (no subtraction against the other side,
+          // no green exclusion — pure "what is Russian/Ukrainian in B that
+          // was not Russian/Ukrainian in A").
+          var ruGains = null;
+          var uaGains = null;
+
+          if (ruB && ruA) {
+            try { ruGains = turf.difference(ruB, ruA); }
+            catch (e) { ruGains = null; }
+          } else if (ruB) {
+            ruGains = ruB;
+          }
+
+          if (uaB && uaA) {
+            try { uaGains = turf.difference(uaB, uaA); }
+            catch (e) { uaGains = null; }
+          } else if (uaB) {
+            uaGains = uaB;
+          }
+
+          // Remove any area that the other side also holds in B, so a
+          // pixel cannot be drawn as both a Russian and a Ukrainian gain.
+          if (ruGains && uaB) {
+            try { ruGains = turf.difference(ruGains, uaB); }
+            catch (e) {}
+          }
+          if (uaGains && ruB) {
+            try { uaGains = turf.difference(uaGains, ruB); }
+            catch (e) {}
+          }
+
+          // Areas reported:
+          //   side total A = area of effectiveSide(A)
+          //   side total B = area of effectiveSide(B)
+          //   sum = A + B
+          // Gains areas are reported separately.
           var ruAreaA = ruA ? turf.area(ruA) / 1e6 : 0;
           var ruAreaB = ruB ? turf.area(ruB) / 1e6 : 0;
           var uaAreaA = uaA ? turf.area(uaA) / 1e6 : 0;
           var uaAreaB = uaB ? turf.area(uaB) / 1e6 : 0;
 
-          // Faint A outlines, strong B outlines, both outline-only (no fill).
-          if (ruA) {
-            L.geoJSON(ruA, {
-              pane: 'comparePane',
-              style: function() {
-                return {
-                  color: '#ef5350',
-                  weight: 2,
-                  opacity: 0.45,
-                  dashArray: '4,5',
-                  fill: false,
-                  fillOpacity: 0,
-                  stroke: true
-                };
-              }
-            }).addTo(compareLayerGroup);
+          var ruGainArea = ruGains ? turf.area(ruGains) / 1e6 : 0;
+          var uaGainArea = uaGains ? turf.area(uaGains) / 1e6 : 0;
+
+          // Draw ONLY the gains as outlines (no fills, prominent dashes).
+          if (ruGains) {
+            featureCollectionToLeafletOutline(ruGains, '#ef5350').addTo(compareLayerGroup);
           }
-          if (ruB) {
-            featureCollectionToLeafletOutline(ruB, '#ef5350').addTo(compareLayerGroup);
-          }
-          if (uaA) {
-            L.geoJSON(uaA, {
-              pane: 'comparePane',
-              style: function() {
-                return {
-                  color: '#42a5f5',
-                  weight: 2,
-                  opacity: 0.45,
-                  dashArray: '4,5',
-                  fill: false,
-                  fillOpacity: 0,
-                  stroke: true
-                };
-              }
-            }).addTo(compareLayerGroup);
-          }
-          if (uaB) {
-            featureCollectionToLeafletOutline(uaB, '#42a5f5').addTo(compareLayerGroup);
+          if (uaGains) {
+            featureCollectionToLeafletOutline(uaGains, '#42a5f5').addTo(compareLayerGroup);
           }
 
-          // No fitBounds — camera stays where it is.
+          // No fitBounds — camera stays exactly where it was.
 
-          var ruTotal = ruAreaA + ruAreaB;
-          var uaTotal = uaAreaA + uaAreaB;
-          var grandTotal = ruTotal + uaTotal;
+          var ruSum = ruAreaA + ruAreaB;
+          var uaSum = uaAreaA + uaAreaB;
+          var grandSum = ruSum + uaSum;
 
           out.innerHTML =
-            '<b>Snapshot totals ' + dateA + ' + ' + dateB + '</b><br>' +
+            '<b>Gains ' + dateA + ' → ' + dateB + '</b><br>' +
+            '<span class="cmp-red">Russian gains:</span> +' + ruGainArea.toFixed(2) + ' km²<br>' +
+            '<span class="cmp-blue">Ukrainian gains:</span> +' + uaGainArea.toFixed(2) + ' km²<br>' +
+            '<hr style="border:0;border-top:1px solid var(--panel-heading-border);margin:6px 0;">' +
+            '<b>Cumulative totals (A + B)</b><br>' +
             '<span class="cmp-red">Russian side</span><br>' +
             '&nbsp;&nbsp;' + dateA + ': ' + ruAreaA.toFixed(2) + ' km²<br>' +
             '&nbsp;&nbsp;' + dateB + ': ' + ruAreaB.toFixed(2) + ' km²<br>' +
-            '&nbsp;&nbsp;<b>Sum:</b> ' + ruTotal.toFixed(2) + ' km²<br>' +
+            '&nbsp;&nbsp;<b>Sum:</b> ' + ruSum.toFixed(2) + ' km²<br>' +
             '<span class="cmp-blue">Ukrainian side</span><br>' +
             '&nbsp;&nbsp;' + dateA + ': ' + uaAreaA.toFixed(2) + ' km²<br>' +
             '&nbsp;&nbsp;' + dateB + ': ' + uaAreaB.toFixed(2) + ' km²<br>' +
-            '&nbsp;&nbsp;<b>Sum:</b> ' + uaTotal.toFixed(2) + ' km²<br>' +
-            '<b>Grand total:</b> ' + grandTotal.toFixed(2) + ' km²';
+            '&nbsp;&nbsp;<b>Sum:</b> ' + uaSum.toFixed(2) + ' km²<br>' +
+            '<b>Grand sum:</b> ' + grandSum.toFixed(2) + ' km²';
         })
         .catch(function(err) {
           console.error('Compare error:', err);
