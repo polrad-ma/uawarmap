@@ -3297,32 +3297,6 @@
     }
   },
   {
-    "id": "adv-1792605468472",
-    "date": "2026-10-21",
-    "time": "19:57:48",
-    "text_en": "Removed green zone (regained)",
-    "text_ru": "Зеленая зона удалена",
-    "text": "Removed green zone (regained)",
-    "side": "ru",
-    "advanceType": "normal",
-    "areaChange": 0,
-    "areaEffects": [],
-    "areaDisplay": "",
-    "areaColor": "red",
-    "focus": {
-      "south": 46.16462416699726,
-      "west": 28.718302054151664,
-      "north": 52.01194513048264,
-      "east": 43.220255179151664
-    },
-    "polygonFids": [],
-    "snapshot": "history/advances/adv-1792605468472.json",
-    "beforeAreas": {
-      "ru": 148250.01284066943,
-      "ua": 22718.54087419022
-    }
-  },
-  {
     "id": "adv-1792674670799",
     "date": "2026-10-22",
     "time": "15:11:10",
@@ -3460,7 +3434,7 @@
     "date": "2026-10-25",
     "time": "21:52:21",
     "text_en": "Army group \"Center\" recaptured Krasnyy Kut, Torske, Toretske and Priyut",
-    "text_ru": "ГВ \"Центр\" заняла населенные пункты Торское, Торецкое, Приют и Красный Кут",
+    "text_ru": "ГРВ \"Центр\" заняла населенные пункты Торское, Торецкое, Приют и Красный Кут",
     "text": "Army group \"Center\" recaptured Krasnyy Kut, Torske, Toretske and Priyut",
     "side": "ru",
     "advanceType": "normal",
