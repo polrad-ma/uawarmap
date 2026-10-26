@@ -3946,8 +3946,6 @@
       return unionFeatures(allFeatures);
     }
 
-    // Effective side territory = territory ∪ advances (yellow for RU,
-    // light-blue for UA). No subtraction, no comparison.
     function effectiveSide(snapshot, side) {
       var terrFC, advFC;
       if (side === 'ru') {
@@ -3960,18 +3958,18 @@
       return unionFCList([terrFC, advFC]);
     }
 
-    // More prominent dashed outline, outline-only.
+    // Outline-only rendering, no fill at all, thicker & more prominent dashes.
     function featureCollectionToLeafletOutline(fc, strokeColor) {
       return L.geoJSON(fc, {
         pane: 'comparePane',
         style: function() {
           return {
             color: strokeColor,
-            weight: 3,
+            weight: 4,
             opacity: 1,
-            dashArray: '8,5',
-            fillColor: strokeColor,
-            fillOpacity: 0.18,
+            dashArray: '10,6',
+            fill: false,
+            fillOpacity: 0,
             stroke: true
           };
         }
@@ -4016,7 +4014,6 @@
       if (out) out.textContent = 'Pick two dates to see cumulative territorial totals.';
     }
 
-    // Last advance for a date (the "latest snapshot of that date").
     function lastAdvanceForDate(dateStr) {
       if (!dateStr) return null;
       for (var i = advances.length - 1; i >= 0; i--) {
@@ -4050,8 +4047,7 @@
         return;
       }
 
-      // Automatically load the LATEST snapshot of date B onto the map
-      // without moving the camera.
+      // Auto-load latest snapshot of date B without changing the camera.
       if (typeof showAdvance === 'function') {
         var bIdx = advances.indexOf(bAdv);
         if (bIdx >= 0) {
@@ -4081,7 +4077,6 @@
           var snapA = arr[0];
           var snapB = arr[1];
 
-          // Absolute (cumulative) territory per side, per snapshot.
           var ruA = effectiveSide(snapA, 'ru');
           var ruB = effectiveSide(snapB, 'ru');
           var uaA = effectiveSide(snapA, 'ua');
@@ -4092,7 +4087,7 @@
           var uaAreaA = uaA ? turf.area(uaA) / 1e6 : 0;
           var uaAreaB = uaB ? turf.area(uaB) / 1e6 : 0;
 
-          // Draw outlines: A fainter, B stronger.
+          // Faint A outlines, strong B outlines, both outline-only (no fill).
           if (ruA) {
             L.geoJSON(ruA, {
               pane: 'comparePane',
@@ -4100,10 +4095,10 @@
                 return {
                   color: '#ef5350',
                   weight: 2,
-                  opacity: 0.55,
-                  dashArray: '3,4',
-                  fillColor: '#ef5350',
-                  fillOpacity: 0.06,
+                  opacity: 0.45,
+                  dashArray: '4,5',
+                  fill: false,
+                  fillOpacity: 0,
                   stroke: true
                 };
               }
@@ -4119,10 +4114,10 @@
                 return {
                   color: '#42a5f5',
                   weight: 2,
-                  opacity: 0.55,
-                  dashArray: '3,4',
-                  fillColor: '#42a5f5',
-                  fillOpacity: 0.06,
+                  opacity: 0.45,
+                  dashArray: '4,5',
+                  fill: false,
+                  fillOpacity: 0,
                   stroke: true
                 };
               }
@@ -4132,8 +4127,7 @@
             featureCollectionToLeafletOutline(uaB, '#42a5f5').addTo(compareLayerGroup);
           }
 
-          // NO fitBounds here — keeps the camera where it was,
-          // fixing the "map zooms out" bug.
+          // No fitBounds — camera stays where it is.
 
           var ruTotal = ruAreaA + ruAreaB;
           var uaTotal = uaAreaA + uaAreaB;
