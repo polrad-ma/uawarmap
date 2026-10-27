@@ -3553,5 +3553,38 @@
       "ru": 148250.01284066943,
       "ua": 22772.003207098212
     }
+  },
+  {
+    "id": "adv-1793131436967",
+    "date": "2026-10-27",
+    "time": "21:03:56",
+    "text_en": "Army group West continues recapturing lost positions",
+    "text_ru": "ГРВ Запад продолжает восстанавиливать контроль над утерянными позициями",
+    "text": "Army group West continues recapturing lost positions",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 5.33,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 5.33
+      }
+    ],
+    "areaDisplay": "+5.33 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 48.784247149826534,
+      "west": 37.77992248535156,
+      "north": 48.84133370667538,
+      "east": 37.93390274047852
+    },
+    "polygonFids": [
+      "advance-1793131274357-yuy6gcx9po"
+    ],
+    "snapshot": "history/advances/adv-1793131436967.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22772.003207098212
+    }
   }
 ]
