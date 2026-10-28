@@ -3619,5 +3619,38 @@
       "ru": 148250.01284066943,
       "ua": 22772.003207098212
     }
+  },
+  {
+    "id": "adv-1793191489181",
+    "date": "2026-10-28",
+    "time": "13:44:49",
+    "text_en": "Battles for Novoliubivka are ongoing",
+    "text_ru": "Идут бои за Новолюбовку",
+    "text": "Battles for Novoliubivka are ongoing",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 12.08,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 12.08
+      }
+    ],
+    "areaDisplay": "+12.08 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 49.115343685031945,
+      "west": 37.83588409423829,
+      "north": 49.17979580522574,
+      "east": 38.01578521728516
+    },
+    "polygonFids": [
+      "advance-1793191439486-kb9n3qzezte"
+    ],
+    "snapshot": "history/advances/adv-1793191489181.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22772.003207098212
+    }
   }
 ]
