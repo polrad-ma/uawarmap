@@ -3843,5 +3843,38 @@
       "ru": 148250.01284066943,
       "ua": 22772.003207098212
     }
+  },
+  {
+    "id": "adv-1793201367949",
+    "date": "2026-10-28",
+    "time": "16:29:27",
+    "text_en": "Ukrainians consolidated in Zarichne",
+    "text_ru": "ВСУ закрепились в Заречном",
+    "text": "Ukrainians consolidated in Zarichne",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 26.37,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 26.37
+      }
+    ],
+    "areaDisplay": "+26.37 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 48.96579381461063,
+      "west": 37.75451660156251,
+      "north": 49.06486885623368,
+      "east": 38.01887512207032
+    },
+    "polygonFids": [
+      "advance-1793201322503-8gwprav2yxh"
+    ],
+    "snapshot": "history/advances/adv-1793201367949.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22772.003207098212
+    }
   }
 ]
