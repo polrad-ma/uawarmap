@@ -3685,5 +3685,71 @@
       "ru": 148250.01284066943,
       "ua": 22772.003207098212
     }
+  },
+  {
+    "id": "adv-1793198810874",
+    "date": "2026-10-28",
+    "time": "15:46:50",
+    "text_en": "Minkivka was cleared",
+    "text_ru": "Миньковку зачистили",
+    "text": "Minkivka was cleared",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 16.41,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 16.41
+      }
+    ],
+    "areaDisplay": "+16.41 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 48.649922875532326,
+      "west": 37.70370483398438,
+      "north": 48.75799945448167,
+      "east": 37.95948028564453
+    },
+    "polygonFids": [
+      "advance-1793198704405-c12j31zbbuf"
+    ],
+    "snapshot": "history/advances/adv-1793198810874.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22772.003207098212
+    }
+  },
+  {
+    "id": "adv-1793199220290",
+    "date": "2026-10-28",
+    "time": "15:53:40",
+    "text_en": "Russian forces cleared Minkivka",
+    "text_ru": "ВС РФ зачистили Миньковку",
+    "text": "Russian forces cleared Minkivka",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 16.29,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 16.29
+      }
+    ],
+    "areaDisplay": "+16.29 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 48.657634129568045,
+      "west": 37.71675109863282,
+      "north": 48.74554963111785,
+      "east": 37.93373107910157
+    },
+    "polygonFids": [
+      "advance-1793199164395-hwkt5zmdwz7"
+    ],
+    "snapshot": "history/advances/adv-1793199220290.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22772.003207098212
+    }
   }
 ]
