@@ -3586,5 +3586,38 @@
       "ru": 148250.01284066943,
       "ua": 22772.003207098212
     }
+  },
+  {
+    "id": "adv-1793167630985",
+    "date": "2026-10-28",
+    "time": "07:07:10",
+    "text_en": "Ukrainians recaptured a part of Yampil",
+    "text_ru": "ВСУ вернули часть Ямполя",
+    "text": "Ukrainians recaptured a part of Yampil",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 4.81,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 4.81
+      }
+    ],
+    "areaDisplay": "+4.81 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 48.90467445271852,
+      "west": 37.88360595703126,
+      "north": 48.95688993142162,
+      "east": 38.01012039184571
+    },
+    "polygonFids": [
+      "advance-1793167594090-hdnq1d45prj"
+    ],
+    "snapshot": "history/advances/adv-1793167630985.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22772.003207098212
+    }
   }
 ]
