@@ -3652,5 +3652,38 @@
       "ru": 148250.01284066943,
       "ua": 22772.003207098212
     }
+  },
+  {
+    "id": "adv-1793195027967",
+    "date": "2026-10-28",
+    "time": "14:43:47",
+    "text_en": "The clearing of the Prykolotne pocket continues",
+    "text_ru": "Зачистка кармана у Приколотного продолжается",
+    "text": "The clearing of the Prykolotne pocket continues",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 34.59,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 34.59
+      }
+    ],
+    "areaDisplay": "+34.59 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 50.19008853427835,
+      "west": 37.04315185546876,
+      "north": 50.45531820438789,
+      "east": 37.75177001953126
+    },
+    "polygonFids": [
+      "advance-1793194886363-krf48u8kag"
+    ],
+    "snapshot": "history/advances/adv-1793195027967.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22772.003207098212
+    }
   }
 ]
