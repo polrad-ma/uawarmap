@@ -3751,5 +3751,38 @@
       "ru": 148250.01284066943,
       "ua": 22772.003207098212
     }
+  },
+  {
+    "id": "adv-1793199891304",
+    "date": "2026-10-28",
+    "time": "16:04:51",
+    "text_en": "The forest north of Rai-Oleksandrivka was recaptured by the AFU",
+    "text_ru": "Лес севернее Рай-Александровки перешел под контроль ВСУ",
+    "text": "The forest north of Rai-Oleksandrivka was recaptured by the AFU",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 5.41,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 5.41
+      }
+    ],
+    "areaDisplay": "+5.41 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 48.80686346108519,
+      "west": 37.78318405151368,
+      "north": 48.86753782173757,
+      "east": 37.95673370361329
+    },
+    "polygonFids": [
+      "advance-1793199771349-h8h1g551dci"
+    ],
+    "snapshot": "history/advances/adv-1793199891304.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22772.003207098212
+    }
   }
 ]
