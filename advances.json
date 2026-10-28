@@ -3784,5 +3784,64 @@
       "ru": 148250.01284066943,
       "ua": 22772.003207098212
     }
+  },
+  {
+    "id": "adv-1793200588967",
+    "date": "2026-10-28",
+    "time": "16:16:28",
+    "text_en": "Correction of the Lyman direction",
+    "text_ru": "Коррекция Лиманского направления",
+    "text": "Correction of the Lyman direction",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 0,
+    "areaEffects": [],
+    "areaDisplay": "",
+    "areaColor": "red",
+    "focus": {
+      "south": 48.93287533803109,
+      "west": 37.47779846191407,
+      "north": 49.226118035107966,
+      "east": 38.18916320800782
+    },
+    "polygonFids": [],
+    "snapshot": "history/advances/adv-1793200588967.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22772.003207098212
+    }
+  },
+  {
+    "id": "adv-1793200965309",
+    "date": "2026-10-28",
+    "time": "16:22:45",
+    "text_en": "Druzhkivka direction. Russians captured Vesele",
+    "text_ru": "Дружковсков направление. ВС РФ заняли н.п. Веселое",
+    "text": "Druzhkivka direction. Russians captured Vesele",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 2.52,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 2.52
+      }
+    ],
+    "areaDisplay": "+2.52 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 48.49761138581037,
+      "west": 37.18614578247071,
+      "north": 48.568315530424194,
+      "east": 37.37325668334962
+    },
+    "polygonFids": [
+      "advance-1793200883812-4phe14dufjn"
+    ],
+    "snapshot": "history/advances/adv-1793200965309.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22772.003207098212
+    }
   }
 ]
