@@ -3718,22 +3718,6 @@
       "ru": 148250.01284066943,
       "ua": 22772.003207098212
     }
-  },
-  {
-    "id": "adv-1793199220290",
-    "date": "2026-10-28",
-    "time": "15:53:40",
-    "text_en": "Russian forces cleared Minkivka",
-    "text_ru": "ВС РФ зачистили Миньковку",
-    "text": "Russian forces cleared Minkivka",
-    "side": "ru",
-    "advanceType": "normal",
-    "areaChange": 16.29,
-    "areaEffects": [
-      {
-        "side": "ru",
-        "value": 16.29
-      }
     ],
     "areaDisplay": "+16.29 km²",
     "areaColor": "red",
