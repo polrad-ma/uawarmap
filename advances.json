@@ -3942,5 +3942,38 @@
       "ru": 148250.01284066943,
       "ua": 22772.003207098212
     }
+  },
+  {
+    "id": "adv-1793291138988",
+    "date": "2026-10-29",
+    "time": "17:25:38",
+    "text_en": "Russian forces captured Hruzke",
+    "text_ru": "ВС РФ заняли Грузское",
+    "text": "Russian forces captured Hruzke",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 14.23,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 14.23
+      }
+    ],
+    "areaDisplay": "+14.23 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 48.47314888601627,
+      "west": 37.17910766601563,
+      "north": 48.5650212291757,
+      "east": 37.4081039428711
+    },
+    "polygonFids": [
+      "advance-1793290982946-yt25ynnlg4h"
+    ],
+    "snapshot": "history/advances/adv-1793291138988.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22772.003207098212
+    }
   }
 ]
