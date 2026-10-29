@@ -3876,5 +3876,38 @@
       "ru": 148250.01284066943,
       "ua": 22772.003207098212
     }
+  },
+  {
+    "id": "adv-1793275398933",
+    "date": "2026-10-29",
+    "time": "13:03:18",
+    "text_en": "Russian consolidation in Raiske",
+    "text_ru": "Позиция ВС РФ в Райском",
+    "text": "Russian consolidation in Raiske",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 2.92,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 2.92
+      }
+    ],
+    "areaDisplay": "+2.92 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 48.517968838568294,
+      "west": 37.32227325439454,
+      "north": 48.59148317177015,
+      "east": 37.55418777465821
+    },
+    "polygonFids": [
+      "advance-1793275329389-dhj1f9hbnxn"
+    ],
+    "snapshot": "history/advances/adv-1793275398933.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22772.003207098212
+    }
   }
 ]
