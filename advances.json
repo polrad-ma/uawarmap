@@ -3909,5 +3909,38 @@
       "ru": 148250.01284066943,
       "ua": 22772.003207098212
     }
+  },
+  {
+    "id": "adv-1793275951693",
+    "date": "2026-10-29",
+    "time": "13:12:31",
+    "text_en": "Russians entered Osykove",
+    "text_ru": "ВС РФ вошли в Осыково",
+    "text": "Russians entered Osykove",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 1.22,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 1.22
+      }
+    ],
+    "areaDisplay": "+1.22 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 48.51592209021444,
+      "west": 37.55813598624552,
+      "north": 48.58012781158618,
+      "east": 37.7219009398588
+    },
+    "polygonFids": [
+      "advance-1793275913271-vtr17dld92p"
+    ],
+    "snapshot": "history/advances/adv-1793275951693.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22772.003207098212
+    }
   }
 ]
