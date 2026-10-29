@@ -3718,23 +3718,6 @@
       "ru": 148250.01284066943,
       "ua": 22772.003207098212
     }
-    ],
-    "areaDisplay": "+16.29 km²",
-    "areaColor": "red",
-    "focus": {
-      "south": 48.657634129568045,
-      "west": 37.71675109863282,
-      "north": 48.74554963111785,
-      "east": 37.93373107910157
-    },
-    "polygonFids": [
-      "advance-1793199164395-hwkt5zmdwz7"
-    ],
-    "snapshot": "history/advances/adv-1793199220290.json",
-    "beforeAreas": {
-      "ru": 148250.01284066943,
-      "ua": 22772.003207098212
-    }
   },
   {
     "id": "adv-1793199891304",
@@ -3856,6 +3839,39 @@
       "advance-1793201322503-8gwprav2yxh"
     ],
     "snapshot": "history/advances/adv-1793201367949.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22772.003207098212
+    }
+  },
+  {
+    "id": "adv-1793274688838",
+    "date": "2026-10-29",
+    "time": "12:51:28",
+    "text_en": "Virtually all of Rybne came under Ukrainian control",
+    "text_ru": "Практически весь н.п. Рыбное перешел под контроль ВСУ",
+    "text": "Virtually all of Rybne came under Ukrainian control",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 3.38,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 3.38
+      }
+    ],
+    "areaDisplay": "+3.38 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 47.782596521703674,
+      "west": 36.26449584960938,
+      "north": 47.83274829756654,
+      "east": 36.40508651733399
+    },
+    "polygonFids": [
+      "advance-1793274591629-age0clmb0fv"
+    ],
+    "snapshot": "history/advances/adv-1793274688838.json",
     "beforeAreas": {
       "ru": 148250.01284066943,
       "ua": 22772.003207098212
