@@ -4043,5 +4043,38 @@
       "ru": 148250.01284066943,
       "ua": 22772.003207098212
     }
+  },
+  {
+    "id": "adv-1793393987222",
+    "date": "2026-10-30",
+    "time": "21:59:47",
+    "text_en": "Russian forces completed the capture of Osykove",
+    "text_ru": "ВС РФ заняли Осыково",
+    "text": "Russian forces completed the capture of Osykove",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 0.15,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 0.15
+      }
+    ],
+    "areaDisplay": "+0.15 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 48.53172538948382,
+      "west": 37.56096839904786,
+      "north": 48.58058207500111,
+      "east": 37.69220352172852
+    },
+    "polygonFids": [
+      "advance-1793393930774-iy8vwwu8uym"
+    ],
+    "snapshot": "history/advances/adv-1793393987222.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22772.003207098212
+    }
   }
 ]
