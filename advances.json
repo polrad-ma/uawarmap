@@ -3975,5 +3975,39 @@
       "ru": 148250.01284066943,
       "ua": 22772.003207098212
     }
+  },
+  {
+    "id": "adv-1793341474987",
+    "date": "2026-10-30",
+    "time": "07:24:34",
+    "text_en": "Ukrainian forces recaptured Yehorivka and Zlahoda",
+    "text_ru": "ВСУ восстановили контроль над Егоровкой и Злагодой",
+    "text": "Ukrainian forces recaptured Yehorivka and Zlahoda",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 7.36,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 7.36
+      }
+    ],
+    "areaDisplay": "+7.36 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 47.800472248211776,
+      "west": 36.234970092773445,
+      "north": 47.877785926807086,
+      "east": 36.42688751220704
+    },
+    "polygonFids": [
+      "advance-1793341348136-qlw0f4qs9e",
+      "advance-1793341379555-lzsi8l6qho"
+    ],
+    "snapshot": "history/advances/adv-1793341474987.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22772.003207098212
+    }
   }
 ]
