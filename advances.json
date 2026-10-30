@@ -4009,5 +4009,39 @@
       "ru": 148250.01284066943,
       "ua": 22772.003207098212
     }
+  },
+  {
+    "id": "adv-1793366525990",
+    "date": "2026-10-30",
+    "time": "14:22:05",
+    "text_en": "Russian forces captured most of Dovzhanka",
+    "text_ru": "ВС РФ заняли большую часть Должанки",
+    "text": "Russian forces captured most of Dovzhanka",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 10.88,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 10.88
+      }
+    ],
+    "areaDisplay": "+10.88 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 50.15688571126106,
+      "west": 37.40381240844727,
+      "north": 50.22788086350316,
+      "east": 37.60242462158204
+    },
+    "polygonFids": [
+      "advance-1793366418918-owgqiwq7cb",
+      "advance-1793366483063-nr6o8g0h0pq"
+    ],
+    "snapshot": "history/advances/adv-1793366525990.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22772.003207098212
+    }
   }
 ]
