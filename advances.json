@@ -4076,5 +4076,39 @@
       "ru": 148250.01284066943,
       "ua": 22772.003207098212
     }
+  },
+  {
+    "id": "adv-1793394375868",
+    "date": "2026-10-30",
+    "time": "22:06:15",
+    "text_en": "The remainder of Russian infiltrations in Bylyi Kolodiaz has been cleared",
+    "text_ru": "Остатки инфильтраторов ВС РФ в Белом Колодези были зачищены",
+    "text": "The remainder of Russian infiltrations in Bylyi Kolodiaz has been cleared",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 15.54,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 15.54
+      }
+    ],
+    "areaDisplay": "+15.54 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 50.179646424946085,
+      "west": 36.9906234741211,
+      "north": 50.2614733091877,
+      "east": 37.243480682373054
+    },
+    "polygonFids": [
+      "advance-1793394275466-op02f0orbap",
+      "advance-1793394308955-dvgmpghdju"
+    ],
+    "snapshot": "history/advances/adv-1793394375868.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22772.003207098212
+    }
   }
 ]
