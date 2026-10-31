@@ -4110,5 +4110,38 @@
       "ru": 148250.01284066943,
       "ua": 22772.003207098212
     }
+  },
+  {
+    "id": "adv-1793454460081",
+    "date": "2026-10-31",
+    "time": "14:47:40",
+    "text_en": "Russian forces restored control over some positions in Kupyansk and Moskovka",
+    "text_ru": "ВС РФ восстановили контроль над рядом позиций в Купянске и Московке",
+    "text": "Russian forces restored control over some positions in Kupyansk and Moskovka",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 1.45,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 1.45
+      }
+    ],
+    "areaDisplay": "+1.45 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 49.7039448650646,
+      "west": 37.53616333007813,
+      "north": 49.74356277185767,
+      "east": 37.64465332031251
+    },
+    "polygonFids": [
+      "advance-1793454336049-5ht9hogw2u2"
+    ],
+    "snapshot": "history/advances/adv-1793454460081.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22772.003207098212
+    }
   }
 ]
