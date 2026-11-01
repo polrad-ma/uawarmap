@@ -4176,5 +4176,39 @@
       "ru": 148250.01284066943,
       "ua": 22772.003207098212
     }
+  },
+  {
+    "id": "adv-1793538891979",
+    "date": "2026-11-01",
+    "time": "14:14:51",
+    "text_en": "Russian forces captured Raiske on the Druzhkivka direction",
+    "text_ru": "ВС РФ заняли Райское на Дружковском направлении",
+    "text": "Russian forces captured Raiske on the Druzhkivka direction",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 6.91,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 6.91
+      }
+    ],
+    "areaDisplay": "+6.91 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 48.50102381984174,
+      "west": 37.39643096923829,
+      "north": 48.57365411466185,
+      "east": 37.56637573242188
+    },
+    "polygonFids": [
+      "advance-1793538741125-f42rc08w8u9",
+      "advance-1793538820556-4bgl3r55qpn"
+    ],
+    "snapshot": "history/advances/adv-1793538891979.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22772.003207098212
+    }
   }
 ]
