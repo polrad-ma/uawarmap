@@ -4143,5 +4143,38 @@
       "ru": 148250.01284066943,
       "ua": 22772.003207098212
     }
+  },
+  {
+    "id": "adv-1793526810175",
+    "date": "2026-11-01",
+    "time": "10:53:30",
+    "text_en": "Toretske and Sofiivka were cleared by Russians",
+    "text_ru": "Торецкое и Софиевка были зачищены ВС РФ",
+    "text": "Toretske and Sofiivka were cleared by Russians",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 14.9,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 14.9
+      }
+    ],
+    "areaDisplay": "+14.90 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 48.47918027247288,
+      "west": 37.27695465087891,
+      "north": 48.53695417239914,
+      "east": 37.43762969970704
+    },
+    "polygonFids": [
+      "advance-1793526737534-jeudilhrc4l"
+    ],
+    "snapshot": "history/advances/adv-1793526810175.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22772.003207098212
+    }
   }
 ]
