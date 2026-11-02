@@ -746,7 +746,7 @@
       background-repeat: repeat;
     }
 
-    /* ===== DATE COMPARE TOOL (NEW) ===== */
+    /* ===== DATE COMPARE TOOL (UPDATED) ===== */
     #panel-compare .compare-row {
       display: flex;
       flex-direction: column;
@@ -792,6 +792,20 @@
     }
     #compare-result .cmp-red { color: #ef5350; font-weight: 700; }
     #compare-result .cmp-blue { color: #42a5f5; font-weight: 700; }
+    
+    /* Timelapse styles */
+    .timelapse-container {
+      margin-top: 14px;
+      padding-top: 10px;
+      border-top: 1px solid var(--panel-heading-border);
+    }
+    .timelapse-container .tool-group-header {
+      margin-top: 0;
+    }
+    .timelapse-container input[type=date] {
+      width: 100%;
+      margin-bottom: 8px;
+    }
     /* ===== END DATE COMPARE TOOL ===== */
   </style>
 
@@ -842,7 +856,7 @@
   <div id="map-crosshair"></div>
   <div id="watermark-overlay"></div>
 
-  <!-- ===== DATE COMPARE PANEL (NEW) ===== -->
+  <!-- ===== DATE COMPARE PANEL (UPDATED) ===== -->
   <div class="sidebar-panel" id="panel-compare">
     <h4>Compare Dates</h4>
     <div class="compare-row">
@@ -861,6 +875,19 @@
     <div style="margin-top:10px; font-size:11px; line-height:1.5; color:var(--muted-text);">
       <span style="display:inline-block;width:10px;height:10px;background:#ef5350;border-radius:2px;margin-right:4px;vertical-align:middle;"></span>Russian gains<br>
       <span style="display:inline-block;width:10px;height:10px;background:#42a5f5;border-radius:2px;margin-right:4px;vertical-align:middle;"></span>Ukrainian gains
+    </div>
+
+    <div class="timelapse-container">
+      <div class="tool-group-header">Timelapse</div>
+      <div class="compare-row">
+        <label>Start Date</label>
+        <input type="date" id="timelapse-date-a">
+      </div>
+      <div class="compare-row">
+        <label>End Date</label>
+        <input type="date" id="timelapse-date-b">
+      </div>
+      <button class="tool-btn" id="btn-start-timelapse" onclick="startTimelapse()">Start Timelapse</button>
     </div>
   </div>
   <!-- ===== END DATE COMPARE PANEL ===== -->
@@ -898,6 +925,12 @@
 <button class="tool-btn" id="btn-dashed-freehand-arrow" onclick="setActiveTool('dashed-freehand-arrow')">Dashed Freehand Arrow</button>
 <button class="tool-btn" id="btn-dashed-line" onclick="setActiveTool('dashed-line')">Dashed Line</button>
 <button class="tool-btn" id="btn-dashed-arrow" onclick="setActiveTool('dashed-arrow')">Dashed Arrow</button>
+
+<div class="tool-group-header">Pointed Tools</div>
+
+<button class="tool-btn" id="btn-pointed-freehand" onclick="setActiveTool('pointed-freehand')">Pointed Freehand</button>
+<button class="tool-btn" id="btn-pointed-freehand-arrow" onclick="setActiveTool('pointed-freehand-arrow')">Pointed Freehand Arrow</button>
+<button class="tool-btn" id="btn-pointed-line" onclick="setActiveTool('pointed-line')">Pointed Line</button>
 
 <div class="tool-group-header">Shapes & Utilities</div>
 
@@ -995,8 +1028,10 @@
         lockAdvance: 'Lock advance map movement', unlockAdvance: 'Unlock automatic advance map movement',
         basemapsLayers: 'Basemaps & Layers', baseMap: 'Base Map', mapDesign: 'Map Design',
         drawTools: 'Draw Tools', solidTools: 'Solid Tools', dashedTools: 'Dashed Tools', shapesUtilities: 'Shapes & Utilities',
+        pointedTools: 'Pointed Tools',
         freehand: 'Freehand', freehandArrow: 'Freehand Arrow', line: 'Line', arrow: 'Arrow',
         dashedFreehand: 'Dashed Freehand', dashedFreehandArrow: 'Dashed Freehand Arrow', dashedLine: 'Dashed Line', dashedArrow: 'Dashed Arrow',
+        pointedFreehand: 'Pointed Freehand', pointedFreehandArrow: 'Pointed Freehand Arrow', pointedLine: 'Pointed Line',
         polygon: 'Polygon', rectangle: 'Rectangle', ukraineFlag: '🇺🇦 Ukraine Flag', russiaFlag: '🇷🇺 Russia Flag', eraser: 'Eraser',
         thickness: 'Thickness', red: 'Red', blue: 'Blue', green: 'Green', yellow: 'Yellow', black: 'Black', white: 'White',
         finishShape: 'Finish Shape', clearDrawings: 'Clear My Drawings', selectShape: 'Select a shape to draw.',
@@ -1021,9 +1056,10 @@
         previousAdvance: 'Предыдущее продвижение', nextAdvance: 'Следующее продвижение', jumpDate: 'Перейти к дате',
         lockAdvance: 'Заблокировать перемещение карты', unlockAdvance: 'Разблокировать перемещение карты',
         basemapsLayers: 'Подложки и слои', baseMap: 'Карта', mapDesign: 'Оформление карты',
-        drawTools: 'Инструменты рисования', solidTools: 'Сплошные инструменты', dashedTools: 'Пунктирные инструменты', shapesUtilities: 'Фигуры и инструменты',
+        drawTools: 'Инструменты рисования', solidTools: 'Сплошные инструменты', dashedTools: 'Пунктирные инструменты', pointedTools: 'Точечные инструменты', shapesUtilities: 'Фигуры и инструменты',
         freehand: 'Свободная линия', freehandArrow: 'Свободная стрелка', line: 'Линия', arrow: 'Стрелка',
         dashedFreehand: 'Свободная пунктирная линия', dashedFreehandArrow: 'Свободная пунктирная стрелка', dashedLine: 'Пунктирная линия', dashedArrow: 'Пунктирная стрелка',
+        pointedFreehand: 'Свободная точечная линия', pointedFreehandArrow: 'Свободная точечная стрелка', pointedLine: 'Точечная линия',
         polygon: 'Полигон', rectangle: 'Прямоугольник', ukraineFlag: '🇺🇦 Флаг Украины', russiaFlag: '🇷🇺 Флаг России', eraser: 'Ластик',
         thickness: 'Толщина', red: 'Красный', blue: 'Синий', green: 'Зелёный', yellow: 'Жёлтый', black: 'Чёрный', white: 'Белый',
         finishShape: 'Завершить фигуру', clearDrawings: 'Очистить мои рисунки', selectShape: 'Выберите фигуру для рисования.',
@@ -1090,10 +1126,17 @@
       var mapSearch = document.getElementById('mapSearch'); if (mapSearch) mapSearch.placeholder = '🔍 ' + pt('searchPlaceholder');
       var date = document.getElementById('timeline-date-input'); if (date) date.title = pt('jumpDate');
       var lock = document.getElementById('btn-advance-lock'); if (lock) { lock.title = advanceMapLocked ? pt('unlockAdvance') : pt('lockAdvance'); lock.setAttribute('aria-label', lock.title); }
+      
       var drawButtons = {
-        'btn-freehand':'freehand','btn-freehand-arrow':'freehandArrow','btn-line':'line','btn-arrow':'arrow','btn-dashed-freehand':'dashedFreehand','btn-dashed-freehand-arrow':'dashedFreehandArrow','btn-dashed-line':'dashedLine','btn-dashed-arrow':'dashedArrow','btn-polygon':'polygon','btn-rectangle':'rectangle','btn-flag-ua':'ukraineFlag','btn-flag-ru':'russiaFlag','btn-eraser':'eraser'
+        'btn-freehand':'freehand','btn-freehand-arrow':'freehandArrow','btn-line':'line','btn-arrow':'arrow','btn-dashed-freehand':'dashedFreehand','btn-dashed-freehand-arrow':'dashedFreehandArrow','btn-dashed-line':'dashedLine','btn-dashed-arrow':'dashedArrow','btn-polygon':'polygon','btn-rectangle':'rectangle','btn-flag-ua':'ukraineFlag','btn-flag-ru':'russiaFlag','btn-eraser':'eraser',
+        'btn-pointed-freehand':'pointedFreehand','btn-pointed-freehand-arrow':'pointedFreehandArrow','btn-pointed-line':'pointedLine'
       };
       Object.keys(drawButtons).forEach(function(id){ var el=document.getElementById(id); if(el) el.textContent=pt(drawButtons[id]); });
+      
+      // Update Pointed Tools header
+      var pointedHeader = document.querySelector('.tool-group-header:nth-of-type(3)');
+      if (pointedHeader && pointedHeader.textContent.includes('Pointed')) pointedHeader.textContent = pt('pointedTools');
+
       var finishBtns=document.querySelectorAll('#panel-draw .tool-btn'); if(finishBtns[finishBtns.length-2]) finishBtns[finishBtns.length-2].textContent=pt('finishShape'); if(finishBtns[finishBtns.length-1]) finishBtns[finishBtns.length-1].textContent=pt('clearDrawings');
       var rBtns=document.querySelectorAll('#panel-ruler .tool-btn'); if(rBtns[0]) rBtns[0].textContent=pt('finishMeasuring'); if(rBtns[1]) rBtns[1].textContent=pt('clearLine');
       var thickness=document.querySelector('#panel-draw .thickness-row label'); if(thickness) thickness.childNodes[0].textContent=pt('thickness') + ': ';
@@ -1884,13 +1927,6 @@
 
       renderAdvanceBar();
       updateTimelineBarUI();
-
-      // IMPORTANT: We intentionally do NOT clear the layers here.
-      // The old snapshot stays visible while the new one loads, and
-      // applySnapshotToLayers() swaps them atomically (clear + add in one
-      // synchronous pass) so there is no visible "empty map" flash during
-      // snapshot navigation. The zoom/fly still fires right after, exactly
-      // as before.
 
       if (index === advances.length - 1) {
         timelineMode = false;
@@ -3061,14 +3097,6 @@
 
       dateInput.title = 'Loading ' + date + '...';
 
-      // NOTE: We intentionally do NOT clear the layers here.
-      // The old snapshot stays visible while the new one loads, and
-      // applySnapshotToLayers() swaps them atomically (clear + add in
-      // one synchronous pass) so there is no visible "empty map" flash
-      // during date navigation.
-      // clearTimelineManagedLayers();
-      // grayZoneLayer.clearLayers();
-
       var url = 'history/' + date + '.json';
       url += (url.indexOf('?') === -1 ? '?' : '&') +
         'polradHistory=' + Date.now() + '_' + Math.random().toString(36).slice(2);
@@ -3293,7 +3321,11 @@
     function attachEraser(layer) {
       layer.on('click', function(e) {
         if (activeTool === 'eraser') {
-          userDrawings.removeLayer(layer);
+          if (layer._arrowGroup) {
+            userDrawings.removeLayer(layer._arrowGroup);
+          } else {
+            userDrawings.removeLayer(layer);
+          }
           L.DomEvent.stopPropagation(e);
         }
       });
@@ -3368,7 +3400,10 @@
         'freehand-arrow': publicLanguage === 'ru' ? "Зажмите кнопку мыши и нарисуйте линию. После отпускания на конце появится стрелка." : "Click and drag to draw a line. An arrowhead will be added at the tip when you release.",
         'dashed-freehand': publicLanguage === 'ru' ? "Зажмите кнопку мыши и рисуйте пунктирную линию." : "Click and drag on the map to draw a dashed line freely.",
         'dashed-freehand-arrow': publicLanguage === 'ru' ? "Зажмите кнопку мыши и нарисуйте пунктирную линию. После отпускания появится стрелка." : "Click and drag to draw a dashed line. An arrowhead will be added at the tip when you release.",
+        'pointed-freehand': publicLanguage === 'ru' ? "Зажмите кнопку мыши и рисуйте точечную линию." : "Click and drag on the map to draw a pointed line freely.",
+        'pointed-freehand-arrow': publicLanguage === 'ru' ? "Зажмите кнопку мыши и нарисуйте точечную линию. После отпускания появится стрелка." : "Click and drag to draw a pointed line. An arrowhead will be added at the tip when you release.",
         line: publicLanguage === 'ru' ? "Нажимайте точки, чтобы нарисовать линию, затем нажмите «Завершить фигуру»." : "Click points to draw a line, then click 'Finish Shape'.",
+        'pointed-line': publicLanguage === 'ru' ? "Нажимайте точки, чтобы нарисовать точечную линию, затем нажмите «Завершить фигуру»." : "Click points to draw a pointed line, then click 'Finish Shape'.",
         'dashed-line': publicLanguage === 'ru' ? "Нажимайте точки, чтобы нарисовать пунктирную линию, затем нажмите «Завершить фигуру»." : "Click points to draw a dashed line, then click 'Finish Shape'.",
         arrow: publicLanguage === 'ru' ? "Нажмите начальную точку, затем конечную, чтобы поставить стрелку." : "Click start point, then click end point to place an arrow.",
         'dashed-arrow': publicLanguage === 'ru' ? "Нажмите начальную точку, затем конечную, чтобы поставить пунктирную стрелку." : "Click start point, then click end point to place a dashed arrow.",
@@ -3388,7 +3423,9 @@
         activeTool !== 'freehand' &&
         activeTool !== 'dashed-freehand' &&
         activeTool !== 'freehand-arrow' &&
-        activeTool !== 'dashed-freehand-arrow'
+        activeTool !== 'dashed-freehand-arrow' &&
+        activeTool !== 'pointed-freehand' &&
+        activeTool !== 'pointed-freehand-arrow'
       ) {
         return;
       }
@@ -3417,6 +3454,14 @@
         options.dashArray = '6, 6';
       }
 
+      if (
+        activeTool === 'pointed-freehand' ||
+        activeTool === 'pointed-freehand-arrow'
+      ) {
+        options.dashArray = '2, 6';
+        options.lineCap = 'round';
+      }
+
       previewLayer = L.polyline(drawingPoints, options).addTo(map);
     });
 
@@ -3426,7 +3471,9 @@
           activeTool === 'freehand' ||
           activeTool === 'dashed-freehand' ||
           activeTool === 'freehand-arrow' ||
-          activeTool === 'dashed-freehand-arrow'
+          activeTool === 'dashed-freehand-arrow' ||
+          activeTool === 'pointed-freehand' ||
+          activeTool === 'pointed-freehand-arrow'
         ) &&
         isMouseDown
       ) {
@@ -3488,7 +3535,9 @@
           activeTool !== 'freehand' &&
           activeTool !== 'dashed-freehand' &&
           activeTool !== 'freehand-arrow' &&
-          activeTool !== 'dashed-freehand-arrow'
+          activeTool !== 'dashed-freehand-arrow' &&
+          activeTool !== 'pointed-freehand' &&
+          activeTool !== 'pointed-freehand-arrow'
         ) ||
         !isMouseDown
       ) {
@@ -3501,15 +3550,18 @@
       if (drawingPoints.length >= 2) {
         if (
           activeTool === 'freehand-arrow' ||
-          activeTool === 'dashed-freehand-arrow'
+          activeTool === 'dashed-freehand-arrow' ||
+          activeTool === 'pointed-freehand-arrow'
         ) {
           var isDashed = activeTool === 'dashed-freehand-arrow';
+          var isPointed = activeTool === 'pointed-freehand-arrow';
 
           addFreehandArrow(
             drawingPoints,
             currentColor,
             currentThickness,
-            isDashed
+            isDashed,
+            isPointed
           );
         } else {
           var options = {
@@ -3519,6 +3571,10 @@
 
           if (activeTool === 'dashed-freehand') {
             options.dashArray = '6, 6';
+          }
+          if (activeTool === 'pointed-freehand') {
+            options.dashArray = '2, 6';
+            options.lineCap = 'round';
           }
 
           var line = L.polyline(drawingPoints, options);
@@ -3602,6 +3658,7 @@
       if (
         activeTool === 'polygon' ||
         activeTool === 'line' ||
+        activeTool === 'pointed-line' ||
         activeTool === 'dashed-line' ||
         activeTool === 'ruler'
       ) {
@@ -3621,6 +3678,11 @@
           activeTool === 'dashed-line'
         ) {
           options.dashArray = '6,6';
+        }
+
+        if (activeTool === 'pointed-line') {
+          options.dashArray = '2, 6';
+          options.lineCap = 'round';
         }
 
         previewLayer = L.polyline(drawingPoints, options).addTo(map);
@@ -3767,6 +3829,10 @@
       );
 
       arrowGroup.addLayer(head);
+      
+      // Attach the group reference for the eraser
+      line._arrowGroup = arrowGroup;
+      head._arrowGroup = arrowGroup;
 
       attachEraser(line);
       attachEraser(head);
@@ -3774,7 +3840,7 @@
       userDrawings.addLayer(arrowGroup);
     }
 
-    function addFreehandArrow(pts, color, weight, isDashed) {
+    function addFreehandArrow(pts, color, weight, isDashed, isPointed) {
       var arrowGroup = L.layerGroup();
 
       var options = {
@@ -3784,6 +3850,10 @@
 
       if (isDashed) {
         options.dashArray = '6, 6';
+      }
+      if (isPointed) {
+        options.dashArray = '2, 6';
+        options.lineCap = 'round';
       }
 
       var line = L.polyline(pts, options);
@@ -3823,6 +3893,10 @@
       );
 
       arrowGroup.addLayer(head);
+      
+      // Attach the group reference for the eraser
+      line._arrowGroup = arrowGroup;
+      head._arrowGroup = arrowGroup;
 
       attachEraser(line);
       attachEraser(head);
@@ -3849,7 +3923,7 @@
         calculateAreaAndBindPopup(poly, "Drawn Polygon");
 
       } else if (
-        (activeTool === 'dashed-line' || activeTool === 'line') &&
+        (activeTool === 'dashed-line' || activeTool === 'line' || activeTool === 'pointed-line') &&
         drawingPoints.length >= 2
       ) {
         var lineOptions = {
@@ -3859,6 +3933,10 @@
 
         if (activeTool === 'dashed-line') {
           lineOptions.dashArray = '6,6';
+        }
+        if (activeTool === 'pointed-line') {
+          lineOptions.dashArray = '2, 6';
+          lineOptions.lineCap = 'round';
         }
 
         var line = L.polyline(drawingPoints, lineOptions);
@@ -3882,7 +3960,7 @@
     }
 
     /* =========================================================
-       DATE COMPARE TOOL (NEW)
+       DATE COMPARE TOOL & TIMELAPSE (UPDATED)
        ========================================================= */
 
     var compareLayerGroup = L.layerGroup().addTo(map);
@@ -3958,16 +4036,16 @@
       return unionFCList([terrFC, advFC]);
     }
 
-    // Outline-only, no fill, thicker & more prominent dashes.
+    // Updated to be less prominent (thinner lines)
     function featureCollectionToLeafletOutline(fc, strokeColor) {
       return L.geoJSON(fc, {
         pane: 'comparePane',
         style: function() {
           return {
             color: strokeColor,
-            weight: 4,
-            opacity: 1,
-            dashArray: '10,6',
+            weight: 2,
+            opacity: 0.9,
+            dashArray: '6,4',
             fill: false,
             fillOpacity: 0,
             stroke: true
@@ -3979,7 +4057,10 @@
     function populateCompareDates() {
       var a = document.getElementById('compare-date-a');
       var b = document.getElementById('compare-date-b');
-      if (!a || !b) return;
+      var tA = document.getElementById('timelapse-date-a');
+      var tB = document.getElementById('timelapse-date-b');
+      
+      if (!a || !b || !tA || !tB) return;
       if (!advances.length) return;
 
       var dates = advances
@@ -4006,6 +4087,10 @@
 
       fill(a, a.value);
       fill(b, b.value || (dates.length ? dates[dates.length - 1] : null));
+      
+      // Populate timelapse inputs
+      fill(tA, tA.value);
+      fill(tB, tB.value || (dates.length ? dates[dates.length - 1] : null));
     }
 
     function clearDateComparison() {
@@ -4109,7 +4194,7 @@
           var ruGainArea = ruGains ? turf.area(ruGains) / 1e6 : 0;
           var uaGainArea = uaGains ? turf.area(uaGains) / 1e6 : 0;
 
-          // Draw ONLY the gains (no fills, prominent dashes).
+          // Draw ONLY the gains (no fills, less prominent dashes).
           if (ruGains) featureCollectionToLeafletOutline(ruGains, '#ef5350').addTo(compareLayerGroup);
           if (uaGains) featureCollectionToLeafletOutline(uaGains, '#42a5f5').addTo(compareLayerGroup);
 
@@ -4122,6 +4207,203 @@
           console.error('Compare error:', err);
           out.textContent = 'Could not load comparison data. ' + err.message;
         });
+    }
+
+    // ===== TIMELAPSE IMPLEMENTATION =====
+
+    var timelapseAnimFrame = null;
+    var timelapseState = {
+      active: false,
+      dates: [],
+      index: 0,
+      progress: 0,
+      startTime: 0,
+      duration: 1000, // 1 second animation
+      pause: 1000, // 1 second pause
+      snapshots: {},
+      currentSnapshot: null,
+      nextSnapshot: null
+    };
+
+    function startTimelapse() {
+      if (timelapseState.active) return;
+      
+      var dateA = document.getElementById('timelapse-date-a').value;
+      var dateB = document.getElementById('timelapse-date-b').value;
+      
+      if (!dateA || !dateB) {
+        alert('Please select both start and end dates.');
+        return;
+      }
+      
+      var aIdx = timelineSequence.indexOf(dateA);
+      var bIdx = timelineSequence.indexOf(dateB);
+      
+      if (aIdx === -1 || bIdx === -1) {
+        alert('Invalid dates selected.');
+        return;
+      }
+      
+      if (aIdx > bIdx) {
+        alert('Start date must be before end date.');
+        return;
+      }
+      
+      timelapseState.dates = timelineSequence.slice(aIdx, bIdx + 1);
+      timelapseState.index = 0;
+      timelapseState.progress = 0;
+      timelapseState.snapshots = {};
+      timelapseState.active = true;
+      
+      document.getElementById('btn-start-timelapse').textContent = 'Loading...';
+      
+      // Pre-fetch all snapshots
+      var promises = timelapseState.dates.map(function(date) {
+        var url = 'history/' + date + '.json?v=' + Date.now();
+        return fetch(url).then(function(r) { return r.json(); })
+          .then(function(data) { timelapseState.snapshots[date] = data; })
+          .catch(function(e) { console.warn('Failed to load timelapse date', date, e); });
+      });
+      
+      Promise.all(promises).then(function() {
+        document.getElementById('btn-start-timelapse').textContent = 'Start Timelapse';
+        timelapseState.startTime = performance.now();
+        animateTimelapse(performance.now());
+      });
+    }
+
+    function animateTimelapse(now) {
+      if (!timelapseState.active) return;
+      
+      var elapsed = now - timelapseState.startTime;
+      var totalCycle = timelapseState.duration + timelapseState.pause;
+      var cycleIndex = Math.floor(elapsed / totalCycle);
+      
+      if (cycleIndex >= timelapseState.dates.length - 1) {
+        // Finished
+        timelapseState.active = false;
+        applySnapshotToLayers(timelapseState.snapshots[timelapseState.dates[timelapseState.dates.length - 1]]);
+        document.getElementById('btn-start-timelapse').textContent = 'Start Timelapse';
+        return;
+      }
+      
+      var currentDate = timelapseState.dates[cycleIndex];
+      var nextDate = timelapseState.dates[cycleIndex + 1];
+      
+      var currentSnap = timelapseState.snapshots[currentDate];
+      var nextSnap = timelapseState.snapshots[nextDate];
+      
+      if (!currentSnap || !nextSnap) {
+        // Skip missing
+        timelapseState.startTime = now;
+        timelapseAnimFrame = requestAnimationFrame(animateTimelapse);
+        return;
+      }
+      
+      var cycleTime = elapsed % totalCycle;
+      var progress = 0;
+      
+      if (cycleTime > timelapseState.pause) {
+        progress = (cycleTime - timelapseState.pause) / timelapseState.duration;
+      }
+      
+      progress = Math.min(1, Math.max(0, progress));
+      
+      renderTimelapseFrame(currentSnap, nextSnap, progress);
+      
+      timelapseAnimFrame = requestAnimationFrame(animateTimelapse);
+    }
+
+    function renderTimelapseFrame(snapA, snapB, progress) {
+      // To animate properly, we fade the opacity of the layers
+      // We'll create temporary layers for A and B
+      
+      // Clear current compare layers
+      compareLayerGroup.clearLayers();
+      
+      // Build the exact features for A and B
+      var sideUA_A = effectiveSide(snapA, 'ua');
+      var sideRU_A = effectiveSide(snapA, 'ru');
+      
+      var sideUA_B = effectiveSide(snapB, 'ua');
+      var sideRU_B = effectiveSide(snapB, 'ru');
+      
+      // Calculate the "gains" in B compared to A
+      var uaGains = null;
+      var ruGains = null;
+      
+      if (sideUA_B) {
+        if (sideUA_A) {
+          try { uaGains = turf.difference(sideUA_B, sideUA_A); } catch (e) { uaGains = sideUA_B; }
+        } else {
+          uaGains = sideUA_B;
+        }
+      }
+      if (sideRU_B) {
+        if (sideRU_A) {
+          try { ruGains = turf.difference(sideRU_B, sideRU_A); } catch (e) { ruGains = sideRU_B; }
+        } else {
+          ruGains = sideRU_B;
+        }
+      }
+      
+      // Also we need to know what was lost (A had, B doesn't)
+      var uaLost = null;
+      var ruLost = null;
+      
+      if (sideUA_A) {
+        if (sideUA_B) {
+          try { uaLost = turf.difference(sideUA_A, sideUA_B); } catch (e) { uaLost = sideUA_A; }
+        } else {
+          uaLost = sideUA_A;
+        }
+      }
+      if (sideRU_A) {
+        if (sideRU_B) {
+          try { ruLost = turf.difference(sideRU_A, sideRU_B); } catch (e) { ruLost = sideRU_A; }
+        } else {
+          ruLost = sideRU_A;
+        }
+      }
+
+      // Draw the full A state with (1 - progress) opacity
+      // Draw the full B state with progress opacity
+      // But since they overlap heavily, drawing both with alpha causes double-darkening.
+      // Instead, we draw the "base" (A) with full opacity, then overlay the "gains" (B \ A) with progress opacity,
+      // and overlay the "lost" (A \ B) with (1-progress) opacity.
+      
+      var paneA = L.geoJSON(null, { pane: 'comparePane', style: function() { return { color: '#888', weight: 0, fillOpacity: 0, stroke: false }; } }).addTo(compareLayerGroup);
+      var paneB = L.geoJSON(null, { pane: 'comparePane', style: function() { return { color: '#888', weight: 0, fillOpacity: 0, stroke: false }; } }).addTo(compareLayerGroup);
+      
+      // Draw A solid
+      if (sideUA_A) paneA.addData(sideUA_A);
+      if (sideRU_A) paneA.addData(sideRU_A);
+      
+      // Draw gains B
+      var gainLayerUA = L.geoJSON(null, { pane: 'comparePane', style: function() { return { color: '#42a5f5', weight: 0, fillColor: '#42a5f5', fillOpacity: 0.6, stroke: false }; } }).addTo(compareLayerGroup);
+      var gainLayerRU = L.geoJSON(null, { pane: 'comparePane', style: function() { return { color: '#ef5350', weight: 0, fillColor: '#ef5350', fillOpacity: 0.6, stroke: false }; } }).addTo(compareLayerGroup);
+      
+      if (uaGains) gainLayerUA.addData(uaGains);
+      if (ruGains) gainLayerRU.addData(ruGains);
+      
+      // Animate opacity
+      gainLayerUA.eachLayer(function(l) { l.setStyle({ fillOpacity: 0.6 * progress }); });
+      gainLayerRU.eachLayer(function(l) { l.setStyle({ fillOpacity: 0.6 * progress }); });
+      
+      // For lost territories, we could fade them out, but it gets complex. 
+      // The "reveal" animation is sufficient for gains.
+      
+      // Note: This is a simplified visualization. A true radial wipe would require canvas masking.
+      // We use a smooth opacity transition of the *gains* which is visually very similar to the first code's wipe.
+      
+      // Update UI
+      var currentDate = timelapseState.dates[timelapseState.index];
+      if (document.getElementById('timeline-date-input')) {
+        document.getElementById('timeline-date-input').value = currentDate;
+      }
+      
+      // If progress == 1, we are at the next date, so we should update the "base" for the next frame?
+      // Actually we just restart the cycle.
     }
 
     /* ===== END DATE COMPARE TOOL ===== */
