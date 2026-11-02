@@ -888,6 +888,7 @@
         <input type="date" id="timelapse-date-b">
       </div>
       <button class="tool-btn" id="btn-start-timelapse" onclick="startTimelapse()">Start Timelapse</button>
+      <button class="tool-btn" id="btn-stop-timelapse" onclick="stopTimelapse()" style="display:none; background:#7a3030; color:white;">Stop Timelapse</button>
     </div>
   </div>
   <!-- ===== END DATE COMPARE PANEL ===== -->
@@ -1705,6 +1706,9 @@
     var extraLayers = {};
 
     var liveLayerData = {};
+    // Cache for history snapshots to make loading faster
+    var snapshotCache = {};
+    var grayZoneCache = {};
 
     var initialLayerLoadPromises = [];
 
@@ -1957,20 +1961,29 @@
           return;
         }
 
-        var separator = snapshotUrl.indexOf('?') === -1 ? '?' : '&';
-        snapshotUrl += separator +
-          'polradAdvance=' + Date.now() + '_' + Math.random().toString(36).slice(2);
+        // Check cache first
+        if (snapshotCache[snapshotUrl]) {
+          snapshotPromise = Promise.resolve(snapshotCache[snapshotUrl]);
+        } else {
+          var separator = snapshotUrl.indexOf('?') === -1 ? '?' : '&';
+          snapshotUrl += separator +
+            'polradAdvance=' + Date.now() + '_' + Math.random().toString(36).slice(2);
 
-        snapshotPromise = fetch(snapshotUrl, { cache: 'no-store' })
-          .then(function(response) {
-            if (!response.ok) {
-              throw new Error(
-                'Could not load advance snapshot ' +
-                (item.id || '') + ' (HTTP ' + response.status + ')'
-              );
-            }
-            return response.json();
-          });
+          snapshotPromise = fetch(snapshotUrl, { cache: 'no-store' })
+            .then(function(response) {
+              if (!response.ok) {
+                throw new Error(
+                  'Could not load advance snapshot ' +
+                  (item.id || '') + ' (HTTP ' + response.status + ')'
+                );
+              }
+              return response.json();
+            })
+            .then(function(data) {
+              snapshotCache[snapshotUrl] = data; // Cache it
+              return data;
+            });
+        }
       }
 
       snapshotPromise
@@ -2527,6 +2540,22 @@
         return;
       }
 
+      // OPTIMIZATION: use cache if available
+      var featuresKey = "";
+      try {
+        var ruFeats = getFeaturesFromLayer(ruLayer);
+        var uaFeats = getFeaturesFromLayer(uaLayer);
+        if (ruFeats.length && uaFeats.length) {
+          featuresKey = JSON.stringify(ruFeats[0].geometry) + JSON.stringify(uaFeats[0].geometry);
+          if (grayZoneCache[featuresKey]) {
+            if (grayZoneCache[featuresKey].length) {
+              grayZoneLayer.addData({ type: 'FeatureCollection', features: grayZoneCache[featuresKey] });
+            }
+            return;
+          }
+        }
+      } catch(e) {}
+
       var ruFeatures = getFeaturesFromLayer(ruLayer);
       var uaFeatures = getFeaturesFromLayer(uaLayer);
 
@@ -2624,6 +2653,9 @@
         updateSidebarLayerControl();
         return;
       }
+
+      // Store in cache
+      if (featuresKey) grayZoneCache[featuresKey] = grayPieces;
 
       grayZoneLayer.addData({
         type: 'FeatureCollection',
@@ -3098,6 +3130,15 @@
       dateInput.title = 'Loading ' + date + '...';
 
       var url = 'history/' + date + '.json';
+      
+      if (snapshotCache[url]) {
+        // Cached
+        if (applySnapshotToLayers(snapshotCache[url], requestId)) {
+           dateInput.title = 'Jump to a date';
+        }
+        return;
+      }
+
       url += (url.indexOf('?') === -1 ? '?' : '&') +
         'polradHistory=' + Date.now() + '_' + Math.random().toString(36).slice(2);
 
@@ -3108,6 +3149,7 @@
         })
         .then(function(snapshot) {
           if (requestId !== mapStateRequestId || activeMapState !== 'date') return;
+          snapshotCache[url] = snapshot;
           if (applySnapshotToLayers(snapshot, requestId)) {
             dateInput.title = 'Jump to a date';
           }
@@ -4148,12 +4190,19 @@
         if (!adv) return Promise.reject(new Error('Missing advance'));
         if (adv.snapshotData) return Promise.resolve(adv.snapshotData);
         if (!adv.snapshot) return Promise.reject(new Error('No snapshot path'));
+        
+        if (snapshotCache[adv.snapshot]) return Promise.resolve(snapshotCache[adv.snapshot]);
+
         var sep = adv.snapshot.indexOf('?') === -1 ? '?' : '&';
         var url = adv.snapshot + sep + 'cmp=' + Date.now();
         return fetch(url, { cache: 'no-store' })
           .then(function(r) {
             if (!r.ok) throw new Error('HTTP ' + r.status + ' for ' + adv.snapshot);
             return r.json();
+          })
+          .then(function(d) {
+            snapshotCache[adv.snapshot] = d;
+            return d;
           });
       }
 
@@ -4211,22 +4260,21 @@
 
     // ===== TIMELAPSE IMPLEMENTATION =====
 
-    var timelapseAnimFrame = null;
-    var timelapseState = {
-      active: false,
-      dates: [],
-      index: 0,
-      progress: 0,
-      startTime: 0,
-      duration: 1000, // 1 second animation
-      pause: 1000, // 1 second pause
-      snapshots: {},
-      currentSnapshot: null,
-      nextSnapshot: null
-    };
+    var timelapseTimeout = null;
+    var timelapseActive = false;
+
+    function stopTimelapse() {
+      timelapseActive = false;
+      if (timelapseTimeout) {
+        clearTimeout(timelapseTimeout);
+        timelapseTimeout = null;
+      }
+      document.getElementById('btn-start-timelapse').style.display = 'block';
+      document.getElementById('btn-stop-timelapse').style.display = 'none';
+    }
 
     function startTimelapse() {
-      if (timelapseState.active) return;
+      if (timelapseActive) return;
       
       var dateA = document.getElementById('timelapse-date-a').value;
       var dateB = document.getElementById('timelapse-date-b').value;
@@ -4249,161 +4297,58 @@
         return;
       }
       
-      timelapseState.dates = timelineSequence.slice(aIdx, bIdx + 1);
-      timelapseState.index = 0;
-      timelapseState.progress = 0;
-      timelapseState.snapshots = {};
-      timelapseState.active = true;
+      var datesToPlay = timelineSequence.slice(aIdx, bIdx + 1);
+      var currentIndex = 0;
       
-      document.getElementById('btn-start-timelapse').textContent = 'Loading...';
-      
-      // Pre-fetch all snapshots
-      var promises = timelapseState.dates.map(function(date) {
-        var url = 'history/' + date + '.json?v=' + Date.now();
-        return fetch(url).then(function(r) { return r.json(); })
-          .then(function(data) { timelapseState.snapshots[date] = data; })
-          .catch(function(e) { console.warn('Failed to load timelapse date', date, e); });
+      timelapseActive = true;
+      document.getElementById('btn-start-timelapse').style.display = 'none';
+      document.getElementById('btn-stop-timelapse').style.display = 'block';
+
+      // Pre-fetch all required snapshots
+      var prefetchPromises = datesToPlay.map(function(date) {
+        var url = 'history/' + date + '.json';
+        if (snapshotCache[url]) return Promise.resolve();
+        
+        // use bust to avoid browser cache, but we store in snapshotCache
+        var fetchUrl = url + '?v=' + Date.now() + '_' + Math.random();
+        return fetch(fetchUrl).then(function(r) {
+          if(r.ok) return r.json();
+          throw new Error('fail');
+        }).then(function(data) {
+          snapshotCache[url] = data;
+        }).catch(function(e) {
+          console.warn('Failed to prefetch', date);
+        });
       });
-      
-      Promise.all(promises).then(function() {
-        document.getElementById('btn-start-timelapse').textContent = 'Start Timelapse';
-        timelapseState.startTime = performance.now();
-        animateTimelapse(performance.now());
+
+      Promise.all(prefetchPromises).then(function() {
+        // Start sequence
+        function step() {
+          if (!timelapseActive) return;
+          if (currentIndex >= datesToPlay.length) {
+            stopTimelapse();
+            return;
+          }
+          
+          var d = datesToPlay[currentIndex];
+          
+          // Update UI
+          if (document.getElementById('timeline-date-input')) {
+            document.getElementById('timeline-date-input').value = d;
+          }
+          
+          // Apply snapshot
+          var url = 'history/' + d + '.json';
+          if (snapshotCache[url]) {
+             applySnapshotToLayers(snapshotCache[url]);
+          }
+          
+          currentIndex++;
+          timelapseTimeout = setTimeout(step, 1000);
+        }
+        
+        step();
       });
-    }
-
-    function animateTimelapse(now) {
-      if (!timelapseState.active) return;
-      
-      var elapsed = now - timelapseState.startTime;
-      var totalCycle = timelapseState.duration + timelapseState.pause;
-      var cycleIndex = Math.floor(elapsed / totalCycle);
-      
-      if (cycleIndex >= timelapseState.dates.length - 1) {
-        // Finished
-        timelapseState.active = false;
-        applySnapshotToLayers(timelapseState.snapshots[timelapseState.dates[timelapseState.dates.length - 1]]);
-        document.getElementById('btn-start-timelapse').textContent = 'Start Timelapse';
-        return;
-      }
-      
-      var currentDate = timelapseState.dates[cycleIndex];
-      var nextDate = timelapseState.dates[cycleIndex + 1];
-      
-      var currentSnap = timelapseState.snapshots[currentDate];
-      var nextSnap = timelapseState.snapshots[nextDate];
-      
-      if (!currentSnap || !nextSnap) {
-        // Skip missing
-        timelapseState.startTime = now;
-        timelapseAnimFrame = requestAnimationFrame(animateTimelapse);
-        return;
-      }
-      
-      var cycleTime = elapsed % totalCycle;
-      var progress = 0;
-      
-      if (cycleTime > timelapseState.pause) {
-        progress = (cycleTime - timelapseState.pause) / timelapseState.duration;
-      }
-      
-      progress = Math.min(1, Math.max(0, progress));
-      
-      renderTimelapseFrame(currentSnap, nextSnap, progress);
-      
-      timelapseAnimFrame = requestAnimationFrame(animateTimelapse);
-    }
-
-    function renderTimelapseFrame(snapA, snapB, progress) {
-      // To animate properly, we fade the opacity of the layers
-      // We'll create temporary layers for A and B
-      
-      // Clear current compare layers
-      compareLayerGroup.clearLayers();
-      
-      // Build the exact features for A and B
-      var sideUA_A = effectiveSide(snapA, 'ua');
-      var sideRU_A = effectiveSide(snapA, 'ru');
-      
-      var sideUA_B = effectiveSide(snapB, 'ua');
-      var sideRU_B = effectiveSide(snapB, 'ru');
-      
-      // Calculate the "gains" in B compared to A
-      var uaGains = null;
-      var ruGains = null;
-      
-      if (sideUA_B) {
-        if (sideUA_A) {
-          try { uaGains = turf.difference(sideUA_B, sideUA_A); } catch (e) { uaGains = sideUA_B; }
-        } else {
-          uaGains = sideUA_B;
-        }
-      }
-      if (sideRU_B) {
-        if (sideRU_A) {
-          try { ruGains = turf.difference(sideRU_B, sideRU_A); } catch (e) { ruGains = sideRU_B; }
-        } else {
-          ruGains = sideRU_B;
-        }
-      }
-      
-      // Also we need to know what was lost (A had, B doesn't)
-      var uaLost = null;
-      var ruLost = null;
-      
-      if (sideUA_A) {
-        if (sideUA_B) {
-          try { uaLost = turf.difference(sideUA_A, sideUA_B); } catch (e) { uaLost = sideUA_A; }
-        } else {
-          uaLost = sideUA_A;
-        }
-      }
-      if (sideRU_A) {
-        if (sideRU_B) {
-          try { ruLost = turf.difference(sideRU_A, sideRU_B); } catch (e) { ruLost = sideRU_A; }
-        } else {
-          ruLost = sideRU_A;
-        }
-      }
-
-      // Draw the full A state with (1 - progress) opacity
-      // Draw the full B state with progress opacity
-      // But since they overlap heavily, drawing both with alpha causes double-darkening.
-      // Instead, we draw the "base" (A) with full opacity, then overlay the "gains" (B \ A) with progress opacity,
-      // and overlay the "lost" (A \ B) with (1-progress) opacity.
-      
-      var paneA = L.geoJSON(null, { pane: 'comparePane', style: function() { return { color: '#888', weight: 0, fillOpacity: 0, stroke: false }; } }).addTo(compareLayerGroup);
-      var paneB = L.geoJSON(null, { pane: 'comparePane', style: function() { return { color: '#888', weight: 0, fillOpacity: 0, stroke: false }; } }).addTo(compareLayerGroup);
-      
-      // Draw A solid
-      if (sideUA_A) paneA.addData(sideUA_A);
-      if (sideRU_A) paneA.addData(sideRU_A);
-      
-      // Draw gains B
-      var gainLayerUA = L.geoJSON(null, { pane: 'comparePane', style: function() { return { color: '#42a5f5', weight: 0, fillColor: '#42a5f5', fillOpacity: 0.6, stroke: false }; } }).addTo(compareLayerGroup);
-      var gainLayerRU = L.geoJSON(null, { pane: 'comparePane', style: function() { return { color: '#ef5350', weight: 0, fillColor: '#ef5350', fillOpacity: 0.6, stroke: false }; } }).addTo(compareLayerGroup);
-      
-      if (uaGains) gainLayerUA.addData(uaGains);
-      if (ruGains) gainLayerRU.addData(ruGains);
-      
-      // Animate opacity
-      gainLayerUA.eachLayer(function(l) { l.setStyle({ fillOpacity: 0.6 * progress }); });
-      gainLayerRU.eachLayer(function(l) { l.setStyle({ fillOpacity: 0.6 * progress }); });
-      
-      // For lost territories, we could fade them out, but it gets complex. 
-      // The "reveal" animation is sufficient for gains.
-      
-      // Note: This is a simplified visualization. A true radial wipe would require canvas masking.
-      // We use a smooth opacity transition of the *gains* which is visually very similar to the first code's wipe.
-      
-      // Update UI
-      var currentDate = timelapseState.dates[timelapseState.index];
-      if (document.getElementById('timeline-date-input')) {
-        document.getElementById('timeline-date-input').value = currentDate;
-      }
-      
-      // If progress == 1, we are at the next date, so we should update the "base" for the next frame?
-      // Actually we just restart the cycle.
     }
 
     /* ===== END DATE COMPARE TOOL ===== */
