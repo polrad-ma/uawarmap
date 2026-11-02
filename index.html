@@ -4309,7 +4309,6 @@
         var url = 'history/' + date + '.json';
         if (snapshotCache[url]) return Promise.resolve();
         
-        // use bust to avoid browser cache, but we store in snapshotCache
         var fetchUrl = url + '?v=' + Date.now() + '_' + Math.random();
         return fetch(fetchUrl).then(function(r) {
           if(r.ok) return r.json();
