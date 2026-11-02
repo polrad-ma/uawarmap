@@ -4210,5 +4210,38 @@
       "ru": 148250.01284066943,
       "ua": 22772.003207098212
     }
+  },
+  {
+    "id": "adv-1793651795319",
+    "date": "2026-11-02",
+    "time": "21:36:35",
+    "text_en": "Russian forces recaptured the village of Molocharka",
+    "text_ru": "ВС РФ восстановили контроль над Молочаркой",
+    "text": "Russian forces recaptured the village of Molocharka",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 10.41,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 10.41
+      }
+    ],
+    "areaDisplay": "+10.41 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 48.52899711446347,
+      "west": 37.6139259338379,
+      "north": 48.598862787704626,
+      "east": 37.78335571289063
+    },
+    "polygonFids": [
+      "advance-1793651701300-iw5y960wkjm"
+    ],
+    "snapshot": "history/advances/adv-1793651795319.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22772.003207098212
+    }
   }
 ]
