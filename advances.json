@@ -4243,5 +4243,38 @@
       "ru": 148250.01284066943,
       "ua": 22772.003207098212
     }
+  },
+  {
+    "id": "adv-1793729667565",
+    "date": "2026-11-03",
+    "time": "19:14:27",
+    "text_en": "Ukrainians advance towards Andriivka",
+    "text_ru": "ВСУ прродвигаются в Андреевке",
+    "text": "Ukrainians advance towards Andriivka",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 8.6,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 8.6
+      }
+    ],
+    "areaDisplay": "+8.60 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 51.062651937456636,
+      "west": 34.731559753417976,
+      "north": 51.131538533389175,
+      "east": 34.932060241699226
+    },
+    "polygonFids": [
+      "advance-1793729621076-3wokklo7cds"
+    ],
+    "snapshot": "history/advances/adv-1793729667565.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22772.003207098212
+    }
   }
 ]
