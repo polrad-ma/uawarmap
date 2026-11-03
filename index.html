@@ -790,22 +790,8 @@
       white-space: pre-wrap;
       min-height: 24px;
     }
-    #compare-result .cmp-red { color: #ef5350; font-weight: 700; }
-    #compare-result .cmp-blue { color: #42a5f5; font-weight: 700; }
-    
-    /* Timelapse styles */
-    .timelapse-container {
-      margin-top: 14px;
-      padding-top: 10px;
-      border-top: 1px solid var(--panel-heading-border);
-    }
-    .timelapse-container .tool-group-header {
-      margin-top: 0;
-    }
-    .timelapse-container input[type=date] {
-      width: 100%;
-      margin-bottom: 8px;
-    }
+    #compare-result .cmp-red { color: #b71c1c; font-weight: 700; }
+    #compare-result .cmp-blue { color: #0d47a1; font-weight: 700; }
     /* ===== END DATE COMPARE TOOL ===== */
   </style>
 
@@ -873,22 +859,8 @@
     </div>
     <div id="compare-result">Pick two dates to see territorial gains.</div>
     <div style="margin-top:10px; font-size:11px; line-height:1.5; color:var(--muted-text);">
-      <span style="display:inline-block;width:10px;height:10px;background:#ef5350;border-radius:2px;margin-right:4px;vertical-align:middle;"></span>Russian gains<br>
-      <span style="display:inline-block;width:10px;height:10px;background:#42a5f5;border-radius:2px;margin-right:4px;vertical-align:middle;"></span>Ukrainian gains
-    </div>
-
-    <div class="timelapse-container">
-      <div class="tool-group-header">Timelapse</div>
-      <div class="compare-row">
-        <label>Start Date</label>
-        <input type="date" id="timelapse-date-a">
-      </div>
-      <div class="compare-row">
-        <label>End Date</label>
-        <input type="date" id="timelapse-date-b">
-      </div>
-      <button class="tool-btn" id="btn-start-timelapse" onclick="startTimelapse()">Start Timelapse</button>
-      <button class="tool-btn" id="btn-stop-timelapse" onclick="stopTimelapse()" style="display:none; background:#7a3030; color:white;">Stop Timelapse</button>
+      <span style="display:inline-block;width:10px;height:10px;background:#b71c1c;border-radius:2px;margin-right:4px;vertical-align:middle;"></span>Russian gains<br>
+      <span style="display:inline-block;width:10px;height:10px;background:#0d47a1;border-radius:2px;margin-right:4px;vertical-align:middle;"></span>Ukrainian gains
     </div>
   </div>
   <!-- ===== END DATE COMPARE PANEL ===== -->
@@ -1708,6 +1680,7 @@
     var liveLayerData = {};
     // Cache for history snapshots to make loading faster
     var snapshotCache = {};
+    var processedSnapshotCache = {};
     var grayZoneCache = {};
 
     var initialLayerLoadPromises = [];
@@ -1908,7 +1881,6 @@
     function applyAdvanceSnapshot(snapshot) {
       if (!snapshot) return;
       applySnapshotToLayers(snapshot);
-      rebuildGrayZone();
     }
 
     function showAdvance(index, options) {
@@ -4002,7 +3974,7 @@
     }
 
     /* =========================================================
-       DATE COMPARE TOOL & TIMELAPSE (UPDATED)
+       DATE COMPARE TOOL (UPDATED)
        ========================================================= */
 
     var compareLayerGroup = L.layerGroup().addTo(map);
@@ -4078,16 +4050,16 @@
       return unionFCList([terrFC, advFC]);
     }
 
-    // Updated to be less prominent (thinner lines)
+    // Updated to be darker, less opaque, thinner
     function featureCollectionToLeafletOutline(fc, strokeColor) {
       return L.geoJSON(fc, {
         pane: 'comparePane',
         style: function() {
           return {
             color: strokeColor,
-            weight: 2,
-            opacity: 0.9,
-            dashArray: '6,4',
+            weight: 1.5,
+            opacity: 0.7,
+            dashArray: '4,4',
             fill: false,
             fillOpacity: 0,
             stroke: true
@@ -4099,10 +4071,8 @@
     function populateCompareDates() {
       var a = document.getElementById('compare-date-a');
       var b = document.getElementById('compare-date-b');
-      var tA = document.getElementById('timelapse-date-a');
-      var tB = document.getElementById('timelapse-date-b');
       
-      if (!a || !b || !tA || !tB) return;
+      if (!a || !b) return;
       if (!advances.length) return;
 
       var dates = advances
@@ -4129,10 +4099,6 @@
 
       fill(a, a.value);
       fill(b, b.value || (dates.length ? dates[dates.length - 1] : null));
-      
-      // Populate timelapse inputs
-      fill(tA, tA.value);
-      fill(tB, tB.value || (dates.length ? dates[dates.length - 1] : null));
     }
 
     function clearDateComparison() {
@@ -4244,8 +4210,8 @@
           var uaGainArea = uaGains ? turf.area(uaGains) / 1e6 : 0;
 
           // Draw ONLY the gains (no fills, less prominent dashes).
-          if (ruGains) featureCollectionToLeafletOutline(ruGains, '#ef5350').addTo(compareLayerGroup);
-          if (uaGains) featureCollectionToLeafletOutline(uaGains, '#42a5f5').addTo(compareLayerGroup);
+          if (ruGains) featureCollectionToLeafletOutline(ruGains, '#b71c1c').addTo(compareLayerGroup);
+          if (uaGains) featureCollectionToLeafletOutline(uaGains, '#0d47a1').addTo(compareLayerGroup);
 
           out.innerHTML =
             '<b>Gains ' + dateA + ' → ' + dateB + '</b><br>' +
@@ -4256,98 +4222,6 @@
           console.error('Compare error:', err);
           out.textContent = 'Could not load comparison data. ' + err.message;
         });
-    }
-
-    // ===== TIMELAPSE IMPLEMENTATION =====
-
-    var timelapseTimeout = null;
-    var timelapseActive = false;
-
-    function stopTimelapse() {
-      timelapseActive = false;
-      if (timelapseTimeout) {
-        clearTimeout(timelapseTimeout);
-        timelapseTimeout = null;
-      }
-      document.getElementById('btn-start-timelapse').style.display = 'block';
-      document.getElementById('btn-stop-timelapse').style.display = 'none';
-    }
-
-    function startTimelapse() {
-      if (timelapseActive) return;
-      
-      var dateA = document.getElementById('timelapse-date-a').value;
-      var dateB = document.getElementById('timelapse-date-b').value;
-      
-      if (!dateA || !dateB) {
-        alert('Please select both start and end dates.');
-        return;
-      }
-      
-      var aIdx = timelineSequence.indexOf(dateA);
-      var bIdx = timelineSequence.indexOf(dateB);
-      
-      if (aIdx === -1 || bIdx === -1) {
-        alert('Invalid dates selected.');
-        return;
-      }
-      
-      if (aIdx > bIdx) {
-        alert('Start date must be before end date.');
-        return;
-      }
-      
-      var datesToPlay = timelineSequence.slice(aIdx, bIdx + 1);
-      var currentIndex = 0;
-      
-      timelapseActive = true;
-      document.getElementById('btn-start-timelapse').style.display = 'none';
-      document.getElementById('btn-stop-timelapse').style.display = 'block';
-
-      // Pre-fetch all required snapshots
-      var prefetchPromises = datesToPlay.map(function(date) {
-        var url = 'history/' + date + '.json';
-        if (snapshotCache[url]) return Promise.resolve();
-        
-        var fetchUrl = url + '?v=' + Date.now() + '_' + Math.random();
-        return fetch(fetchUrl).then(function(r) {
-          if(r.ok) return r.json();
-          throw new Error('fail');
-        }).then(function(data) {
-          snapshotCache[url] = data;
-        }).catch(function(e) {
-          console.warn('Failed to prefetch', date);
-        });
-      });
-
-      Promise.all(prefetchPromises).then(function() {
-        // Start sequence
-        function step() {
-          if (!timelapseActive) return;
-          if (currentIndex >= datesToPlay.length) {
-            stopTimelapse();
-            return;
-          }
-          
-          var d = datesToPlay[currentIndex];
-          
-          // Update UI
-          if (document.getElementById('timeline-date-input')) {
-            document.getElementById('timeline-date-input').value = d;
-          }
-          
-          // Apply snapshot
-          var url = 'history/' + d + '.json';
-          if (snapshotCache[url]) {
-             applySnapshotToLayers(snapshotCache[url]);
-          }
-          
-          currentIndex++;
-          timelapseTimeout = setTimeout(step, 1000);
-        }
-        
-        step();
-      });
     }
 
     /* ===== END DATE COMPARE TOOL ===== */
