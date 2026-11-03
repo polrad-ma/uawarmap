@@ -790,8 +790,8 @@
       white-space: pre-wrap;
       min-height: 24px;
     }
-    #compare-result .cmp-red { color: #b71c1c; font-weight: 700; }
-    #compare-result .cmp-blue { color: #0d47a1; font-weight: 700; }
+    #compare-result .cmp-red { color: #ff0000; font-weight: 700; }
+    #compare-result .cmp-blue { color: #0000ff; font-weight: 700; }
     /* ===== END DATE COMPARE TOOL ===== */
   </style>
 
@@ -859,8 +859,8 @@
     </div>
     <div id="compare-result">Pick two dates to see territorial gains.</div>
     <div style="margin-top:10px; font-size:11px; line-height:1.5; color:var(--muted-text);">
-      <span style="display:inline-block;width:10px;height:10px;background:#b71c1c;border-radius:2px;margin-right:4px;vertical-align:middle;"></span>Russian gains<br>
-      <span style="display:inline-block;width:10px;height:10px;background:#0d47a1;border-radius:2px;margin-right:4px;vertical-align:middle;"></span>Ukrainian gains
+      <span style="display:inline-block;width:10px;height:10px;background:#ff0000;border-radius:2px;margin-right:4px;vertical-align:middle;"></span>Russian gains<br>
+      <span style="display:inline-block;width:10px;height:10px;background:#0000ff;border-radius:2px;margin-right:4px;vertical-align:middle;"></span>Ukrainian gains
     </div>
   </div>
   <!-- ===== END DATE COMPARE PANEL ===== -->
@@ -4071,16 +4071,16 @@
       return unionFCList([terrFC, advFC]);
     }
 
-    // Updated to be darker, less opaque, thinner
+    // Updated to be highly visible, bright, and dotted
     function featureCollectionToLeafletOutline(fc, strokeColor) {
       return L.geoJSON(fc, {
         pane: 'comparePane',
         style: function() {
           return {
             color: strokeColor,
-            weight: 1.5,
-            opacity: 0.7,
-            dashArray: '4,4',
+            weight: 3,
+            opacity: 1,
+            dashArray: '4, 6',
             fill: false,
             fillOpacity: 0,
             stroke: true
@@ -4230,9 +4230,9 @@
           var ruGainArea = ruGains ? turf.area(ruGains) / 1e6 : 0;
           var uaGainArea = uaGains ? turf.area(uaGains) / 1e6 : 0;
 
-          // Draw ONLY the gains (no fills, less prominent dashes).
-          if (ruGains) featureCollectionToLeafletOutline(ruGains, '#b71c1c').addTo(compareLayerGroup);
-          if (uaGains) featureCollectionToLeafletOutline(uaGains, '#0d47a1').addTo(compareLayerGroup);
+          // Draw ONLY the gains (no fills, bright dotted lines).
+          if (ruGains) featureCollectionToLeafletOutline(ruGains, '#ff0000').addTo(compareLayerGroup);
+          if (uaGains) featureCollectionToLeafletOutline(uaGains, '#0000ff').addTo(compareLayerGroup);
 
           out.innerHTML =
             '<b>Gains ' + dateA + ' → ' + dateB + '</b><br>' +
