@@ -1678,10 +1678,10 @@
     var extraLayers = {};
 
     var liveLayerData = {};
-    // Cache for history snapshots to make loading faster
+    // Cache for raw history snapshots to make network loading faster
     var snapshotCache = {};
+    // Cache for fully rendered layers (including Gray Zone) to bypass Turf.js math
     var processedSnapshotCache = {};
-    var grayZoneCache = {};
 
     var initialLayerLoadPromises = [];
 
@@ -1965,7 +1965,7 @@
           if (advanceIndex !== index) return;
           if (!item || activeSnapshotId !== String(item.id)) return;
 
-          if (!applySnapshotToLayers(snapshot, requestId)) return;
+          if (!applySnapshotToLayers(snapshot, requestId, 'advance_' + (item.id || index))) return;
 
           renderAdvanceBar();
           updateTimelineBarUI();
@@ -2512,22 +2512,6 @@
         return;
       }
 
-      // OPTIMIZATION: use cache if available
-      var featuresKey = "";
-      try {
-        var ruFeats = getFeaturesFromLayer(ruLayer);
-        var uaFeats = getFeaturesFromLayer(uaLayer);
-        if (ruFeats.length && uaFeats.length) {
-          featuresKey = JSON.stringify(ruFeats[0].geometry) + JSON.stringify(uaFeats[0].geometry);
-          if (grayZoneCache[featuresKey]) {
-            if (grayZoneCache[featuresKey].length) {
-              grayZoneLayer.addData({ type: 'FeatureCollection', features: grayZoneCache[featuresKey] });
-            }
-            return;
-          }
-        }
-      } catch(e) {}
-
       var ruFeatures = getFeaturesFromLayer(ruLayer);
       var uaFeatures = getFeaturesFromLayer(uaLayer);
 
@@ -2625,9 +2609,6 @@
         updateSidebarLayerControl();
         return;
       }
-
-      // Store in cache
-      if (featuresKey) grayZoneCache[featuresKey] = grayPieces;
 
       grayZoneLayer.addData({
         type: 'FeatureCollection',
@@ -3060,11 +3041,30 @@
       });
     }
 
-    function applySnapshotToLayers(snapshot, requestId) {
+    function applySnapshotToLayers(snapshot, requestId, cacheKey) {
       if (requestId !== undefined && requestId !== null && requestId !== mapStateRequestId) {
         return false;
       }
 
+      // FAST PATH: If we have already processed this exact snapshot (including gray zone), load it instantly.
+      if (cacheKey && processedSnapshotCache[cacheKey]) {
+        clearTimelineManagedLayers();
+        var cached = processedSnapshotCache[cacheKey];
+        var allLayers = getAllLayerObjects();
+
+        Object.keys(cached).forEach(function(name) {
+          if (TIMELINE_SKIP_LAYERS.indexOf(name) !== -1) return;
+          var layer = allLayers[name];
+          if (layer && layer.clearLayers && cached[name]) {
+            layer.addData(cached[name]);
+          }
+        });
+
+        updateSidebarLayerControl();
+        return true;
+      }
+
+      // SLOW PATH: Calculate everything from scratch.
       clearTimelineManagedLayers();
 
       var allLayers = getAllLayerObjects();
@@ -3089,6 +3089,27 @@
       normalizeControlTerritoryOverlaps();
       rebuildGrayZone();
       updateSidebarLayerControl();
+
+      // CACHE THE RESULT
+      if (cacheKey) {
+        var toCache = {};
+        Object.keys(allLayers).forEach(function(name) {
+           if (TIMELINE_SKIP_LAYERS.indexOf(name) !== -1) return;
+           var layer = allLayers[name];
+           if (layer && layer.toGeoJSON) {
+             toCache[name] = layer.toGeoJSON();
+           }
+        });
+
+        processedSnapshotCache[cacheKey] = toCache;
+
+        // Prevent memory leak if user clicks through hundreds of dates
+        if (Object.keys(processedSnapshotCache).length > 100) {
+            processedSnapshotCache = {};
+            processedSnapshotCache[cacheKey] = toCache;
+        }
+      }
+
       return true;
     }
 
@@ -3102,10 +3123,10 @@
       dateInput.title = 'Loading ' + date + '...';
 
       var url = 'history/' + date + '.json';
-      
+
       if (snapshotCache[url]) {
-        // Cached
-        if (applySnapshotToLayers(snapshotCache[url], requestId)) {
+        // Cached raw data
+        if (applySnapshotToLayers(snapshotCache[url], requestId, 'date_' + date)) {
            dateInput.title = 'Jump to a date';
         }
         return;
@@ -3122,7 +3143,7 @@
         .then(function(snapshot) {
           if (requestId !== mapStateRequestId || activeMapState !== 'date') return;
           snapshotCache[url] = snapshot;
-          if (applySnapshotToLayers(snapshot, requestId)) {
+          if (applySnapshotToLayers(snapshot, requestId, 'date_' + date)) {
             dateInput.title = 'Jump to a date';
           }
         })
