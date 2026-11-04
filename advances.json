@@ -4276,5 +4276,39 @@
       "ru": 148250.01284066943,
       "ua": 22772.003207098212
     }
+  },
+  {
+    "id": "adv-1793800376398",
+    "date": "2026-11-04",
+    "time": "14:52:56",
+    "text_en": "Ukrainian forces are counterattacking near Bohuslavka",
+    "text_ru": "ВСУ контратакуют у Богуславки",
+    "text": "Ukrainian forces are counterattacking near Bohuslavka",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 19.34,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 19.34
+      }
+    ],
+    "areaDisplay": "+19.34 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 49.39287643600957,
+      "west": 37.52277374267579,
+      "north": 49.522534003908106,
+      "east": 37.89253234863282
+    },
+    "polygonFids": [
+      "advance-1793800244324-2lfw7npqum2",
+      "advance-1793800277963-e71zfseylgj"
+    ],
+    "snapshot": "history/advances/adv-1793800376398.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22780.586973376816
+    }
   }
 ]
