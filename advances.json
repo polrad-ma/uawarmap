@@ -4310,5 +4310,38 @@
       "ru": 148250.01284066943,
       "ua": 22780.586973376816
     }
+  },
+  {
+    "id": "adv-1793801505546",
+    "date": "2026-11-04",
+    "time": "15:11:45",
+    "text_en": "Russian forces advance in Novoselivka microraion",
+    "text_ru": "ВС РФ продвигаются в микрорайоне Новоселовка",
+    "text": "Russian forces advance in Novoselivka microraion",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 1.51,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 1.51
+      }
+    ],
+    "areaDisplay": "+1.51 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 48.52331273604,
+      "west": 37.617959976196296,
+      "north": 48.55468254583598,
+      "east": 37.69546508789063
+    },
+    "polygonFids": [
+      "advance-1793801447245-o23t5ku2yun"
+    ],
+    "snapshot": "history/advances/adv-1793801505546.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22780.586973376816
+    }
   }
 ]
