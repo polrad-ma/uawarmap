@@ -4343,5 +4343,38 @@
       "ru": 148250.01284066943,
       "ua": 22780.586973376816
     }
+  },
+  {
+    "id": "adv-1793802631225",
+    "date": "2026-11-04",
+    "time": "15:30:31",
+    "text_en": "Russians advance near Khrypuny",
+    "text_ru": "ВС РФ продвигаются у Хрипунов",
+    "text": "Russians advance near Khrypuny",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 9.88,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 9.88
+      }
+    ],
+    "areaDisplay": "+9.88 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 50.29317777022294,
+      "west": 37.20159530639649,
+      "north": 50.35192323796281,
+      "east": 37.36810684204102
+    },
+    "polygonFids": [
+      "advance-1793802593575-ju58ryfi6wo"
+    ],
+    "snapshot": "history/advances/adv-1793802631225.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22780.586973376816
+    }
   }
 ]
