@@ -4376,5 +4376,38 @@
       "ru": 148250.01284066943,
       "ua": 22780.586973376816
     }
+  },
+  {
+    "id": "adv-1793894048610",
+    "date": "2026-11-05",
+    "time": "16:54:08",
+    "text_en": "Russian forces withdrew from Orikhiv",
+    "text_ru": "ВС РФ отошли из Орехова",
+    "text": "Russian forces withdrew from Orikhiv",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 8.15,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 8.15
+      }
+    ],
+    "areaDisplay": "+8.15 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 47.527054225792796,
+      "west": 35.74796676635743,
+      "north": 47.583357680523655,
+      "east": 35.88958740234376
+    },
+    "polygonFids": [
+      "advance-1793893998943-00xw6uh8dzcqa"
+    ],
+    "snapshot": "history/advances/adv-1793894048610.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22780.586973376816
+    }
   }
 ]
