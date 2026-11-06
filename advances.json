@@ -4409,5 +4409,38 @@
       "ru": 148250.01284066943,
       "ua": 22780.586973376816
     }
+  },
+  {
+    "id": "adv-1793977192387",
+    "date": "2026-11-06",
+    "time": "15:59:52",
+    "text_en": "The Ukrainian Borova offensive continues",
+    "text_ru": "Украниское наступление у Боровой продолжается",
+    "text": "The Ukrainian Borova offensive continues",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 43.34,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 43.34
+      }
+    ],
+    "areaDisplay": "+43.34 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 49.34664224654776,
+      "west": 37.53616442430404,
+      "north": 49.47865265513535,
+      "east": 37.91622271287826
+    },
+    "polygonFids": [
+      "advance-1793977147790-wx30xp4e8dn"
+    ],
+    "snapshot": "history/advances/adv-1793977192387.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22780.586973376816
+    }
   }
 ]
