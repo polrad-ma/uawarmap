@@ -4442,5 +4442,39 @@
       "ru": 148250.01284066943,
       "ua": 22780.586973376816
     }
+  },
+  {
+    "id": "adv-1794065381173",
+    "date": "2026-11-07",
+    "time": "16:29:41",
+    "text_en": "Russian advances in Dobropillia continue",
+    "text_ru": "Продвижения ВС РФ в Доброполье продолжаются",
+    "text": "Russian advances in Dobropillia continue",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 2.23,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 2.23
+      }
+    ],
+    "areaDisplay": "+2.23 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 48.428175399770836,
+      "west": 37.01654434204102,
+      "north": 48.49419872206354,
+      "east": 37.16022491455079
+    },
+    "polygonFids": [
+      "advance-1794065281315-uucquxmnhg",
+      "advance-1794065335200-s0dal3ihxga"
+    ],
+    "snapshot": "history/advances/adv-1794065381173.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22780.586973376816
+    }
   }
 ]
