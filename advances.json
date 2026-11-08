@@ -4476,5 +4476,38 @@
       "ru": 148250.01284066943,
       "ua": 22780.586973376816
     }
+  },
+  {
+    "id": "adv-1794130462110",
+    "date": "2026-11-08",
+    "time": "10:34:22",
+    "text_en": "Russian forces captured the southern part of Varvarivka",
+    "text_ru": "ВС РФ заняли южную часть Варваровки",
+    "text": "Russian forces captured the southern part of Varvarivka",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 10.44,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 10.44
+      }
+    ],
+    "areaDisplay": "+10.44 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 50.30403361290097,
+      "west": 37.19284057617188,
+      "north": 50.4347665964966,
+      "east": 37.514877319335945
+    },
+    "polygonFids": [
+      "advance-1794130399852-my4rim4x4im"
+    ],
+    "snapshot": "history/advances/adv-1794130462110.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22780.586973376816
+    }
   }
 ]
