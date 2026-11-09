@@ -4509,5 +4509,38 @@
       "ru": 148250.01284066943,
       "ua": 22780.586973376816
     }
+  },
+  {
+    "id": "adv-1794241752890",
+    "date": "2026-11-09",
+    "time": "17:29:12",
+    "text_en": "Most of Sobolivka came under Russian control",
+    "text_ru": "Большая часть Соболевки перешла под контроль РФ",
+    "text": "Most of Sobolivka came under Russian control",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 2.12,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 2.12
+      }
+    ],
+    "areaDisplay": "+2.12 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 49.69162010324407,
+      "west": 37.523117065429695,
+      "north": 49.73668467078412,
+      "east": 37.64276504516602
+    },
+    "polygonFids": [
+      "advance-1794241680919-cng8y6jnoxo"
+    ],
+    "snapshot": "history/advances/adv-1794241752890.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22780.586973376816
+    }
   }
 ]
