@@ -4601,5 +4601,38 @@
       "ru": 148250.01284066943,
       "ua": 22780.586973376816
     }
+  },
+  {
+    "id": "adv-1794419911548",
+    "date": "2026-11-11",
+    "time": "18:58:31",
+    "text_en": "Most of Borivska Andriivka came under Ukrainian control",
+    "text_ru": "Большая часть Боровской Андреевки за ВСУ",
+    "text": "Most of Borivska Andriivka came under Ukrainian control",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 18.08,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 18.08
+      }
+    ],
+    "areaDisplay": "+18.08 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 49.35017741346903,
+      "west": 37.62336730957032,
+      "north": 49.46544660818598,
+      "east": 37.91725158691406
+    },
+    "polygonFids": [
+      "advance-1794419613610-zwyhxalfcl"
+    ],
+    "snapshot": "history/advances/adv-1794419911548.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22780.586973376816
+    }
   }
 ]
