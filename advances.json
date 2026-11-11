@@ -4542,5 +4542,38 @@
       "ru": 148250.01284066943,
       "ua": 22780.586973376816
     }
+  },
+  {
+    "id": "adv-1794410056167",
+    "date": "2026-11-11",
+    "time": "16:14:16",
+    "text_en": "Kupyansk. Russian forces continue advancing in the western part of the city",
+    "text_ru": "Купянск. ВС РФ продолжают продвигаться в западной части города",
+    "text": "Kupyansk. Russian forces continue advancing in the western part of the city",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 2.39,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 2.39
+      }
+    ],
+    "areaDisplay": "+2.39 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 49.688066438270106,
+      "west": 37.54448890686036,
+      "north": 49.72642117525572,
+      "east": 37.65014648437501
+    },
+    "polygonFids": [
+      "advance-1794409838701-sh2vz43c6qq"
+    ],
+    "snapshot": "history/advances/adv-1794410056167.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22780.586973376816
+    }
   }
 ]
