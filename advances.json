@@ -4634,5 +4634,38 @@
       "ru": 148250.01284066943,
       "ua": 22780.586973376816
     }
+  },
+  {
+    "id": "adv-1794422190931",
+    "date": "2026-11-11",
+    "time": "19:36:30",
+    "text_en": "Over the last weeks the Ukrainian army recaptured parts of Mala Tokmachka",
+    "text_ru": "За последние недели ВСУ восстановили ряд позиций в Малой Токмачке",
+    "text": "Over the last weeks the Ukrainian army recaptured parts of Mala Tokmachka",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 15.07,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 15.07
+      }
+    ],
+    "areaDisplay": "+15.07 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 47.50572190274721,
+      "west": 35.799980163574226,
+      "north": 47.58289452450752,
+      "east": 36.01009368896485
+    },
+    "polygonFids": [
+      "advance-1794422098928-nak0o4umhks"
+    ],
+    "snapshot": "history/advances/adv-1794422190931.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22780.586973376816
+    }
   }
 ]
