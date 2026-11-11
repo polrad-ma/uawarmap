@@ -4575,5 +4575,31 @@
       "ru": 148250.01284066943,
       "ua": 22780.586973376816
     }
+  },
+  {
+    "id": "adv-1794417695124",
+    "date": "2026-11-11",
+    "time": "18:21:35",
+    "text_en": "Added infiltration area",
+    "text_ru": "Добавлена зона инфильтрации",
+    "text": "Added infiltration area",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 0,
+    "areaEffects": [],
+    "areaDisplay": "",
+    "areaColor": "red",
+    "focus": {
+      "south": 46.27103747280263,
+      "west": 27.751464843750004,
+      "north": 52.133488040771496,
+      "east": 41.52832031250001
+    },
+    "polygonFids": [],
+    "snapshot": "history/advances/adv-1794417695124.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22780.586973376816
+    }
   }
 ]
