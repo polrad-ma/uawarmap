@@ -746,7 +746,7 @@
       background-repeat: repeat;
     }
 
-    /* ===== DATE COMPARE TOOL (UPDATED) ===== */
+    /* ===== DATE COMPARE TOOL ===== */
     #panel-compare .compare-row {
       display: flex;
       flex-direction: column;
@@ -793,6 +793,50 @@
     #compare-result .cmp-red { color: #ff0000; font-weight: 700; }
     #compare-result .cmp-blue { color: #0000ff; font-weight: 700; }
     /* ===== END DATE COMPARE TOOL ===== */
+
+    /* ===== RULER & BADGE ===== */
+    .ruler-label {
+      background: rgba(20,20,20,0.88);
+      color: #ffffff;
+      font: 700 11px/1 Helvetica, Arial, sans-serif;
+      padding: 3px 7px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.35);
+      white-space: nowrap;
+      pointer-events: none;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+      transform: translate(-50%, -50%);
+    }
+
+    .ruler-total {
+      background: #ffd23f;
+      color: #1a1a1a;
+      font: 800 12px/1 Helvetica, Arial, sans-serif;
+      padding: 4px 9px;
+      border-radius: 12px;
+      white-space: nowrap;
+      pointer-events: none;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.45);
+      border: 1px solid rgba(0,0,0,0.2);
+      transform: translate(14px, -50%);
+    }
+
+    .ruler-total.preview {
+      background: #ffffff;
+      color: #1a1a1a;
+      opacity: 0.9;
+    }
+
+    .area-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-weight: 800;
+      color: #ffffff;
+      white-space: nowrap;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.35);
+    }
+    /* ===== END RULER & BADGE ===== */
   </style>
 
 </head>
@@ -842,7 +886,7 @@
   <div id="map-crosshair"></div>
   <div id="watermark-overlay"></div>
 
-  <!-- ===== DATE COMPARE PANEL (UPDATED) ===== -->
+  <!-- ===== DATE COMPARE PANEL ===== -->
   <div class="sidebar-panel" id="panel-compare">
     <h4>Compare Dates</h4>
     <div class="compare-row">
@@ -1009,14 +1053,15 @@
         thickness: 'Thickness', red: 'Red', blue: 'Blue', green: 'Green', yellow: 'Yellow', black: 'Black', white: 'White',
         finishShape: 'Finish Shape', clearDrawings: 'Clear My Drawings', selectShape: 'Select a shape to draw.',
         ruler: 'Ruler (Measure)', kilometers: 'Kilometers (km)', miles: 'Miles (mi)', finishMeasuring: 'Finish Measuring', clearLine: 'Clear Line',
-        measurePrompt: 'Click points on the map to measure distance.', coordinates: 'Coordinates',
+        measurePrompt: 'Click points on the map to measure distance. Press "Finish Measuring" to keep the line, or "Clear Line" to reset.', coordinates: 'Coordinates',
         preciseCoords: 'Click anywhere on the map to display its precise coordinates.', changelog: 'Changelog', settings: 'Settings',
         loading: 'Loading...', noUpdates: 'No updates yet.', couldNotLoadUpdates: 'Could not load updates.',
         darkTheme: 'Dark theme', polygonBorders: 'Polygon borders', centerCrosshair: 'Center crosshair', screenshot: 'Take Screenshot',
         fullscreen: 'Toggle Fullscreen', searchFailed: 'Search failed.', searching: 'Searching...', copied: 'Copied!',
         mainLayers: 'Main Layers', extraLayers: 'Extra Layers',
         russianTerritory: 'Russian-controlled territory', ukrainianTerritory: 'Ukrainian-controlled territory',
-        ukrainianAdvances: 'Ukrainian advances', russianAdvances: 'Russian advances', regained: 'Territories regained in the last month',
+        ukrainianAdvances: 'Ukrainian advances', russianAdvances: 'Russian advances',
+        infiltrationArea: 'Infiltration area',
         mapUpdate: 'Map update', area: 'Area',
         basemapGoogleHybrid: 'Google Hybrid (Satellite + Labels)', basemapEsriHybrid: 'Esri Hybrid (Satellite + Labels)', basemapEsriSatellite: 'Esri Satellite',
         basemapOSM: 'OpenStreetMap', basemapTopo: 'Topographic',
@@ -1037,14 +1082,15 @@
         thickness: 'Толщина', red: 'Красный', blue: 'Синий', green: 'Зелёный', yellow: 'Жёлтый', black: 'Чёрный', white: 'Белый',
         finishShape: 'Завершить фигуру', clearDrawings: 'Очистить мои рисунки', selectShape: 'Выберите фигуру для рисования.',
         ruler: 'Линейка (измерение)', kilometers: 'Километры (км)', miles: 'Мили (mi)', finishMeasuring: 'Завершить измерение', clearLine: 'Очистить линию',
-        measurePrompt: 'Нажимайте точки на карте, чтобы измерить расстояние.', coordinates: 'Координаты',
+        measurePrompt: 'Нажимайте точки на карте, чтобы измерить расстояние. Нажмите «Завершить измерение», чтобы оставить линию, или «Очистить линию», чтобы сбросить.', coordinates: 'Координаты',
         preciseCoords: 'Нажмите в любом месте карты, чтобы увидеть точные координаты.', changelog: 'Журнал изменений', settings: 'Настройки',
         loading: 'Загрузка...', noUpdates: 'Обновлений пока нет.', couldNotLoadUpdates: 'Не удалось загрузить обновления.',
         darkTheme: 'Тёмная тема', polygonBorders: 'Границы полигонов', centerCrosshair: 'Центральный прицел', screenshot: 'Сделать скриншот',
         fullscreen: 'Полноэкранный режим', searchFailed: 'Ошибка поиска.', searching: 'Поиск...', copied: 'Скопировано!',
         mainLayers: 'Основные слои', extraLayers: 'Дополнительные слои',
         russianTerritory: 'Территория под контролем России', ukrainianTerritory: 'Территория под контролем Украины',
-        ukrainianAdvances: 'Продвижения Украины', russianAdvances: 'Продвижения России', regained: 'Возвращённые территории',
+        ukrainianAdvances: 'Продвижения Украины', russianAdvances: 'Продвижения России',
+        infiltrationArea: 'Зона инфильтрации',
         mapUpdate: 'Обновление карты', area: 'Площадь',
         basemapGoogleHybrid: 'Google Hybrid (спутник + подписи)', basemapEsriHybrid: 'Esri Hybrid (спутник + подписи)', basemapEsriSatellite: 'Esri Satellite',
         basemapOSM: 'OpenStreetMap', basemapTopo: 'Топографическая',
@@ -1059,7 +1105,7 @@
       var m = {
         'Russian-controlled territory':'russianTerritory', 'Ukrainian-controlled territory':'ukrainianTerritory',
         'Ukrainian advances':'ukrainianAdvances', 'Russian advances':'russianAdvances',
-        'Territories regained':'regained', 'Territories regained in the last month':'regained',
+        'Infiltration area':'infiltrationArea',
         'My Drawings':'myDrawings', 'Cities Captured':'citiesCaptured',
         'August 2024 Frontline':'augustFrontline', 'Towns, villages and cities (credit to PWM)':'townsVillages', 'Fortifications (thanks PMapping832)':'fortifications', 'Gray Zone':'grayZone'
       };
@@ -1116,6 +1162,7 @@
       var colors={red:'color-red',blue:'color-blue',green:'color-green',yellow:'color-yellow',black:'color-black',white:'color-white'}; Object.keys(colors).forEach(function(k){var e=document.getElementById(colors[k]); if(e)e.textContent=pt(k);});
       var cmpHeading = document.querySelector('#panel-compare h4'); if (cmpHeading) cmpHeading.textContent = pt('compareDates');
       updateSidebarLayerControl(); updateDesignSelector(); renderAdvanceBar(); updateInstructions();
+      if (typeof rulerUpdatePanel === 'function') rulerUpdatePanel();
     }
     window.setPublicLanguage = function(lang) {
       publicLanguage = lang === 'ru' ? 'ru' : 'en';
@@ -1301,6 +1348,221 @@
 
     var currentUnit = 'km';
 
+    var RULER_LINE_COLOR = '#00e5ff';
+
+    var rulerBaseLayer = L.layerGroup().addTo(map);
+    var rulerPreviewLayer = L.layerGroup().addTo(map);
+    var rulerState = {
+      points: [],
+      finished: false,
+      cursor: null
+    };
+
+    function rulerFormatDistance(meters) {
+      if (currentUnit === 'mi') {
+        var miles = meters / 1609.344;
+        if (miles < 0.1) {
+          var feet = meters / 0.3048;
+          return Math.round(feet).toLocaleString() + ' ft';
+        }
+        return miles.toFixed(2) + ' mi';
+      }
+      var km = meters / 1000;
+      if (km < 1) {
+        return Math.round(meters).toLocaleString() + ' m';
+      }
+      return km.toFixed(km < 10 ? 2 : 1) + ' km';
+    }
+
+    function rulerTotalMeters(points) {
+      var total = 0;
+      for (var i = 1; i < points.length; i++) {
+        total += map.distance(points[i - 1], points[i]);
+      }
+      return total;
+    }
+
+    function rulerUpdatePanel() {
+      var el = document.getElementById('ruler-result');
+      if (!el) return;
+
+      if (!rulerState.points.length) {
+        el.innerHTML = publicLanguage === 'ru'
+          ? 'Кликните первую точку на карте, чтобы начать измерение.'
+          : 'Click the first point on the map to start measuring.';
+        return;
+      }
+
+      var total = rulerTotalMeters(rulerState.points);
+      var segments = Math.max(0, rulerState.points.length - 1);
+
+      el.innerHTML =
+        '<div style="font-size:22px;font-weight:800;color:#ffd23f;line-height:1.1">' +
+        rulerFormatDistance(total) +
+        '</div>' +
+        '<div style="margin-top:4px;color:var(--muted-text);font-size:12px">' +
+        (publicLanguage === 'ru'
+          ? segments + ' сегмент(ов) · кликните, чтобы добавить точку'
+          : segments + ' segment(s) · click to add a point') +
+        '</div>';
+    }
+
+    function rulerDrawStatic() {
+      rulerBaseLayer.clearLayers();
+
+      var points = rulerState.points;
+      if (!points.length) {
+        rulerUpdatePanel();
+        return;
+      }
+
+      if (points.length >= 2) {
+        L.polyline(points, {
+          color: '#ffffff',
+          weight: 6,
+          opacity: 0.55,
+          lineCap: 'round',
+          lineJoin: 'round',
+          interactive: false,
+          pane: 'drawingsPane'
+        }).addTo(rulerBaseLayer);
+
+        L.polyline(points, {
+          color: RULER_LINE_COLOR,
+          weight: 2.5,
+          opacity: 0.95,
+          dashArray: '8 6',
+          lineCap: 'round',
+          lineJoin: 'round',
+          interactive: false,
+          pane: 'drawingsPane'
+        }).addTo(rulerBaseLayer);
+
+        for (var i = 1; i < points.length; i++) {
+          var mid = L.latLng(
+            (points[i - 1].lat + points[i].lat) / 2,
+            (points[i - 1].lng + points[i].lng) / 2
+          );
+          var segmentMeters = map.distance(points[i - 1], points[i]);
+
+          L.marker(mid, {
+            icon: L.divIcon({
+              className: '',
+              html: '<div class="ruler-label">' + rulerFormatDistance(segmentMeters) + '</div>',
+              iconSize: [0, 0],
+              iconAnchor: [0, 0]
+            }),
+            interactive: false,
+            keyboard: false,
+            pane: 'markersPane'
+          }).addTo(rulerBaseLayer);
+        }
+      }
+
+      points.forEach(function (point) {
+        L.circleMarker(point, {
+          radius: 5,
+          color: '#111111',
+          weight: 2,
+          fillColor: '#ffd23f',
+          fillOpacity: 1,
+          interactive: false,
+          pane: 'drawingsPane'
+        }).addTo(rulerBaseLayer);
+      });
+
+      var total = rulerTotalMeters(points);
+      var last = points[points.length - 1];
+
+      L.marker(last, {
+        icon: L.divIcon({
+          className: '',
+          html: '<div class="ruler-total">' + rulerFormatDistance(total) + '</div>',
+          iconSize: [0, 0],
+          iconAnchor: [0, 0]
+        }),
+        interactive: false,
+        keyboard: false,
+        pane: 'markersPane'
+      }).addTo(rulerBaseLayer);
+
+      rulerUpdatePanel();
+    }
+
+    function rulerDrawPreview() {
+      rulerPreviewLayer.clearLayers();
+
+      if (rulerState.finished) return;
+      if (!rulerState.points.length || !rulerState.cursor) return;
+
+      var last = rulerState.points[rulerState.points.length - 1];
+      var cursor = rulerState.cursor;
+
+      L.polyline([last, cursor], {
+        color: '#ffffff',
+        weight: 5,
+        opacity: 0.35,
+        interactive: false,
+        pane: 'drawingsPane'
+      }).addTo(rulerPreviewLayer);
+
+      L.polyline([last, cursor], {
+        color: RULER_LINE_COLOR,
+        weight: 2,
+        opacity: 0.8,
+        dashArray: '4 6',
+        interactive: false,
+        pane: 'drawingsPane'
+      }).addTo(rulerPreviewLayer);
+
+      var total = rulerTotalMeters(rulerState.points) + map.distance(last, cursor);
+
+      L.marker(cursor, {
+        icon: L.divIcon({
+          className: '',
+          html: '<div class="ruler-total preview">' + rulerFormatDistance(total) + '</div>',
+          iconSize: [0, 0],
+          iconAnchor: [0, 0]
+        }),
+        interactive: false,
+        keyboard: false,
+        pane: 'markersPane'
+      }).addTo(rulerPreviewLayer);
+    }
+
+    function rulerReset() {
+      rulerState.points = [];
+      rulerState.finished = false;
+      rulerState.cursor = null;
+      rulerBaseLayer.clearLayers();
+      rulerPreviewLayer.clearLayers();
+      rulerUpdatePanel();
+    }
+
+    function rulerAddPoint(latlng) {
+      if (rulerState.finished || !rulerState.points.length) {
+        rulerState.points = [];
+        rulerState.finished = false;
+        rulerBaseLayer.clearLayers();
+        rulerPreviewLayer.clearLayers();
+      }
+
+      rulerState.points.push(latlng);
+      rulerState.cursor = null;
+      rulerDrawStatic();
+      rulerDrawPreview();
+    }
+
+    function rulerFinish() {
+      if (rulerState.points.length >= 2) {
+        rulerState.finished = true;
+        rulerPreviewLayer.clearLayers();
+        rulerUpdatePanel();
+      } else {
+        rulerReset();
+      }
+    }
+
     function setMeasurementUnit(unit) {
       currentUnit = unit;
 
@@ -1316,30 +1578,9 @@
         maxWidth: 150
       }).addTo(map);
 
-      if (drawingPoints.length > 1 && activeTool === 'ruler') {
-        var totalMeters = 0;
-
-        for (var i = 1; i < drawingPoints.length; i++) {
-          totalMeters += map.distance(
-            drawingPoints[i - 1],
-            drawingPoints[i]
-          );
-        }
-
-        updateRulerDisplay(totalMeters);
-      }
-    }
-
-    function updateRulerDisplay(meters) {
-      if (currentUnit === 'mi') {
-        var miles = (meters / 1609.344).toFixed(2);
-        document.getElementById('ruler-result').innerText =
-          "Distance: " + miles + " mi";
-      } else {
-        var km = (meters / 1000).toFixed(2);
-        document.getElementById('ruler-result').innerText =
-          "Distance: " + km + " km";
-      }
+      rulerDrawStatic();
+      rulerDrawPreview();
+      rulerUpdatePanel();
     }
 
     function toggleCrosshairSetting(checked) {
@@ -1361,8 +1602,8 @@
     map.createPane('grayZonePane');
     map.getPane('grayZonePane').style.zIndex = 460;
 
-    map.createPane('regainedPane');
-    map.getPane('regainedPane').style.zIndex = 380;
+    map.createPane('infiltrationPane');
+    map.getPane('infiltrationPane').style.zIndex = 470;
 
     map.createPane('territoryPane');
     map.getPane('territoryPane').style.zIndex = 420;
@@ -1418,7 +1659,6 @@
       if (searchResultMarker) {
         var m = searchResultMarker;
         searchResultMarker = null;
-        m.off('popupclose');
         map.removeLayer(m);
       }
     }
@@ -1448,7 +1688,6 @@
         .addTo(map)
         .bindPopup(content, { closeOnClick: false, autoClose: false })
         .openPopup();
-      searchResultMarker.on('popupclose', clearSearchMarker);
     }
 
     function runHeaderSearch() {
@@ -1736,7 +1975,7 @@
         if (chosen === 'blue') col = '#42a5f5';
         else if (chosen === 'red') col = '#ef5350';
         else col = String(item.side || '').toLowerCase() === 'ua' ? '#42a5f5' : '#ef5350';
-        return '<span style="color:' + col + '">' + escapeSearchText(item.areaDisplay) + '</span>';
+        return '<span class="area-badge" style="background:' + col + '">' + escapeSearchText(item.areaDisplay) + '</span>';
       }
       if (Array.isArray(item.areaEffects)) {
         return item.areaEffects.map(function(effect) {
@@ -1745,7 +1984,7 @@
           var side = String(effect.side || '').toLowerCase();
           var color = side === 'ru' || side === 'russia' ? '#ef5350' : '#42a5f5';
           var label = (value > 0 ? '+' : '') + value.toFixed(2) + ' km²';
-          return '<span style="color:' + color + '">' + label + '</span>';
+          return '<span class="area-badge" style="background:' + color + '">' + label + '</span>';
         }).filter(Boolean).join(' ');
       }
 
@@ -1755,7 +1994,7 @@
           var side2 = String(item.side || '').toLowerCase();
           var color2 = side2 === 'ru' || side2 === 'russia' ? '#ef5350' : '#42a5f5';
           var label2 = (n > 0 ? '+' : '') + n.toFixed(2) + ' km²';
-          return '<span style="color:' + color2 + '">' + label2 + '</span>';
+          return '<span class="area-badge" style="background:' + color2 + '">' + label2 + '</span>';
         }
       }
       return '';
@@ -2043,7 +2282,7 @@
       popupAnchor: [0, -14]
     });
 
-    /* ===== Standard inline SVG flags (matches second code) ===== */
+    /* ===== Standard inline SVG flags ===== */
     var ukraineFlagIcon = L.icon({
       iconUrl: 'data:image/svg+xml;utf8,' + encodeURIComponent(
         '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="21" viewBox="0 0 32 21">' +
@@ -2200,12 +2439,14 @@
         noOutline: true
       },
       {
-        file: "Territories%20regained%20in%20the%20last%20month.geojson",
-        name: "Territories regained",
-        color: "#0f9d58",
-        pane: 'regainedPane',
+        file: "Infiltration%20area.geojson",
+        name: "Infiltration area",
+        color: "#000000",
+        fillOpacity: 0.35,
+        pane: 'infiltrationPane',
         group: "main",
-        noOutline: true
+        noOutline: true,
+        smoothFactor: 1.2
       },
       {
         file: "Fortifications%20%28thanks%20PMapping832%29.geojson",
@@ -2241,7 +2482,6 @@
       'AMK Mapping design': [
         'Russian-controlled territory',
         'Ukrainian-controlled territory',
-        'Territories regained',
         'My Drawings'
       ],
 
@@ -2456,26 +2696,15 @@
     function normalizeControlTerritoryOverlaps() {
       var ruLayer = mainLayers['Russian-controlled territory'];
       var uaLayer = mainLayers['Ukrainian-controlled territory'];
-      var regainedLayer = mainLayers['Territories regained'];
 
       if (!ruLayer || !uaLayer) return false;
 
       var uaFeatures = getFeaturesFromLayer(uaLayer).map(cleanFeatureGeometry);
-      var regainedFeatures = regainedLayer
-        ? getFeaturesFromLayer(regainedLayer).map(cleanFeatureGeometry)
-        : [];
-
-      var uaAndRegained = uaFeatures.concat(regainedFeatures);
-      var uaSideUnion = unionFeatureCollection(uaAndRegained);
+      var uaSideUnion = unionFeatureCollection(uaFeatures);
       var changed = false;
 
       if (uaSideUnion) {
         changed = clipLayerAgainstUnion(ruLayer, uaSideUnion) || changed;
-      }
-
-      var uaOnlyUnion = unionFeatureCollection(uaFeatures);
-      if (uaOnlyUnion && regainedLayer) {
-        changed = clipLayerAgainstUnion(regainedLayer, uaOnlyUnion) || changed;
       }
 
       return changed;
@@ -2502,7 +2731,6 @@
     function rebuildGrayZone() {
       var ruLayer = mainLayers['Russian-controlled territory'];
       var uaLayer = mainLayers['Ukrainian-controlled territory'];
-      var regainedLayer = mainLayers['Territories regained'];
       var ruAdvancesLayer = mainLayers['Russian advances'];
       var uaAdvancesLayer = mainLayers['Ukrainian advances'];
 
@@ -2524,12 +2752,6 @@
       if (uaAdvancesLayer) {
         uaFeatures = uaFeatures.concat(
           getFeaturesFromLayer(uaAdvancesLayer)
-        );
-      }
-
-      if (regainedLayer) {
-        uaFeatures = uaFeatures.concat(
-          getFeaturesFromLayer(regainedLayer)
         );
       }
 
@@ -2633,14 +2855,10 @@
             pane: layerInfo.pane ||
                   (layerInfo.group === 'extra' ? 'extraLayersPane' :
                    (
-                     layerInfo.name === 'Territories regained'
-                       ? 'regainedPane'
-                       : (
-                         layerInfo.name === 'Russian-controlled territory' ||
-                         layerInfo.name === 'Ukrainian-controlled territory'
-                           ? 'territoryPane'
-                           : 'overlayPane'
-                       )
+                     layerInfo.name === 'Russian-controlled territory' ||
+                     layerInfo.name === 'Ukrainian-controlled territory'
+                       ? 'territoryPane'
+                       : 'overlayPane'
                    )),
             smoothFactor: layerInfo.smoothFactor !== undefined
               ? layerInfo.smoothFactor
@@ -2764,7 +2982,6 @@
           if (
             layerInfo.name === 'Russian-controlled territory' ||
             layerInfo.name === 'Ukrainian-controlled territory' ||
-            layerInfo.name === 'Territories regained' ||
             layerInfo.name === 'Russian advances' ||
             layerInfo.name === 'Ukrainian advances'
           ) {
@@ -2774,12 +2991,32 @@
           updateSidebarLayerControl();
 
         })
-        .catch(err =>
-          console.error(
-            "Layer load error:",
-            err
-          )
-        ));
+        .catch(function(err) {
+          console.error("Layer load error:", err);
+
+          if (layerInfo.name === 'Infiltration area' && !mainLayers['Infiltration area']) {
+            var emptyInfiltration = L.geoJSON(
+              { type: 'FeatureCollection', features: [] },
+              {
+                pane: 'infiltrationPane',
+                style: function() {
+                  return {
+                    color: '#000000',
+                    fillColor: '#000000',
+                    fillOpacity: 0.35,
+                    weight: 2,
+                    stroke: false
+                  };
+                }
+              }
+            );
+
+            mainLayers['Infiltration area'] = emptyInfiltration;
+            liveLayerData['Infiltration area'] = { type: 'FeatureCollection', features: [] };
+            setLayerVisibility('Infiltration area', isLayerInCurrentDesign('Infiltration area'), false);
+            updateSidebarLayerControl();
+          }
+        }));
     });
 
     var initialLayerLoadPromise = Promise.all(initialLayerLoadPromises);
@@ -2894,9 +3131,7 @@
       'Fortifications (thanks PMapping832)'
     ];
 
-    var TIMELINE_NAME_ALIASES = {
-      'Territories regained': 'Territories regained in the last month'
-    };
+    var TIMELINE_NAME_ALIASES = {};
 
     var timelineSequence = [];
     var timelineIndex = -1;
@@ -2995,11 +3230,6 @@
       if (alias) keys.push(alias);
       keys.push(name);
 
-      if (name === 'Territories regained') {
-        keys.push('Territories regained in the last month');
-        keys.push('regained');
-      }
-
       if (name === 'Ukrainian-controlled territory') {
         keys.push('Ukrainian-controlled territory');
         keys.push('ua_territory');
@@ -3018,6 +3248,10 @@
       if (name === 'Russian advances') {
         keys.push('Russian advances');
         keys.push('ru_advances');
+      }
+
+      if (name === 'Infiltration area') {
+        keys.push('infiltration');
       }
 
       for (var i = 0; i < keys.length; i++) {
@@ -3395,6 +3629,7 @@
       activeTool = (activeTool === tool) ? null : tool;
       if (activeTool !== 'coords') clearCoordMarker();
       resetDrawingState();
+      rulerReset();
       updateToolButtons();
       updateInstructions();
       document.body.classList.toggle('no-select-mode', !!activeTool);
@@ -3501,6 +3736,14 @@
     });
 
     map.on('mousemove', function(e) {
+      if (activeTool === 'ruler') {
+        if (!rulerState.finished) {
+          rulerState.cursor = e.latlng;
+          rulerDrawPreview();
+        }
+        return;
+      }
+
       if (
         (
           activeTool === 'freehand' ||
@@ -3690,12 +3933,16 @@
         return;
       }
 
+      if (activeTool === 'ruler') {
+        rulerAddPoint(e.latlng);
+        return;
+      }
+
       if (
         activeTool === 'polygon' ||
         activeTool === 'line' ||
         activeTool === 'pointed-line' ||
-        activeTool === 'dashed-line' ||
-        activeTool === 'ruler'
+        activeTool === 'dashed-line'
       ) {
         drawingPoints.push(e.latlng);
 
@@ -3704,14 +3951,11 @@
         }
 
         var options = {
-          color: activeTool === 'ruler' ? '#000000' : currentColor,
+          color: currentColor,
           weight: currentThickness
         };
 
-        if (
-          activeTool === 'ruler' ||
-          activeTool === 'dashed-line'
-        ) {
+        if (activeTool === 'dashed-line') {
           options.dashArray = '6,6';
         }
 
@@ -3721,22 +3965,6 @@
         }
 
         previewLayer = L.polyline(drawingPoints, options).addTo(map);
-
-        if (
-          activeTool === 'ruler' &&
-          drawingPoints.length > 1
-        ) {
-          var total = 0;
-
-          for (var i = 1; i < drawingPoints.length; i++) {
-            total += map.distance(
-              drawingPoints[i - 1],
-              drawingPoints[i]
-            );
-          }
-
-          updateRulerDisplay(total);
-        }
 
         return;
       }
@@ -3940,6 +4168,11 @@
     }
 
     function finishShape() {
+      if (activeTool === 'ruler') {
+        rulerFinish();
+        return;
+      }
+
       if (
         activeTool === 'polygon' &&
         drawingPoints.length >= 3
@@ -3986,16 +4219,13 @@
     function clearDrawings() {
       userDrawings.clearLayers();
       resetDrawingState();
+      rulerReset();
 
-      document.getElementById('ruler-result').innerText =
-        "Click points on the map to measure distance.";
-
-      document.getElementById('draw-result').innerText =
-        "Select a shape to draw.";
+      document.getElementById('draw-result').innerText = pt('selectShape');
     }
 
     /* =========================================================
-       DATE COMPARE TOOL (UPDATED)
+       DATE COMPARE TOOL
        ========================================================= */
 
     var compareLayerGroup = L.layerGroup().addTo(map);
@@ -4071,7 +4301,6 @@
       return unionFCList([terrFC, advFC]);
     }
 
-    // Updated to be highly visible, bright, and dotted
     function featureCollectionToLeafletOutline(fc, strokeColor) {
       return L.geoJSON(fc, {
         pane: 'comparePane',
