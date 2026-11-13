@@ -4667,5 +4667,38 @@
       "ru": 148250.01284066943,
       "ua": 22780.586973376816
     }
+  },
+  {
+    "id": "adv-1794517149196",
+    "date": "2026-11-12",
+    "time": "21:59:09",
+    "text_en": "Ukrainians recaptured positions north of Dachne",
+    "text_ru": "ВСУ продвигаются у Дачного",
+    "text": "Ukrainians recaptured positions north of Dachne",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 17.07,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 17.07
+      }
+    ],
+    "areaDisplay": "+17.07 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 48.03528181246173,
+      "west": 36.7159652709961,
+      "north": 48.11614191094256,
+      "east": 36.92899703979493
+    },
+    "polygonFids": [
+      "advance-1794517113133-xemrlslpo4b"
+    ],
+    "snapshot": "history/advances/adv-1794517149196.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22780.586973376816
+    }
   }
 ]
