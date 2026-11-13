@@ -4733,5 +4733,38 @@
       "ru": 148250.01284066943,
       "ua": 22780.586973376816
     }
+  },
+  {
+    "id": "adv-1794603596256",
+    "date": "2026-11-13",
+    "time": "21:59:56",
+    "text_en": "Russian forces secured Hulive",
+    "text_ru": "ВС РФ заняли Гулево",
+    "text": "Russian forces secured Hulive",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 5.44,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 5.44
+      }
+    ],
+    "areaDisplay": "+5.44 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 48.33947820409542,
+      "west": 36.91766738891602,
+      "north": 48.38863417785841,
+      "east": 37.04607009887696
+    },
+    "polygonFids": [
+      "advance-1794603545220-030n6pb1gijg"
+    ],
+    "snapshot": "history/advances/adv-1794603596256.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22780.586973376816
+    }
   }
 ]
