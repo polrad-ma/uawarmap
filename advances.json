@@ -4700,5 +4700,38 @@
       "ru": 148250.01284066943,
       "ua": 22780.586973376816
     }
+  },
+  {
+    "id": "adv-1794589783611",
+    "date": "2026-11-13",
+    "time": "18:09:43",
+    "text_en": "The AFU cleared Filiya",
+    "text_ru": "ВСУ зачистили Филию",
+    "text": "The AFU cleared Filiya",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 2.02,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 2.02
+      }
+    ],
+    "areaDisplay": "+2.02 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 48.073376441410815,
+      "west": 36.72944068908692,
+      "north": 48.0940183741334,
+      "east": 36.780424118042
+    },
+    "polygonFids": [
+      "advance-1794589752577-ulyw1rop3q"
+    ],
+    "snapshot": "history/advances/adv-1794589783611.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22780.586973376816
+    }
   }
 ]
