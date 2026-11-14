@@ -4766,5 +4766,38 @@
       "ru": 148250.01284066943,
       "ua": 22780.586973376816
     }
+  },
+  {
+    "id": "adv-1794656193786",
+    "date": "2026-11-14",
+    "time": "12:36:33",
+    "text_en": "Ukrainian forces have completed the recapture of Komar",
+    "text_ru": "ВСУ завершили захват Комара",
+    "text": "Ukrainian forces have completed the recapture of Komar",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 6.19,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 6.19
+      }
+    ],
+    "areaDisplay": "+6.19 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 47.94601643224852,
+      "west": 36.69897079467774,
+      "north": 47.996929257041295,
+      "east": 36.816730499267585
+    },
+    "polygonFids": [
+      "advance-1794656141882-ex9gxp4ec6"
+    ],
+    "snapshot": "history/advances/adv-1794656193786.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22780.586973376816
+    }
   }
 ]
