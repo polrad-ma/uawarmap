@@ -399,7 +399,7 @@
       { file: "Ukrainian-controlled%20territory.geojson", name: "Ukrainian-controlled territory", color: "#1a237e", group: "main", noOutline: true, smoothFactor: VECTOR_SMOOTH.territory },
       { file: "Ukrainian%20advances.geojson", name: "Ukrainian advances", color: "#0288d1", pane: 'advancesPane', group: "main", noOutline: true, smoothFactor: VECTOR_SMOOTH.advances },
       { file: "Russian%20advances.geojson", name: "Russian advances", color: "#ffd600", pane: 'advancesPane', group: "main", noOutline: true, smoothFactor: VECTOR_SMOOTH.advances },
-      { file: "Infiltration%20area.geojson", name: "Infiltration area", color: "#1a1a1a", fillOpacity: 0.18, pane: 'infiltrationPane', group: "main", noOutline: true, smoothFactor: 1.2 },
+     { file: "Infiltration%20area.geojson", name: "Infiltration area", color: "#1b1b1b", fillOpacity: 0.32, pane: 'infiltrationPane', group: "main", noOutline: true, smoothFactor: 1.2 },
       { file: "Fortifications%20%28thanks%20PMapping832%29.geojson", name: "Fortifications (thanks PMapping832)", color: "#00ffff", group: "extra", defaultOff: true },
       { file: "Frontlines.geojson", name: "August 2024 Frontline", color: "#ff0000", outlineColor: "#ff0000", fillOpacity: 0, group: "extra", defaultOff: true }
     ];
@@ -448,7 +448,7 @@
         else shouldShow = isLayerInCurrentDesign(layerInfo.name);
         setLayerVisibility(layerInfo.name, shouldShow, false);
         scheduleSidebarRefresh();
-      }).catch(function(err) { console.error("Layer load error:", err); if (layerInfo.name === 'Infiltration area' && !mainLayers['Infiltration area']) { var emptyInfiltration = L.geoJSON({ type: 'FeatureCollection', features: [] }, { pane: 'infiltrationPane', style: function() { return { color: '#1a1a1a', fillColor: '#1a1a1a', fillOpacity: 0.18, weight: 2, stroke: false }; } }); mainLayers['Infiltration area'] = emptyInfiltration; liveLayerData['Infiltration area'] = { type: 'FeatureCollection', features: [] }; setLayerVisibility('Infiltration area', isLayerInCurrentDesign('Infiltration area'), false); scheduleSidebarRefresh(); } }));
+      }).catch(function(err) { console.error("Layer load error:", err); if (layerInfo.name === 'Infiltration area' && !mainLayers['Infiltration area']) { var emptyInfiltration = L.geoJSON({ type: 'FeatureCollection', features: [] }, { pane: 'infiltrationPane', style: function() { return { color: '#1b1b1b', fillColor: '#1b1b1b', fillOpacity: 0.32, weight: 2, stroke: false }; } }); mainLayers['Infiltration area'] = emptyInfiltration; liveLayerData['Infiltration area'] = { type: 'FeatureCollection', features: [] }; setLayerVisibility('Infiltration area', isLayerInCurrentDesign('Infiltration area'), false); scheduleSidebarRefresh(); } }));
     });
     var initialLayerLoadPromise = Promise.all(initialLayerLoadPromises);
     function updateSidebarLayerControl() {
