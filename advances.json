@@ -4799,5 +4799,38 @@
       "ru": 148250.01284066943,
       "ua": 22780.586973376816
     }
+  },
+  {
+    "id": "adv-1794733367256",
+    "date": "2026-11-15",
+    "time": "10:02:47",
+    "text_en": "Ukrainian forces control Zaporizhzhia",
+    "text_ru": "ВСУ контролируют Запорожье",
+    "text": "Ukrainian forces control Zaporizhzhia",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 6.43,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 6.43
+      }
+    ],
+    "areaDisplay": "+6.43 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 48.01048222129143,
+      "west": 36.69433593750001,
+      "north": 48.06224929839448,
+      "east": 36.82737350463868
+    },
+    "polygonFids": [
+      "advance-1794733317414-ngs9wz6s73e"
+    ],
+    "snapshot": "history/advances/adv-1794733367256.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22780.586973376816
+    }
   }
 ]
