@@ -4832,5 +4832,31 @@
       "ru": 148250.01284066943,
       "ua": 22780.586973376816
     }
+  },
+  {
+    "id": "adv-1794775533440",
+    "date": "2026-11-15",
+    "time": "21:45:33",
+    "text_en": "Layered pie on the Dobropillia-Druzhkivka directions",
+    "text_ru": "Слоеный пирог на Добропольско-Дружковском направлении",
+    "text": "Layered pie on the Dobropillia-Druzhkivka directions",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 0,
+    "areaEffects": [],
+    "areaDisplay": "",
+    "areaColor": "blue",
+    "focus": {
+      "south": 48.4965876108066,
+      "west": 37.19009399414063,
+      "north": 48.57160961708199,
+      "east": 37.35523223876954
+    },
+    "polygonFids": [],
+    "snapshot": "history/advances/adv-1794775533440.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22780.586973376816
+    }
   }
 ]
