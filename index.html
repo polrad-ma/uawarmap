@@ -443,7 +443,11 @@
         var ruUnion = unionFeatureCollection(ruFeatures);
         var uaUnion = unionFeatureCollection(uaFeatures);
         if (!ruUnion || !uaUnion) return;
-        var inter = turf.intersect(ruUnion, uaUnion);
+        
+        var ruBuffer = turf.buffer(ruUnion, 15, { units: 'kilometers', steps: 4 });
+        var uaBuffer = turf.buffer(uaUnion, 15, { units: 'kilometers', steps: 4 });
+        var inter = turf.intersect(ruBuffer, uaBuffer);
+        
         if (inter) {
           overlapLayer.addData(inter);
         }
