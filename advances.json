@@ -4891,5 +4891,38 @@
       "ru": 148250.01284066943,
       "ua": 22780.586973376816
     }
+  },
+  {
+    "id": "adv-1794859910398",
+    "date": "2026-11-16",
+    "time": "21:11:50",
+    "text_en": "Ukrainian forces recaptured Yunakivka",
+    "text_ru": "ВСУ восстановили контроль над Юнаковкой",
+    "text": "Ukrainian forces recaptured Yunakivka",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 2.64,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 2.64
+      }
+    ],
+    "areaDisplay": "+2.64 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 51.11041991029264,
+      "west": 34.98716354370118,
+      "north": 51.16039939438,
+      "east": 35.11779785156251
+    },
+    "polygonFids": [
+      "advance-1794859873120-pc0zu5fhtvm"
+    ],
+    "snapshot": "history/advances/adv-1794859910398.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22780.586973376816
+    }
   }
 ]
