@@ -4924,5 +4924,39 @@
       "ru": 148250.01284066943,
       "ua": 22780.586973376816
     }
+  },
+  {
+    "id": "adv-1794861091731",
+    "date": "2026-11-16",
+    "time": "21:31:31",
+    "text_en": "Russian forces are recapturing lost territories on the Stepnohirsk direction",
+    "text_ru": "ВС РФ отбивают утраченные территории на Степногорском направлении",
+    "text": "Russian forces are recapturing lost territories on the Stepnohirsk direction",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 7.27,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 7.27
+      }
+    ],
+    "areaDisplay": "+7.27 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 47.54038252373696,
+      "west": 35.3452491760254,
+      "north": 47.60847775345516,
+      "east": 35.519828796386726
+    },
+    "polygonFids": [
+      "advance-1794861029137-uwt06poq2jq",
+      "advance-1794861045139-8k98zasemsu"
+    ],
+    "snapshot": "history/advances/adv-1794861091731.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22780.586973376816
+    }
   }
 ]
