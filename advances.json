@@ -4858,5 +4858,38 @@
       "ru": 148250.01284066943,
       "ua": 22780.586973376816
     }
+  },
+  {
+    "id": "adv-1794848231035",
+    "date": "2026-11-16",
+    "time": "17:57:11",
+    "text_en": "Correction of the contact line on the Komar direction",
+    "text_ru": "Коррекция ЛБС в направлении Комара",
+    "text": "Correction of the contact line on the Komar direction",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 26.85,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 26.85
+      }
+    ],
+    "areaDisplay": "+26.85 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 47.91542163178686,
+      "west": 36.61331176757813,
+      "north": 47.98302802791759,
+      "east": 36.77999496459962
+    },
+    "polygonFids": [
+      "advance-1794848185085-rpmucafq66n"
+    ],
+    "snapshot": "history/advances/adv-1794848231035.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22780.586973376816
+    }
   }
 ]
