@@ -247,7 +247,7 @@
       ru: { search:'Поиск',searchPlaceholder:'Поиск посёлка, города или координат...',previousAdvance:'Предыдущее продвижение',nextAdvance:'Следующее продвижение',jumpDate:'Перейти к дате',lockAdvance:'Заблокировать перемещение карты',unlockAdvance:'Разблокировать перемещение карты',basemapsLayers:'Подложки и слои',baseMap:'Карта',mapDesign:'Оформление карты',drawTools:'Инструменты рисования',solidTools:'Сплошные инструменты',dashedTools:'Пунктирные инструменты',pointedTools:'Точечные инструменты',shapesUtilities:'Фигуры и инструменты',freehand:'Свободная линия',freehandArrow:'Свободная стрелка',line:'Линия',arrow:'Стрелка',dashedFreehand:'Свободная пунктирная линия',dashedFreehandArrow:'Свободная пунктирная стрелка',dashedLine:'Пунктирная линия',dashedArrow:'Пунктирная стрелка',pointedFreehand:'Свободная точечная линия',pointedFreehandArrow:'Свободная точечная стрелка',pointedLine:'Точечная линия',polygon:'Полигон',rectangle:'Прямоугольник',ukraineFlag:'🇺🇦 Флаг Украины',russiaFlag:'🇷🇺 Флаг России',eraser:'Ластик',thickness:'Толщина',red:'Красный',blue:'Синий',green:'Зелёный',yellow:'Жёлтый',black:'Чёрный',white:'Белый',finishShape:'Завершить фигуру',clearDrawings:'Очистить мои рисунки',selectShape:'Выберите фигуру для рисования.',ruler:'Линейка (измерение)',kilometers:'Километры (км)',miles:'Мили (mi)',finishMeasuring:'Завершить измерение',clearLine:'Очистить линию',measurePrompt:'Нажимайте точки на карте, чтобы измерить расстояние. Нажмите «Завершить измерение», чтобы оставить линию, или «Очистить линию», чтобы сбросить.',coordinates:'Координаты',preciseCoords:'Нажмите в любом месте карты, чтобы увидеть точные координаты.',changelog:'Журнал изменений',settings:'Настройки',loading:'Загрузка...',noUpdates:'Обновлений пока нет.',couldNotLoadUpdates:'Не удалось загрузить обновления.',darkTheme:'Тёмная тема',polygonBorders:'Границы полигонов',centerCrosshair:'Центральный прицел',screenshot:'Сделать скриншот',fullscreen:'Полноэкранный режим',searchFailed:'Ошибка поиска.',searching:'Поиск...',copied:'Скопировано!',mainLayers:'Основные слои',extraLayers:'Дополнительные слои',russianTerritory:'Территория под контролем России',ukrainianTerritory:'Территория под контролем Украины',ukrainianAdvances:'Продвижения Украины',russianAdvances:'Продвижения России',infiltrationArea:'Зона инфильтрации',mapUpdate:'Обновление карты',area:'Площадь',basemapGoogleHybrid:'Google Hybrid (спутник + подписи)',basemapEsriHybrid:'Esri Hybrid (спутник + подписи)',basemapEsriSatellite:'Esri Satellite',basemapOSM:'OpenStreetMap',basemapTopo:'Топографическая',designDefault:'По умолчанию',amkDesign:'Дизайн AMK Mapping',playfraDesign:'Дизайн Playfra',myDrawings:'Мои рисунки',citiesCaptured:'Захваченные города',augustFrontline:'Линия фронта августа 2024',townsVillages:'Посёлки, деревни и города (автор: PWM)',fortifications:'Укрепления (спасибо PMapping832)',grayZone:'Серая зона',twitter:'Twitter/X',login:'Войти',compareDates:'Сравнить даты',phoneMode:'Режим телефона' }
     };
     function pt(key) { return (PUBLIC_TRANSLATIONS[publicLanguage] || PUBLIC_TRANSLATIONS.en)[key] || key; }
-    function publicLayerLabel(name) { var m = { 'Russian-controlled territory':'russianTerritory','Ukrainian-controlled territory':'ukrainianTerritory','Ukrainian advances':'ukrainianAdvances','Russian advances':'russianAdvances','Infiltration area':'infiltrationArea','My Drawings':'myDrawings','Cities Captured':'citiesCaptured','August 2024 Frontline':'augustFrontline','Towns, villages and cities (credit to PWM)':'townsVillages','Fortifications (thanks PMapping832)':'fortifications','Gray Zone':'grayZone' }; var key = m[name]; if (key && PUBLIC_TRANSLATIONS[publicLanguage][key]) return PUBLIC_TRANSLATIONS[publicLanguage][key]; return name; }
+    function publicLayerLabel(name) { var m = { 'Russian-controlled territory':'russianTerritory','Ukrainian-controlled territory':'ukrainianTerritory','Ukrainian advances':'ukrainianAdvances','Russian advances':'russianAdvances','Infiltration area':'infiltrationArea','My Drawings':'myDrawings','Cities Captured':'citiesCaptured','August 2024 Frontline':'augustFrontline','Towns, villages and cities (credit to PWM)':'townsVillages','Fortifications (thanks PMapping832)':'fortifications','Gray Zone':'grayZone','Control Overlap':'controlOverlap' }; var key = m[name]; if (key && PUBLIC_TRANSLATIONS[publicLanguage][key]) return PUBLIC_TRANSLATIONS[publicLanguage][key]; return name; }
     function advanceText(item) { if (!item) return pt('mapUpdate'); if (publicLanguage === 'ru') return item.text_ru || item.text_en || item.text || pt('mapUpdate'); return item.text_en || item.text || item.text_ru || pt('mapUpdate'); }
     function applyPublicLanguage() {
       document.documentElement.lang = publicLanguage;
@@ -344,6 +344,7 @@
     map.createPane('extraLayersPane'); map.getPane('extraLayersPane').style.zIndex = 500;
     map.createPane('drawingsPane'); map.getPane('drawingsPane').style.zIndex = 650;
     map.createPane('markersPane'); map.getPane('markersPane').style.zIndex = 700;
+    map.createPane('overlapPane'); map.getPane('overlapPane').style.zIndex = 425;
     ['polyline', 'polygon', 'rectangle'].forEach(function(name) { var original = L[name]; L[name] = function(shape, options) { var opts = Object.assign({ pane: 'drawingsPane' }, options || {}); return original(shape, opts); }; });
     var appHeaderEl = document.getElementById('app-header');
     L.DomEvent.disableClickPropagation(appHeaderEl);
@@ -429,6 +430,33 @@
     function normalizeControlTerritoryOverlaps() { var ruLayer = mainLayers['Russian-controlled territory'], uaLayer = mainLayers['Ukrainian-controlled territory']; if (!ruLayer || !uaLayer) return false; var uaFeatures = getFeaturesFromLayer(uaLayer).map(cleanFeatureGeometry); var uaSideUnion = unionFeatureCollection(uaFeatures); var changed = false; if (uaSideUnion) changed = clipLayerAgainstUnion(ruLayer, uaSideUnion) || changed; return changed; }
     function getFeaturesFromLayer(layer) { if (!layer || !layer.toGeoJSON) return []; var geojson = layer.toGeoJSON(); if (!geojson) return []; if (geojson.type === 'FeatureCollection') return geojson.features || []; if (geojson.type === 'Feature') return [geojson]; return []; }
     function rebuildGrayZone() { var ruLayer = mainLayers['Russian-controlled territory'], uaLayer = mainLayers['Ukrainian-controlled territory']; var ruAdvancesLayer = mainLayers['Russian advances'], uaAdvancesLayer = mainLayers['Ukrainian advances']; grayZoneLayer.clearLayers(); if (!ruLayer || !uaLayer) return; var ruFeatures = getFeaturesFromLayer(ruLayer), uaFeatures = getFeaturesFromLayer(uaLayer); if (ruAdvancesLayer) ruFeatures = ruFeatures.concat(getFeaturesFromLayer(ruAdvancesLayer)); if (uaAdvancesLayer) uaFeatures = uaFeatures.concat(getFeaturesFromLayer(uaAdvancesLayer)); function polygonOnly(features) { return features.map(function(feature) { if (!feature || !feature.geometry) return null; if (feature.geometry.type !== 'Polygon' && feature.geometry.type !== 'MultiPolygon') return null; try { return turf.cleanCoords(feature); } catch (error) { return feature; } }).filter(Boolean); } ruFeatures = polygonOnly(ruFeatures); uaFeatures = polygonOnly(uaFeatures); if (!ruFeatures.length || !uaFeatures.length) return; var grayPieces = []; function uniteAll(list) { var result = null; list.forEach(function(f) { try { result = result ? turf.union(result, f) : f; } catch (error) { console.warn('Gray Zone union error:', error); } }); return result; } var ruAll = uniteAll(ruFeatures), uaAll = uniteAll(uaFeatures); if (ruAll && uaAll) { try { var ruBuffer = turf.buffer(ruAll, GRAY_ZONE_DISTANCE_KM, { units: 'kilometers', steps: 8 }); var uaBuffer = turf.buffer(uaAll, GRAY_ZONE_DISTANCE_KM, { units: 'kilometers', steps: 8 }); var between = turf.intersect(ruBuffer, uaBuffer); var piece = between; if (piece) piece = turf.difference(piece, ruAll); if (piece) piece = turf.difference(piece, uaAll); if (piece) { if (piece.type === 'FeatureCollection') (piece.features || []).forEach(function(feature) { if (feature && feature.geometry) grayPieces.push(feature); }); else if (piece.geometry) grayPieces.push(piece); } } catch (error) { console.warn('Gray Zone generation error:', error); } } if (!grayPieces.length) { setLayerVisibility('Gray Zone', isLayerInCurrentDesign('Gray Zone')); return; } grayZoneLayer.addData({ type: 'FeatureCollection', features: grayPieces }); setLayerVisibility('Gray Zone', isLayerInCurrentDesign('Gray Zone')); }
+    
+    function rebuildOverlapLayer() {
+      var ruLayer = mainLayers['Russian-controlled territory'];
+      var uaLayer = mainLayers['Ukrainian-controlled territory'];
+      if (overlapLayer) overlapLayer.clearLayers();
+      if (!ruLayer || !uaLayer) return;
+      var ruFeatures = getFeaturesFromLayer(ruLayer).map(cleanFeatureGeometry);
+      var uaFeatures = getFeaturesFromLayer(uaLayer).map(cleanFeatureGeometry);
+      if (!ruFeatures.length || !uaFeatures.length) return;
+      try {
+        var ruUnion = unionFeatureCollection(ruFeatures);
+        var uaUnion = unionFeatureCollection(uaFeatures);
+        if (!ruUnion || !uaUnion) return;
+        var inter = turf.intersect(ruUnion, uaUnion);
+        if (inter) {
+          overlapLayer.addData(inter);
+        }
+      } catch (e) {
+        console.warn('Overlap rebuild failed:', e);
+      }
+    }
+    var overlapLayer = L.geoJSON(null, {
+      pane: 'overlapPane',
+      style: function() { return { color: '#9b59b6', fillColor: '#9b59b6', fillOpacity: 0.6, weight: 1, stroke: true }; },
+      interactive: false
+    }).addTo(map);
+
     var rebuildTimer = null;
     function scheduleSidebarRefresh() { if (rebuildTimer) return; rebuildTimer = setTimeout(function() { rebuildTimer = null; updateSidebarLayerControl(); }, 150); }
     layerFiles.forEach(function(layerInfo) {
@@ -453,7 +481,7 @@
     var initialLayerLoadPromise = Promise.all(initialLayerLoadPromises);
     function updateSidebarLayerControl() {
       var container = document.getElementById('grouped-layer-container'); if (!container) return; container.innerHTML = '';
-      function addGroup(sectionTitle, layers) { var section = document.createElement('div'); section.style.marginBottom = '10px'; var title = document.createElement('div'); title.style.fontWeight = 'bold'; title.style.fontSize = '13px'; title.style.marginBottom = '4px'; title.textContent = sectionTitle; section.appendChild(title); Object.keys(layers).forEach(function(name) { var checkbox = document.createElement('input'); checkbox.type = 'checkbox'; checkbox.checked = map.hasLayer(layers[name]); checkbox.addEventListener('change', function() { var wantedVisibility = checkbox.checked; layerVisibilityOverrides[name] = wantedVisibility; setLayerVisibility(name, wantedVisibility, false); checkbox.checked = map.hasLayer(layers[name]); }); var label = document.createElement('label'); label.style.display = 'block'; label.style.fontSize = '13px'; label.style.marginBottom = '3px'; label.appendChild(checkbox); label.appendChild(document.createTextNode(' ' + publicLayerLabel(name))); section.appendChild(label); }); return section; }
+      function addGroup(sectionTitle, layers) { var section = document.createElement('div'); section.style.marginBottom = '10px'; var title = document.createElement('div'); title.style.fontWeight = 'bold'; title.style.fontSize = '13px'; title.style.marginBottom = '4px'; title.textContent = sectionTitle; section.appendChild(title); Object.keys(layers).forEach(function(name) { if(name === 'Control Overlap') return; var checkbox = document.createElement('input'); checkbox.type = 'checkbox'; checkbox.checked = map.hasLayer(layers[name]); checkbox.addEventListener('change', function() { var wantedVisibility = checkbox.checked; layerVisibilityOverrides[name] = wantedVisibility; setLayerVisibility(name, wantedVisibility, false); checkbox.checked = map.hasLayer(layers[name]); }); var label = document.createElement('label'); label.style.display = 'block'; label.style.fontSize = '13px'; label.style.marginBottom = '3px'; label.appendChild(checkbox); label.appendChild(document.createTextNode(' ' + publicLayerLabel(name))); section.appendChild(label); }); return section; }
       container.appendChild(addGroup(pt('mainLayers'), mainLayers));
       container.appendChild(addGroup(pt('extraLayers'), extraLayers));
       updateDesignSelector();
@@ -471,6 +499,29 @@
     function showTimelineDate(date) { var dateInput = document.getElementById('timeline-date-input'); var requestId = ++mapStateRequestId; activeMapState = 'date'; activeSnapshotId = null; timelineMode = true; dateInput.title = 'Loading ' + date + '...'; var url = 'history/' + date + '.json'; if (snapshotCache[url]) { if (applySnapshotToLayers(snapshotCache[url], requestId, 'date_' + date)) dateInput.title = 'Jump to a date'; return; } url += (url.indexOf('?') === -1 ? '?' : '&') + 'polradHistory=' + Date.now() + '_' + Math.random().toString(36).slice(2); fetch(url, { cache: 'no-store' }).then(function(response) { if (!response.ok) throw new Error('Could not load ' + date); return response.json(); }).then(function(snapshot) { if (requestId !== mapStateRequestId || activeMapState !== 'date') return; snapshotCache[url] = snapshot; if (applySnapshotToLayers(snapshot, requestId, 'date_' + date)) dateInput.title = 'Jump to a date'; }).catch(function(err) { if (requestId !== mapStateRequestId || activeMapState !== 'date') return; console.error(err); dateInput.title = (publicLanguage === 'ru' ? 'Не удалось загрузить ' : 'Could not load ') + date; }); }
     function reloadLiveLayers(requestId) { if (requestId === undefined || requestId === null) requestId = ++mapStateRequestId; activeMapState = 'live'; activeSnapshotId = null; var requests = layerFiles.map(function(layerInfo) { return fetchGeoJSONWithFallbacks(layerInfo.file).then(function(data) { if (requestId !== mapStateRequestId || activeMapState !== 'live') return; var layer = mainLayers[layerInfo.name] || extraLayers[layerInfo.name]; if (!layer || !layer.clearLayers) return; layer.clearLayers(); layer.addData(data); liveLayerData[layerInfo.name] = data; }).catch(function(error) { if (requestId !== mapStateRequestId || activeMapState !== 'live') return; console.error('Live layer reload error:', layerInfo.name, error); }); }); return Promise.all(requests).then(function() { if (requestId !== mapStateRequestId || activeMapState !== 'live') return; normalizeControlTerritoryOverlaps(); rebuildGrayZone(); scheduleSidebarRefresh(); }); }
     function exitTimelineMode(reloadCurrent) { var requestId = ++mapStateRequestId; timelineMode = false; activeMapState = 'live'; activeSnapshotId = null; if (reloadCurrent !== false) { reloadLiveLayers(requestId); } else { var allLayers = getAllLayerObjects(); Object.keys(allLayers).forEach(function(name) { if (TIMELINE_SKIP_LAYERS.indexOf(name) !== -1) return; if (name === 'Gray Zone') return; var layer = allLayers[name]; if (!layer || !layer.clearLayers) return; layer.clearLayers(); if (liveLayerData[name]) layer.addData(liveLayerData[name]); }); normalizeControlTerritoryOverlaps(); rebuildGrayZone(); scheduleSidebarRefresh(); } document.getElementById('timeline-date-input').title = 'Jump to a date'; }
+    
+    function patchOverlapRebuild() {
+       var originalNormalize = normalizeControlTerritoryOverlaps;
+       normalizeControlTerritoryOverlaps = function() {
+           var result = originalNormalize.apply(this, arguments);
+           rebuildOverlapLayer();
+           return result;
+       };
+       var originalRebuildGrayZone = rebuildGrayZone;
+       rebuildGrayZone = function() {
+           var result = originalRebuildGrayZone.apply(this, arguments);
+           rebuildOverlapLayer();
+           return result;
+       };
+       var originalExitTimelineMode = exitTimelineMode;
+       exitTimelineMode = function() {
+           var result = originalExitTimelineMode.apply(this, arguments);
+           rebuildOverlapLayer();
+           return result;
+       };
+    }
+    patchOverlapRebuild();
+
     initialLayerLoadPromise.then(function() { normalizeControlTerritoryOverlaps(); rebuildGrayZone(); updateSidebarLayerControl(); if (window.requestIdleCallback) window.requestIdleCallback(function() { loadAdvances(); }, { timeout: 2000 }); else setTimeout(function() { loadAdvances(); }, 1500); });
     fetch('updates.json').then(response => response.json()).then(updates => { var container = document.getElementById('updates-content'); container.innerHTML = ''; if (!updates.length) { container.innerHTML = '<em>' + pt('noUpdates') + '</em>'; return; } updates.forEach(item => { var div = document.createElement('div'); div.className = 'update-item'; function makeLinksClickable(text) { var hiddenLinks = []; text = text.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, function(match, label, url) { var token = '___UPDATE_LINK_' + hiddenLinks.length + '___'; hiddenLinks.push('<a href="' + url + '" target="_blank" rel="noopener noreferrer">' + label + '</a>'); return token; }); text = text.replace(/(^|[\s>])(https?:\/\/[^\s<]+)/g, function(match, before, url) { var trailing = ''; while (/[.,!?;:]$/.test(url)) { trailing = url.slice(-1) + trailing; url = url.slice(0, -1); } return before + '<a href="' + url + '" target="_blank" rel="noopener noreferrer">' + url + '</a>' + trailing; }); hiddenLinks.forEach(function(link, index) { text = text.replace('___UPDATE_LINK_' + index + '___', link); }); return text; } div.innerHTML = '<span class="update-date">' + item.date + '</span>' + makeLinksClickable(item.text); container.appendChild(div); }); }).catch(() => document.getElementById('updates-content').innerHTML = '<em>' + pt('couldNotLoadUpdates') + '</em>');
     var activeTool = null, currentColor = '#ff0000', currentThickness = 3, drawingPoints = [], previewLayer = null, isMouseDown = false, polygonBordersEnabled = false;
