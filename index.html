@@ -461,9 +461,7 @@
         var ruUnion = unionFeatureCollection(ruFeatures);
         var uaUnion = unionFeatureCollection(uaFeatures);
         if (!ruUnion || !uaUnion) { overlapLayer.clearLayers(); return; }
-        var ruBuffer = turf.buffer(ruUnion, 15, { units: 'kilometers', steps: 4 });
-        var uaBuffer = turf.buffer(uaUnion, 15, { units: 'kilometers', steps: 4 });
-        var inter = turf.intersect(ruBuffer, uaBuffer);
+        var inter = turf.intersect(ruUnion, uaUnion);
         overlapLayer.clearLayers();
         if (inter) overlapLayer.addData(inter);
       } catch (e) { console.warn('Overlap rebuild failed:', e); overlapLayer.clearLayers(); }
@@ -476,7 +474,7 @@
         else setTimeout(rebuildOverlapLayerNow, 0);
       }, 500);
     }
-    var overlapLayer = L.geoJSON(null, { pane: 'overlapPane', style: function() { return { color: '#9b59b6', fillColor: '#9b59b6', fillOpacity: 0.6, weight: 1, stroke: true }; }, interactive: false }).addTo(map);
+    var overlapLayer = L.geoJSON(null, { pane: 'overlapPane', style: function() { return { color: 'url(#stripePattern)', fillColor: 'url(#stripePattern)', fillOpacity: 1, weight: 1, stroke: true }; }, interactive: false }).addTo(map);
 
     var rebuildTimer = null;
     function scheduleSidebarRefresh() { if (rebuildTimer) return; rebuildTimer = setTimeout(function() { rebuildTimer = null; updateSidebarLayerControl(); }, 150); }
@@ -561,5 +559,13 @@
     function lastAdvanceForDate(dateStr) { if (!dateStr) return null; for (var i = advances.length - 1; i >= 0; i--) { if (advances[i].date === dateStr) return advances[i]; } return null; }
     function runDateComparison() { var out = document.getElementById('compare-result'); if (!out) return; out.textContent = 'Loading snapshots...'; compareLayerGroup.clearLayers(); var dateA = document.getElementById('compare-date-a').value, dateB = document.getElementById('compare-date-b').value; if (!dateA || !dateB) { out.textContent = 'Please pick two dates.'; return; } if (dateA === dateB) { out.textContent = 'Please pick two different dates.'; return; } var aAdv = lastAdvanceForDate(dateA), bAdv = lastAdvanceForDate(dateB); if (!aAdv || !bAdv) { out.textContent = 'Could not find advance records for those dates.'; return; } if (typeof showAdvance === 'function') { var bIdx = advances.indexOf(bAdv); if (bIdx >= 0) { try { showAdvance(bIdx, { skipFocus: true }); } catch (e) { console.warn('Could not auto-load snapshot for date B:', e); } } } function loadSnapshot(adv) { if (!adv) return Promise.reject(new Error('Missing advance')); if (adv.snapshotData) return Promise.resolve(adv.snapshotData); if (!adv.snapshot) return Promise.reject(new Error('No snapshot path')); if (snapshotCache[adv.snapshot]) return Promise.resolve(snapshotCache[adv.snapshot]); var sep = adv.snapshot.indexOf('?') === -1 ? '?' : '&'; var url = adv.snapshot + sep + 'cmp=' + Date.now(); return fetch(url, { cache: 'no-store' }).then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status + ' for ' + adv.snapshot); return r.json(); }).then(function(d) { snapshotCache[adv.snapshot] = d; return d; }); } Promise.all([loadSnapshot(aAdv), loadSnapshot(bAdv)]).then(function(arr) { var snapA = arr[0], snapB = arr[1]; var ruA = effectiveSide(snapA, 'ru'), ruB = effectiveSide(snapB, 'ru'); var uaA = effectiveSide(snapA, 'ua'), uaB = effectiveSide(snapB, 'ua'); var ruGains = null, uaGains = null; if (ruB && ruA) { try { ruGains = turf.difference(ruB, ruA); } catch (e) {} } else if (ruB) { ruGains = ruB; } if (uaB && uaA) { try { uaGains = turf.difference(uaB, uaA); } catch (e) {} } else if (uaB) { uaGains = uaB; } if (ruGains && uaB) { try { ruGains = turf.difference(ruGains, uaB); } catch (e) {} } if (uaGains && ruB) { try { uaGains = turf.difference(uaGains, ruB); } catch (e) {} } var ruGainArea = ruGains ? turf.area(ruGains) / 1e6 : 0; var uaGainArea = uaGains ? turf.area(uaGains) / 1e6 : 0; if (ruGains) featureCollectionToLeafletOutline(ruGains, '#ff0000').addTo(compareLayerGroup); if (uaGains) featureCollectionToLeafletOutline(uaGains, '#0000ff').addTo(compareLayerGroup); out.innerHTML = '<b>Gains ' + dateA + ' → ' + dateB + '</b><br><span class="cmp-red">Russian gains:</span> +' + ruGainArea.toFixed(2) + ' km²<br><span class="cmp-blue">Ukrainian gains:</span> +' + uaGainArea.toFixed(2) + ' km²'; }).catch(function(err) { console.error('Compare error:', err); out.textContent = 'Could not load comparison data. ' + err.message; }); }
   </script>
+  <svg id="overlapSvg" xmlns="http://www.w3.org/2000/svg" style="width:0;height:0;position:absolute;">
+    <defs>
+      <pattern id="stripePattern" width="10" height="10" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
+        <rect width="5" height="10" fill="#d32f2f" />
+        <rect x="5" width="5" height="10" fill="#1976d2" />
+      </pattern>
+    </defs>
+  </svg>
 </body>
 </html>
