@@ -4958,5 +4958,39 @@
       "ru": 148250.01284066943,
       "ua": 22780.586973376816
     }
+  },
+  {
+    "id": "adv-1794993323750",
+    "date": "2026-11-18",
+    "time": "10:15:23",
+    "text_en": "Russian forces completed the capture of Sobolivka",
+    "text_ru": "ВС РФ завершили захват Соболевки",
+    "text": "Russian forces completed the capture of Sobolivka",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 0.87,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 0.87
+      }
+    ],
+    "areaDisplay": "+0.87 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 49.69495142820411,
+      "west": 37.543802261352546,
+      "north": 49.71626650111194,
+      "east": 37.59572982788087
+    },
+    "polygonFids": [
+      "advance-1794993255944-4s6pxy5zg48",
+      "advance-1794993271391-vww2kl5tcs"
+    ],
+    "snapshot": "history/advances/adv-1794993323750.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22780.586973376816
+    }
   }
 ]
