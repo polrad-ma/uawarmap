@@ -4992,5 +4992,38 @@
       "ru": 148250.01284066943,
       "ua": 22780.586973376816
     }
+  },
+  {
+    "id": "adv-1795208166413",
+    "date": "2026-11-20",
+    "time": "21:56:06",
+    "text_en": "Over the last weeks Russian forces captured new grounds in the vicinity of Udachne",
+    "text_ru": "За последние недели ВС РФ заняли новые позиции в районе Удачного",
+    "text": "Over the last weeks Russian forces captured new grounds in the vicinity of Udachne",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 34.11,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 34.11
+      }
+    ],
+    "areaDisplay": "+34.11 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 48.253255355911136,
+      "west": 36.857414245605476,
+      "north": 48.35670530140269,
+      "east": 37.083663940429695
+    },
+    "polygonFids": [
+      "p-1795208016836-l4aeyfub22e"
+    ],
+    "snapshot": "history/advances/adv-1795208166413.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22780.586973376816
+    }
   }
 ]
