@@ -474,7 +474,7 @@
         else setTimeout(rebuildOverlapLayerNow, 0);
       }, 500);
     }
-    var overlapLayer = L.geoJSON(null, { pane: 'overlapPane', style: function() { return { color: '#8e24aa', fillColor: '#9c27b0', fillOpacity: 0.2, weight: 1, stroke: false }; }, interactive: false }).addTo(map);
+    var overlapLayer = L.geoJSON(null, { pane: 'overlapPane', style: function() { return { color: '#8e24aa', fillColor: '#9c27b0', fillOpacity: 0.1, weight: 1, stroke: false }; }, interactive: false }).addTo(map);
 
     var rebuildTimer = null;
     function scheduleSidebarRefresh() { if (rebuildTimer) return; rebuildTimer = setTimeout(function() { rebuildTimer = null; updateSidebarLayerControl(); }, 150); }
