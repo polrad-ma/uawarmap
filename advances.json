@@ -5025,5 +5025,38 @@
       "ru": 148250.01284066943,
       "ua": 22780.586973376816
     }
+  },
+  {
+    "id": "adv-1795286501724",
+    "date": "2026-11-21",
+    "time": "19:41:41",
+    "text_en": "Russians recaptured Novomykolaivka",
+    "text_ru": "ВС РФ отбили Новониколаевку",
+    "text": "Russians recaptured Novomykolaivka",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 14.82,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 14.82
+      }
+    ],
+    "areaDisplay": "+14.82 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 48.51626322069988,
+      "west": 37.30579376220704,
+      "north": 48.574789910928864,
+      "east": 37.43728637695313
+    },
+    "polygonFids": [
+      "advance-1795286473382-q3s434oncbd"
+    ],
+    "snapshot": "history/advances/adv-1795286501724.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22780.586973376816
+    }
   }
 ]
