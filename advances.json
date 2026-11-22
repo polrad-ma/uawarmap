@@ -5091,5 +5091,38 @@
       "ru": 148250.01284066943,
       "ua": 22780.586973376816
     }
+  },
+  {
+    "id": "adv-1795367530721",
+    "date": "2026-11-22",
+    "time": "18:12:10",
+    "text_en": "Russian presence near Bilozerske is growing",
+    "text_ru": "Присутствие ВС РФ в районе Белозерского растет",
+    "text": "Russian presence near Bilozerske is growing",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 3.85,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 3.85
+      }
+    ],
+    "areaDisplay": "+3.85 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 48.48942060688964,
+      "west": 37.05739974975587,
+      "north": 48.537408823654594,
+      "east": 37.18185424804688
+    },
+    "polygonFids": [
+      "p-1795367471311-2oukr3a91o"
+    ],
+    "snapshot": "history/advances/adv-1795367530721.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22780.586973376816
+    }
   }
 ]
