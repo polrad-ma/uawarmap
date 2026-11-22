@@ -1,3 +1,20 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -401,7 +418,7 @@
       { file: "Ukrainian-controlled%20territory.geojson", name: "Ukrainian-controlled territory", color: "#1a237e", group: "main", noOutline: true, smoothFactor: VECTOR_SMOOTH.territory },
       { file: "Ukrainian%20advances.geojson", name: "Ukrainian advances", color: "#0288d1", pane: 'advancesPane', group: "main", noOutline: true, smoothFactor: VECTOR_SMOOTH.advances },
       { file: "Russian%20advances.geojson", name: "Russian advances", color: "#ffd600", pane: 'advancesPane', group: "main", noOutline: true, smoothFactor: VECTOR_SMOOTH.advances },
-      { file: "Infiltration%20area.geojson", name: "Infiltration area", color: "#1b1b1b", fillOpacity: 0.32, pane: 'infiltrationPane', group: "main", noOutline: true, smoothFactor: 1.2 },
+      { file: "Infiltration%20area.geojson", name: "Infiltration area", color: "#1b1b1b", fillOpacity: 0.35, pane: 'infiltrationPane', group: "main", noOutline: true, smoothFactor: 1.2 },
       { file: "Fortifications%20%28thanks%20PMapping832%29.geojson", name: "Fortifications (thanks PMapping832)", color: "#00ffff", group: "extra", defaultOff: true },
       { file: "Frontlines.geojson", name: "August 2024 Frontline", color: "#ff0000", outlineColor: "#ff0000", fillOpacity: 0, group: "extra", defaultOff: true }
     ];
@@ -463,7 +480,10 @@
         if (!ruUnion || !uaUnion) { overlapLayer.clearLayers(); return; }
         var inter = turf.intersect(ruUnion, uaUnion);
         overlapLayer.clearLayers();
-        if (inter) overlapLayer.addData(inter);
+        if (inter) {
+          overlapLayer.addData(inter);
+          ensureOverlapStripePattern();
+        }
       } catch (e) { console.warn('Overlap rebuild failed:', e); overlapLayer.clearLayers(); }
     }
     function rebuildOverlapLayer() {
@@ -474,7 +494,37 @@
         else setTimeout(rebuildOverlapLayerNow, 0);
       }, 500);
     }
-    var overlapLayer = L.geoJSON(null, { pane: 'overlapPane', style: function() { return { color: '#8e24aa', fillColor: '#9c27b0', fillOpacity: 0.4, weight: 1, stroke: false }; }, interactive: false }).addTo(map);
+    // Red/blue diagonal hatch for territory that appears in both control layers.
+    // The pattern is installed into Leaflet's own SVG renderer so it works
+    // reliably with the map's pane/layer lifecycle.
+    function ensureOverlapStripePattern() {
+      var paths = overlapLayer ? overlapLayer.getLayers() : [];
+      if (!paths.length || !paths[0]._path) return;
+      var svg = paths[0]._path.ownerSVGElement;
+      if (!svg || svg.querySelector('#polradOverlapStripe')) return;
+      var ns = 'http://www.w3.org/2000/svg';
+      var defs = svg.querySelector('defs');
+      if (!defs) { defs = document.createElementNS(ns, 'defs'); svg.insertBefore(defs, svg.firstChild); }
+      var pattern = document.createElementNS(ns, 'pattern');
+      pattern.setAttribute('id', 'polradOverlapStripe');
+      pattern.setAttribute('patternUnits', 'userSpaceOnUse');
+      pattern.setAttribute('width', '12');
+      pattern.setAttribute('height', '12');
+      pattern.setAttribute('patternTransform', 'rotate(45)');
+      var red = document.createElementNS(ns, 'rect');
+      red.setAttribute('x', '0'); red.setAttribute('y', '0');
+      red.setAttribute('width', '6'); red.setAttribute('height', '12');
+      red.setAttribute('fill', '#e53935');
+      var blue = document.createElementNS(ns, 'rect');
+      blue.setAttribute('x', '6'); blue.setAttribute('y', '0');
+      blue.setAttribute('width', '6'); blue.setAttribute('height', '12');
+      blue.setAttribute('fill', '#3975e8');
+      pattern.appendChild(red); pattern.appendChild(blue); defs.appendChild(pattern);
+      paths.forEach(function(layer) {
+        if (layer.setStyle) layer.setStyle({ fillColor: 'url(#polradOverlapStripe)', fillOpacity: 0.72, color: '#ffffff', opacity: 0.8, weight: 0.7, stroke: false });
+      });
+    }
+    var overlapLayer = L.geoJSON(null, { pane: 'overlapPane', style: function() { return { color: '#ffffff', fillColor: 'url(#polradOverlapStripe)', fillOpacity: 0.72, weight: 0.7, stroke: false }; }, interactive: false }).addTo(map);
 
     var rebuildTimer = null;
     function scheduleSidebarRefresh() { if (rebuildTimer) return; rebuildTimer = setTimeout(function() { rebuildTimer = null; updateSidebarLayerControl(); }, 150); }
@@ -495,7 +545,7 @@
         else shouldShow = isLayerInCurrentDesign(layerInfo.name);
         setLayerVisibility(layerInfo.name, shouldShow, false);
         scheduleSidebarRefresh();
-      }).catch(function(err) { console.error("Layer load error:", err); if (layerInfo.name === 'Infiltration area' && !mainLayers['Infiltration area']) { var emptyInfiltration = L.geoJSON({ type: 'FeatureCollection', features: [] }, { pane: 'infiltrationPane', style: function() { return { color: '#1b1b1b', fillColor: '#1b1b1b', fillOpacity: 0.32, weight: 2, stroke: false }; } }); mainLayers['Infiltration area'] = emptyInfiltration; liveLayerData['Infiltration area'] = { type: 'FeatureCollection', features: [] }; setLayerVisibility('Infiltration area', isLayerInCurrentDesign('Infiltration area'), false); scheduleSidebarRefresh(); } }));
+      }).catch(function(err) { console.error("Layer load error:", err); if (layerInfo.name === 'Infiltration area' && !mainLayers['Infiltration area']) { var emptyInfiltration = L.geoJSON({ type: 'FeatureCollection', features: [] }, { pane: 'infiltrationPane', style: function() { return { color: '#1b1b1b', fillColor: '#1b1b1b', fillOpacity: 0.35, weight: 2, stroke: false }; } }); mainLayers['Infiltration area'] = emptyInfiltration; liveLayerData['Infiltration area'] = { type: 'FeatureCollection', features: [] }; setLayerVisibility('Infiltration area', isLayerInCurrentDesign('Infiltration area'), false); scheduleSidebarRefresh(); } }));
     });
     var initialLayerLoadPromise = Promise.all(initialLayerLoadPromises);
     function updateSidebarLayerControl() {
@@ -570,3 +620,7 @@
   </svg>
 </body>
 </html>
+
+
+
+
