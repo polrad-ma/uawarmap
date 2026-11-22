@@ -5058,5 +5058,38 @@
       "ru": 148250.01284066943,
       "ua": 22780.586973376816
     }
+  },
+  {
+    "id": "adv-1795353470805",
+    "date": "2026-11-22",
+    "time": "14:17:50",
+    "text_en": "Ukrainian forces continue their offensive in the direction of Bahatyr",
+    "text_ru": "ВСУ продолжают наступление в сторону Богатыря",
+    "text": "Ukrainian forces continue their offensive in the direction of Bahatyr",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 41.22,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 41.22
+      }
+    ],
+    "areaDisplay": "+41.22 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 47.97498428479194,
+      "west": 36.626701354980476,
+      "north": 48.0941330284,
+      "east": 36.920585632324226
+    },
+    "polygonFids": [
+      "p-1795353301434-mrgueiyty6d"
+    ],
+    "snapshot": "history/advances/adv-1795353470805.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22780.586973376816
+    }
   }
 ]
