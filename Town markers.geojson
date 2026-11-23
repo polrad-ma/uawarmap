@@ -1,0 +1,5210 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Dobropillia",
+        "color": "gray",
+        "shape": "square"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.09018707275391,
+          48.47064508104465
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Kostiantinivka",
+        "color": "gray",
+        "shape": "square"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.70027160644532,
+          48.51978810100079
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Kupyansk",
+        "color": "gray",
+        "shape": "square"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.61186599731446,
+          49.71282563804574
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Orikhiv",
+        "color": "blue",
+        "shape": "square"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.78247070312501,
+          47.56401743101017
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Pokrovsk",
+        "color": "red",
+        "shape": "square"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.17361450195313,
+          48.27885189690717
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Myrnohrad",
+        "color": "red",
+        "shape": "square"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.26425170898438,
+          48.304435619386034
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Vovchansk",
+        "color": "red",
+        "shape": "square"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.94015502929688,
+          50.285390741391666
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Lyman",
+        "color": "blue",
+        "shape": "square"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.80670166015626,
+          48.98517398661789
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Slovyansk",
+        "color": "blue",
+        "shape": "square"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.59933471679688,
+          48.84845083589778
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Kramatorsk",
+        "color": "blue",
+        "shape": "square"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.56225585937501,
+          48.72720881940671
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Druzhkivka",
+        "color": "blue",
+        "shape": "square"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.528610229492195,
+          48.6197469330911
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Rodynske",
+        "color": "red",
+        "shape": "square"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.207260131835945,
+          48.35305501209149
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Bylitske",
+        "color": "red",
+        "shape": "square"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.18185424804688,
+          48.40550278187468
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Donetsk",
+        "color": "red",
+        "shape": "star"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.80395507812501,
+          48.00094957553023
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Dobropillia",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.04851627349854,
+          48.420913287482335
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Krasnopodillia",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.088127136230476,
+          48.419745556911664
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Krasnoiarske",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.12623596191407,
+          48.42202403069223
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Novyi Donbas",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.174816131591804,
+          48.44992704643875
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Hannivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.119369506835945,
+          48.48395935249677
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Stepy",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.184257507324226,
+          48.489932569337526
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Vilne",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.22408294677735,
+          48.472295330019726
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Nove Shakhove",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.23627090454102,
+          48.451293331087356
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Ivanivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.22854614257813,
+          48.438881562580626
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Dorozhnje",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.22253799438477,
+          48.42259363317975
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Hryshyne",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.07645416259766,
+          48.32703913063479
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Novooleksandrivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.072162628173835,
+          48.353511312557394
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Vasylivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.03954696655274,
+          48.35693343580134
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Myrne",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.01087951660157,
+          48.36446129786668
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Hulive",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.970539093017585,
+          48.372273129772815
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Udachne",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.98959350585938,
+          48.24022362254111
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Kotlyne",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.05233573913575,
+          48.252969607895174
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Molodetske",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.93500518798829,
+          48.241595540317896
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Muravka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.90032958984376,
+          48.17593092427964
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Novomykolaivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.927366256713874,
+          48.18829236977871
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Beliakivka",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.87732696533204,
+          48.18588898883708
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Bilozerske",
+        "color": "gray",
+        "shape": "square"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.0591163635254,
+          48.533089471870234
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Vesele Pole",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.102890014648445,
+          48.5386590935535
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Myrove",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.077140808105476,
+          48.54070492314604
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Rubizhne",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.197990417480476,
+          48.511600905533584
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Kucheriv Yar",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.278671264648445,
+          48.508189183598766
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Vesele",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.27283477783204,
+          48.54388716039111
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Hruzke",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.29154586791993,
+          48.54706919756837
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Novomykolaivka Druha",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.336349487304695,
+          48.58126346243788
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Novoandriivka",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.35145568847657,
+          48.59897631183817
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Andriivka",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.2872543334961,
+          48.614980660652655
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Mykolaipillia",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.55710601806641,
+          48.525700252688765
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Kindrativka",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.57770538330079,
+          48.58875811801929
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Oleksijevo-Druzhkivka",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.608776092529304,
+          48.57955997662351
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Osykove",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.620964050292976,
+          48.56490762875347
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Izhevka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.668685913085945,
+          48.585124484413754
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Kurtivka",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.62628555297852,
+          48.61021393820204
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Klynove",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.67486572265626,
+          48.6123703683859
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Viroliubivka",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.726707458496094,
+          48.60783040821921
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Stinky",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.740097045898445,
+          48.57797000473492
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Molocharka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.71108627319337,
+          48.558091136462785
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Novodmytrivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.73074150085449,
+          48.54706919756837
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Podilske",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.77236938476563,
+          48.573029415839
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Chervone",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.78507232666016,
+          48.56632761569141
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Mykolaivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.80266761779786,
+          48.575925681680474
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Chasiv Yar",
+        "color": "red",
+        "shape": "square"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.83725738525391,
+          48.5800142451206
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Maiske",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.775287628173835,
+          48.62462622200493
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Tykhonivka",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.7871322631836,
+          48.71860218197993
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Malynivka",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.76824951171875,
+          48.737851833675386
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Yurkivka",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.80120849609376,
+          48.775197770354396
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Dibrova",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.833480834960945,
+          48.76478896699884
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Lypivka",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.871718406677246,
+          48.782126347891264
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Nykyforivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.89819717407227,
+          48.771690697216016
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Rai-Oleksandrivka",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.84687042236329,
+          48.810255028389435
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Kalenyky",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.91828155517579,
+          48.84189859515309
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Kryva Luka",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.9024887084961,
+          48.87239311228893
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Kamianske",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.372028350830085,
+          47.54212074763928
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Plavni",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.33546447753907,
+          47.5556769161746
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Stepnohirsk",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.36224365234376,
+          47.586715439092906
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Stepove",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.47210693359376,
+          47.54339540853933
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Lobkove",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.43537139892579,
+          47.52751787563009
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Pjatikhatki",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.460948944091804,
+          47.50873677890399
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Mali Shcherbaky",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.54763793945313,
+          47.548030277822356
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Shcherbaky",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.57991027832032,
+          47.54988411078581
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Novoandriivka",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.69869995117188,
+          47.545712894408624
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Novodanylivka",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.82401275634766,
+          47.52461999690651
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Mala Tokmachka",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.88924407958985,
+          47.537601245618134
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Yehorivka",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.93662261962891,
+          47.62560342075482
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Omelnyk",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.87722778320313,
+          47.64110425422311
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Preobrazhenka",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.808219909667976,
+          47.57583088752182
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Novopavlivka",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.71517944335938,
+          47.60014431954132
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Verkhnia Tersa",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.0868263244629,
+          47.694050002541715
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Hirke",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.09729766845704,
+          47.66469371011086
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Staroukrainka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.1446762084961,
+          47.66897104826834
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Krynychne",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.13145828247071,
+          47.68411232000758
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Tsvitkove",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.12424850463868,
+          47.697631726141275
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Dobropillia",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.18759155273438,
+          47.779020638534796
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Pryluky",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.18089675903321,
+          47.75317468890149
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Varvarivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.19445800781251,
+          47.73747623919626
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Uspenivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.40079498291016,
+          47.77855921633887
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Bylyi Kolodiaz",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.11421966552735,
+          50.20536287538413
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Zemlianyi Yar",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.07199096679688,
+          50.21195460618751
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Vilcha",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.93843841552735,
+          50.244350707062296
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Hrafske",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.85689926147462,
+          50.21821590712335
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Symynivka",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.89500808715821,
+          50.21217431486703
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Lyman",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.8986988067627,
+          50.24429581703462
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Synelnykove",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.89706802368165,
+          50.25856509587302
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Tsehelne",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.911401748657234,
+          50.253091137377275
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Starystia",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.79098129272462,
+          50.24119442778681
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Bugruvatka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.82385444641114,
+          50.25307741739295
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Prylipka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.847200393676765,
+          50.25313229730662
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Vovchansky Khutori",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.029247283935554,
+          50.29789323854711
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Pokaliane",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.06830024719239,
+          50.29674183010881
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Zybyne",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.08177566528321,
+          50.30611677410745
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Karaichne",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.126836776733406,
+          50.306281230316586
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Volokhivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.13619232177735,
+          50.30946060524612
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Bochkove",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.14091300964356,
+          50.324258345843
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Chaikivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.17069625854493,
+          50.322833578648144
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Okhrimivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.21240997314454,
+          50.336367142600864
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Mala Vovcha",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.26425170898438,
+          50.34819900301196
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Khrypuny",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.306652069091804,
+          50.353785245901356
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Varvarivka",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.34252929687501,
+          50.37240130914882
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Mykolaivka",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.338581085205085,
+          50.37951728605967
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Budarky",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.43342399597169,
+          50.39221391582227
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Zenlianki",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.44775772094727,
+          50.39790440504919
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Riznykove",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.41943359375001,
+          50.31675043829252
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Lukashove",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.42355346679688,
+          50.328203632095594
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Ivanivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.281417846679695,
+          50.24588760217225
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Zakharivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.23712921142579,
+          50.25905895593219
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Vasylivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.31540679931641,
+          50.23457928630228
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Blahodatne",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.357807159423835,
+          50.224696037407725
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Buzove",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.379264831542976,
+          50.27573744417743
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Hrachivka",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.458443641662605,
+          50.27315924383353
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Kupyne",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.47299194335938,
+          50.24819285191346
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Chorne",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.43041992187501,
+          50.2210716662488
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Nefedivka",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.40488529205323,
+          50.21788638545399
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Slyzneve",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.41840362548829,
+          50.18157014293727
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Dovzhanka",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.45788574218751,
+          50.18585700719313
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Vilkhuvatka",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.5150489807129,
+          50.18310906155275
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Zarubynka",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.54414558410645,
+          50.164748729145906
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Dovhenke",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.533588409423835,
+          50.16703041178267
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Khatnje",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.56122589111329,
+          50.120798227097495
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Ambarne",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.63752937316895,
+          50.10852448283266
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Odradne",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.72876739501954,
+          50.061657198278304
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Dvorichanske",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.77374267578126,
+          50.02560818681963
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Sobolivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.56315708160401,
+          49.705332592868245
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Moskovka",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.566804885864265,
+          49.728307602082346
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "KIndrashivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.57860660552979,
+          49.76707407366792
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Tyshchenkivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.55573272705079,
+          49.7674066989788
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Kucherivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.674694061279304,
+          49.71482358821626
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Petropavlivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.71228790283204,
+          49.71937416789276
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Podoly",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.66937255859376,
+          49.68917698648319
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Kurylivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.69649505615235,
+          49.661294552128304
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Kupyansk-Vuzlovyi",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.64705657958985,
+          49.66196125100458
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Kivsharivka",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.68070220947266,
+          49.63050534063405
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Novoosynove",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.70155906677247,
+          49.61104363508234
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Hlushkivka",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.70954132080079,
+          49.58422936214075
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Kolisnykivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.71546363830567,
+          49.56341310735601
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Kruhliakivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.71494865417481,
+          49.530333747740535
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Senkove",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.6648235321045,
+          49.525486910444144
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Zahryzove",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.70971298217774,
+          49.50341937233192
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Bohuslavka",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.68602371215821,
+          49.468124067331644
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Nova Kruhliakivka",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.723617553710945,
+          49.47403627126209
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Lozova",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.803783416748054,
+          49.46254586232141
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Dzherelene",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.94952392578125,
+          49.41264848862026
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Miasozharivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.90472030639649,
+          49.44134289100633
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Vyshneve",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.85974502563477,
+          49.40661718091182
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Borivska Andriivka",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.72687911987305,
+          49.41052644632647
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Zelenyi Hai",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.79159545898438,
+          49.40818092443256
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Stepy",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.852535247802734,
+          49.381981650332065
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Kopanky",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.851419448852546,
+          49.369184176355
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Novoplatonivka",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.641220092773445,
+          49.42839340988944
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Borova",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.616500854492195,
+          49.380137678345996
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Shyikivka",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.754344940185554,
+          49.35051289060523
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Pidlyman",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.60414123535157,
+          49.33418368303242
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Novoserhiivka",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.854166030883796,
+          49.3362530947573
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Cherneshchyna",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.852191925048835,
+          49.31493958204565
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Nvojehorivka",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.918109893798835,
+          49.32859024302273
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Novojehorivka",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.94712066650391,
+          49.32993272658736
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Nadiya",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.92840957641602,
+          49.36996665030537
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Serhiivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.95673370361329,
+          49.36454496785858
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Raihorodka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.963857650756836,
+          49.37253754845476
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Hrekivka",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.91845321655274,
+          49.24517269137362
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Olhivka",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.851676940917976,
+          49.244500299230936
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Druzheliubivka",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.8533935546875,
+          49.262427623047934
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Novomykhailivka",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.871139049530036,
+          49.20244359967499
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Katerynivka",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.86214828491212,
+          49.1803568665292
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Makiivka",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.980079650878906,
+          49.218718364108334
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Balka Zhuravka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.97544479370118,
+          49.15891980529405
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Novolyubivka",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.94986724853516,
+          49.15712360917825
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Mykolaivka",
+        "color": "blue",
+        "shape": "square"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.77168273925782,
+          48.85703523304221
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Mala Pyskunivka",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.86764144897462,
+          48.87493348353615
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Pyskynivka",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.83356666564942,
+          48.887351219439516
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Fedorivka Druha",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.85133361816407,
+          48.76212985060031
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Nykonorivka",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.73992538452149,
+          48.76807023571851
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Orikhuvatka",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.77460098266602,
+          48.80460228877266
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Vasiutinske",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.73280143737794,
+          48.712486044585454
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Pershomarivka",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.70567893981934,
+          48.72737867242975
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Minkivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.84875869750977,
+          48.69934516106741
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Holubivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.85202026367188,
+          48.716223772459536
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Novomarkove",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.8255844116211,
+          48.672372950277826
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Markove",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.78747558593751,
+          48.652984838166276
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Fedorivka",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.740612030029304,
+          48.656613590135706
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Stepanivka",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.60946273803712,
+          48.463246753669175
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Dovha Balka",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.6058578491211,
+          48.492606067033684
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Rozkishne",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.59298324584962,
+          48.497952639550675
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Novomykolaivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.36484527587891,
+          48.561045062573484
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Krasnyi Kut",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.40741729736329,
+          48.55740943670997
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Toretske",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.42406845092774,
+          48.560590623630105
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Torske",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.420978546142585,
+          48.546841915833404
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Priyut",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.40767478942872,
+          48.53661318127801
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Pavlivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.412223815917976,
+          48.52592762935692
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Novopavlivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.41934776306153,
+          48.51879319995315
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Toretske",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.36347198486329,
+          48.4970426244718
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Sofiivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.37686157226563,
+          48.49158219095379
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Petrivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.455439567565925,
+          48.566242417599454
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Raiske",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.47977256774903,
+          48.562635566723976
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Raiske",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.46973037719727,
+          48.571070083100835
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Novohryhorivka",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.429475784301765,
+          48.58018459475451
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Zolotyi Kolodiaz",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.23403930664063,
+          48.52854238766867
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Sviatohorivka",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.03542709350587,
+          48.485779835972146
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Bokove",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.0316505432129,
+          48.520811407407336
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Novoukrainka",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.01980590820313,
+          48.541841459415004
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Novovodiane",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.14649200439454,
+          48.54502362520695
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Petrivka",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.19747543334962,
+          48.56695239731351
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Marivka",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.168292999267585,
+          48.56558922745937
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Balhodat",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.11627960205079,
+          48.577856433400676
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Vesna",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.07353591918946,
+          48.586146470272396
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Lydine",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.18460083007813,
+          48.595002815362356
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Novotroitske",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.221508026123054,
+          48.57899213526132
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Novohryshine",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.02718734741212,
+          48.41564404673985
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Shylivka",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.942558288574226,
+          48.37974171694467
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Yurivka",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.90427780151368,
+          48.38624020659961
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Shylivska",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.877155303955085,
+          48.37939966819061
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Serhiivka",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.92539215087891,
+          48.31060120649365
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Raipole",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.83458328247071,
+          48.26159849389878
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Kolona-Mezhova",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.83835983276368,
+          48.24411062734845
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Novopidhorodne",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.89878463745118,
+          48.24593970387843
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Novopavlivka",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.78068161010743,
+          48.133444359966084
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Filiya",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.75201416015626,
+          48.08495987919109
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Dachne",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.8258285522461,
+          48.045726216401334
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Zaporizhzhia",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.76609039306641,
+          48.033674793140484
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Yalta",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.750297546386726,
+          48.04411952285125
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Zirka",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.71957015991212,
+          48.0333304253367
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Piddubne",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.692619323730476,
+          48.009793173444464
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Myrne",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.70446395874024,
+          47.986704750228434
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Komar",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.74514770507813,
+          47.98268332177358
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Perebudova",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.737079620361335,
+          47.98624517426206
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Fedorivka",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.75750732421876,
+          47.950788049009965
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Vesele",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.764545440673835,
+          47.93141139819598
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Dniproenerhia",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.800508499145515,
+          47.92146151291238
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Skudne",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.79716110229493,
+          47.90966870850179
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Novoocheretuvate",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.811752319335945,
+          47.89867884761697
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Novyi Komar",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.838188171386726,
+          47.88239115131523
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Velyka Novosilka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.838703155517585,
+          47.84265762816538
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Vremjivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.81570053100587,
+          47.83493773115668
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Neskuchne",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.80591583251954,
+          47.82203026358271
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Shevchenko",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.67476654052735,
+          47.89977218436005
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Vilne Pole",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.68369293212891,
+          47.87674969487649
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Pryvilne",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.71098709106446,
+          47.87053186807552
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Burlatske",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.74497604370118,
+          47.89113995008596
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Novosilka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.6855812072754,
+          47.83931632120281
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Komyshuvakha",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.58739089965821,
+          47.886995966458485
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Novoheorhiivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.569538116455085,
+          47.868113622827785
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Zaporizke",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.53228759765626,
+          47.85337140229803
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Obratne",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.545333862304695,
+          47.8260641920274
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Temyrivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.56885147094727,
+          47.82352861645662
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Ternove",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.53348922729493,
+          47.884463368788204
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Berezove",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.49692535400391,
+          47.87271970702378
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Kalynivske",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.45864486694337,
+          47.85970646384656
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Verbove",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.38362884521485,
+          47.8764042796275
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Vyshneve",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.31968498229981,
+          47.87588615243642
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Yehorivka",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.30144596099854,
+          47.86439966935332
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Kyrpychne",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.30376338958741,
+          47.86799846547766
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Pryvillia",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.31196022033692,
+          47.855041630019905
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Zlahoda",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.32165908813477,
+          47.834015875641335
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Rybne",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.34054183959962,
+          47.814537850484676
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Krasnohirske",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.35015487670899,
+          47.81903342808986
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Pryvilne",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.37332916259766,
+          47.79978039900631
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Pavlivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.40354156494141,
+          47.78928622317902
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Novohryhorivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.43564224243165,
+          47.81350035422176
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Novoivanivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.487140655517585,
+          47.80093347589691
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Novomykolaivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.4988136291504,
+          47.84553789247712
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Novopil",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.62464141845704,
+          47.80992659731546
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Zelene Pole",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.62292480468751,
+          47.82883013320965
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Solodke",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.3259506225586,
+          47.78571080019045
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Nove Zaporizhzhia",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.2076759338379,
+          47.820762392755846
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Radisne",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.20012283325196,
+          47.83632048372225
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Ternuvate",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.1281967163086,
+          47.83044353082956
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Kosivtseve",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.14038467407227,
+          47.81119473275557
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Prydorozhnje",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.108112335205085,
+          47.811915250460125
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Vozdyzhivska",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.07772827148438,
+          47.74994304216887
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Rizdvianka",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.0512924194336,
+          47.79978039900631
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Olenokostiantinivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.182785034179695,
+          47.72673854412002
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Kopani",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.026744842529304,
+          47.68896584339047
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Novoselivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.993270874023445,
+          47.61715700209572
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Huliaipilske",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.06279373168946,
+          47.61218107572826
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Charivne",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.03584289550782,
+          47.58150503187266
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Zalyznichne",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.16647720336915,
+          47.64919987624857
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Huliaipole",
+        "color": "red",
+        "shape": "square"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.25986099243165,
+          47.663653223504504
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Luhivske",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.03361129760743,
+          47.52485183309596
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Bilohiria",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.98983764648438,
+          47.52415632145372
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Novopokrovka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.98691940307618,
+          47.503750543937564
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Robotyne",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.83140492439271,
+          47.444248833429064
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Kopani",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.731830596923835,
+          47.45653179022204
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Nesterianka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.676898956298835,
+          47.492848752881095
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Prymorske",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.287399291992195,
+          47.61426407926828
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Pavlivka",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.509872436523445,
+          47.6007230731253
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Lukianivske",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.44429779052735,
+          47.6104451760638
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Novoiakovlivka",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.51193237304688,
+          47.62409936387735
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Lyptsi",
+        "color": "blue",
+        "shape": "square"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.41281127929688,
+          50.21975364481886
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Zelene",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.58721923828126,
+          50.22238965126189
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Neskuchne",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.555290222167976,
+          50.20777994906398
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Muromets",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.54816627502442,
+          50.203824673852075
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Lukiantsy",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.50928497314454,
+          50.2467658056982
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Hlyboke",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.42311096191407,
+          50.254229882306205
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Vysoka Yaruha",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.32165908813477,
+          50.27304953008371
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Hoptivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.267414093017585,
+          50.283855120510225
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Kudijivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.262178421020515,
+          50.289037642412005
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Bakshiivka",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.21893310546876,
+          50.21162504127146
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Kozacha Lopan",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.18638992309571,
+          50.33165548889482
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Hraniv",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.22192382812501,
+          50.365284264812935
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Shevchenka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.213490962982185,
+          50.36447668658444
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Veterynarne",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.19282722473145,
+          50.39122895411487
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Nova Kozacha",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.17368698120118,
+          50.30425289732485
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Riasne",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.393486022949226,
+          50.69178178577812
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Hrabivske",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.454940795898445,
+          50.69863228887699
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Taratutyne",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.377006530761726,
+          50.729175524480155
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Novodmytrivka",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.37837982177735,
+          50.75611529986947
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Krasnopillia",
+        "color": "blue",
+        "shape": "square"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.25856018066407,
+          50.773813243861866
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Pokrovka",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.378036499023445,
+          50.80170376681808
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Stepok",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.38086891174317,
+          50.849144502855076
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Turya",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.350570678710945,
+          50.89198944783212
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Marine",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.379753112792976,
+          50.91861903155828
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Prokhody",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.342330932617195,
+          50.92273118632478
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Myropilske",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.3152084350586,
+          50.943070184535564
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Oleksandiya",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.2877426147461,
+          51.05628634012814
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Zapsillia",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.220365524292,
+          51.02449921081397
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Myropillia",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.25203704833985,
+          51.02395934291187
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Mohrytsia",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.10131835937501,
+          51.034701531851
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Sadky",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.09307861328126,
+          51.09683855428147
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Yunakivka",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.03299713134766,
+          51.12098042861288
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Loknya",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.06029129028321,
+          51.148663385645264
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Kindrativka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.771041870117195,
+          51.14101722400497
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Andriivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.82288360595704,
+          51.126152046793365
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Oleksiivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.869918823242195,
+          51.13649354621719
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Komarivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.299402236938484,
+          51.71777662575734
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Bila Bereza",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.3454933166504,
+          51.72771928740866
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Sydorivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.424972534179695,
+          51.731706371625876
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Ulanove",
+        "color": "gray",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.309101104736335,
+          51.75540896888179
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Sopych",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.3553638458252,
+          51.84887557848713
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Bachivsk",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          34.27373886108399,
+          51.845853287945864
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Bezimiane",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.68156051635743,
+          48.59477574898104
+        ]
+      }
+    }
+  ]
+}

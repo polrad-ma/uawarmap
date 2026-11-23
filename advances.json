@@ -5124,5 +5124,38 @@
       "ru": 148250.01284066943,
       "ua": 22780.586973376816
     }
+  },
+  {
+    "id": "adv-1795440362323",
+    "date": "2026-11-23",
+    "time": "14:26:02",
+    "text_en": "Russian forces captured Izhevka and Bezimiane",
+    "text_ru": "ВС РФ заняли Ижевку и Безымянное",
+    "text": "Russian forces captured Izhevka and Bezimiane",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 6.69,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 6.69
+      }
+    ],
+    "areaDisplay": "+6.69 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 48.53820445352662,
+      "west": 37.5838851928711,
+      "north": 48.61509414855946,
+      "east": 37.77271270751954
+    },
+    "polygonFids": [
+      "p-1795440314993-xscf1j9uipe"
+    ],
+    "snapshot": "history/advances/adv-1795440362323.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22780.586973376816
+    }
   }
 ]
