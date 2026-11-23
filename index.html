@@ -127,353 +127,6 @@
     body.phone-mode #advance-prev, body.phone-mode #advance-next, body.phone-mode #btn-advance-lock { width: 36px; height: 36px; flex-basis: 36px; }
     body.phone-mode #timeline-date-input { display: none; }
     body.phone-mode .leaflet-bar a { width: 36px !important; height: 36px !important; line-height: 36px !important; font-size: 20px !important; }
-  </style>
-</head>
-<body>
-  <div id="left-sidebar">
-    <button class="sidebar-btn" id="btn-tab-layers" onclick="toggleTab('layers')" title="Layers & Basemaps">🗺️</button>
-    <button class="sidebar-btn" id="btn-tab-draw" onclick="toggleTab('draw')" title="Draw Tools">✏️</button>
-    <button class="sidebar-btn" id="btn-tab-ruler" onclick="toggleTab('ruler')" title="Ruler / Measure">📏</button>
-    <button class="sidebar-btn" id="btn-tab-coords" onclick="toggleTab('coords')" title="Coordinates">📍</button>
-    <button class="sidebar-btn" id="btn-tab-updates" onclick="toggleTab('updates')" title="Changelog">🧾</button>
-    <button class="sidebar-btn" id="btn-tab-settings" onclick="toggleTab('settings')" title="Settings">⚙️</button>
-    <button class="sidebar-btn" id="btn-tab-compare" onclick="toggleTab('compare')" title="Compare dates">🕐</button>
-    <button class="sidebar-btn" id="btn-fullscreen" onclick="toggleFullScreen()" title="Toggle Fullscreen">⛶</button>
-  </div>
-  <div id="app-header">
-    <div id="app-header-top">
-      <img id="app-logo" src="https://pbs.twimg.com/profile_images/2093664692505870336/xNyRmIXM_400x400.jpg" alt="Polrad Mapping" loading="lazy">
-      <span id="app-title-text">POLRAD MAPPING</span>
-      <div id="language-toggle" title="Language"><button type="button" id="lang-en" class="lang-btn">EN</button><button type="button" id="lang-ru" class="lang-btn">RU</button></div>
-      <button id="search-toggle-btn" onclick="toggleHeaderSearch()" title="Search">🔍</button>
-      <button id="phone-toggle-btn" onclick="togglePhoneMode()" title="Phone mode">📱</button>
-    </div>
-    <div id="app-header-search">
-      <div id="header-search-row">
-        <input id="header-search-input" type="text" placeholder="Search town, city or coordinates..." autocomplete="off">
-        <button id="header-search-go" type="button">↵</button>
-      </div>
-      <div id="header-search-results"></div>
-    </div>
-  </div>
-  <div id="advance-bar" aria-live="polite">
-    <button id="advance-prev" type="button" title="Previous advance">‹</button>
-    <div id="advance-main">
-      <div id="advance-text">Loading advances...</div>
-      <div id="advance-area"></div>
-      <input type="date" id="timeline-date-input" title="Jump to a date">
-    </div>
-    <button id="advance-next" type="button" title="Next advance">›</button>
-    <button id="btn-advance-lock" type="button" title="Lock advance map movement" aria-label="Lock advance map movement">🔓</button>
-  </div>
-  <div id="map"></div>
-  <div id="map-crosshair"></div>
-  <div id="watermark-overlay"></div>
-  <div class="sidebar-panel" id="panel-compare">
-    <h4>Compare Dates</h4>
-    <div class="compare-row"><label for="compare-date-a">Date A (before)</label><input type="date" id="compare-date-a"></div>
-    <div class="compare-row"><label for="compare-date-b">Date B (after)</label><input type="date" id="compare-date-b"></div>
-    <div class="compare-btn-row"><button class="tool-btn" onclick="runDateComparison()">Compare</button><button class="tool-btn" onclick="clearDateComparison()">Clear</button></div>
-    <div id="compare-result">Pick two dates to see territorial gains.</div>
-    <div style="margin-top:10px; font-size:11px; line-height:1.5; color:var(--muted-text);"><span style="display:inline-block;width:10px;height:10px;background:#ff0000;border-radius:2px;margin-right:4px;vertical-align:middle;"></span>Russian gains<br><span style="display:inline-block;width:10px;height:10px;background:#4d7dff;border-radius:2px;margin-right:4px;vertical-align:middle;"></span>Ukrainian gains</div>
-  </div>
-  <div class="sidebar-panel" id="panel-layers">
-    <h4>Basemaps & Layers</h4>
-    <div id="basemap-selector-container"><strong>Base Map</strong><div id="basemap-options" style="margin-top: 6px; margin-bottom: 10px; font-size: 13px;"></div></div>
-    <div id="design-selector-container" style="margin-bottom: 10px;"><strong>Map Design</strong><div id="design-options" style="margin-top: 6px; margin-bottom: 10px; font-size: 13px;"></div></div>
-    <div id="grouped-layer-container"></div>
-  </div>
-  <div class="sidebar-panel" id="panel-draw">
-    <h4>Draw Tools</h4>
-    <div class="tool-group-header">Solid Tools</div>
-    <button class="tool-btn" id="btn-freehand" onclick="setActiveTool('freehand')">Freehand</button>
-    <button class="tool-btn" id="btn-freehand-arrow" onclick="setActiveTool('freehand-arrow')">Freehand Arrow</button>
-    <button class="tool-btn" id="btn-line" onclick="setActiveTool('line')">Line</button>
-    <button class="tool-btn" id="btn-arrow" onclick="setActiveTool('arrow')">Arrow</button>
-    <div class="tool-group-header">Dashed Tools</div>
-    <button class="tool-btn" id="btn-dashed-freehand" onclick="setActiveTool('dashed-freehand')">Dashed Freehand</button>
-    <button class="tool-btn" id="btn-dashed-freehand-arrow" onclick="setActiveTool('dashed-freehand-arrow')">Dashed Freehand Arrow</button>
-    <button class="tool-btn" id="btn-dashed-line" onclick="setActiveTool('dashed-line')">Dashed Line</button>
-    <button class="tool-btn" id="btn-dashed-arrow" onclick="setActiveTool('dashed-arrow')">Dashed Arrow</button>
-    <div class="tool-group-header">Pointed Tools</div>
-    <button class="tool-btn" id="btn-pointed-freehand" onclick="setActiveTool('pointed-freehand')">Pointed Freehand</button>
-    <button class="tool-btn" id="btn-pointed-freehand-arrow" onclick="setActiveTool('pointed-freehand-arrow')">Pointed Freehand Arrow</button>
-    <button class="tool-btn" id="btn-pointed-line" onclick="setActiveTool('pointed-line')">Pointed Line</button>
-    <div class="tool-group-header">Shapes & Utilities</div>
-    <button class="tool-btn" id="btn-polygon" onclick="setActiveTool('polygon')">Polygon</button>
-    <button class="tool-btn" id="btn-rectangle" onclick="setActiveTool('rectangle')">Rectangle</button>
-    <button class="tool-btn" id="btn-flag-ua" onclick="setActiveTool('flag-ua')">🇺🇦 Ukraine Flag</button>
-    <button class="tool-btn" id="btn-flag-ru" onclick="setActiveTool('flag-ru')">🇷🇺 Russia Flag</button>
-    <button class="tool-btn" id="btn-eraser" onclick="setActiveTool('eraser')">Eraser</button>
-    <div class="thickness-row" style="margin-top: 10px;"><label>Thickness: <span id="thickness-val">3px</span></label><input type="range" id="thickness-slider" min="1" max="15" value="3" oninput="setThickness(this.value)"></div>
-    <div id="color-row">
-      <span class="color-btn selected" id="color-red" style="background:#ff0000; color:white;" onclick="setColor('#ff0000')">Red</span>
-      <span class="color-btn" id="color-blue" style="background:#4d7dff; color:white;" onclick="setColor('#4d7dff')">Blue</span>
-      <span class="color-btn" id="color-green" style="background:#2ecc71; color:white;" onclick="setColor('#2ecc71')">Green</span>
-      <span class="color-btn" id="color-yellow" style="background:#f1c40f; color:black;" onclick="setColor('#f1c40f')">Yellow</span>
-      <span class="color-btn" id="color-black" style="background:#171717; color:white;" onclick="setColor('#171717')">Black</span>
-      <span class="color-btn" id="color-white" style="background:#ffffff; color:black;" onclick="setColor('#ffffff')">White</span>
-    </div>
-    <button class="tool-btn" onclick="finishShape()">Finish Shape</button>
-    <button class="tool-btn" onclick="clearDrawings()">Clear My Drawings</button>
-    <div class="panel-result" id="draw-result">Select a shape to draw.</div>
-  </div>
-  <div class="sidebar-panel" id="panel-ruler">
-    <h4>Ruler (Measure)</h4>
-    <div class="unit-row"><span class="unit-btn selected" id="unit-km" onclick="setMeasurementUnit('km')">Kilometers (km)</span><span class="unit-btn" id="unit-mi" onclick="setMeasurementUnit('mi')">Miles (mi)</span></div>
-    <button class="tool-btn" onclick="finishShape()">Finish Measuring</button>
-    <button class="tool-btn" onclick="clearDrawings()">Clear Line</button>
-    <div class="panel-result" id="ruler-result">Click points on the map to measure distance.</div>
-  </div>
-  <div class="sidebar-panel" id="panel-coords">
-    <h4>Coordinates</h4>
-    <div class="panel-result" id="coords-result">Click anywhere on the map to display its precise coordinates.</div>
-  </div>
-  <div class="sidebar-panel" id="panel-updates">
-    <h4>Changelog</h4>
-    <div id="updates-content">Loading...</div>
-  </div>
-  <div class="sidebar-panel" id="panel-settings">
-    <h4>Settings</h4>
-    <div class="settings-row"><label id="toggle-dark-theme-label" for="toggle-dark-theme">Dark theme</label><input type="checkbox" id="toggle-dark-theme" checked onchange="setDarkTheme(this.checked)"></div>
-    <div class="settings-row"><label id="toggle-polygon-borders-label" for="toggle-polygon-borders">Polygon borders</label><input type="checkbox" id="toggle-polygon-borders" onchange="togglePolygonBorders(this.checked)"></div>
-    <div class="settings-row"><label id="toggle-crosshair-label" for="toggle-crosshair">Center crosshair</label><input type="checkbox" id="toggle-crosshair" onchange="toggleCrosshairSetting(this.checked)"></div>
-    <div class="settings-link-row"><a id="twitter-link" href="https://x.com/polrad_mapping_" target="_blank" rel="noopener">Twitter/X</a><a id="login-link" href="https://polrad-ma.github.io/login/">Log In</a></div>
-  </div>
-  <script>
-    var publicLanguage = localStorage.getItem('polrad_language') === 'ru' ? 'ru' : 'en';
-    var PUBLIC_TRANSLATIONS = {
-      en: { search:'Search',searchPlaceholder:'Search town, city or coordinates...',previousAdvance:'Previous advance',nextAdvance:'Next advance',jumpDate:'Jump to a date',lockAdvance:'Lock advance map movement',unlockAdvance:'Unlock automatic advance map movement',basemapsLayers:'Basemaps & Layers',baseMap:'Base Map',mapDesign:'Map Design',drawTools:'Draw Tools',solidTools:'Solid Tools',dashedTools:'Dashed Tools',shapesUtilities:'Shapes & Utilities',pointedTools:'Pointed Tools',freehand:'Freehand',freehandArrow:'Freehand Arrow',line:'Line',arrow:'Arrow',dashedFreehand:'Dashed Freehand',dashedFreehandArrow:'Dashed Freehand Arrow',dashedLine:'Dashed Line',dashedArrow:'Dashed Arrow',pointedFreehand:'Pointed Freehand',pointedFreehandArrow:'Pointed Freehand Arrow',pointedLine:'Pointed Line',polygon:'Polygon',rectangle:'Rectangle',ukraineFlag:'🇺🇦 Ukraine Flag',russiaFlag:'🇷🇺 Russia Flag',eraser:'Eraser',thickness:'Thickness',red:'Red',blue:'Blue',green:'Green',yellow:'Yellow',black:'Black',white:'White',finishShape:'Finish Shape',clearDrawings:'Clear My Drawings',selectShape:'Select a shape to draw.',ruler:'Ruler (Measure)',kilometers:'Kilometers (km)',miles:'Miles (mi)',finishMeasuring:'Finish Measuring',clearLine:'Clear Line',measurePrompt:'Click points on the map to measure distance. Press "Finish Measuring" to keep the line, or "Clear Line" to reset.',coordinates:'Coordinates',preciseCoords:'Click anywhere on the map to display its precise coordinates.',changelog:'Changelog',settings:'Settings',loading:'Loading...',noUpdates:'No updates yet.',couldNotLoadUpdates:'Could not load updates.',darkTheme:'Dark theme',polygonBorders:'Polygon borders',centerCrosshair:'Center crosshair',screenshot:'Take Screenshot',fullscreen:'Toggle Fullscreen',searchFailed:'Search failed.',searching:'Searching...',copied:'Copied!',mainLayers:'Main Layers',extraLayers:'Extra Layers',russianTerritory:'Russian-controlled territory',ukrainianTerritory:'Ukrainian-controlled territory',ukrainianAdvances:'Ukrainian advances',russianAdvances:'Russian advances',infiltrationArea:'Infiltration area',mapUpdate:'Map update',area:'Area',basemapGoogleHybrid:'Google Hybrid (Satellite + Labels)',basemapEsriHybrid:'Esri Hybrid (Satellite + Labels)',basemapEsriSatellite:'Esri Satellite',basemapOSM:'OpenStreetMap',basemapTopo:'Topographic',designDefault:'Default',amkDesign:'AMK Mapping design',playfraDesign:'Playfra design',myDrawings:'My Drawings',citiesCaptured:'Cities Captured',augustFrontline:'August 2024 Frontline',townsVillages:'Towns, villages and cities (credit to PWM)',fortifications:'Fortifications (thanks PMapping832)',grayZone:'Gray Zone',twitter:'Twitter/X',login:'Log In',compareDates:'Compare Dates',phoneMode:'Phone mode' },
-      ru: { search:'Поиск',searchPlaceholder:'Поиск посёлка, города или координат...',previousAdvance:'Предыдущее продвижение',nextAdvance:'Следующее продвижение',jumpDate:'Перейти к дате',lockAdvance:'Заблокировать перемещение карты',unlockAdvance:'Разблокировать перемещение карты',basemapsLayers:'Подложки и слои',baseMap:'Карта',mapDesign:'Оформление карты',drawTools:'Инструменты рисования',solidTools:'Сплошные инструменты',dashedTools:'Пунктирные инструменты',pointedTools:'Точечные инструменты',shapesUtilities:'Фигуры и инструменты',freehand:'Свободная линия',freehandArrow:'Свободная стрелка',line:'Линия',arrow:'Стрелка',dashedFreehand:'Свободная пунктирная линия',dashedFreehandArrow:'Свободная пунктирная стрелка',dashedLine:'Пунктирная линия',dashedArrow:'Пунктирная стрелка',pointedFreehand:'Свободная точечная линия',pointedFreehandArrow:'Свободная точечная стрелка',pointedLine:'Точечная линия',polygon:'Полигон',rectangle:'Прямоугольник',ukraineFlag:'🇺🇦 Флаг Украины',russiaFlag:'🇷🇺 Флаг России',eraser:'Ластик',thickness:'Толщина',red:'Красный',blue:'Синий',green:'Зелёный',yellow:'Жёлтый',black:'Чёрный',white:'Белый',finishShape:'Завершить фигуру',clearDrawings:'Очистить мои рисунки',selectShape:'Выберите фигуру для рисования.',ruler:'Линейка (измерение)',kilometers:'Километры (км)',miles:'Мили (mi)',finishMeasuring:'Завершить измерение',clearLine:'Очистить линию',measurePrompt:'Нажимайте точки на карте, чтобы измерить расстояние. Нажмите «Завершить измерение», чтобы оставить линию, или «Очистить линию», чтобы сбросить.',coordinates:'Координаты',preciseCoords:'Нажмите в любом месте карты, чтобы увидеть точные координаты.',changelog:'Журнал изменений',settings:'Настройки',loading:'Загрузка...',noUpdates:'Обновлений пока нет.',couldNotLoadUpdates:'Не удалось загрузить обновления.',darkTheme:'Тёмная тема',polygonBorders:'Границы полигонов',centerCrosshair:'Центральный прицел',screenshot:'Сделать скриншот',fullscreen:'Полноэкранный режим',searchFailed:'Ошибка поиска.',searching:'Поиск...',copied:'Скопировано!',mainLayers:'Основные слои',extraLayers:'Дополнительные слои',russianTerritory:'Территория под контролем России',ukrainianTerritory:'Территория под контролем Украины',ukrainianAdvances:'Продвижения Украины',russianAdvances:'Продвижения России',infiltrationArea:'Зона инфильтрации',mapUpdate:'Обновление карты',area:'Площадь',basemapGoogleHybrid:'Google Hybrid (спутник + подписи)',basemapEsriHybrid:'Esri Hybrid (спутник + подписи)',basemapEsriSatellite:'Esri Satellite',basemapOSM:'OpenStreetMap',basemapTopo:'Топографическая',designDefault:'По умолчанию',amkDesign:'Дизайн AMK Mapping',playfraDesign:'Дизайн Playfra',myDrawings:'Мои рисунки',citiesCaptured:'Захваченные города',augustFrontline:'Линия фронта августа 2024',townsVillages:'Посёлки, деревни и города (автор: PWM)',fortifications:'Укрепления (спасибо PMapping832)',grayZone:'Серая зона',twitter:'Twitter/X',login:'Войти',compareDates:'Сравнить даты',phoneMode:'Режим телефона' }
-    };
-    function pt(key) { return (PUBLIC_TRANSLATIONS[publicLanguage] || PUBLIC_TRANSLATIONS.en)[key] || key; }
-    function publicLayerLabel(name) { var m = { 'Russian-controlled territory':'russianTerritory','Ukrainian-controlled territory':'ukrainianTerritory','Ukrainian advances':'ukrainianAdvances','Russian advances':'russianAdvances','Infiltration area':'infiltrationArea','My Drawings':'myDrawings','Cities Captured':'citiesCaptured','August 2024 Frontline':'augustFrontline','Towns, villages and cities (credit to PWM)':'townsVillages','Fortifications (thanks PMapping832)':'fortifications','Gray Zone':'grayZone','Control Overlap':'controlOverlap' }; var key = m[name]; if (key && PUBLIC_TRANSLATIONS[publicLanguage][key]) return PUBLIC_TRANSLATIONS[publicLanguage][key]; return name; }
-    function advanceText(item) { if (!item) return pt('mapUpdate'); if (publicLanguage === 'ru') return item.text_ru || item.text_en || item.text || pt('mapUpdate'); return item.text_en || item.text || item.text_ru || pt('mapUpdate'); }
-    function applyPublicLanguage() {
-      document.documentElement.lang = publicLanguage;
-      var en = document.getElementById('lang-en'), ru = document.getElementById('lang-ru');
-      if (en) en.classList.toggle('active', publicLanguage === 'en'); if (ru) ru.classList.toggle('active', publicLanguage === 'ru');
-      var staticMap = { 'panel-layers h4':'basemapsLayers','basemap-selector-container strong':'baseMap','design-selector-container strong':'mapDesign','panel-draw h4':'drawTools','panel-ruler h4':'ruler','panel-coords h4':'coordinates','panel-updates h4':'changelog','panel-settings h4':'settings','btn-tab-layers':'basemapsLayers','btn-tab-draw':'drawTools','btn-tab-ruler':'ruler','btn-tab-coords':'coordinates','btn-tab-updates':'changelog','btn-tab-settings':'settings','btn-fullscreen':'fullscreen','search-toggle-btn':'search','advance-prev':'previousAdvance','advance-next':'nextAdvance','toggle-dark-theme-label':'darkTheme','toggle-polygon-borders-label':'polygonBorders','toggle-crosshair-label':'centerCrosshair','twitter-link':'twitter','login-link':'login','unit-km':'kilometers','unit-mi':'miles','phone-toggle-btn':'phoneMode' };
-      Object.keys(staticMap).forEach(function(sel) { var el = sel.indexOf(' ') !== -1 ? document.querySelector(sel) : document.getElementById(sel); if (!el) return; if (/^(btn-tab-|btn-fullscreen|search-toggle-btn|advance-prev|advance-next|phone-toggle-btn)$/.test(sel) || sel === 'btn-tab-layers' || sel === 'btn-tab-draw' || sel === 'btn-tab-ruler' || sel === 'btn-tab-coords' || sel === 'btn-tab-updates' || sel === 'btn-tab-settings') { el.title = pt(staticMap[sel]); el.setAttribute('aria-label', el.title); } else { el.textContent = pt(staticMap[sel]); } });
-      var input = document.getElementById('header-search-input'); if (input) input.placeholder = pt('searchPlaceholder');
-      var date = document.getElementById('timeline-date-input'); if (date) date.title = pt('jumpDate');
-      var lock = document.getElementById('btn-advance-lock'); if (lock) { lock.title = advanceMapLocked ? pt('unlockAdvance') : pt('lockAdvance'); lock.setAttribute('aria-label', lock.title); }
-      var drawButtons = { 'btn-freehand':'freehand','btn-freehand-arrow':'freehandArrow','btn-line':'line','btn-arrow':'arrow','btn-dashed-freehand':'dashedFreehand','btn-dashed-freehand-arrow':'dashedFreehandArrow','btn-dashed-line':'dashedLine','btn-dashed-arrow':'dashedArrow','btn-polygon':'polygon','btn-rectangle':'rectangle','btn-flag-ua':'ukraineFlag','btn-flag-ru':'russiaFlag','btn-eraser':'eraser','btn-pointed-freehand':'pointedFreehand','btn-pointed-freehand-arrow':'pointedFreehandArrow','btn-pointed-line':'pointedLine' };
-      Object.keys(drawButtons).forEach(function(id) { var el = document.getElementById(id); if (el) el.textContent = pt(drawButtons[id]); });
-      var pointedHeader = document.querySelector('.tool-group-header:nth-of-type(3)'); if (pointedHeader && pointedHeader.textContent.includes('Pointed')) pointedHeader.textContent = pt('pointedTools');
-      var finishBtns = document.querySelectorAll('#panel-draw .tool-btn'); if (finishBtns[finishBtns.length-2]) finishBtns[finishBtns.length-2].textContent = pt('finishShape'); if (finishBtns[finishBtns.length-1]) finishBtns[finishBtns.length-1].textContent = pt('clearDrawings');
-      var rBtns = document.querySelectorAll('#panel-ruler .tool-btn'); if (rBtns[0]) rBtns[0].textContent = pt('finishMeasuring'); if (rBtns[1]) rBtns[1].textContent = pt('clearLine');
-      var thickness = document.querySelector('#panel-draw .thickness-row label'); if (thickness) thickness.childNodes[0].textContent = pt('thickness') + ': ';
-      var colors = { red:'color-red',blue:'color-blue',green:'color-green',yellow:'color-yellow',black:'color-black',white:'color-white' }; Object.keys(colors).forEach(function(k) { var e = document.getElementById(colors[k]); if (e) e.textContent = pt(k); });
-      var cmpHeading = document.querySelector('#panel-compare h4'); if (cmpHeading) cmpHeading.textContent = pt('compareDates');
-      updateSidebarLayerControl(); updateDesignSelector(); renderAdvanceBar(); updateInstructions(); if (typeof rulerUpdatePanel === 'function') rulerUpdatePanel();
-    }
-    window.setPublicLanguage = function(lang) { publicLanguage = lang === 'ru' ? 'ru' : 'en'; localStorage.setItem('polrad_language', publicLanguage); window.location.reload(); };
-    document.addEventListener('DOMContentLoaded', function() { var en = document.getElementById('lang-en'), ru = document.getElementById('lang-ru'); if (en) en.onclick = function() { setPublicLanguage('en'); }; if (ru) ru.onclick = function() { setPublicLanguage('ru'); }; });
-    window.addEventListener('load', function() { setTimeout(applyPublicLanguage, 100); });
-
-    function detectPhonePublic() { var coarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches; var narrow = window.innerWidth <= 768; var touch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0; var ua = /Android|iPhone|iPad|iPod|Mobile|Opera Mini|IEMobile/i.test(navigator.userAgent); return (coarse && narrow) || (touch && ua && narrow); }
-    function isPhoneModePublic() { return document.body.classList.contains('phone-mode'); }
-    function setPhoneModePublic(enabled) { document.body.classList.toggle('phone-mode', !!enabled); var btn = document.getElementById('phone-toggle-btn'); if (btn) btn.classList.toggle('active', !!enabled); try { localStorage.setItem('polrad_public_phone_mode', enabled ? '1' : '0'); } catch (e) {} if (window.map) setTimeout(function() { window.map.invalidateSize(); }, 260); if (enabled) { document.querySelectorAll('.sidebar-panel').forEach(function(p) { p.classList.remove('show'); }); document.querySelectorAll('.sidebar-btn').forEach(function(b) { if (b.id !== 'btn-fullscreen') b.classList.remove('active'); }); } }
-    function togglePhoneMode() { setPhoneModePublic(!isPhoneModePublic()); }
-    function initPhoneModePublic() { var stored = null; try { stored = localStorage.getItem('polrad_public_phone_mode'); } catch (e) {} if (stored === '1') { setPhoneModePublic(true); return; } if (stored === '0') { setPhoneModePublic(false); return; } setPhoneModePublic(detectPhonePublic()); }
-    window.addEventListener('resize', function() { var stored = null; try { stored = localStorage.getItem('polrad_public_phone_mode'); } catch (e) {} if (stored === '1' || stored === '0') return; setPhoneModePublic(detectPhonePublic()); });
-    document.addEventListener('DOMContentLoaded', function() { initPhoneModePublic(); });
-
-    function toggleFullScreen() { var btn = document.getElementById('btn-fullscreen'); if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) { if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen(); else if (document.documentElement.webkitRequestFullscreen) document.documentElement.webkitRequestFullscreen(); else if (document.documentElement.msRequestFullscreen) document.documentElement.msRequestFullscreen(); if (btn) btn.classList.add('active'); } else { if (document.exitFullscreen) document.exitFullscreen(); else if (document.webkitExitFullscreen) document.webkitExitFullscreen(); else if (document.msExitFullscreen) document.msExitFullscreen(); if (btn) btn.classList.remove('active'); } }
-
-    var TILE_OPTS = { updateWhenIdle: true, updateWhenZooming: false, keepBuffer: 2 };
-    var satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', Object.assign({ attribution: 'Tiles &copy; Esri', maxZoom: 19 }, TILE_OPTS));
-    var esriHybrid = L.layerGroup([
-      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', Object.assign({ attribution: 'Tiles &copy; Esri', crossOrigin: true, maxZoom: 19 }, TILE_OPTS)),
-      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', Object.assign({ attribution: 'Labels &copy; Esri', maxZoom: 19 }, TILE_OPTS))
-    ]);
-    var googleHybrid = null;
-    function tryBuildGoogleHybrid() { if (window.google && window.google.maps && L.gridLayer && L.gridLayer.googleMutant) { try { googleHybrid = L.gridLayer.googleMutant({ type: 'hybrid', maxZoom: 20, attribution: '&copy; Google' }); } catch (e) { googleHybrid = null; } } }
-    tryBuildGoogleHybrid();
-    var osmStandard = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', Object.assign({ attribution: '&copy; OpenStreetMap contributors', maxZoom: 19 }, TILE_OPTS));
-    var topo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', Object.assign({ attribution: 'Map data: &copy; OpenStreetMap contributors, SRTM | Map style: &copy; OpenTopoMap (CC-BY-SA)', maxZoom: 17 }, TILE_OPTS));
-    var baseLayers = { "Esri Hybrid (Satellite + Labels)": esriHybrid, "Esri Satellite": satellite, "OpenStreetMap": osmStandard, "Topographic": topo };
-    if (googleHybrid) baseLayers = Object.assign({ "Google Hybrid (Satellite + Labels)": googleHybrid }, baseLayers);
-    var currentBaseLayer = googleHybrid || esriHybrid;
-    var map = L.map('map', { center: [48.00, 37.75], zoom: 7, scrollWheelZoom: true, zoomControl: false, layers: [currentBaseLayer] });
-    window.map = map;
-    window.polradUseEsriFallback = function() { if (!map || !esriHybrid) return; if (currentBaseLayer !== esriHybrid) { var center = map.getCenter(), zoom = map.getZoom(); if (map.hasLayer(currentBaseLayer)) map.removeLayer(currentBaseLayer); currentBaseLayer = esriHybrid; map.addLayer(esriHybrid); map.setView(center, zoom, { animate: false }); var radios = document.querySelectorAll('input[name="basemap"]'); radios.forEach(function(radio) { radio.checked = baseLayers[radio.dataset.basemapKey] === esriHybrid; }); } };
-    if (window.polradGoogleAuthFailed) window.polradUseEsriFallback();
-    window.polradGoogleReady = function() {
-      if (window.polradGoogleAuthFailed) return;
-      tryBuildGoogleHybrid();
-      if (!googleHybrid || currentBaseLayer === googleHybrid) return;
-      try {
-        var center = map.getCenter(), zoom = map.getZoom();
-        map.removeLayer(currentBaseLayer);
-        baseLayers = Object.assign({ "Google Hybrid (Satellite + Labels)": googleHybrid }, baseLayers);
-        currentBaseLayer = googleHybrid;
-        map.addLayer(googleHybrid);
-        map.setView(center, zoom, { animate: false });
-        var radios = document.querySelectorAll('input[name="basemap"]');
-        radios.forEach(function(radio) { radio.checked = baseLayers[radio.dataset.basemapKey] === googleHybrid; });
-        buildBasemapRadios(); // Refresh the radios to include Google
-      } catch (e) { window.polradUseEsriFallback(); }
-    };
-    window.polradGoogleReady._timer = setInterval(function() { if (window.google && window.google.maps && L.gridLayer && L.gridLayer.googleMutant) { clearInterval(window.polradGoogleReady._timer); window.polradGoogleReady(); } }, 500);
-
-    L.control.zoom({ position: 'bottomright' }).addTo(map);
-    var scaleControl = L.control.scale({ position: 'bottomleft', metric: true, imperial: true, maxWidth: 150 }).addTo(map);
-    var currentUnit = 'km';
-    var RULER_LINE_COLOR = '#00e5ff';
-    var rulerBaseLayer = L.layerGroup().addTo(map);
-    var rulerPreviewLayer = L.layerGroup().addTo(map);
-    var rulerState = { points: [], finished: false, cursor: null };
-    function rulerFormatDistance(meters) { if (currentUnit === 'mi') { var miles = meters / 1609.344; if (miles < 0.1) { var feet = meters / 0.3048; return Math.round(feet).toLocaleString() + ' ft'; } return miles.toFixed(2) + ' mi'; } var km = meters / 1000; if (km < 1) return Math.round(meters).toLocaleString() + ' m'; return km.toFixed(km < 10 ? 2 : 1) + ' km'; }
-    function rulerTotalMeters(points) { var total = 0; for (var i = 1; i < points.length; i++) total += map.distance(points[i - 1], points[i]); return total; }
-    function rulerUpdatePanel() { var el = document.getElementById('ruler-result'); if (!el) return; if (!rulerState.points.length) { el.innerHTML = publicLanguage === 'ru' ? 'Кликните первую точку на карте, чтобы начать измерение.' : 'Click the first point on the map to start measuring.'; return; } var total = rulerTotalMeters(rulerState.points); var segments = Math.max(0, rulerState.points.length - 1); el.innerHTML = '<div style="font-size:22px;font-weight:800;color:#ffd23f;line-height:1.1">' + rulerFormatDistance(total) + '</div><div style="margin-top:4px;color:var(--muted-text);font-size:12px">' + (publicLanguage === 'ru' ? segments + ' сегмент(ов) · кликните, чтобы добавить точку' : segments + ' segment(s) · click to add a point') + '</div>'; }
-    function rulerDrawStatic() { rulerBaseLayer.clearLayers(); var points = rulerState.points; if (!points.length) { rulerUpdatePanel(); return; } if (points.length >= 2) { L.polyline(points, { color: '#ffffff', weight: 6, opacity: 0.55, lineCap: 'round', lineJoin: 'round', interactive: false, pane: 'drawingsPane' }).addTo(rulerBaseLayer); L.polyline(points, { color: RULER_LINE_COLOR, weight: 2.5, opacity: 0.95, dashArray: '8 6', lineCap: 'round', lineJoin: 'round', interactive: false, pane: 'drawingsPane' }).addTo(rulerBaseLayer); for (var i = 1; i < points.length; i++) { var mid = L.latLng((points[i - 1].lat + points[i].lat) / 2, (points[i - 1].lng + points[i].lng) / 2); var segmentMeters = map.distance(points[i - 1], points[i]); L.marker(mid, { icon: L.divIcon({ className: '', html: '<div class="ruler-label">' + rulerFormatDistance(segmentMeters) + '</div>', iconSize: [0, 0], iconAnchor: [0, 0] }), interactive: false, keyboard: false, pane: 'markersPane' }).addTo(rulerBaseLayer); } } points.forEach(function(point) { L.circleMarker(point, { radius: 5, color: '#111111', weight: 2, fillColor: '#ffd23f', fillOpacity: 1, interactive: false, pane: 'drawingsPane' }).addTo(rulerBaseLayer); }); var total = rulerTotalMeters(points); var last = points[points.length - 1]; L.marker(last, { icon: L.divIcon({ className: '', html: '<div class="ruler-total">' + rulerFormatDistance(total) + '</div>', iconSize: [0, 0], iconAnchor: [0, 0] }), interactive: false, keyboard: false, pane: 'markersPane' }).addTo(rulerBaseLayer); rulerUpdatePanel(); }
-    function rulerDrawPreview() { rulerPreviewLayer.clearLayers(); if (rulerState.finished || !rulerState.points.length || !rulerState.cursor) return; var last = rulerState.points[rulerState.points.length - 1], cursor = rulerState.cursor; L.polyline([last, cursor], { color: '#ffffff', weight: 5, opacity: 0.35, interactive: false, pane: 'drawingsPane' }).addTo(rulerPreviewLayer); L.polyline([last, cursor], { color: RULER_LINE_COLOR, weight: 2, opacity: 0.8, dashArray: '4 6', interactive: false, pane: 'drawingsPane' }).addTo(rulerPreviewLayer); var total = rulerTotalMeters(rulerState.points) + map.distance(last, cursor); L.marker(cursor, { icon: L.divIcon({ className: '', html: '<div class="ruler-total preview">' + rulerFormatDistance(total) + '</div>', iconSize: [0, 0], iconAnchor: [0, 0] }), interactive: false, keyboard: false, pane: 'markersPane' }).addTo(rulerPreviewLayer); }
-    function rulerReset() { rulerState.points = []; rulerState.finished = false; rulerState.cursor = null; rulerBaseLayer.clearLayers(); rulerPreviewLayer.clearLayers(); rulerUpdatePanel(); }
-    function rulerAddPoint(latlng) { if (rulerState.finished || !rulerState.points.length) { rulerState.points = []; rulerState.finished = false; rulerBaseLayer.clearLayers(); rulerPreviewLayer.clearLayers(); } rulerState.points.push(latlng); rulerState.cursor = null; rulerDrawStatic(); rulerDrawPreview(); }
-    function rulerFinish() { if (rulerState.points.length >= 2) { rulerState.finished = true; rulerPreviewLayer.clearLayers(); rulerUpdatePanel(); } else rulerReset(); }
-    function setMeasurementUnit(unit) { currentUnit = unit; document.getElementById('unit-km').classList.toggle('selected', unit === 'km'); document.getElementById('unit-mi').classList.toggle('selected', unit === 'mi'); map.removeControl(scaleControl); scaleControl = L.control.scale({ position: 'bottomleft', metric: (unit === 'km'), imperial: (unit === 'mi'), maxWidth: 150 }).addTo(map); rulerDrawStatic(); rulerDrawPreview(); rulerUpdatePanel(); }
-    function toggleCrosshairSetting(checked) { document.getElementById('map-crosshair').style.display = checked ? 'block' : 'none'; }
-    function setDarkTheme(enabled) { document.body.classList.toggle('light-mode', !enabled); }
-    function togglePolygonBorders(checked) { polygonBordersEnabled = checked; }
-    map.createPane('comparePane'); map.getPane('comparePane').style.zIndex = 465;
-    map.createPane('grayZonePane'); map.getPane('grayZonePane').style.zIndex = 460;
-    map.createPane('infiltrationPane'); map.getPane('infiltrationPane').style.zIndex = 470;
-    map.createPane('territoryPane'); map.getPane('territoryPane').style.zIndex = 420;
-    map.createPane('advancesPane'); map.getPane('advancesPane').style.zIndex = 440;
-    map.createPane('extraLayersPane'); map.getPane('extraLayersPane').style.zIndex = 500;
-    map.createPane('drawingsPane'); map.getPane('drawingsPane').style.zIndex = 650;
-    map.createPane('markersPane'); map.getPane('markersPane').style.zIndex = 700;
-   <!DOCTYPE html>
-<html>
-<head>
-  <title>Russo-Ukrainian War Map (Polrad Mapping)</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta charset="utf-8">
-  <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet-geosearch@3.11.0/dist/geosearch.css" />
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script>
-    window.polradGoogleAuthFailed = false;
-    window.gm_authFailure = function() {
-      window.polradGoogleAuthFailed = true;
-      if (typeof window.polradUseEsriFallback === 'function') window.polradUseEsriFallback();
-    };
-  </script>
-  <script>
-    window.polradGoogleLanguage = localStorage.getItem('polrad_language') === 'ru' ? 'ru' : 'en';
-    window.polradGoogleRegion = window.polradGoogleLanguage === 'ru' ? 'RU' : 'US';
-  </script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAGf_KVFEZoVl7P2BDk-NvUxsSPUoAzueU&language=en&region=US" async defer></script>
-  <script src="https://unpkg.com/leaflet.gridlayer.googlemutant@0.16.0/dist/Leaflet.GoogleMutant.js"></script>
-  <script src="https://unpkg.com/leaflet-geosearch@3.11.0/dist/geosearch.umd.js"></script>
-  <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
-  <style>
-    :root { --panel-bg: #1b1b1b; --panel-text: #f5f5f5; --panel-border: rgba(255,255,255,0.15); --panel-heading-border: rgba(255,255,255,0.15); --btn-bg: #2a2a2a; --btn-bg-hover: #383838; --btn-border: #555555; --btn-text: #f0f0f0; --result-text: #cccccc; --muted-text: #aaaaaa; --chrome-bg: #171717; --chrome-btn-bg: #2a2a2a; --chrome-text: #ffffff; --chrome-border: rgba(255,255,255,0.2); --link-color: #64b5f6; }
-    body.light-mode { --panel-bg: #ffffff; --panel-text: #222222; --panel-border: rgba(0,0,0,0.2); --panel-heading-border: #dddddd; --btn-bg: #f5f5f5; --btn-bg-hover: #e8e8e8; --btn-border: #999999; --btn-text: #333333; --result-text: #333333; --muted-text: #555555; --chrome-bg: #ffffff; --chrome-btn-bg: #f0f0f0; --chrome-text: #171717; --chrome-border: rgba(0,0,0,0.2); --link-color: #1976d2; }
-    .no-select-mode, .no-select-mode * { user-select: none !important; -webkit-user-select: none !important; }
-    body { margin: 0; padding: 0; font-family: Helvetica, Arial, sans-serif; background: #f4f4f4; }
-    #map { position: absolute; top: 0; bottom: 0; right: 0; left: 60px; }
-    #left-sidebar { position: absolute; top: 0; left: 0; bottom: 0; width: 60px; background: var(--chrome-bg); border-right: 2px solid rgba(0,0,0,0.2); z-index: 2000; display: flex; flex-direction: column; align-items: center; padding-top: 20px; gap: 15px; box-shadow: 2px 0 8px rgba(0,0,0,0.15); }
-    .sidebar-btn { width: 44px; height: 44px; background: var(--chrome-btn-bg); border: 1px solid var(--chrome-border); border-radius: 6px; font-size: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--chrome-text); }
-    .sidebar-btn:hover, .sidebar-btn.active { background: var(--btn-bg-hover); }
-    .leaflet-control-zoom a { background-color: var(--chrome-bg) !important; color: var(--chrome-text) !important; border-color: var(--chrome-border) !important; }
-    #app-header { position: absolute; top: 10px; left: 72px; z-index: 2100; background: var(--chrome-bg); color: var(--chrome-text); border: 1px solid var(--chrome-border); border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.35); width: 390px; max-width: calc(100vw - 90px); }
-    #app-header-top { display: flex; align-items: center; gap: 8px; padding: 8px 10px; min-width: 0; }
-    #app-logo { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
-    #app-title-text { font-weight: bold; font-size: 14px; flex: 1 1 auto; min-width: 0; white-space: nowrap; }
-    #language-toggle { display: flex; gap: 2px; flex-shrink: 0; background: var(--chrome-btn-bg); border: 1px solid var(--chrome-border); border-radius: 6px; padding: 2px; }
-    .lang-btn { border: 0; border-radius: 4px; background: transparent; color: var(--chrome-text); font-size: 10px; font-weight: 700; padding: 4px 5px; cursor: pointer; }
-    .lang-btn.active { background: var(--btn-bg-hover); }
-    #search-toggle-btn, #phone-toggle-btn { background: var(--chrome-btn-bg); border: 1px solid var(--chrome-border); color: var(--chrome-text); border-radius: 6px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 14px; flex-shrink: 0; }
-    #phone-toggle-btn.active { border-color: var(--link-color); }
-    #app-header-search { display: none; position: absolute; top: calc(100% + 5px); left: 0; width: 350px; max-width: calc(100vw - 90px); box-sizing: border-box; background: var(--chrome-bg); border: 1px solid var(--chrome-border); border-radius: 8px; padding: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.35); z-index: 2200; }
-    #app-header-search.show { display: block; }
-    #header-search-row { display: flex; gap: 5px; }
-    #header-search-input { flex: 1; min-width: 0; height: 30px; box-sizing: border-box; border: 1px solid var(--chrome-border); border-radius: 5px; padding: 0 8px; background: var(--chrome-btn-bg); color: var(--chrome-text); outline: none; font-size: 12px; }
-    #header-search-go { width: 30px; height: 30px; border: 1px solid var(--chrome-border); border-radius: 5px; background: var(--chrome-btn-bg); color: var(--chrome-text); cursor: pointer; }
-    #header-search-results { display: none; margin-top: 5px; max-height: 160px; overflow-y: auto; }
-    #header-search-results.show { display: block; }
-    .header-search-result { padding: 7px; border-radius: 5px; cursor: pointer; color: var(--chrome-text); font-size: 12px; }
-    .header-search-result:hover { background: var(--btn-bg-hover); }
-    .leaflet-control-geosearch { display: none !important; }
-    #map-crosshair { display: none; position: absolute; top: 50%; left: calc(50% + 30px); width: 24px; height: 24px; transform: translate(-50%, -50%); pointer-events: none; z-index: 1500; }
-    #map-crosshair::before, #map-crosshair::after { content: ''; position: absolute; background: rgba(255,255,255,0.85); box-shadow: 0 0 2px rgba(0,0,0,0.8); }
-    #map-crosshair::before { top: 11px; left: 0; width: 24px; height: 2px; }
-    #map-crosshair::after { top: 0; left: 11px; width: 2px; height: 24px; }
-    .sidebar-panel { display: none; position: absolute; top: 90px; left: 75px; z-index: 1900; background: var(--panel-bg); color: var(--panel-text); border: 2px solid var(--panel-border); border-radius: 6px; padding: 12px; width: 250px; max-height: calc(100vh - 110px); overflow-y: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.25); }
-    .sidebar-panel.show { display: block; }
-    .sidebar-panel h4 { margin: 0 0 10px 0; font-size: 15px; border-bottom: 1px solid var(--panel-heading-border); padding-bottom: 6px; }
-    .tool-group-header { font-weight: bold; font-size: 13px; margin: 10px 0 4px 0; border-bottom: 1px solid var(--panel-heading-border); padding-bottom: 2px; }
-    .tool-btn { display: block; width: 100%; margin-bottom: 6px; padding: 6px 8px; font-size: 13px; border: 1px solid var(--btn-border); border-radius: 3px; background: var(--btn-bg); color: var(--btn-text); cursor: pointer; text-align: left; }
-    .tool-btn:hover, .tool-btn.active { background: var(--btn-bg-hover); }
-    #color-row { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 8px; }
-    .thickness-row { margin-bottom: 10px; font-size: 12px; }
-    .thickness-row label { display: flex; justify-content: space-between; margin-bottom: 3px; font-weight: bold; }
-    .thickness-row input[type=range] { width: 100%; cursor: pointer; }
-    .unit-row { margin-bottom: 8px; }
-    .color-btn, .unit-btn { display: block; padding: 6px 4px; font-size: 12px; border: 2px solid var(--btn-border); border-radius: 3px; cursor: pointer; text-align: center; background: var(--btn-bg); color: var(--btn-text); box-sizing: border-box; }
-    .unit-btn { display: inline-block; width: 47%; }
-    .color-btn.selected, .unit-btn.selected { border-color: #000; font-weight: bold; }
-    .panel-result { margin-top: 8px; font-size: 12px; color: var(--result-text); min-height: 24px; }
-    .update-item { border-bottom: 1px solid var(--panel-heading-border); padding: 6px 0; font-size: 13px; }
-    .update-item:last-child { border-bottom: none; }
-    .update-date { font-weight: bold; font-size: 12px; color: var(--muted-text); display: block; margin-bottom: 2px; }
-    .update-item a { color: var(--link-color); text-decoration: underline; }
-    .settings-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; font-size: 13px; }
-    .settings-link-row { margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--panel-heading-border); font-size: 13px; }
-    .settings-link-row a { display: block; margin-bottom: 8px; color: var(--link-color); text-decoration: underline; cursor: pointer; }
-    .leaflet-bottom.leaflet-left { left: 70px; bottom: 10px; }
-    .leaflet-control-scale-line { background: rgba(23,23,23,0.85) !important; color: #fff !important; border: 1px solid rgba(255,255,255,0.4) !important; border-top: none !important; padding: 2px 5px !important; font-size: 11px !important; font-weight: bold; }
-    .leaflet-control-layers { display: none !important; }
-    #timeline-date-input { height: 30px; box-sizing: border-box; border: 1px solid var(--chrome-border); border-radius: 16px; background: var(--chrome-btn-bg); color: var(--chrome-text); padding: 0 10px; font-size: 13px; color-scheme: dark; }
-    body.light-mode #timeline-date-input { color-scheme: light; }
-    .coords-copy-btn { display: inline-block; margin-top: 8px; padding: 5px 10px; border: 1px solid #777; border-radius: 4px; background: #333; color: #fff; cursor: pointer; font-size: 12px; font-weight: 600; }
-    #advance-bar { position: absolute; bottom: 18px; left: calc(50% + 30px); transform: translateX(-50%); z-index: 1400; width: min(920px, calc(100% - 130px)); min-height: 42px; display: none; align-items: center; gap: 8px; padding: 5px 8px; background: rgba(27,27,27,.94); color: #fff; border: 1px solid rgba(255,255,255,.18); border-radius: 9px; box-shadow: 0 2px 10px rgba(0,0,0,.28); backdrop-filter: blur(5px); }
-    #advance-bar.show { display: flex; }
-    #advance-prev, #advance-next { flex: 0 0 32px; width: 32px; height: 32px; border: 0; border-radius: 6px; background: rgba(255,255,255,.10); color: #fff; font-size: 22px; cursor: pointer; }
-    #advance-prev:disabled, #advance-next:disabled { opacity: .35; cursor: default; }
-    #btn-advance-lock { flex: 0 0 32px; width: 32px; height: 32px; margin-left: 2px; border: 0; border-radius: 6px; background: rgba(255,255,255,.10); color: #fff; font-size: 15px; cursor: pointer; }
-    #btn-advance-lock.active { background: rgba(255,255,255,.30); }
-    #advance-main { min-width: 0; flex: 1; display: flex; align-items: center; gap: 9px; overflow: hidden; }
-    #advance-text { min-width: 0; flex: 1; font-size: 13px; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    #advance-area { flex: 0 0 auto; font-size: 12px; font-weight: 700; white-space: nowrap; }
-    body.light-mode #advance-bar { background: rgba(255,255,255,.96); color: #222; border-color: rgba(0,0,0,.18); }
-    body.light-mode #advance-prev, body.light-mode #advance-next, body.light-mode #btn-advance-lock { background: #f1f3f4; color: #222; }
-    #watermark-overlay { position: absolute; top: 0; left: 60px; right: 0; bottom: 0; z-index: 750; pointer-events: none; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='160'><text x='10' y='90' font-family='Helvetica, Arial, sans-serif' font-size='22' font-weight='bold' fill='%23ffffff' fill-opacity='0.18' stroke='%23000000' stroke-opacity='0.10' stroke-width='0.5' transform='rotate(-25 160 80)'>POLRAD MAPPING</text></svg>"); background-repeat: repeat; }
-    #panel-compare .compare-row { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; font-size: 12px; }
-    #panel-compare label { font-weight: bold; font-size: 12px; }
-    #panel-compare input[type=date] { height: 30px; box-sizing: border-box; border: 1px solid var(--chrome-border); border-radius: 5px; background: var(--btn-bg); color: var(--btn-text); padding: 0 8px; font-size: 12px; color-scheme: dark; width: 100%; }
-    body.light-mode #panel-compare input[type=date] { color-scheme: light; }
-    #panel-compare .compare-btn-row { display: flex; gap: 6px; margin-bottom: 8px; }
-    #panel-compare .compare-btn-row .tool-btn { flex: 1; margin-bottom: 0; text-align: center; }
-    #compare-result { font-size: 12px; line-height: 1.5; color: var(--result-text); white-space: pre-wrap; min-height: 24px; }
-    #compare-result .cmp-red { color: #ff0000; font-weight: 700; }
-    #compare-result .cmp-blue { color: #4d7dff; font-weight: 700; }
-    .ruler-label { background: rgba(20,20,20,0.88); color: #ffffff; font: 700 11px/1 Helvetica, Arial, sans-serif; padding: 3px 7px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.35); white-space: nowrap; pointer-events: none; box-shadow: 0 1px 4px rgba(0,0,0,0.4); transform: translate(-50%, -50%); }
-    .ruler-total { background: #ffd23f; color: #1a1a1a; font: 800 12px/1 Helvetica, Arial, sans-serif; padding: 4px 9px; border-radius: 12px; white-space: nowrap; pointer-events: none; box-shadow: 0 2px 6px rgba(0,0,0,0.45); border: 1px solid rgba(0,0,0,0.2); transform: translate(14px, -50%); }
-    .ruler-total.preview { background: #ffffff; color: #1a1a1a; opacity: 0.9; }
-    .area-badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-weight: 800; color: #ffffff; white-space: nowrap; box-shadow: 0 1px 4px rgba(0,0,0,0.35); }
-    body.phone-mode #left-sidebar { top: auto; bottom: 0; left: 0; right: 0; width: 100%; height: 56px; flex-direction: row; justify-content: center; align-items: center; padding: 0 6px; gap: 6px; border-right: 0; border-top: 2px solid rgba(0,0,0,0.2); box-shadow: 0 -2px 8px rgba(0,0,0,0.15); overflow-x: auto; overflow-y: hidden; }
-    body.phone-mode .sidebar-btn { width: 42px; height: 42px; font-size: 20px; flex-shrink: 0; }
-    body.phone-mode #map { left: 0; bottom: 56px; }
-    body.phone-mode #watermark-overlay { left: 0; bottom: 56px; }
-    body.phone-mode #app-header { top: 8px; left: 8px; right: 8px; width: auto; max-width: none; }
-    body.phone-mode #app-title-text { font-size: 13px; }
-    body.phone-mode #app-header-search { width: 100%; max-width: none; }
-    body.phone-mode #map-crosshair { left: 50%; }
-    body.phone-mode .sidebar-panel { top: auto; bottom: 66px; left: 8px; right: 8px; width: auto; max-height: 60vh; border-radius: 12px; padding: 14px; }
-    body.phone-mode .tool-btn { padding: 10px 11px; font-size: 14px; }
-    body.phone-mode .leaflet-bottom.leaflet-left { left: 8px; bottom: 66px; }
-    body.phone-mode .leaflet-bottom.leaflet-right { bottom: 66px; }
-    body.phone-mode .leaflet-control-attribution { display: none; }
-    body.phone-mode #advance-bar { left: 8px; right: 8px; bottom: 66px; width: auto; transform: none; min-height: 46px; padding: 6px 8px; }
-    body.phone-mode #advance-text { font-size: 12px; }
-    body.phone-mode #advance-prev, body.phone-mode #advance-next, body.phone-mode #btn-advance-lock { width: 36px; height: 36px; flex-basis: 36px; }
-    body.phone-mode #timeline-date-input { display: none; }
-    body.phone-mode .leaflet-bar a { width: 36px !important; height: 36px !important; line-height: 36px !important; font-size: 20px !important; }
 
     /* ===== Town markers ===== */
     .town-marker-icon { background: transparent; border: 0; }
@@ -649,16 +302,16 @@
     function toggleFullScreen() { var btn = document.getElementById('btn-fullscreen'); if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) { if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen(); else if (document.documentElement.webkitRequestFullscreen) document.documentElement.webkitRequestFullscreen(); else if (document.documentElement.msRequestFullscreen) document.documentElement.msRequestFullscreen(); if (btn) btn.classList.add('active'); } else { if (document.exitFullscreen) document.exitFullscreen(); else if (document.webkitExitFullscreen) document.webkitExitFullscreen(); else if (document.msExitFullscreen) document.msExitFullscreen(); if (btn) btn.classList.remove('active'); } }
 
     var TILE_OPTS = { updateWhenIdle: true, updateWhenZooming: false, keepBuffer: 2 };
-    var satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', Object.assign({ attribution: 'Tiles &copy; Esri', maxZoom: 19 }, TILE_OPTS));
+    var satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', Object.assign({ attribution: 'Tiles &copy; Esri', maxZoom: 20, maxNativeZoom: 19 }, TILE_OPTS));
     var esriHybrid = L.layerGroup([
-      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', Object.assign({ attribution: 'Tiles &copy; Esri', crossOrigin: true, maxZoom: 19 }, TILE_OPTS)),
-      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', Object.assign({ attribution: 'Labels &copy; Esri', maxZoom: 19 }, TILE_OPTS))
+      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', Object.assign({ attribution: 'Tiles &copy; Esri', crossOrigin: true, maxZoom: 20, maxNativeZoom: 19 }, TILE_OPTS)),
+      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', Object.assign({ attribution: 'Labels &copy; Esri', maxZoom: 20, maxNativeZoom: 19 }, TILE_OPTS))
     ]);
     var googleHybrid = null;
     function tryBuildGoogleHybrid() { if (window.google && window.google.maps && L.gridLayer && L.gridLayer.googleMutant) { try { googleHybrid = L.gridLayer.googleMutant({ type: 'hybrid', maxZoom: 20, attribution: '&copy; Google' }); } catch (e) { googleHybrid = null; } } }
     tryBuildGoogleHybrid();
-    var osmStandard = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', Object.assign({ attribution: '&copy; OpenStreetMap contributors', maxZoom: 19 }, TILE_OPTS));
-    var topo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', Object.assign({ attribution: 'Map data: &copy; OpenStreetMap contributors, SRTM | Map style: &copy; OpenTopoMap (CC-BY-SA)', maxZoom: 17 }, TILE_OPTS));
+    var osmStandard = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', Object.assign({ attribution: '&copy; OpenStreetMap contributors', maxZoom: 20, maxNativeZoom: 19 }, TILE_OPTS));
+    var topo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', Object.assign({ attribution: 'Map data: &copy; OpenStreetMap contributors, SRTM | Map style: &copy; OpenTopoMap (CC-BY-SA)', maxZoom: 20, maxNativeZoom: 17 }, TILE_OPTS));
     var baseLayers = { "Esri Hybrid (Satellite + Labels)": esriHybrid, "Esri Satellite": satellite, "OpenStreetMap": osmStandard, "Topographic": topo };
     if (googleHybrid) baseLayers = Object.assign({ "Google Hybrid (Satellite + Labels)": googleHybrid }, baseLayers);
     var currentBaseLayer = googleHybrid || esriHybrid;
@@ -745,8 +398,7 @@
     map.createPane('drawingsPane'); map.getPane('drawingsPane').style.zIndex = 650;
     map.createPane('markersPane'); map.getPane('markersPane').style.zIndex = 700;
   </script>
-  <!-- PART 2 CONTINUES IN NEXT MESSAGE -->
-    <script>
+  <script>
     map.createPane('overlapPane'); map.getPane('overlapPane').style.zIndex = 425;
     ['polyline', 'polygon', 'rectangle'].forEach(function(name) { var original = L[name]; L[name] = function(shape, options) { var opts = Object.assign({ pane: 'drawingsPane' }, options || {}); return original(shape, opts); }; });
     var appHeaderEl = document.getElementById('app-header');
@@ -906,13 +558,13 @@
       { file: "Infiltration%20area.geojson", name: "Infiltration area", color: "#1b1b1b", fillOpacity: 0.35, pane: 'infiltrationPane', group: "main", noOutline: true, smoothFactor: 1.2 },
       { file: "Fortifications%20%28thanks%20PMapping832%29.geojson", name: "Fortifications (thanks PMapping832)", color: "#00ffff", group: "extra", defaultOff: true },
       { file: "Frontlines.geojson", name: "August 2024 Frontline", color: "#ff0000", outlineColor: "#ff0000", fillOpacity: 0, group: "extra", defaultOff: true },
-      { file: "Town%20markers.geojson", name: TOWN_MARKERS_NAME, group: "main", isTownMarkers: true, defaultOff: false }
+      { file: "Town%20markers.geojson", name: TOWN_MARKERS_NAME, group: "main", isTownMarkers: true, defaultOff: true }
     ];
     var currentDesign = 'Default';
-    var mapDesigns = { 'Default': 'ALL_EXCEPT_FORTIFICATIONS', 'AMK Mapping design': ['Russian-controlled territory', 'Ukrainian-controlled territory', 'My Drawings', 'Town markers'], 'Playfra design': ['Fortifications (thanks PMapping832)', 'Russian-controlled territory', 'Gray Zone', 'My Drawings', 'Town markers'] };
+    var mapDesigns = { 'Default': 'ALL_EXCEPT_FORTIFICATIONS', 'AMK Mapping design': ['Russian-controlled territory', 'Ukrainian-controlled territory', 'My Drawings'], 'Playfra design': ['Fortifications (thanks PMapping832)', 'Russian-controlled territory', 'Gray Zone', 'My Drawings'] };
     function getAllLayerObjects() { return Object.assign({}, mainLayers, extraLayers); }
     var layerVisibilityOverrides = {};
-    var DEFAULT_OFF_IN_DEFAULT_DESIGN = { 'Cities Captured': true, 'Fortifications (thanks PMapping832)': true, 'August 2024 Frontline': true };
+    var DEFAULT_OFF_IN_DEFAULT_DESIGN = { 'Cities Captured': true, 'Fortifications (thanks PMapping832)': true, 'August 2024 Frontline': true, 'Town markers': true };
     function isLayerInCurrentDesign(name) {
       if (Object.prototype.hasOwnProperty.call(layerVisibilityOverrides, name)) return layerVisibilityOverrides[name];
       var layerInfo = layerFiles.find(function(info) { return info.name === name; });
@@ -929,7 +581,6 @@
       if (rememberChoice) layerVisibilityOverrides[name] = visible;
       if (name === TOWN_MARKERS_NAME) {
         setTownMarkersVisibility(visible);
-        if (name === 'Russian-controlled territory' || name === 'Ukrainian-controlled territory') rebuildOverlapLayer();
         return;
       }
       if (visible) { if (!map.hasLayer(layer)) map.addLayer(layer); }
@@ -1147,7 +798,6 @@
         var b = markersB[key];
         var a = markersA[key];
         if (!a) {
-          // New marker in B — mark it as an addition (star halo of its current color)
           var addCol = b.color === 'red' ? '#d32f2f' : (b.color === 'blue' ? '#1e5fd8' : '#757575');
           L.circleMarker([b.lat, b.lng], { pane: 'comparePane', radius: 14, color: addCol, weight: 2, dashArray: '3,3', fill: false, interactive: false }).addTo(compareTownsLayerGroup);
           changedCount++;
@@ -1159,7 +809,6 @@
         // inner dashed ring = old color, outer solid ring = new color
         L.circleMarker([b.lat, b.lng], { pane: 'comparePane', radius: 16, color: prevCol, weight: 2, dashArray: '4,4', fill: false, interactive: false }).addTo(compareTownsLayerGroup);
         L.circleMarker([b.lat, b.lng], { pane: 'comparePane', radius: 11, color: newCol, weight: 3, fill: false, interactive: false }).addTo(compareTownsLayerGroup);
-        // small colored label
         var label = b.name + '  ' + (a.color === 'gray' ? 'contested' : a.color.toUpperCase()) + ' → ' + (b.color === 'gray' ? 'contested' : b.color.toUpperCase());
         L.marker([b.lat, b.lng], { pane: 'comparePane', icon: L.divIcon({ className: '', html: '<div style="background:#ffffff;border:1px solid ' + newCol + ';color:#111;font-weight:700;font-size:11px;padding:2px 6px;border-radius:10px;white-space:nowrap;transform:translate(-50%,-140%);">' + escapeSearchText(label) + '</div>', iconSize: [0,0], iconAnchor: [0,0] }), interactive: false, keyboard: false }).addTo(compareTownsLayerGroup);
         changedCount++;
@@ -1192,7 +841,3 @@
   </svg>
 </body>
 </html>
-
-
-
-
