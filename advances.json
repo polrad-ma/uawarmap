@@ -5157,5 +5157,38 @@
       "ru": 148250.01284066943,
       "ua": 22780.586973376816
     }
+  },
+  {
+    "id": "adv-1795463592930",
+    "date": "2026-11-23",
+    "time": "20:53:12",
+    "text_en": "Russian forces have recaptured the village of Stepanivka",
+    "text_ru": "ВС РФ восстановили контроль над н.п. Степановка",
+    "text": "Russian forces have recaptured the village of Stepanivka",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 7.51,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 7.51
+      }
+    ],
+    "areaDisplay": "+7.51 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 48.43819825788746,
+      "west": 37.504405975341804,
+      "north": 48.50204750525715,
+      "east": 37.68035888671876
+    },
+    "polygonFids": [
+      "p-1795463536614-w1h5tr5kbos"
+    ],
+    "snapshot": "history/advances/adv-1795463592930.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22780.586973376816
+    }
   }
 ]
