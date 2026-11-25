@@ -5224,5 +5224,38 @@
       "ru": 148250.01284066943,
       "ua": 22780.586973376816
     }
+  },
+  {
+    "id": "adv-1795639876904",
+    "date": "2026-11-25",
+    "time": "21:51:16",
+    "text_en": "Russian advances in Verkhnia Tersa and Vozdvyzhivska",
+    "text_ru": "Продвижение ВС РФ в Верхней Терсе и Воздвижевке",
+    "text": "Russian advances in Verkhnia Tersa and Vozdvyzhivska",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 31.13,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 31.13
+      }
+    ],
+    "areaDisplay": "+31.13 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 47.65983792850961,
+      "west": 35.95275878906251,
+      "north": 47.78063558397152,
+      "east": 36.25350952148438
+    },
+    "polygonFids": [
+      "p-1795639732145-7s0k3f4yzx9"
+    ],
+    "snapshot": "history/advances/adv-1795639876904.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22780.586973376816
+    }
   }
 ]
