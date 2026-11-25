@@ -2285,7 +2285,7 @@
       "type": "Feature",
       "properties": {
         "name": "Kruhliakivka",
-        "color": "red",
+        "color": "gray",
         "shape": "circle"
       },
       "geometry": {
@@ -2315,7 +2315,7 @@
       "type": "Feature",
       "properties": {
         "name": "Zahryzove",
-        "color": "gray",
+        "color": "blue",
         "shape": "circle"
       },
       "geometry": {
@@ -2360,7 +2360,7 @@
       "type": "Feature",
       "properties": {
         "name": "Lozova",
-        "color": "red",
+        "color": "gray",
         "shape": "circle"
       },
       "geometry": {
@@ -2405,7 +2405,7 @@
       "type": "Feature",
       "properties": {
         "name": "Vyshneve",
-        "color": "red",
+        "color": "blue",
         "shape": "circle"
       },
       "geometry": {
@@ -2420,7 +2420,7 @@
       "type": "Feature",
       "properties": {
         "name": "Borivska Andriivka",
-        "color": "gray",
+        "color": "blue",
         "shape": "circle"
       },
       "geometry": {
@@ -2435,7 +2435,7 @@
       "type": "Feature",
       "properties": {
         "name": "Zelenyi Hai",
-        "color": "gray",
+        "color": "blue",
         "shape": "circle"
       },
       "geometry": {
@@ -2450,7 +2450,7 @@
       "type": "Feature",
       "properties": {
         "name": "Stepy",
-        "color": "gray",
+        "color": "blue",
         "shape": "circle"
       },
       "geometry": {
@@ -2465,7 +2465,7 @@
       "type": "Feature",
       "properties": {
         "name": "Kopanky",
-        "color": "gray",
+        "color": "blue",
         "shape": "circle"
       },
       "geometry": {
@@ -2569,8 +2569,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Nvojehorivka",
-        "color": "gray",
+        "name": "Novojehorivka",
+        "color": "blue",
         "shape": "circle"
       },
       "geometry": {
@@ -2600,7 +2600,7 @@
       "type": "Feature",
       "properties": {
         "name": "Nadiya",
-        "color": "red",
+        "color": "blue",
         "shape": "circle"
       },
       "geometry": {
@@ -5218,6 +5218,21 @@
         "coordinates": [
           36.97740554809571,
           48.43113690453963
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Andriivka",
+        "color": "red",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.90497779846192,
+          49.42430412434491
         ]
       }
     }

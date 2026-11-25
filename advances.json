@@ -5190,5 +5190,39 @@
       "ru": 148250.01284066943,
       "ua": 22780.586973376816
     }
+  },
+  {
+    "id": "adv-1795619762845",
+    "date": "2026-11-25",
+    "time": "16:16:02",
+    "text_en": "The Russian Borova front has suffered a localised collapse",
+    "text_ru": "Боровский фронт ВС РФ подвергся локальному коллапсу",
+    "text": "The Russian Borova front has suffered a localised collapse",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 83.15,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 83.15
+      }
+    ],
+    "areaDisplay": "+83.15 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 49.30990354687675,
+      "west": 37.48809814453126,
+      "north": 49.58133565487736,
+      "east": 38.12118530273438
+    },
+    "polygonFids": [
+      "p-1795619615567-aldca9ygu5d",
+      "p-1795619639363-5r45tfr9lnq"
+    ],
+    "snapshot": "history/advances/adv-1795619762845.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22780.586973376816
+    }
   }
 ]
