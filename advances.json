@@ -5257,5 +5257,38 @@
       "ru": 148250.01284066943,
       "ua": 22780.586973376816
     }
+  },
+  {
+    "id": "adv-1795674009627",
+    "date": "2026-11-26",
+    "time": "07:20:09",
+    "text_en": "Russian forces continue securing Dobropillia",
+    "text_ru": "ВС РФ продолжают захват Доброполья",
+    "text": "Russian forces continue securing Dobropillia",
+    "side": "ru",
+    "advanceType": "normal",
+    "areaChange": 1.46,
+    "areaEffects": [
+      {
+        "side": "ru",
+        "value": 1.46
+      }
+    ],
+    "areaDisplay": "+1.46 km²",
+    "areaColor": "red",
+    "focus": {
+      "south": 48.44355056533406,
+      "west": 37.01877593994141,
+      "north": 48.50113756368663,
+      "east": 37.15988159179688
+    },
+    "polygonFids": [
+      "p-1795673926975-91r6mpag0v8"
+    ],
+    "snapshot": "history/advances/adv-1795674009627.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22780.586973376816
+    }
   }
 ]

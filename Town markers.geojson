@@ -2891,8 +2891,8 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          37.85236358642579,
-          48.69911856401931
+          37.84875869750977,
+          48.69934516106741
         ]
       }
     },
@@ -5233,36 +5233,6 @@
         "coordinates": [
           37.90497779846192,
           49.42430412434491
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Turove",
-        "color": "gray",
-        "shape": "circle"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          36.147809028625495,
-          50.31009097329968
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Makarove",
-        "color": "blue",
-        "shape": "circle"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          36.15085601806641,
-          50.29432926491992
         ]
       }
     }
