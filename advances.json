@@ -5290,5 +5290,38 @@
       "ru": 148250.01284066943,
       "ua": 22780.586973376816
     }
+  },
+  {
+    "id": "adv-1795722922911",
+    "date": "2026-11-26",
+    "time": "20:55:22",
+    "text_en": "Shevchenko came under Ukrainian control, battles for Vilne Pole and Pryvilne are ongoing",
+    "text_ru": "ВСУ вернули Шевченко. Идут бои за Вольное поле и Привольное",
+    "text": "Shevchenko came under Ukrainian control, battles for Vilne Pole and Pryvilne are ongoing",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 17.59,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 17.59
+      }
+    ],
+    "areaDisplay": "+17.59 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 47.86431329517594,
+      "west": 36.59065246582032,
+      "north": 47.93854193026072,
+      "east": 36.79647445678712
+    },
+    "polygonFids": [
+      "p-1795722456250-lxczu6f9zz"
+    ],
+    "snapshot": "history/advances/adv-1795722922911.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22780.586973376816
+    }
   }
 ]

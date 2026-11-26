@@ -3650,7 +3650,7 @@
       "type": "Feature",
       "properties": {
         "name": "Vesele",
-        "color": "red",
+        "color": "gray",
         "shape": "circle"
       },
       "geometry": {
@@ -3770,7 +3770,7 @@
       "type": "Feature",
       "properties": {
         "name": "Shevchenko",
-        "color": "gray",
+        "color": "blue",
         "shape": "circle"
       },
       "geometry": {
@@ -3785,7 +3785,7 @@
       "type": "Feature",
       "properties": {
         "name": "Vilne Pole",
-        "color": "red",
+        "color": "gray",
         "shape": "circle"
       },
       "geometry": {
@@ -3800,7 +3800,7 @@
       "type": "Feature",
       "properties": {
         "name": "Pryvilne",
-        "color": "red",
+        "color": "gray",
         "shape": "circle"
       },
       "geometry": {
