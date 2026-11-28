@@ -2690,7 +2690,7 @@
       "type": "Feature",
       "properties": {
         "name": "Novomykhailivka",
-        "color": "gray",
+        "color": "blue",
         "shape": "circle"
       },
       "geometry": {
@@ -5233,6 +5233,21 @@
         "coordinates": [
           37.90497779846192,
           49.42430412434491
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Volokhivske",
+        "color": "blue",
+        "shape": "circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.18769073486329,
+          50.23633609388816
         ]
       }
     }

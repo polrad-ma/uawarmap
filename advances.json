@@ -5356,5 +5356,38 @@
       "ru": 148250.01284066943,
       "ua": 22780.586973376816
     }
+  },
+  {
+    "id": "adv-1795859869406",
+    "date": "2026-11-28",
+    "time": "10:57:49",
+    "text_en": "Clarification of Ukrainian control in the Makiivka area",
+    "text_ru": "Уточнение контроля ВСУ в районе Макеевки",
+    "text": "Clarification of Ukrainian control in the Makiivka area",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 50,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 50
+      }
+    ],
+    "areaDisplay": "+50.00 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 49.14735565271612,
+      "west": 37.75829315185547,
+      "north": 49.263771909876176,
+      "east": 38.07655334472656
+    },
+    "polygonFids": [
+      "p-1795859792831-oyh8ca5pbmi"
+    ],
+    "snapshot": "history/advances/adv-1795859869406.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22780.586973376816
+    }
   }
 ]
