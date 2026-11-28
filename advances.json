@@ -5323,5 +5323,38 @@
       "ru": 148250.01284066943,
       "ua": 22780.586973376816
     }
+  },
+  {
+    "id": "adv-1795859316323",
+    "date": "2026-11-28",
+    "time": "10:48:36",
+    "text_en": "Ukrainians have recaptured the northern part of Vesele",
+    "text_ru": "ВСУ восстановили отбили северную часть Веселого",
+    "text": "Ukrainians have recaptured the northern part of Vesele",
+    "side": "ua",
+    "advanceType": "normal",
+    "areaChange": 4.6,
+    "areaEffects": [
+      {
+        "side": "ua",
+        "value": 4.6
+      }
+    ],
+    "areaDisplay": "+4.60 km²",
+    "areaColor": "blue",
+    "focus": {
+      "south": 47.91381087773503,
+      "west": 36.7119312286377,
+      "north": 47.94952332603056,
+      "east": 36.81587219238282
+    },
+    "polygonFids": [
+      "p-1795859236168-m3dhqt29azr"
+    ],
+    "snapshot": "history/advances/adv-1795859316323.json",
+    "beforeAreas": {
+      "ru": 148250.01284066943,
+      "ua": 22780.586973376816
+    }
   }
 ]
