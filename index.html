@@ -195,7 +195,7 @@
     <div class="compare-btn-row"><button class="tool-btn" onclick="runDateComparison()">Compare</button><button class="tool-btn" onclick="clearDateComparison()">Clear</button></div>
     <div style="margin:2px 0 10px 0; font-size:12px;"><label style="display:flex; align-items:center; gap:6px; cursor:pointer; font-weight:600;"><input type="checkbox" id="compare-town-changes" checked> Show town changes</label></div>
     <div id="compare-result">Pick two dates to see territorial gains.</div>
-    <div style="margin-top:10px; font-size:11px; line-height:1.5; color:var(--muted-text);"><span style="display:inline-block;width:10px;height:10px;background:#ff0000;border-radius:2px;margin-right:4px;vertical-align:middle;"></span>Russian gains<br><span style="display:inline-block;width:10px;height:10px;background:#4d7dff;border-radius:2px;margin-right:4px;vertical-align:middle;"></span>Ukrainian gains<br><span style="display:inline-block;width:10px;height:10px;background:#ffb300;border-radius:50%;margin-right:4px;vertical-align:middle;"></span>Town changed control</div>
+    <div style="margin-top:10px; font-size:11px; line-height:1.5; color:var(--muted-text);"><span style="display:inline-block;width:10px;height:10px;background:#ff0000;border-radius:2px;margin-right:4px;vertical-align:middle;"></span>Russian gains<br><span style="display:inline-block;width:10px;height:10px;background:#4d7dff;border-radius:2px;margin-right:4px;vertical-align:middle;"></span>Ukrainian gains<br>Town markers shown = control changed</div>
   </div>
   <div class="sidebar-panel" id="panel-layers">
     <h4>Basemaps & Layers</h4>
@@ -807,20 +807,13 @@
       Object.keys(markersB).forEach(function (key) {
         var b = markersB[key];
         var a = markersA[key];
-        if (!a) {
-          var addCol = b.color === 'red' ? '#d32f2f' : (b.color === 'blue' ? '#1e5fd8' : '#757575');
-          L.circleMarker([b.lat, b.lng], { pane: 'comparePane', radius: 14, color: addCol, weight: 2, dashArray: '3,3', fill: false, interactive: false }).addTo(compareTownsLayerGroup);
-          changedCount++;
-          return;
-        }
-        if (a.color === b.color && a.shape === b.shape) return;
-        var prevCol = a.color === 'red' ? '#d32f2f' : (a.color === 'blue' ? '#1e5fd8' : '#757575');
-        var newCol = b.color === 'red' ? '#d32f2f' : (b.color === 'blue' ? '#1e5fd8' : '#757575');
-        // inner dashed ring = old color, outer solid ring = new color
-        L.circleMarker([b.lat, b.lng], { pane: 'comparePane', radius: 16, color: prevCol, weight: 2, dashArray: '4,4', fill: false, interactive: false }).addTo(compareTownsLayerGroup);
-        L.circleMarker([b.lat, b.lng], { pane: 'comparePane', radius: 11, color: newCol, weight: 3, fill: false, interactive: false }).addTo(compareTownsLayerGroup);
-        var label = b.name + '  ' + (a.color === 'gray' ? 'contested' : a.color.toUpperCase()) + ' → ' + (b.color === 'gray' ? 'contested' : b.color.toUpperCase());
-        L.marker([b.lat, b.lng], { pane: 'comparePane', icon: L.divIcon({ className: '', html: '<div style="background:#ffffff;border:1px solid ' + newCol + ';color:#111;font-weight:700;font-size:11px;padding:2px 6px;border-radius:10px;white-space:nowrap;transform:translate(-50%,-140%);">' + escapeSearchText(label) + '</div>', iconSize: [0,0], iconAnchor: [0,0] }), interactive: false, keyboard: false }).addTo(compareTownsLayerGroup);
+        if (!a || a.color === b.color) return; // only towns whose control status changed
+        var color = (b.color === 'red' || b.color === 'blue') ? b.color : 'gray';
+        var shape = (b.shape === 'square' || b.shape === 'star') ? b.shape : 'circle';
+        if (!Number.isFinite(b.lat) || !Number.isFinite(b.lng)) return;
+        var marker = L.marker([b.lat, b.lng], { icon: buildTownMarkerIcon(color, shape), pane: 'townMarkersPane' });
+        marker.bindPopup(buildTownPopupHtml(b.name, color, shape), { closeButton: true, autoPan: true });
+        marker.addTo(compareTownsLayerGroup);
         changedCount++;
       });
       return changedCount;
